@@ -1,4 +1,4 @@
-"""Stage 3: the project record (files, chunks, vectors) that every later stage reads, and its on-disk form."""
+"""Project record: the files, chunks and vectors that every model stage after encoding reads, and its on-disk form."""
 from __future__ import annotations
 
 import json
@@ -13,7 +13,7 @@ from ..models.encoder import Encoded
 
 
 class Record:
-    """Stage 3 output: everything later stages need about the project folder."""
+    """Everything the model stages need about the project folder."""
 
     def __init__(self, root: str, files: list[FileRecord], chunks: list[Chunk],
                  chunk_emb: np.ndarray, file_emb: np.ndarray, encoder_id: str):

@@ -4,28 +4,28 @@
 
 ```mermaid
 flowchart LR
-  F[프로젝트 폴더] --> S1[1 파일 입력<br/>ingest.py]
-  S1 --> S2[2 인코딩<br/>bge-m3]
-  S2 --> S3[3 프로젝트 레코드<br/>Haiku 요약 · Sonnet 그림 설명]
-  S3 --> S4[4 군집화<br/>실험 구간]
-  S4 --> S5[5 그래프 생성<br/>후보 → reranker → Sonnet 판정]
-  S5 --> S6[6 선호도 교정<br/>실험 구간]
-  FB[(feedback.jsonl)] --> S6
-  S6 --> S7[7 최종 그래프<br/>직접 편집 재적용]
-  FB --> S7
-  S7 --> S8[8 뷰어 · Obsidian]
-  S8 -. 사용자 교정 내보내기 .-> FB
-  P[(prefs.json)] --> S4
+  A[프로젝트 폴더] --> I[파일 입력<br/>srcs/ingest·parsers] --> R1[그림 설명·요약<br/>srcs/enrich]
+  R1 --> M1[① 인코딩<br/>models/encoder] --> R2[프로젝트 레코드<br/>srcs/record]
+  R2 --> M2[② 군집화 🧪<br/>models/clustering] --> M3[③ 구조 생성<br/>models/structure]
+  M3 --> M4[④ 선호도 반영 🧪<br/>models/preference] --> F[최종 그래프<br/>srcs/finalize] --> M5[⑤ 시각화<br/>models/visualization]
+  P[(prefs.json)] --> M2
+  FB[(feedback.jsonl)] --> M4
+  FB --> F
+  M5 -. 사용자 교정 내보내기 .-> FB
+  classDef model fill:#dbe9f7,stroke:#4e79a7,color:#1f2328
+  class M1,M2,M3,M4,M5 model
 ```
+
+파란 상자가 모델 단계 ①–⑤(`projectwiki/models/`, 단계마다 파일 하나), 흰 상자가 데이터 준비(`projectwiki/srcs/`)입니다.
 
 ## 데이터 형식 (`schema.py`)
 
 | 형식 | 주요 필드 | 만드는 곳 |
 |---|---|---|
-| `Chunk` | `id` (`<file id>#<n>`), `kind`, `locator` (`p.3`, `Method > Loss`, `def train (L10-L42)`), `text` | 1 |
-| `FileRecord` | `id` (상대 경로의 sha1 앞 10자리, 내용이 바뀌어도 유지), `path`, `type`, `sha256`, `chunk_ids`, `refs`, `summary`, `role` | 1, 3 |
-| `Group` | `id`, `name`, `description`, `members`, `origin` (`ai`/`user`) | 4 |
-| `Edge` | `id` (파일 쌍마다 하나), `source`→`target`, `relation`, `reason`, `direct`, `score`, `label`, `evidence[]`, `origin`, `status`, `correction` | 5–7 |
+| `Chunk` | `id` (`<file id>#<n>`), `kind`, `locator` (`p.3`, `Method > Loss`, `def train (L10-L42)`), `text` | 파일 입력 |
+| `FileRecord` | `id` (상대 경로의 sha1 앞 10자리, 내용이 바뀌어도 유지), `path`, `type`, `sha256`, `chunk_ids`, `refs`, `summary`, `role` | 파일 입력, 프로젝트 레코드 |
+| `Group` | `id`, `name`, `description`, `members`, `origin` (`ai`/`user`) | ② 군집화 |
+| `Edge` | `id` (파일 쌍마다 하나), `source`→`target`, `relation`, `reason`, `direct`, `score`, `label`, `evidence[]`, `origin`, `status`, `correction` | ③ 구조 생성 → ④ 선호도 반영 → 최종 그래프 |
 | `Preferences` | `purpose`, `anchors`, `guide`, `pairs` | 사용자 |
 | `FeedbackEvent` | `type`, `source`, `target`, `node`, `group`, `relation`, `note`, `ts` | 사용자 (뷰어) |
 
@@ -36,7 +36,7 @@ flowchart LR
 | `proposed` | AI 제안 | 표시 |
 | `confirmed` | 사용자가 승인하거나 추가 | 표시 (파란/초록 굵은 선) |
 | `removed_wrong` / `removed_irrelevant` | 사용자가 거절 | "숨긴 연결"을 켜면 빨간 점선 |
-| `removed_by_corrector` | 6단계 교정 방법이 숨김 | 위와 같음 |
+| `removed_by_corrector` | ④ 선호도 반영 방법이 숨김 | 위와 같음 |
 | `llm_rejected` | Sonnet 판정이 의미 없다고 봄 (import·링크는 제외) | 위와 같음 |
 | `removed_low_score` | `min_score` 미만 추론 연결 | 위와 같음 |
 
@@ -101,7 +101,7 @@ flowchart LR
 - `node_groups`
 - `explanations` (뷰어에 "교정 반영" 이유로 표시)
 
-사용자가 직접 건드린 연결은 7단계가 처리하므로 여기서 다루지 않아도 됩니다.
+사용자가 직접 건드린 연결은 최종 그래프 단계(`srcs/finalize.py`)가 처리하므로 여기서 다루지 않아도 됩니다.
 
 - **`baseline`** (대조군): 아무것도 바꾸지 않습니다.
 - **`drift`** (회의 4안, 학습 없음):
@@ -138,9 +138,9 @@ flowchart LR
 
 `projectwiki report <out>`은 `stages.html`을 만듭니다. 한 페이지에 다음이 들어갑니다.
 
-- 8단계 띠와 회의 파이프라인(1안 + 4안) 대비 판정표
+- 회의에서 정한 흐름(파일 입력부터 시각화까지 8칸) 띠와 회의안(1안 + 4안) 대비 판정표
 - 단계마다 실제 출력: 형식·폴더 분포, PCA 산점도, 레코드 예시, 그룹표, 후보 이유와 근거 예시, 최종 그래프 그림
-- 6단계 비교: 등록된 교정 방법(`baseline`, `drift`, `align`, 새로 추가한 방법)을 같은 그래프와 피드백으로 다시 계산해 나란히 보여줌
+- ④ 선호도 반영 비교: 등록된 교정 방법(`baseline`, `drift`, `align`, 새로 추가한 방법)을 같은 그래프와 피드백으로 다시 계산해 나란히 보여줌
 - 직접 편집이 최종 그래프에 남았는지 확인하는 표, 증분 갱신 결과, 단계별 시간
 
 차트는 외부 라이브러리 없이 인라인 SVG로 그립니다.
@@ -163,7 +163,7 @@ flowchart LR
   - `--no-llm` 첫 실행: 약 3분 20초. 대부분 Hugging Face 확인과 모델 로딩입니다.
   - 캐시가 있을 때 다시 실행: 13초
   - `--llm-backend cli`(Sonnet 판정 + Haiku 요약): 3분 20초, 52회 호출, API 환산 약 $1.07
-- **5단계 시간**: 연결이 많으면 리랭커 시간이 큽니다. AI618 폴더(연결 약 390개)에서 약 85초가 걸렸습니다.
+- **③ 구조 생성 시간**: 연결이 많으면 리랭커 시간이 큽니다. AI618 폴더(연결 약 390개)에서 약 85초가 걸렸습니다.
 
 ## 코드 지도
 

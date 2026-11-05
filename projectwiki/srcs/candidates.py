@@ -1,4 +1,4 @@
-"""Stage 5, step 1: candidate edges.
+"""Structure generation, step 1: candidate edges.
 
 Explicit references (imports, Markdown links, wikilinks, file-name mentions) and bge-m3 similarity
 (top-k inside each group, one strong neighbour across groups).

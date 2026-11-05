@@ -48,7 +48,7 @@ def make_llm(cfg: Config, out: Path, client=None) -> Claude | None:
         cfg.llm_workers = min(cfg.llm_workers, 4)  # each call is a separate CLI process
     elif client is None and not os.environ.get("ANTHROPIC_API_KEY"):
         raise SystemExit("ANTHROPIC_API_KEY is not set. Set it, use --llm-backend cli (logged-in Claude Code), "
-                         "or pass --no-llm to skip the Claude stages.")
+                         "or pass --no-llm to skip the Claude steps.")
     return Claude(cfg, out / "cache" / "llm.json", client=client)
 
 

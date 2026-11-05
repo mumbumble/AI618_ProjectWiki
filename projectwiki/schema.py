@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 
-# Relation types the stage-5 judge may assign.
+# Relation types the structure-generation judge (models/structure.py) may assign.
 RELATIONS = ["implements", "describes", "uses", "produces", "extends", "same_method", "supports",
              "contradicts", "compares", "same_topic", "duplicate", "other"]
 EXPLICIT = ("imports", "links_to", "mentions")  # candidate reasons stated in the files themselves
@@ -53,7 +53,7 @@ class FileRecord:
     title: str
     chunk_ids: list[str] = field(default_factory=list)
     refs: list[Ref] = field(default_factory=list)
-    summary: str = ""  # LLM summary (stage 3)
+    summary: str = ""  # Claude summary (srcs/enrich.py)
     role: str = ""  # LLM role label such as "training script"
 
     @classmethod
@@ -93,7 +93,7 @@ class Edge:
     # proposed | confirmed | removed_wrong | removed_irrelevant | removed_by_corrector
     # | removed_low_score | llm_rejected
     status: str = "proposed"
-    correction: str = ""  # why the stage-6 method changed this edge
+    correction: str = ""  # why the preference method (models/preference.py) changed this edge
 
     @classmethod
     def from_dict(cls, d: dict) -> Edge:

@@ -1,4 +1,4 @@
-"""Stage 1 parsers: one function per file type, each returning (pieces, refs, title).
+"""File-input parsers: one function per file type, each returning (pieces, refs, title).
 
 pieces are (kind, locator, text) chunks; refs are (kind, target, piece index) for imports and links.
 To support a new file type, add a parser here and route it in `parse()`.

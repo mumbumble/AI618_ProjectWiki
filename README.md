@@ -6,19 +6,22 @@
 
 - 파일마다 요약과 역할이 붙고, 파일끼리의 관계에는 양쪽 원문 근거가 달립니다.
 - 사용자가 고친 내용(승인·거절·추가·그룹 이동)은 파일이 바뀌어 다시 생성해도 유지되고, 이후 제안에도 반영됩니다.
-- 파이프라인은 11/05 팀 회의에서 정했습니다. 군집화와 선호도 교정은 **실험 구간(🧪)** 이라 각자 방법을 끼워 넣어 비교합니다.
+- 파이프라인은 11/05 팀 회의에서 정했습니다. 군집화와 선호도 반영은 **실험 구간(🧪)** 이라 각자 방법을 끼워 넣어 비교합니다.
 
 ## 파이프라인
 
 ```mermaid
 flowchart LR
-  A[파일들] --> B[인코딩<br/>bge-m3] --> C[프로젝트 레코드<br/>요약·그림 설명]
-  C --> D[군집화 🧪] --> E[그래프 생성<br/>reranker + Claude 판정]
-  E --> F[선호도 교정 🧪] --> G[최종 그래프] --> H[시각화]
-  H -. 사용자 피드백 .-> F
+  A[프로젝트 폴더] --> I[파일 입력<br/>근거 조각] --> R1[그림 설명·요약<br/>Claude]
+  R1 --> M1[① 인코딩<br/>bge-m3] --> R2[프로젝트 레코드]
+  R2 --> M2[② 군집화 🧪] --> M3[③ 구조 생성<br/>reranker + Claude 판정]
+  M3 --> M4[④ 선호도 반영 🧪] --> F[최종 그래프<br/>직접 편집 재적용] --> M5[⑤ 시각화]
+  M5 -. 사용자 피드백 .-> M4
+  classDef model fill:#dbe9f7,stroke:#4e79a7,color:#1f2328
+  class M1,M2,M3,M4,M5 model
 ```
 
-모델 관점에서는 다섯 단계입니다. 단계마다 [`projectwiki/models/`](projectwiki/models)의 파일 하나가 맡습니다.
+파란 상자가 모델 단계(①–⑤)이고, 단계마다 [`projectwiki/models/`](projectwiki/models)의 파일 하나가 맡습니다.
 
 | 모델 단계 | 파일 | 하는 일 | 모델·방법 |
 |---|---|---|---|
@@ -28,7 +31,7 @@ flowchart LR
 | 4 선호도 반영 🧪 | [`preference.py`](projectwiki/models/preference.py) | 사용자 피드백을 건드리지 않은 연결에 일반화 | `drift`: 커널 끌림/밀어냄 (회의 4안) / `align`: Bradley–Terry 선호 정렬 (회의 1안) / `baseline` |
 | 5 시각화 | [`visualization.py`](projectwiki/models/visualization.py) | 뷰어(근거 보기·교정·피드백 내보내기), Obsidian 볼트 | vis-network |
 
-모델 단계 사이의 데이터 준비는 [`projectwiki/srcs/`](projectwiki/srcs)가 맡습니다.
+흰 상자는 모델 단계 사이의 데이터 준비이고 [`projectwiki/srcs/`](projectwiki/srcs)가 맡습니다.
 
 - **파일 입력**: `ingest.py`, `parsers.py`. PDF·Markdown·Python·Jupyter·텍스트·SVG를 근거 조각으로 나누고 import·링크를 뽑습니다.
 - **프로젝트 레코드**: `enrich.py`, `record.py`. Claude가 그림 설명과 파일 요약·역할을 쓰고(Sonnet·Haiku 5.5), 변경을 감지합니다.
@@ -165,6 +168,8 @@ projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 | `--language English` | 요약·설명 언어 (기본 Korean) |
 | `--config cfg.json` | [`config.py`](projectwiki/config.py)의 다른 설정값 바꾸기 |
 
+`projectwiki report`가 만드는 `stages.html`은 회의에서 정한 흐름(파일 입력부터 시각화까지 8칸) 그대로, 칸마다 실제 출력과 판정을 보여줍니다.
+
 ![stage report](assets/stage_report.png)
 
 ### 뷰어 (`view.html`)
@@ -184,10 +189,10 @@ projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 
 ```
 runs/sample/
-  record/              파일·근거 조각·임베딩 (1–3단계)
-  graph.json           5단계 그래프 (교정 전)
+  record/              프로젝트 레코드: 파일·근거 조각·벡터 (파일 입력 + ① 인코딩)
+  graph.json           ③ 구조 생성 결과 (교정 전)
   feedback.jsonl       누적 피드백 (실행할 때마다 다시 적용)
-  correction.json      6단계 결과        final_graph.json   7단계 결과
+  correction.json      ④ 선호도 반영 결과     final_graph.json   최종 그래프
   view.html            뷰어              stages.html        단계별 확인 리포트 (report)
   run_info.json        변경 감지·단계별 시간  cache/        임베딩·Claude 응답 캐시
 ```

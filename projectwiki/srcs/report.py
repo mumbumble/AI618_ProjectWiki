@@ -1,6 +1,6 @@
 """`projectwiki report <out>`: one HTML page that shows each stage's actual output next to the meeting plan.
 
-Charts are inline SVG built here (no plotting library). Stage 6 is recomputed for every registered corrector
+Charts are inline SVG built here (no plotting library). Preference reflection is recomputed for every registered method
 on the saved graph and feedback, so the methods in the experimental slot can be compared on one page.
 """
 from __future__ import annotations
@@ -217,7 +217,7 @@ def report(out: Path) -> Path:
     fb_rows = feedback_check(final, feedback)
     kept = sum(1 for r in fb_rows if "유지됨" in r[-1])
 
-    # stage 6 for every registered corrector, on the same graph and feedback
+    # preference reflection with every registered method, on the same graph and feedback
     compare = []
     for name in CORRECTORS:
         c = get_corrector(name, cfg).correct(g5, feedback, rec)

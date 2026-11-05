@@ -160,7 +160,7 @@ def apply_quote(e: Edge, chunks, quote: str) -> bool:
     return False
 
 
-# ---- stage entry ---------------------------------------------------------------------------------
+# ---- entry point ---------------------------------------------------------------------------------
 
 
 def build_graph(record: Record, groups: list[Group], cfg: Config, llm: Claude | None = None,

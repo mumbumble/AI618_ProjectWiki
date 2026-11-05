@@ -1,4 +1,4 @@
-"""Command line: build, correct, view, obsidian, doctor."""
+"""Command line: build, correct, view, report, obsidian, doctor."""
 from __future__ import annotations
 
 import argparse

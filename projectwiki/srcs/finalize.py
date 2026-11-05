@@ -1,4 +1,4 @@
-"""Stage 7: final graph = stage-5 graph + the corrector's proposals + the user's explicit edits.
+"""Final graph = structure-generation graph + the preference method's proposals + the user's explicit edits.
 
 Explicit edits always win, and they are replayed from the feedback log on every run, so they survive
 re-generation after files change. A corrector may rescore any edge but cannot hide imports or links,

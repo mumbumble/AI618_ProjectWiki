@@ -130,7 +130,7 @@ def test_feedback_and_drift(project, tmp_path):
     assert status[key("paper.pdf", "src/train.py")].status == "removed_wrong"
     added = status[key("notes.md", "paper.pdf")]
     assert added.origin == "user" and added.relation == "발표에 함께 쓸 자료"
-    kept = status[key("fig.png", "data_utils.py")]  # confirmed although stage 5 never proposed it
+    kept = status[key("fig.png", "data_utils.py")]  # confirmed although structure generation never proposed it
     assert kept.status == "confirmed" and kept.origin == "user" and kept.relation == "uses"
     node = next(n for n in final.nodes if n.path == "Makefile")
     assert next(g for g in final.groups if g.id == node.group).name == "빌드"

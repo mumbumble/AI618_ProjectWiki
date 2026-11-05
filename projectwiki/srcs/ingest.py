@@ -1,4 +1,4 @@
-"""Stage 1: scan the project folder and turn every file into evidence chunks (text, locator, references)."""
+"""File input: scan the project folder and turn every file into evidence chunks (text, locator, references)."""
 from __future__ import annotations
 
 import fnmatch

@@ -8,19 +8,19 @@ from pathlib import Path
 
 @dataclass
 class Config:
-    # 1. ingest
+    # file input (srcs/ingest.py)
     max_chars: int = 1500  # max characters per evidence chunk
     max_file_mb: float = 50.0  # larger files become path-only nodes
     max_pdf_pages: int = 300
     ignore: list[str] = field(default_factory=list)  # extra glob patterns on relative paths
 
-    # 2. encoding
+    # ① encoding (models/encoder.py)
     encoder: str = "bge-m3"  # bge-m3 | tfidf (tfidf is for tests only)
     encoder_model: str = "BAAI/bge-m3"
     batch_size: int = 16
     max_length: int = 1024  # tokens per chunk
 
-    # 3. project record (LLM enrichment)
+    # project record: Claude image descriptions and summaries (srcs/enrich.py)
     llm: bool = True
     llm_backend: str = "cli"  # cli (logged-in Claude Code CLI, uses the subscription) | api (ANTHROPIC_API_KEY)
     llm_model: str = "claude-sonnet-5-5"  # relation judgment, image descriptions
@@ -32,13 +32,13 @@ class Config:
     describe_images: bool = True
     max_images: int = 200
 
-    # 4. clustering (experimental slot): baseline | pref
+    # ② clustering, experimental slot (models/clustering.py): baseline | pref
     clusterer: str = "pref"
     cluster_alpha: float = 0.6  # weight of embedding distance against folder-tree distance
     cluster_pct: float = 35.0  # merge threshold, percentile of pairwise distances
     name_groups: bool = True
 
-    # 5. graph generation
+    # ③ structure generation (models/structure.py)
     k_within: int = 3  # similarity neighbours per file inside its group
     sim_pct: float = 75.0  # min similarity inside a group, percentile of all file pairs
     sim_cross_pct: float = 97.0  # min similarity for the one cross-group neighbour
@@ -47,7 +47,8 @@ class Config:
     judge: bool = True  # LLM relation judgment on every candidate edge
     max_judge_edges: int = 2000  # cost cap; edges beyond it keep their rule-based relation
 
-    # 6-7. preference correction (experimental slot): baseline | drift (4안) | align (1안)
+    # ④ preference reflection, experimental slot (models/preference.py): baseline | drift (4안) | align (1안)
+    # and the final graph (srcs/finalize.py)
     corrector: str = "drift"
     drift_tau: float = 0.1  # kernel width on edge-pair similarity
     drift_margin: float = 0.2  # kernel value at which a similar judged edge changes this one
