@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ProjectLens Graph</title>
+<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+<style>
+:root {
+  --bg: #ffffff; --panel: #f6f7f9; --text: #1f2328; --muted: #656d76; --line: #d8dee4;
+  --accent: #2e7dd1; --ok: #2e9d4a; --bad: #d9534f; --chip: #eaeef2;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1115; --panel: #171a21; --text: #e6e8eb; --muted: #9aa3ad; --line: #2b313b;
+    --accent: #5aa2f0; --ok: #4cc26a; --bad: #f06a66; --chip: #232833;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1115; --panel: #171a21; --text: #e6e8eb; --muted: #9aa3ad; --line: #2b313b;
+  --accent: #5aa2f0; --ok: #4cc26a; --bad: #f06a66; --chip: #232833;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+  font: 14px/1.5 -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; }
+header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 8px 16px;
+  border-bottom: 1px solid var(--line); background: var(--panel); }
+header h1 { font-size: 16px; margin: 0; }
+header .meta { color: var(--muted); font-size: 12px; }
+header label { font-size: 13px; color: var(--muted); display: inline-flex; gap: 4px; align-items: center; }
+header input[type=search] { padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--bg); color: var(--text); width: 200px; }
+main { display: flex; height: calc(100% - 50px); }
+#graphwrap { flex: 1; min-width: 0; position: relative; }
+#graph { position: absolute; inset: 0; }
+#legend { position: absolute; left: 12px; top: 12px; max-width: 280px; max-height: 60%; overflow: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px; font-size: 12px; z-index: 2; }
+#legend .item { display: flex; gap: 6px; align-items: center; cursor: pointer; padding: 2px 4px; border-radius: 4px; }
+#legend .item:hover { background: var(--chip); }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+aside { width: 380px; max-width: 45vw; border-left: 1px solid var(--line); background: var(--panel);
+  overflow: auto; padding: 12px 16px; }
+aside h2 { font-size: 15px; margin: 4px 0 8px; word-break: break-all; }
+aside h3 { font-size: 13px; margin: 16px 0 6px; color: var(--muted); }
+.path { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--muted); word-break: break-all; }
+.badge { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 10px; background: var(--chip); margin-right: 4px; }
+.badge.direct { background: var(--accent); color: #fff; }
+.badge.user { background: var(--ok); color: #fff; }
+.badge.removed { background: var(--bad); color: #fff; }
+blockquote { margin: 6px 0; padding: 6px 10px; border-left: 3px solid var(--line); background: var(--bg);
+  font-size: 12px; white-space: pre-wrap; word-break: break-word; }
+.preview { font-size: 12px; white-space: pre-wrap; background: var(--bg); padding: 8px; border-radius: 6px;
+  max-height: 220px; overflow: auto; border: 1px solid var(--line); }
+button, select { font: inherit; font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--text); cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+button.active { background: var(--ok); color: #fff; border-color: var(--ok); }
+.row { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.edge-link { cursor: pointer; padding: 3px 0; border-bottom: 1px dashed var(--line); font-size: 12px; }
+.edge-link:hover { color: var(--accent); }
+.fb { font-size: 12px; padding: 3px 0; border-bottom: 1px solid var(--line); }
+.hint { color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>ProjectLens</h1>
+  <span class="meta" id="meta"></span>
+  <input type="search" id="search" placeholder="파일 검색">
+  <label><input type="checkbox" id="showInferred" checked> 추론 연결</label>
+  <label><input type="checkbox" id="showLabels" checked> 관계 이름</label>
+  <label><input type="checkbox" id="showHidden"> 숨긴 연결</label>
+  <label><input type="checkbox" id="physics" checked> 배치 움직임</label>
+  <button id="addMode">연결 추가</button>
+</header>
+<main>
+  <div id="graphwrap"><div id="graph"></div><div id="legend"></div></div>
+  <aside>
+    <div id="detail"><p class="hint">노드나 연결을 누르면 내용과 근거가 여기 나옵니다.</p></div>
+    <h3>이번 세션의 피드백 <span id="fbCount"></span></h3>
+    <div id="fbList"></div>
+    <div class="row">
+      <button id="undo">되돌리기</button>
+      <button class="primary" id="export">feedback.jsonl 내보내기</button>
+    </div>
+    <p class="hint">내보낸 파일은 <code>projectlens correct &lt;출력폴더&gt; --feedback feedback.jsonl</code>로 반영합니다.</p>
+  </aside>
+</main>
+<script>
+const DATA = /*__DATA__*/null;
+const REL = DATA.relations, FB = DATA.feedback_types;
+const VISIBLE = new Set(["proposed", "confirmed"]);
+const PALETTE = ["#4e79a7", "#f28e2b", "#59a14f", "#e15759", "#76b7b2", "#edc948", "#b07aa1", "#ff9da7",
+  "#9c755f", "#86bcb6", "#d37295", "#8cd17d", "#a0cbe8", "#ffbe7d", "#f1ce63", "#bab0ac"];
+const SHAPE = {pdf: "square", markdown: "dot", python: "diamond", notebook: "triangle", text: "dot",
+  image: "star", media: "triangleDown", other: "dot"};
+const DIRECTED = new Set(["imports", "links_to", "mentions", "implements", "describes", "uses", "produces",
+  "extends", "supports", "contradicts"]);
+const STORE_KEY = "projectlens-feedback:" + DATA.meta.run_id;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const base = p => p.split("/").pop();
+const edgeKey = (a, b) => a < b ? `${a}|${b}` : `${b}|${a}`;
+
+let events = [];
+try { events = JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); } catch (e) { events = []; }
+const save = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(events)); } catch (e) {} };
+
+const groupColor = {};
+DATA.groups.forEach((g, i) => groupColor[g.id] = PALETTE[i % PALETTE.length]);
+let state, selected = null, addFrom = null;
+
+function applyEvents() {
+  state = {
+    nodes: new Map(DATA.nodes.map(n => [n.id, {...n}])),
+    edges: new Map(DATA.edges.map(e => [e.id, {...e}])),
+    groups: new Map(DATA.groups.map(g => [g.id, {...g}])),
+  };
+  const userGroups = {};
+  state.groups.forEach(g => { if (g.origin === "user") userGroups[g.name] = g.id; });
+  for (const ev of events) {
+    if (ev.type.startsWith("edge_")) {
+      const key = edgeKey(ev.source, ev.target);
+      let e = state.edges.get(key);
+      if (ev.type === "edge_add") {
+        if (!e) { e = {id: key, source: ev.source, target: ev.target, relation: ev.relation || "user", reason: "user",
+          direct: true, score: 1, label: "", evidence: [], origin: "user", status: "confirmed"}; state.edges.set(key, e); }
+        e.status = "confirmed"; if (ev.relation) e.relation = ev.relation; if (ev.note) e.label = ev.note;
+      } else if (e) {
+        e.status = {edge_confirm: "confirmed", edge_wrong: "removed_wrong", edge_irrelevant: "removed_irrelevant"}[ev.type];
+      }
+    } else if (ev.type === "node_move") {
+      let gid = state.groups.has(ev.group) ? ev.group : userGroups[ev.group];
+      if (!gid) {
+        gid = "u" + (Object.keys(userGroups).length + 1);
+        userGroups[ev.group] = gid;
+        state.groups.set(gid, {id: gid, name: ev.group, members: [], origin: "user", description: ""});
+        groupColor[gid] = groupColor[gid] || PALETTE[(DATA.groups.length + Object.keys(userGroups).length) % PALETTE.length];
+      }
+      state.nodes.get(ev.node).group = gid;
+    } else if (ev.type === "node_ungroup") {
+      state.nodes.get(ev.node).group = null;
+    }
+  }
+  state.groups.forEach(g => g.members = [...state.nodes.values()].filter(n => n.group === g.id).map(n => n.id));
+}
+
+function visibleEdges() {
+  const hidden = $("showHidden").checked, inferred = $("showInferred").checked;
+  return [...state.edges.values()].filter(e => (VISIBLE.has(e.status) || hidden) && (e.direct || inferred || e.origin === "user"));
+}
+
+const nodesDS = new vis.DataSet(), edgesDS = new vis.DataSet();
+function nodeView(n, degree) {
+  const c = groupColor[n.group] || "#9aa0a6";
+  return {id: n.id, label: base(n.path), title: n.path, shape: SHAPE[n.type] || "dot",
+    size: 9 + Math.min(16, 1.5 * (degree[n.id] || 0)),
+    color: {background: c, border: c, highlight: {background: c, border: css("--text")}},
+    font: {color: css("--text"), size: 12, strokeWidth: 3, strokeColor: css("--bg")}};
+}
+function edgeView(e) {
+  const removed = !VISIBLE.has(e.status), user = e.origin === "user";
+  const color = removed ? css("--bad") : user ? css("--ok") : e.status === "confirmed" ? css("--accent")
+    : e.direct ? "#7d8590" : "#b3b9c2";
+  return {id: e.id, from: e.source, to: e.target,
+    label: $("showLabels").checked ? (REL[e.relation] || e.relation) : undefined,
+    dashes: !e.direct || removed, width: (e.status === "confirmed" || user) ? 3 : 1 + 1.5 * Math.max(0, Math.min(1, e.score)),
+    color: {color, highlight: css("--accent")}, arrows: DIRECTED.has(e.relation) ? {to: {enabled: true, scaleFactor: 0.5}} : undefined,
+    font: {size: 10, color: css("--muted"), strokeWidth: 3, strokeColor: css("--bg")}};
+}
+
+function render() {
+  applyEvents();
+  const edges = visibleEdges(), degree = {};
+  edges.forEach(e => { degree[e.source] = (degree[e.source] || 0) + 1; degree[e.target] = (degree[e.target] || 0) + 1; });
+  nodesDS.update([...state.nodes.values()].map(n => nodeView(n, degree)));
+  edgesDS.clear(); edgesDS.add(edges.map(edgeView));
+  renderLegend(); renderFeedback();
+  if (selected) (selected.kind === "node" ? showNode : showEdge)(selected.id);
+}
+
+function renderLegend() {
+  const groups = [...state.groups.values()].filter(g => g.members.length);
+  const ungrouped = [...state.nodes.values()].filter(n => !n.group).length;
+  $("legend").innerHTML = "<b>그룹</b>" + groups.map(g =>
+    `<div class="item" data-g="${esc(g.id)}" title="${esc(g.description)}"><span class="dot" style="background:${groupColor[g.id]}"></span>${esc(g.name)} <span class="hint">${g.members.length}</span></div>`).join("")
+    + (ungrouped ? `<div class="item" data-g=""><span class="dot" style="background:#9aa0a6"></span>그룹 없음 <span class="hint">${ungrouped}</span></div>` : "");
+  $("legend").querySelectorAll(".item").forEach(el => el.onclick = () => {
+    const ids = [...state.nodes.values()].filter(n => (n.group || "") === el.dataset.g).map(n => n.id);
+    network.selectNodes(ids); network.fit({nodes: ids, animation: true, maxZoomLevel: 1.6});
+  });
+}
+
+function groupName(gid) { return gid ? (state.groups.get(gid)?.name || gid) : "그룹 없음"; }
+
+function showNode(id) {
+  const n = state.nodes.get(id); if (!n) return;
+  selected = {kind: "node", id};
+  const edges = visibleEdges().filter(e => e.source === id || e.target === id);
+  const opts = [...state.groups.values()].map(g => `<option value="${esc(g.id)}"${g.id === n.group ? " selected" : ""}>${esc(g.name)}</option>`).join("");
+  $("detail").innerHTML = `
+    <h2>${esc(base(n.path))}</h2>
+    <div class="path">${esc(n.path)}</div>
+    <div class="row"><span class="badge">${esc(n.type)}</span>${n.role ? `<span class="badge">${esc(n.role)}</span>` : ""}
+      <span class="badge" style="background:${groupColor[n.group] || "#9aa0a6"};color:#fff">${esc(groupName(n.group))}</span></div>
+    ${n.summary ? `<h3>요약</h3><div>${esc(n.summary)}</div>` : ""}
+    ${n.preview ? `<h3>내용 미리보기</h3><div class="preview">${esc(n.preview)}</div>` : ""}
+    <h3>그룹 교정</h3>
+    <div class="row"><select id="moveTo">${opts}<option value="__new">새 그룹…</option></select>
+      <button id="moveBtn">이동</button><button id="ungroupBtn">그룹에서 빼기</button></div>
+    <h3>연결 ${edges.length}개</h3>
+    ${edges.map(e => { const other = e.source === id ? e.target : e.source;
+      return `<div class="edge-link" data-e="${esc(e.id)}">${e.source === id ? "→" : "←"} ${esc(base(state.nodes.get(other).path))} · ${esc(REL[e.relation] || e.relation)}${e.direct ? "" : " (추론)"}</div>`; }).join("")}`;
+  $("detail").querySelectorAll(".edge-link").forEach(el => el.onclick = () => { network.selectEdges([el.dataset.e]); showEdge(el.dataset.e); });
+  $("moveBtn").onclick = () => {
+    let g = $("moveTo").value;
+    if (g === "__new") { g = prompt("새 그룹 이름"); if (!g) return; }
+    push({type: "node_move", node: id, group: g});
+  };
+  $("ungroupBtn").onclick = () => push({type: "node_ungroup", node: id});
+}
+
+function showEdge(id) {
+  const e = state.edges.get(id); if (!e) return;
+  selected = {kind: "edge", id};
+  const a = state.nodes.get(e.source), b = state.nodes.get(e.target);
+  const status = VISIBLE.has(e.status) ? "" : `<span class="badge removed">${esc(e.status)}</span>`;
+  $("detail").innerHTML = `
+    <h2>${esc(base(a.path))} → ${esc(base(b.path))}</h2>
+    <div class="path">${esc(a.path)}<br>→ ${esc(b.path)}</div>
+    <div class="row"><span class="badge">${esc(REL[e.relation] || e.relation)}</span>
+      <span class="badge ${e.direct ? "direct" : ""}">${e.direct ? "직접 근거" : "추론"}</span>
+      ${e.origin === "user" ? '<span class="badge user">사용자 추가</span>' : ""}${status}
+      <span class="badge">후보 이유: ${esc(REL[e.reason] || e.reason)}</span><span class="badge">점수 ${(+e.score).toFixed(2)}</span></div>
+    ${e.label ? `<div>${esc(e.label)}</div>` : ""}
+    ${e.correction ? `<h3>교정 반영</h3><div>${esc(e.correction)}</div>` : ""}
+    <h3>근거</h3>
+    ${(e.evidence || []).map(v => `<div class="path">${esc(base(state.nodes.get(v.file_id)?.path || ""))} · ${esc(v.locator)}</div><blockquote>${esc(v.quote)}</blockquote>`).join("") || '<p class="hint">근거 없음</p>'}
+    <h3>연결 교정</h3>
+    <div class="row">
+      <button data-t="edge_confirm">맞는 연결</button>
+      <button data-t="edge_wrong">잘못된 연결</button>
+      <button data-t="edge_irrelevant">목적상 불필요</button>
+    </div>`;
+  $("detail").querySelectorAll("button[data-t]").forEach(btn => btn.onclick = () => push({type: btn.dataset.t, source: e.source, target: e.target}));
+}
+
+function push(ev) { ev.ts = new Date().toISOString().slice(0, 19); events.push(ev); save(); render(); }
+
+function describe(ev) {
+  const p = id => esc(base(state.nodes.get(id)?.path || id));
+  if (ev.type.startsWith("edge_")) return `${esc(FB[ev.type])}: ${p(ev.source)} – ${p(ev.target)}${ev.relation ? " (" + esc(ev.relation) + ")" : ""}`;
+  const g = ev.group ? (state.groups.get(ev.group)?.name || ev.group) : "";
+  return `${esc(FB[ev.type])}: ${p(ev.node)}${g ? " → " + esc(g) : ""}`;
+}
+function renderFeedback() {
+  $("fbCount").textContent = events.length ? `(${events.length})` : "";
+  $("fbList").innerHTML = events.map(ev => `<div class="fb">${describe(ev)}</div>`).join("") || '<p class="hint">아직 없음</p>';
+}
+
+$("meta").textContent = `${DATA.meta.root} · 파일 ${DATA.nodes.length} · 연결 ${DATA.edges.filter(e => VISIBLE.has(e.status)).length} · `
+  + `${DATA.meta.encoder} · 군집 ${DATA.meta.clusterer} · 교정 ${DATA.meta.corrector}`;
+["showInferred", "showLabels", "showHidden"].forEach(id => $(id).onchange = render);
+$("physics").onchange = () => network.setOptions({physics: {enabled: $("physics").checked}});
+$("undo").onclick = () => { events.pop(); save(); render(); };
+$("export").onclick = () => {
+  const blob = new Blob([events.map(e => JSON.stringify(e)).join("\n") + "\n"], {type: "application/jsonl"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "feedback.jsonl"; a.click();
+};
+$("addMode").onclick = () => { addFrom = addFrom === null ? "" : null; $("addMode").classList.toggle("active", addFrom !== null);
+  $("addMode").textContent = addFrom !== null ? "시작 노드 선택…" : "연결 추가"; };
+$("search").oninput = ev => {
+  const q = ev.target.value.trim().toLowerCase(); if (!q) return;
+  const ids = DATA.nodes.filter(n => n.path.toLowerCase().includes(q)).map(n => n.id);
+  network.selectNodes(ids); if (ids.length) network.fit({nodes: ids, animation: true, maxZoomLevel: 1.6});
+};
+
+applyEvents();
+const network = new vis.Network($("graph"), {nodes: nodesDS, edges: edgesDS}, {
+  interaction: {hover: true, tooltipDelay: 150},
+  physics: {solver: "forceAtlas2Based", forceAtlas2Based: {gravitationalConstant: -60, springLength: 110},
+    stabilization: {iterations: 400}},
+  edges: {smooth: {type: "continuous"}},
+});
+network.on("click", p => {
+  if (addFrom !== null && p.nodes.length) {
+    if (!addFrom) { addFrom = p.nodes[0]; $("addMode").textContent = "끝 노드 선택…"; return; }
+    const target = p.nodes[0];
+    if (target !== addFrom) {
+      const relation = prompt("관계 이름 (예: 발표에 함께 쓸 자료)", "");
+      if (relation !== null) push({type: "edge_add", source: addFrom, target, relation: relation || "user"});
+    }
+    addFrom = null; $("addMode").classList.remove("active"); $("addMode").textContent = "연결 추가";
+    return;
+  }
+  if (p.nodes.length) showNode(p.nodes[0]);
+  else if (p.edges.length) showEdge(p.edges[0]);
+});
+render();
+network.once("stabilized", () => network.fit({maxZoomLevel: 1.6}));
+setTimeout(() => network.fit({maxZoomLevel: 1.6}), 1500);
+</script>
+</body>
+</html>

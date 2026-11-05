@@ -1,0 +1,7 @@
+{"type": "edge_confirm", "source": "src/train.py", "target": "docs/method.md"}
+{"type": "edge_confirm", "source": "experiments/results.md", "target": "figures/lve_plot.png"}
+{"type": "edge_irrelevant", "source": "notes/meeting_2026-10-29.md", "target": "figures/pipeline.svg", "note": "발표 준비에는 회의 메모의 그림 언급이 필요 없음"}
+{"type": "edge_irrelevant", "source": "notes/meeting_2026-10-29.md", "target": "configs/base.yaml"}
+{"type": "edge_wrong", "source": "docs/method.md", "target": "docs/related_work.md"}
+{"type": "edge_add", "source": "paper/draft.pdf", "target": "experiments/results.md", "relation": "같은 실험 결과"}
+{"type": "node_move", "node": "notes/ideas.md", "group": "발표 준비"}

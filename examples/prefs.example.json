@@ -1,0 +1,9 @@
+{
+  "purpose": "논문 발표 준비: 방법, 코드, 실험 결과를 연결해서 보기",
+  "anchors": ["docs/method.md", "experiments/results.md"],
+  "guide": {"group_by": "content"},
+  "pairs": [
+    {"a": "src/train.py", "b": "docs/method.md", "score": 5},
+    {"a": "notes/ideas.md", "b": "src/data.py", "score": 1}
+  ]
+}
