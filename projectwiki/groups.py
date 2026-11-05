@@ -5,7 +5,7 @@ import posixpath
 from collections import Counter
 
 from .config import Config
-from .llm import Claude, obj_schema
+from .models import Claude, obj_schema
 from .record import Record
 from .schema import Group
 

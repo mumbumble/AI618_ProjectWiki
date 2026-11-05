@@ -8,7 +8,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from .config import Config
+from ..config import Config
 
 log = logging.getLogger(__name__)
 

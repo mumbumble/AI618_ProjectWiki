@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # One-shot setup for Linux, WSL and macOS:  bash scripts/setup.sh [--cpu] [--no-models]
-# Creates the conda env "projectwiki" (or .venv when conda is missing), installs PyTorch for this machine,
+# Creates the conda env "projectwiki" (PROJECTWIKI_ENV=<name> to change it; .venv when conda is missing), installs PyTorch for this machine,
 # the pinned requirements and the package, downloads the models, then runs the tests and `projectwiki doctor`.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 CPU=0
 MODELS=1
+ENV_NAME="${PROJECTWIKI_ENV:-projectwiki}"
 for arg in "$@"; do
   case "$arg" in
     --cpu) CPU=1 ;;
@@ -23,8 +24,8 @@ done
 
 if [ -n "$CONDA" ]; then
   source "$("$CONDA" info --base)/etc/profile.d/conda.sh"
-  conda env list | grep -qE '^projectwiki\s' || conda create -y -q -n projectwiki python=3.11
-  conda activate projectwiki
+  conda env list | grep -qE "^${ENV_NAME}\s" || conda create -y -q -n "$ENV_NAME" python=3.11
+  conda activate "$ENV_NAME"
 else
   echo "conda not found, using .venv (needs Python 3.10+ with venv; on Ubuntu: sudo apt install python3-venv)"
   python3 -m venv .venv

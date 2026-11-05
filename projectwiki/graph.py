@@ -17,8 +17,7 @@ from collections import Counter
 import numpy as np
 
 from .config import Config
-from .llm import Claude, obj_schema
-from .models import Reranker
+from .models import Claude, Reranker, obj_schema
 from .record import Record
 from .schema import Edge, Evidence, Graph, Group, Node, edge_key
 

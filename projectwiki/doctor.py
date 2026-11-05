@@ -51,7 +51,7 @@ def run() -> int:
 
     key = bool(os.environ.get("ANTHROPIC_API_KEY"))
     _line(key, "ANTHROPIC_API_KEY " + ("set (--llm-backend api)" if key else "not set"))
-    from .claude_cli import find_claude
+    from .models import find_claude
     cli = find_claude()
     _line(bool(cli), f"Claude Code CLI: {cli} (--llm-backend cli)" if cli else "Claude Code CLI not found")
     if good and (key or cli):

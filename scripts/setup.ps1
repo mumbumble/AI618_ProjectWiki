@@ -1,12 +1,12 @@
 # One-shot setup for Windows PowerShell (Anaconda/Miniconda Prompt or a shell where `conda` works):
 #   powershell -ExecutionPolicy Bypass -File scripts\setup.ps1 [-Cpu] [-NoModels]
-param([switch]$Cpu, [switch]$NoModels)
+param([switch]$Cpu, [switch]$NoModels, [string]$EnvName = "projectwiki")
 $ErrorActionPreference = "Stop"
 Set-Location (Join-Path $PSScriptRoot "..")
 
 $envs = conda env list | Out-String
-if ($envs -notmatch "(?m)^projectwiki\s") { conda create -y -q -n projectwiki python=3.11 }
-conda activate projectwiki
+if ($envs -notmatch "(?m)^$EnvName\s") { conda create -y -q -n $EnvName python=3.11 }
+conda activate $EnvName
 python -m pip install -q --upgrade pip
 
 $hasGpu = $null -ne (Get-Command nvidia-smi -ErrorAction SilentlyContinue)

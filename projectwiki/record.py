@@ -14,8 +14,7 @@ import numpy as np
 
 from .config import Config
 from .ingest import ingest
-from .llm import Claude, obj_schema
-from .models import make_encoder
+from .models import Claude, make_encoder, obj_schema
 from .schema import Chunk, FileRecord
 
 log = logging.getLogger(__name__)

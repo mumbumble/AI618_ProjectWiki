@@ -15,7 +15,7 @@ from .feedback import merge, read_events, resolve
 from .finalize import finalize
 from .graph import build_graph
 from .groups import name_groups
-from .llm import Claude
+from .models import Claude
 from .record import Record, build_record
 from .schema import VISIBLE_STATUS, FeedbackEvent, Graph, Preferences
 from .viz import write_view
@@ -31,7 +31,7 @@ def make_llm(cfg: Config, out: Path, client=None) -> Claude | None:
     if not cfg.llm:
         return None
     if client is None and cfg.llm_backend == "cli":
-        from .claude_cli import ClaudeCodeClient
+        from .models import ClaudeCodeClient
         client = ClaudeCodeClient()
         cfg.llm_workers = min(cfg.llm_workers, 4)  # each call is a separate CLI process
     elif client is None and not os.environ.get("ANTHROPIC_API_KEY"):
