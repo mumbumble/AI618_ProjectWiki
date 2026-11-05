@@ -10,11 +10,11 @@ from pathlib import Path
 
 from . import pipeline
 from .config import Config
-from .feedback import read_events
+from .models.visualization import export_obsidian
 from .schema import Graph, Preferences
-from .stage3_record import Record
-from .stage8_viz import export_obsidian
-from .tools import doctor
+from .srcs import doctor
+from .srcs.feedback import read_events
+from .srcs.record import Record
 
 
 def load_dotenv() -> None:
@@ -60,7 +60,7 @@ def main(argv=None) -> None:
     p = argparse.ArgumentParser(prog="projectwiki", description="Project folder -> relation graph pipeline")
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    b = sub.add_parser("build", help="run stages 1-8 on a project folder")
+    b = sub.add_parser("build", help="run the whole pipeline on a project folder")
     b.add_argument("root", help="project folder")
     b.add_argument("-o", "--out", help="output folder (default: <root>/.projectwiki)")
     b.add_argument("--purpose", help="the user's purpose for this project")
@@ -77,7 +77,7 @@ def main(argv=None) -> None:
     b.add_argument("--no-rerank", action="store_true", help="choose evidence by cosine only")
     b.add_argument("--open", action="store_true", help="open the viewer in a browser")
 
-    c = sub.add_parser("correct", help="apply feedback again (stages 6-8) without re-reading files")
+    c = sub.add_parser("correct", help="apply feedback again (preference, final graph, viewer) without re-reading files")
     c.add_argument("out", help="output folder of a build")
     c.add_argument("--feedback", nargs="*", default=[], help="feedback.jsonl files exported from the viewer")
     c.add_argument("--corrector", help="registered name or package.module:Class")
@@ -126,7 +126,7 @@ def main(argv=None) -> None:
         final = Graph.from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
         print(f"vault: {export_obsidian(final, Record.load(out), Path(args.vault))}")
     elif args.cmd == "report":
-        from .tools.report import report
+        from .srcs.report import report
         path = report(Path(args.out).resolve())
         print(f"report: {path}")
         if args.open:

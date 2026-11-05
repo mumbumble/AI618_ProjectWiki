@@ -5,7 +5,7 @@ import sys
 
 import pytest
 
-from projectwiki.models.claude_cli import ClaudeCodeClient
+from projectwiki.srcs.claude_cli import ClaudeCodeClient
 
 FAKE = r'''#!PYTHON
 import json, sys

@@ -1,13 +1,12 @@
-"""Run the eight stages in order; every intermediate result is written under the output folder.
+"""Run the pipeline in order; every intermediate result is written under the output folder.
 
-    1 stage1_ingest    files -> evidence chunks (images described by Claude)
-    2 stage2_encode    chunks (+ summaries) -> bge-m3 vectors
-    3 stage3_record    summaries, file vectors -> project record
-    4 stage4_cluster   record + preferences -> groups                 (experimental slot)
-    5 stage5_graph     candidates -> evidence -> Claude judgment     -> graph.json
-    6 stage6_correct   graph + feedback -> correction                 (experimental slot)
-    7 stage7_final     graph + correction + explicit edits           -> final_graph.json
-    8 stage8_viz       final graph -> view.html (and Obsidian vault)
+    files -> srcs/ingest, srcs/enrich -> evidence chunks, image descriptions, summaries
+    1 models/encoder        chunks + summaries -> bge-m3 vectors  (srcs/record -> project record)
+    2 models/clustering     record + preferences -> groups                       (experimental slot)
+    3 models/structure      candidates -> evidence -> Claude judgment -> graph.json
+    4 models/preference     graph + feedback -> correction                       (experimental slot)
+      srcs/finalize         graph + correction + explicit edits -> final_graph.json
+    5 models/visualization  final graph -> view.html
 """
 from __future__ import annotations
 
@@ -19,17 +18,19 @@ from dataclasses import asdict
 from pathlib import Path
 
 from .config import Config
-from .feedback import merge, read_events, resolve
-from .models import Claude
+from .models.clustering import get_clusterer
+from .models.encoder import encode_record
+from .models.preference import get_corrector
+from .models.structure import build_graph
+from .models.visualization import write_view
 from .schema import VISIBLE_STATUS, FeedbackEvent, Graph, Preferences
-from .stage1_ingest import describe_images, ingest
-from .stage2_encode import encode_record
-from .stage3_record import Record, build_record, diff_files, summarize
-from .stage4_cluster import get_clusterer, name_groups
-from .stage5_graph import build_graph
-from .stage6_correct import get_corrector
-from .stage7_final import finalize
-from .stage8_viz import write_view
+from .srcs.enrich import describe_images, summarize
+from .srcs.feedback import merge, read_events, resolve
+from .srcs.finalize import finalize
+from .srcs.ingest import ingest
+from .srcs.llm import Claude
+from .srcs.naming import name_groups
+from .srcs.record import Record, build_record, diff_files
 
 log = logging.getLogger(__name__)
 
@@ -42,7 +43,7 @@ def make_llm(cfg: Config, out: Path, client=None) -> Claude | None:
     if not cfg.llm:
         return None
     if client is None and cfg.llm_backend == "cli":
-        from .models import ClaudeCodeClient
+        from .srcs.claude_cli import ClaudeCodeClient
         client = ClaudeCodeClient()
         cfg.llm_workers = min(cfg.llm_workers, 4)  # each call is a separate CLI process
     elif client is None and not os.environ.get("ANTHROPIC_API_KEY"):
@@ -52,7 +53,7 @@ def make_llm(cfg: Config, out: Path, client=None) -> Claude | None:
 
 
 def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=None) -> dict:
-    """Stages 1-8."""
+    """The whole pipeline."""
     root = Path(root).resolve()
     out.mkdir(parents=True, exist_ok=True)
     cfg.save(out / "config.json")
@@ -65,30 +66,30 @@ def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=Non
         times[name] = round(time.time() - t, 2)
         t = time.time()
 
-    files, chunks = ingest(root, cfg)  # 1
+    files, chunks = ingest(root, cfg)  # files -> chunks
     if llm is not None and cfg.describe_images:
         describe_images(root, files, chunks, llm, cfg)
     changes = diff_files(out, files)
     log.info("changes since last run: %d added, %d changed, %d removed",
              len(changes["added"]), len(changes["changed"]), len(changes["removed"]))
-    lap("1 ingest")
-    if llm is not None and cfg.summarize:  # 3, first part: summaries are encoded together with the chunks
+    lap("ingest")
+    if llm is not None and cfg.summarize:  # summaries are encoded together with the chunks
         summarize(files, chunks, llm, cfg)
-    lap("3 summaries")
-    encoded = encode_record(files, chunks, cfg, out / "cache")  # 2
+    lap("summaries")
+    encoded = encode_record(files, chunks, cfg, out / "cache")  # 1 encoding
     changes["encoded"] = encoded.new
-    lap("2 encode")
-    record = build_record(root, files, chunks, encoded)  # 3
+    lap("1 encoding")
+    record = build_record(root, files, chunks, encoded)  # project record
     record.save(out)
 
-    groups = get_clusterer(cfg.clusterer, cfg).cluster(record, prefs)  # 4
+    groups = get_clusterer(cfg.clusterer, cfg).cluster(record, prefs)  # 2 clustering
     name_groups(groups, record, llm, cfg)
-    lap("4 clustering")
-    graph = build_graph(record, groups, cfg, llm, prefs.purpose)  # 5
+    lap("2 clustering")
+    graph = build_graph(record, groups, cfg, llm, prefs.purpose)  # 3 structure
     write_json(out / "graph.json", graph.to_dict())
-    lap("5 graph")
-    result = correct(out, cfg, record=record, graph=graph)  # 6-8
-    lap("6-8 correct, final, view")
+    lap("3 structure")
+    result = correct(out, cfg, record=record, graph=graph)  # 4 preference, final graph, 5 visualization
+    lap("4-5 preference, final graph, view")
     result["changes"] = changes
     if llm is not None:
         llm.save()
@@ -101,7 +102,7 @@ def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=Non
 
 def correct(out: Path, cfg: Config, record: Record | None = None, graph: Graph | None = None,
             new_feedback: list[FeedbackEvent] | None = None) -> dict:
-    """Stages 6-8 from the saved record and graph, after merging any new feedback into the log."""
+    """Preference reflection, final graph and viewer from the saved record and graph, after merging new feedback."""
     record = record or Record.load(out)
     graph = graph or Graph.from_dict(json.loads((out / "graph.json").read_text(encoding="utf-8")))
     log_path = out / "feedback.jsonl"
@@ -109,11 +110,11 @@ def correct(out: Path, cfg: Config, record: Record | None = None, graph: Graph |
         log.info("added %d new feedback events", merge(log_path, new_feedback))
     feedback = resolve(read_events(log_path), record)
 
-    correction = get_corrector(cfg.corrector, cfg).correct(graph, feedback, record)  # 6
-    final = finalize(graph, correction, feedback, cfg)  # 7
+    correction = get_corrector(cfg.corrector, cfg).correct(graph, feedback, record)  # 4 preference
+    final = finalize(graph, correction, feedback, cfg)  # final graph: explicit edits always win
     write_json(out / "correction.json", asdict(correction))
     write_json(out / "final_graph.json", final.to_dict())
-    view = render(out, cfg, final, record, len(feedback))  # 8
+    view = render(out, cfg, final, record, len(feedback))  # 5 visualization
     visible = sum(e.status in VISIBLE_STATUS for e in final.edges)
     log.info("final graph: %d files, %d groups, %d edges shown (%d kept for inspection) -> %s",
              len(final.nodes), len(final.groups), visible, len(final.edges) - visible, view)

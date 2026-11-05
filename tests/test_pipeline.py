@@ -6,12 +6,12 @@ import pytest
 
 from projectwiki import pipeline
 from projectwiki.config import Config
+from projectwiki.models.clustering import get_clusterer
+from projectwiki.models.visualization import export_obsidian
 from projectwiki.schema import FeedbackEvent, Graph, Preferences
-from projectwiki.stage1_ingest import ingest
-from projectwiki.stage3_record import Record
-from projectwiki.stage4_cluster import get_clusterer
-from projectwiki.stage5_graph import reference_candidates
-from projectwiki.stage8_viz import export_obsidian
+from projectwiki.srcs.candidates import reference_candidates
+from projectwiki.srcs.ingest import ingest
+from projectwiki.srcs.record import Record
 
 
 @pytest.fixture
@@ -148,7 +148,7 @@ def test_feedback_and_drift(project, tmp_path):
     assert untouched and all(0.0 <= e.score <= 1.0 for e in untouched)
 
     # stage report covers every stage and every registered corrector
-    from projectwiki.tools.report import report
+    from projectwiki.srcs.report import report
     page = report(out).read_text(encoding="utf-8")
     assert "회의 파이프라인(1안 + 4안) 대비" in page and "<svg" in page
     assert all(name in page for name in ("baseline", "drift", "align"))
@@ -170,7 +170,7 @@ def test_pref_clusterer_anchors(project, tmp_path):
 
 def test_plugin_and_obsidian(project, tmp_path):
     out = tmp_path / "out"
-    cfg = make_cfg(llm=False, clusterer="projectwiki.stage4_cluster.baseline:BaselineClusterer")
+    cfg = make_cfg(llm=False, clusterer="projectwiki.models.clustering:BaselineClusterer")
     pipeline.build(project, out, cfg, Preferences())
     final = Graph.from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
     vault = export_obsidian(final, Record.load(out), tmp_path / "vault")

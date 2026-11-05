@@ -40,7 +40,7 @@ flowchart LR
 | `llm_rejected` | Sonnet 판정이 의미 없다고 봄 (import·링크는 제외) | 위와 같음 |
 | `removed_low_score` | `min_score` 미만 추론 연결 | 위와 같음 |
 
-## 1. 파일 입력 — `stage1_ingest/` (`ingest.py`, `parsers.py`, `images.py`)
+## 파일 입력 — `srcs/ingest.py`, `srcs/parsers.py`
 
 - 숨김 파일·폴더, `node_modules`, `__pycache__`, `venv`, `*:Zone.Identifier`, 그리고 `Config.ignore` glob에 맞는 경로는 건너뜁니다.
 - 형식별 근거 조각 분할 (조각 하나 최대 `max_chars`=1500자):
@@ -52,10 +52,10 @@ flowchart LR
   - 이미지·동영상·바이너리·50MB 초과·읽기 실패: 경로 단어만 담은 `path` 조각 하나를 만듭니다.
 - 텍스트 인코딩은 UTF-8, CP949, latin-1 순서로 시도합니다.
 
-## 2–3. 인코딩과 프로젝트 레코드 — `stage2_encode/`, `stage3_record/`, `models/encoders.py`
+## 모델 1 인코딩과 프로젝트 레코드 — `models/encoder.py`, `srcs/enrich.py`, `srcs/record.py`
 
-- **그림 설명** (1단계 `stage1_ingest/images.py`): 이미지를 PyMuPDF로 1568px 이하 PNG로 줄입니다. Claude Sonnet 5.5가 설명 2–4문장과 역할을 만들고, 이 설명이 `path` 조각을 대체합니다 (최대 `max_images`=200개).
-- **파일 요약** (3단계 `stage3_record/summarize.py`, 인코딩보다 먼저 실행): 앞쪽 약 8000자를 보고 Claude Haiku 5.5가 요약 2–3문장과 역할(예: "학습 스크립트")을 씁니다.
+- **그림 설명** (`srcs/enrich.py`): 이미지를 PyMuPDF로 1568px 이하 PNG로 줄입니다. Claude Sonnet 5.5가 설명 2–4문장과 역할을 만들고, 이 설명이 `path` 조각을 대체합니다 (최대 `max_images`=200개).
+- **파일 요약** (`srcs/enrich.py`, 인코딩보다 먼저 실행): 앞쪽 약 8000자를 보고 Claude Haiku 5.5가 요약 2–3문장과 역할(예: "학습 스크립트")을 씁니다.
 - **인코딩**:
   - 입력: `"{경로} | {위치}\n{본문}"` 형태의 조각과 요약문
   - 모델: bge-m3 dense (정규화한 [CLS], 최대 1024토큰, CUDA에서는 fp16)
@@ -64,7 +64,7 @@ flowchart LR
 - **변경 확인**: 이전 실행과 비교해 추가·변경·삭제된 파일을 로그에 남깁니다.
 - **저장**: `record/`에 둡니다.
 
-## 4. 군집화 (실험 구간) — `stage4_cluster/`
+## 모델 2 군집화 (실험 구간) — `models/clustering.py`, 그룹 이름 `srcs/naming.py`
 
 인터페이스는 `Method(cfg).cluster(record, prefs) -> list[Group]`입니다. 일부 파일을 그룹에 넣지 않아도 됩니다.
 
@@ -75,7 +75,7 @@ flowchart LR
   - `anchors`: 중요 파일마다 그룹이 하나씩 생깁니다. 가장 가까운 중요 파일과의 거리가 25백분위 이하인 파일은 그 그룹에 붙고, 나머지는 baseline 방식으로 묶습니다.
 - **그룹 이름** (공통): Claude Haiku 5.5가 구성원의 경로·역할·요약을 보고 다섯 단어 이하의 이름과 한 문장 설명을 붙입니다. LLM을 끄면 공통 폴더 이름을 씁니다.
 
-## 5. 그래프 생성 — `stage5_graph/` (`candidates.py` → `evidence.py` → `judge.py`, 조립은 `build.py`)
+## 모델 3 구조 생성 — `models/structure.py`, 후보 `srcs/candidates.py`
 
 1. **후보 연결** (파일 쌍마다 하나, 우선순위는 import·링크 > 언급 > 유사):
    - `imports`: 프로젝트 안 모듈로 해석되는 import입니다. 상대 import와 `src/` 레이아웃도 해석합니다.
@@ -91,7 +91,7 @@ flowchart LR
    - 탈락: `keep=false`면 `llm_rejected`가 되지만, import와 링크는 제외합니다.
    - 판정 대상은 최대 `max_judge_edges`=2000개입니다.
 
-## 6. 선호도 교정 (실험 구간) — `stage6_correct/`
+## 모델 4 선호도 반영 (실험 구간) — `models/preference.py`
 
 인터페이스는 `Method(cfg).correct(graph, feedback, record) -> Correction`입니다. `Correction`의 필드는 다음과 같습니다.
 
@@ -119,7 +119,7 @@ flowchart LR
   - 특징 φ(e): 두 파일 벡터의 원소곱(PCA 16차원), 두 파일의 코사인 유사도, 폴더 거리, 같은 그룹 여부. 사용자가 추가한 연결도 AI 연결과 같은 방식으로 표현되도록 파일 내용과 위치만 씁니다.
   - 적용: 사용자가 건드리지 않은 연결을 다시 점수 매깁니다. 거절한 어떤 연결보다 점수가 낮으면 숨기고, 승인 평균보다 높으면 강화합니다. 새 점수는 거절 평균이 약 0.12, 승인 평균이 약 0.88이 되도록 맞춘 확률입니다.
 
-## 7. 최종 그래프 — `stage7_final/finalize.py`
+## 최종 그래프 — `srcs/finalize.py`
 
 1. 교정 방법의 제안(점수, 숨김, 새 연결, 그룹, 이유)을 적용합니다. 단, import와 링크는 파일에 적힌 사실이라 교정 방법이 숨길 수 없고 점수만 바뀝니다. 이런 연결은 사용자만 지울 수 있습니다.
 2. `feedback.jsonl`의 직접 편집을 순서대로 다시 적용합니다. 나중 이벤트가 앞 이벤트를 덮습니다.
@@ -129,12 +129,12 @@ flowchart LR
 
 피드백 로그는 실행할 때마다 처음부터 다시 적용됩니다. 그래서 파일이 바뀌어 다시 생성해도 사용자 편집이 유지됩니다. 삭제된 파일을 가리키는 이벤트는 경고만 남기고 건너뜁니다.
 
-## 8. 시각화 — `stage8_viz/`
+## 모델 5 시각화 — `models/visualization.py`, `srcs/view_template.html`
 
 - `view.html`: 데이터를 HTML 안에 넣은 단일 파일입니다. vis-network는 unpkg CDN에서 받으므로 인터넷이 필요합니다. 세션 중 피드백은 브라우저 localStorage에 임시 저장되고, "내보내기"로 `feedback.jsonl`을 받습니다.
 - `projectwiki obsidian <out> <vault>`: 파일마다 노트 하나를 만들고, 연결은 `[[위키링크]]`와 근거 인용으로, 그룹은 `group/<이름>` 태그와 `_groups/` 노트로 내보냅니다.
 
-## 단계별 확인 리포트 — `tools/report.py`
+## 단계별 확인 리포트 — `srcs/report.py`
 
 `projectwiki report <out>`은 `stages.html`을 만듭니다. 한 페이지에 다음이 들어갑니다.
 
@@ -145,7 +145,7 @@ flowchart LR
 
 차트는 외부 라이브러리 없이 인라인 SVG로 그립니다.
 
-## Claude 호출 방식 — `models/claude.py`, `models/claude_cli.py`
+## Claude 호출 방식 — `srcs/llm.py`, `srcs/claude_cli.py`
 
 | `--llm-backend` | 인증 | 동작 |
 |---|---|---|
@@ -169,22 +169,21 @@ flowchart LR
 
 ```
 projectwiki/
-  cli.py            명령줄 (build / correct / view / obsidian / report / doctor), .env 읽기
-  pipeline.py       1→8단계 실행, 중간 결과·run_info.json 저장
-  config.py         설정 기본값
-  schema.py         단계 사이 데이터 형식, 관계 종류·명시적 참조 상수
-  feedback.py       피드백 로그 읽기·병합·경로 해석
-  plugins.py        실험 구간 방법 불러오기 (이름 또는 module:Class)
-  models/           encoders.py (bge-m3, TF-IDF) · reranker.py · claude.py (API 호출·캐시·비용) · claude_cli.py (구독 CLI)
-  stage1_ingest/    ingest.py (폴더 훑기·형식 판별) · parsers.py (형식별 분할) · images.py (그림 설명)
-  stage2_encode/    encode.py (인코딩 입력·캐시)
-  stage3_record/    summarize.py (요약·역할) · record.py (Record·변경 감지·파일 벡터)
-  stage4_cluster/   base · baseline · preference(pref) · naming (그룹 이름)
-  stage5_graph/     candidates · evidence · judge · build
-  stage6_correct/   base · baseline · drift · align
-  stage7_final/     finalize.py
-  stage8_viz/       template.html · html.py · obsidian.py
-  tools/            report.py (stages.html) · doctor.py
+  models/           모델 5단계, 단계마다 파일 하나
+    encoder.py        1 인코딩 (bge-m3, 테스트용 TF-IDF, 텍스트 해시 캐시)
+    clustering.py     2 군집화 🧪 (인터페이스, baseline, pref, 등록표)
+    structure.py      3 구조 생성 (근거 쌍 리랭킹, Claude 판정, 그래프 조립)
+    preference.py     4 선호도 반영 🧪 (인터페이스, baseline, drift, align, 등록표)
+    visualization.py  5 시각화 (view.html, Obsidian 볼트)
+  srcs/             모델 단계를 돕는 코드
+    ingest.py · parsers.py      파일 입력
+    enrich.py · record.py       그림 설명·요약, 프로젝트 레코드
+    candidates.py · naming.py   후보 연결, 그룹 이름
+    finalize.py · feedback.py   최종 그래프, 피드백 로그
+    llm.py · claude_cli.py      Claude API · 구독 CLI
+    report.py · doctor.py       도구
+    plugins.py · view_template.html
+  pipeline.py  cli.py  config.py  schema.py
 ```
 
-단계 폴더마다 입력·출력·고칠 지점을 적은 `README.md`가 있습니다.
+`models/README.md`와 `srcs/README.md`에 파일별 입력·출력과 고칠 지점이 있습니다.
