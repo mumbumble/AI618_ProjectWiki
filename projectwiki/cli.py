@@ -56,12 +56,12 @@ def show(path: Path, open_it: bool) -> None:
 
 
 def main(argv=None) -> None:
-    p = argparse.ArgumentParser(prog="projectlens", description="Project folder -> relation graph pipeline")
+    p = argparse.ArgumentParser(prog="projectwiki", description="Project folder -> relation graph pipeline")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     b = sub.add_parser("build", help="run stages 1-8 on a project folder")
     b.add_argument("root", help="project folder")
-    b.add_argument("-o", "--out", help="output folder (default: <root>/.projectlens)")
+    b.add_argument("-o", "--out", help="output folder (default: <root>/.projectwiki)")
     b.add_argument("--purpose", help="the user's purpose for this project")
     b.add_argument("--prefs", help="preferences JSON for the clustering stage (see examples/prefs.example.json)")
     b.add_argument("--config", help="JSON file with Config fields")
@@ -100,7 +100,7 @@ def main(argv=None) -> None:
 
     if args.cmd == "build":
         root = Path(args.root).resolve()
-        out = Path(args.out).resolve() if args.out else root / ".projectlens"
+        out = Path(args.out).resolve() if args.out else root / ".projectwiki"
         result = pipeline.build(root, out, load_config(args), load_prefs(args))
         show(result["view"], args.open)
     elif args.cmd == "correct":

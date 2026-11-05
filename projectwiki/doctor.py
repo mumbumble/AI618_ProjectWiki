@@ -1,4 +1,4 @@
-"""`projectlens doctor`: check the environment before a real run."""
+"""`projectwiki doctor`: check the environment before a real run."""
 from __future__ import annotations
 
 import importlib

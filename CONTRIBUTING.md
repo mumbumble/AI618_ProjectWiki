@@ -6,17 +6,17 @@
 
 1. 브랜치를 만듭니다: `git switch -c cluster/<방법이름>` 또는 `correct/<방법이름>`.
 2. 파일 하나에 클래스 하나를 만듭니다.
-   - 군집화: `projectlens/cluster/<방법이름>.py`, `cluster(record, prefs) -> list[Group]`
-   - 교정: `projectlens/correct/<방법이름>.py`, `correct(graph, feedback, record) -> Correction`
+   - 군집화: `projectwiki/cluster/<방법이름>.py`, `cluster(record, prefs) -> list[Group]`
+   - 교정: `projectwiki/correct/<방법이름>.py`, `correct(graph, feedback, record) -> Correction`
    - 생성자는 `__init__(self, cfg)` 하나만 받습니다. 새 설정값이 필요하면 `config.py`에 필드를 추가하고 기본값을 둡니다.
 3. `cluster/__init__.py`의 `CLUSTERERS`나 `correct/__init__.py`의 `CORRECTORS`에 등록합니다.
 4. `tests/`에 작은 테스트를 추가합니다. 예시는 `tests/test_pipeline.py`의 `make_cfg()`로, TF-IDF 인코더를 써서 GPU나 API 키 없이 돕니다.
 5. 같은 폴더에서 대조군과 비교합니다.
    ```bash
-   projectlens build <폴더> -o runs/base --clusterer baseline --corrector baseline --prefs prefs.json
-   projectlens build <폴더> -o runs/mine --clusterer <방법이름> --corrector <방법이름> --prefs prefs.json
-   projectlens correct runs/base --feedback feedback.jsonl
-   projectlens correct runs/mine --feedback feedback.jsonl
+   projectwiki build <폴더> -o runs/base --clusterer baseline --corrector baseline --prefs prefs.json
+   projectwiki build <폴더> -o runs/mine --clusterer <방법이름> --corrector <방법이름> --prefs prefs.json
+   projectwiki correct runs/base --feedback feedback.jsonl
+   projectwiki correct runs/mine --feedback feedback.jsonl
    ```
    두 실행은 1–3단계와 Claude 응답 캐시를 각자 만듭니다. 같은 `-o` 폴더에서 방법만 바꾸면 캐시를 그대로 다시 씁니다.
 6. `pytest -q`가 통과하면 PR을 올립니다.

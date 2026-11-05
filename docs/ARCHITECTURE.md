@@ -1,6 +1,6 @@
 # 구현 상세
 
-단계별 입력·처리·출력과 코드 위치를 정리했습니다. 숫자로 된 설정값은 모두 [`projectlens/config.py`](../projectlens/config.py)의 기본값이며 `--config cfg.json`으로 바꿀 수 있습니다.
+단계별 입력·처리·출력과 코드 위치를 정리했습니다. 숫자로 된 설정값은 모두 [`projectwiki/config.py`](../projectwiki/config.py)의 기본값이며 `--config cfg.json`으로 바꿀 수 있습니다.
 
 ```mermaid
 flowchart LR
@@ -127,7 +127,7 @@ flowchart LR
 ## 8. 시각화 — `viz/`
 
 - `view.html`: 데이터를 HTML 안에 넣은 단일 파일입니다. vis-network는 unpkg CDN에서 받으므로 인터넷이 필요합니다. 세션 중 피드백은 브라우저 localStorage에 임시 저장되고, "내보내기"로 `feedback.jsonl`을 받습니다.
-- `projectlens obsidian <out> <vault>`: 파일마다 노트 하나를 만들고, 연결은 `[[위키링크]]`와 근거 인용으로, 그룹은 `group/<이름>` 태그와 `_groups/` 노트로 내보냅니다.
+- `projectwiki obsidian <out> <vault>`: 파일마다 노트 하나를 만들고, 연결은 `[[위키링크]]`와 근거 인용으로, 그룹은 `group/<이름>` 태그와 `_groups/` 노트로 내보냅니다.
 
 ## 캐시·비용·시간
 
@@ -141,7 +141,7 @@ flowchart LR
 ## 코드 지도
 
 ```
-projectlens/
+projectwiki/
   cli.py          명령줄 (build / correct / view / obsidian / doctor), .env 읽기
   pipeline.py     단계 연결, 중간 결과 저장
   config.py       설정 기본값

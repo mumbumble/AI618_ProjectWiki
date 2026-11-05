@@ -5,8 +5,8 @@ $ErrorActionPreference = "Stop"
 Set-Location (Join-Path $PSScriptRoot "..")
 
 $envs = conda env list | Out-String
-if ($envs -notmatch "(?m)^projectlens\s") { conda create -y -q -n projectlens python=3.11 }
-conda activate projectlens
+if ($envs -notmatch "(?m)^projectwiki\s") { conda create -y -q -n projectwiki python=3.11 }
+conda activate projectwiki
 python -m pip install -q --upgrade pip
 
 $hasGpu = $null -ne (Get-Command nvidia-smi -ErrorAction SilentlyContinue)
@@ -29,4 +29,4 @@ if (-not $NoModels) {
 
 Write-Host "== tests"
 python -m pytest -q
-projectlens doctor
+projectwiki doctor

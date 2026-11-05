@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "projectlens"
+name = "projectwiki"
 version = "0.1.0"
 description = "Local project folder -> evidence-grounded relation graph that the user can correct"
 readme = "README.md"
@@ -22,13 +22,13 @@ dependencies = [
 dev = ["pytest"]
 
 [project.scripts]
-projectlens = "projectlens.cli:main"
+projectwiki = "projectwiki.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["projectlens*"]
+include = ["projectwiki*"]
 
 [tool.setuptools.package-data]
-"projectlens.viz" = ["template.html"]
+"projectwiki.viz" = ["template.html"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

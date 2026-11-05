@@ -4,14 +4,14 @@ from types import SimpleNamespace
 import pymupdf
 import pytest
 
-from projectlens import pipeline
-from projectlens.cluster import get_clusterer
-from projectlens.config import Config
-from projectlens.graph import reference_candidates
-from projectlens.ingest import ingest
-from projectlens.record import Record
-from projectlens.schema import FeedbackEvent, Graph, Preferences
-from projectlens.viz import export_obsidian
+from projectwiki import pipeline
+from projectwiki.cluster import get_clusterer
+from projectwiki.config import Config
+from projectwiki.graph import reference_candidates
+from projectwiki.ingest import ingest
+from projectwiki.record import Record
+from projectwiki.schema import FeedbackEvent, Graph, Preferences
+from projectwiki.viz import export_obsidian
 
 
 @pytest.fixture
@@ -152,7 +152,7 @@ def test_pref_clusterer_anchors(project, tmp_path):
 
 def test_plugin_and_obsidian(project, tmp_path):
     out = tmp_path / "out"
-    cfg = make_cfg(llm=False, clusterer="projectlens.cluster.baseline:BaselineClusterer")
+    cfg = make_cfg(llm=False, clusterer="projectwiki.cluster.baseline:BaselineClusterer")
     pipeline.build(project, out, cfg, Preferences())
     final = Graph.from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
     vault = export_obsidian(final, Record.load(out), tmp_path / "vault")

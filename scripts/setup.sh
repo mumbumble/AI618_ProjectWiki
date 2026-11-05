@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # One-shot setup for Linux, WSL and macOS:  bash scripts/setup.sh [--cpu] [--no-models]
-# Creates the conda env "projectlens" (or .venv when conda is missing), installs PyTorch for this machine,
-# the pinned requirements and the package, downloads the models, then runs the tests and `projectlens doctor`.
+# Creates the conda env "projectwiki" (or .venv when conda is missing), installs PyTorch for this machine,
+# the pinned requirements and the package, downloads the models, then runs the tests and `projectwiki doctor`.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -23,8 +23,8 @@ done
 
 if [ -n "$CONDA" ]; then
   source "$("$CONDA" info --base)/etc/profile.d/conda.sh"
-  conda env list | grep -qE '^projectlens\s' || conda create -y -q -n projectlens python=3.11
-  conda activate projectlens
+  conda env list | grep -qE '^projectwiki\s' || conda create -y -q -n projectwiki python=3.11
+  conda activate projectwiki
 else
   echo "conda not found, using .venv (needs Python 3.10+ with venv; on Ubuntu: sudo apt install python3-venv)"
   python3 -m venv .venv
@@ -51,4 +51,4 @@ fi
 
 echo "== tests"
 python -m pytest -q
-projectlens doctor
+projectwiki doctor

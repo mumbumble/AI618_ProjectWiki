@@ -1,6 +1,11 @@
-# ProjectLens
+# ProjectWiki
 
-로컬 프로젝트 폴더(논문·코드·노트·그림)를 원문 근거가 달린 관계 그래프로 정리하는 파이프라인입니다. 사용자의 교정은 다음 생성에도 반영됩니다. KAIST AI618 Team 04 텀 프로젝트의 공통 베이스라인입니다.
+로컬 프로젝트 폴더(논문·코드·노트·그림)를 위키처럼 정리하고 관리하는 도구입니다.
+
+- 파일마다 요약과 역할이 붙고, 파일끼리의 관계에는 원문 근거가 달립니다. 결과는 그래프와 Obsidian 볼트로 볼 수 있습니다.
+- 사용자가 고친 내용은 파일이 바뀌어 다시 생성해도 유지되고, 이후 제안에도 반영됩니다.
+
+KAIST AI618 Team 04 텀 프로젝트의 공통 베이스라인입니다.
 
 - **구조**: 11/05 팀 회의에서 정한 파이프라인입니다. 군집화와 선호도 교정은 **실험 구간**이라 각자 방법을 끼워 넣어 비교하고, 나머지는 공통 코드입니다.
 - **문서**: 구현 상세는 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), 방법 추가 절차는 [CONTRIBUTING.md](CONTRIBUTING.md)를 보세요.
@@ -36,7 +41,7 @@ flowchart LR
 ### 한 번에 설치 (권장)
 
 ```bash
-git clone git@github.com:mumbumble/projectlens.git && cd projectlens
+git clone git@github.com:mumbumble/AI618_ProjectWiki.git && cd AI618_ProjectWiki
 bash scripts/setup.sh          # Linux / WSL / macOS   (GPU가 없으면 --cpu)
 ```
 
@@ -47,17 +52,17 @@ powershell -ExecutionPolicy Bypass -File scripts\setup.ps1     # GPU가 없으�
 
 스크립트는 다음을 순서대로 합니다.
 
-1. conda env `projectlens`(Python 3.11)를 만듭니다.
+1. conda env `projectwiki`(Python 3.11)를 만듭니다.
 2. 이 컴퓨터에 맞는 PyTorch 2.7.1을 설치합니다. NVIDIA GPU가 있으면 CUDA 12.6 버전입니다.
 3. `requirements-dev.txt`를 설치합니다 (버전 고정).
 4. 패키지를 설치합니다 (`pip install -e .`).
 5. 모델 두 개를 받습니다.
-6. 테스트와 `projectlens doctor`를 실행합니다.
+6. 테스트와 `projectwiki doctor`를 실행합니다.
 
 ### 직접 설치
 
 ```bash
-conda create -n projectlens python=3.11 -y && conda activate projectlens
+conda create -n projectwiki python=3.11 -y && conda activate projectwiki
 pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cu126   # NVIDIA GPU
 # pip install torch==2.7.1                                                    # macOS / CPU
 pip install -r requirements-dev.txt
@@ -71,7 +76,7 @@ python scripts/download_models.py      # bge-m3, bge-reranker-v2-m3 (약 4.5GB)
 
 ```bash
 cp .env.example .env       # ANTHROPIC_API_KEY=... 입력 (.env는 git에 올라가지 않음)
-projectlens doctor         # 패키지·GPU·모델 캐시·API 키 점검
+projectwiki doctor         # 패키지·GPU·모델 캐시·API 키 점검
 ```
 
 ```
@@ -87,19 +92,19 @@ ready
 
 ```bash
 # 예제 폴더로 1-8단계 실행 후 뷰어 열기
-projectlens build examples/sample_project -o runs/sample --prefs examples/prefs.example.json --open
+projectwiki build examples/sample_project -o runs/sample --prefs examples/prefs.example.json --open
 
 # 뷰어에서 교정하고 'feedback.jsonl 내보내기' → 6-8단계만 다시 실행 (파일을 다시 읽지 않음)
-projectlens correct runs/sample --feedback ~/Downloads/feedback.jsonl --open
+projectwiki correct runs/sample --feedback ~/Downloads/feedback.jsonl --open
 
-# 본인 프로젝트 폴더 (출력은 기본으로 <폴더>/.projectlens)
-projectlens build ~/my_project --purpose "다음 주 발표 준비"
+# 본인 프로젝트 폴더 (출력은 기본으로 <폴더>/.projectwiki)
+projectwiki build ~/my_project --purpose "다음 주 발표 준비"
 
 # 대조군
-projectlens build ~/my_project -o runs/base --clusterer baseline --corrector baseline
+projectwiki build ~/my_project -o runs/base --clusterer baseline --corrector baseline
 
-projectlens view runs/sample --open          # view.html만 다시 만들기
-projectlens obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
+projectwiki view runs/sample --open          # view.html만 다시 만들기
+projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 ```
 
 | 옵션 | 뜻 |
@@ -110,7 +115,7 @@ projectlens obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 | `--no-llm` | Claude 단계를 끔 (요약·그림 설명·그룹 이름·관계 판정) |
 | `--no-rerank` | 근거 쌍을 코사인으로만 고름 |
 | `--language English` | 요약·설명 언어 (기본 Korean) |
-| `--config cfg.json` | [`config.py`](projectlens/config.py)의 다른 설정값 바꾸기 |
+| `--config cfg.json` | [`config.py`](projectwiki/config.py)의 다른 설정값 바꾸기 |
 
 ### 뷰어 (`view.html`)
 
@@ -123,7 +128,7 @@ projectlens obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 - **노드 클릭**: 요약, 내용 미리보기, 연결 목록을 봅니다. 다른 그룹으로 옮기거나 그룹에서 뺄 수 있습니다.
 - **연결 클릭**: 관계, 양쪽 원문 인용, 교정 반영 이유를 봅니다. **맞는 연결 / 잘못된 연결 / 목적상 불필요**로 표시합니다.
 - **연결 추가**: 두 노드를 차례로 누르고 관계 이름을 적습니다 (예: "발표에 함께 쓸 자료").
-- **피드백 내보내기**: `feedback.jsonl 내보내기`로 받은 파일을 `projectlens correct`에 넘깁니다.
+- **피드백 내보내기**: `feedback.jsonl 내보내기`로 받은 파일을 `projectwiki correct`에 넘깁니다.
 
 ### 출력 폴더
 

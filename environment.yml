@@ -1,6 +1,6 @@
-# conda env create -f environment.yml && conda activate projectlens
+# conda env create -f environment.yml && conda activate projectwiki
 # then install PyTorch for your machine (see requirements.txt) and run: pip install -e . --no-deps
-name: projectlens
+name: projectwiki
 channels:
   - conda-forge
 dependencies:
