@@ -7,7 +7,7 @@ import time
 from dataclasses import asdict, fields
 from pathlib import Path
 
-from .record import Record
+from .stage3_record import Record
 from .schema import FEEDBACK_TYPES, FeedbackEvent
 
 log = logging.getLogger(__name__)

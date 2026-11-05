@@ -1,33 +1,46 @@
 # ProjectWiki
 
-로컬 프로젝트 폴더(논문·코드·노트·그림)를 위키처럼 정리하고 관리하는 도구입니다.
+로컬 프로젝트 폴더(논문·코드·노트·그림)를 위키처럼 정리하고 관리하는 도구입니다. KAIST AI618 Team 04 텀 프로젝트의 공통 베이스라인입니다.
 
-- 파일마다 요약과 역할이 붙고, 파일끼리의 관계에는 원문 근거가 달립니다. 결과는 그래프와 Obsidian 볼트로 볼 수 있습니다.
-- 사용자가 고친 내용은 파일이 바뀌어 다시 생성해도 유지되고, 이후 제안에도 반영됩니다.
+![viewer](assets/viewer.png)
 
-KAIST AI618 Team 04 텀 프로젝트의 공통 베이스라인입니다.
+- 파일마다 요약과 역할이 붙고, 파일끼리의 관계에는 양쪽 원문 근거가 달립니다.
+- 사용자가 고친 내용(승인·거절·추가·그룹 이동)은 파일이 바뀌어 다시 생성해도 유지되고, 이후 제안에도 반영됩니다.
+- 파이프라인은 11/05 팀 회의에서 정했습니다. 군집화와 선호도 교정은 **실험 구간(🧪)** 이라 각자 방법을 끼워 넣어 비교합니다.
 
-- **구조**: 11/05 팀 회의에서 정한 파이프라인입니다. 군집화와 선호도 교정은 **실험 구간**이라 각자 방법을 끼워 넣어 비교하고, 나머지는 공통 코드입니다.
-- **문서**: 구현 상세는 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), 방법 추가 절차는 [CONTRIBUTING.md](CONTRIBUTING.md)를 보세요.
+## 파이프라인
 
 ```mermaid
 flowchart LR
   A[파일들] --> B[인코딩<br/>bge-m3] --> C[프로젝트 레코드<br/>요약·그림 설명]
-  C --> D[군집화<br/><b>실험 구간</b>] --> E[그래프 생성<br/>reranker + Claude 판정]
-  E --> F[선호도 교정<br/><b>실험 구간</b>] --> G[최종 그래프] --> H[시각화]
+  C --> D[군집화 🧪] --> E[그래프 생성<br/>reranker + Claude 판정]
+  E --> F[선호도 교정 🧪] --> G[최종 그래프] --> H[시각화]
   H -. 사용자 피드백 .-> F
 ```
 
-| 단계 | 구현 | 사용 모델 |
-|---|---|---|
-| 1 파일 입력 | PDF, Markdown, Python, Jupyter, 텍스트, SVG를 근거 조각으로 분할하고 import·링크를 추출 | PyMuPDF, Python AST |
-| 2 인코딩 | 근거 조각과 요약 임베딩 (캐시) | **bge-m3** |
-| 3 프로젝트 레코드 | 파일 요약·역할, 이미지 설명 | **Claude Haiku 5.5**, **Claude Sonnet 5.5** |
-| 4 군집화 🧪 | `pref`: 중요 파일·쌍 1–5 평가·객관식 가이드 (회의안) / `baseline`: 선호 미반영 | bge-m3 벡터 + 계층 군집, 그룹 이름은 Haiku 5.5 |
-| 5 그래프 생성 | 후보 연결(import·링크·파일명 언급·유사도), 근거 쌍 선택, 관계 판정·방향·직접/추론·인용 검증 | **bge-reranker-v2-m3**, **Claude Sonnet 5.5** |
-| 6 선호도 교정 🧪 | `drift`: 커널 끌림/밀어냄, 학습 없음 (회의 4안) / `align`: 피드백으로 선호 정렬, Bradley–Terry (회의 1안) / `baseline`: 일반화 없음 | bge-m3 벡터 |
-| 7 최종 그래프 | 교정 제안과 사용자의 직접 편집(항상 우선, 매번 다시 적용)을 합침 | |
-| 8 시각화 | HTML 뷰어(근거 보기·교정·피드백 내보내기), Obsidian 볼트 내보내기 | vis-network |
+| 단계 | 폴더 | 구현 | 사용 모델 |
+|---|---|---|---|
+| 1 파일 입력 | [`stage1_ingest/`](projectwiki/stage1_ingest) | PDF, Markdown, Python, Jupyter, 텍스트, SVG를 근거 조각으로 분할하고 import·링크를 추출. 이미지는 설명으로 바꿈 | PyMuPDF, Python AST, **Claude Sonnet 5.5** |
+| 2 인코딩 | [`stage2_encode/`](projectwiki/stage2_encode) | 근거 조각과 요약을 임베딩 (캐시) | **bge-m3** |
+| 3 프로젝트 레코드 | [`stage3_record/`](projectwiki/stage3_record) | 파일 요약·역할, 파일 벡터, 변경 감지 | **Claude Haiku 5.5** |
+| 4 군집화 🧪 | [`stage4_cluster/`](projectwiki/stage4_cluster) | `pref`: 중요 파일·쌍 1–5 평가·객관식 가이드 (회의안) / `baseline`: 선호 미반영 | bge-m3 벡터 + 계층 군집, 그룹 이름은 Haiku 5.5 |
+| 5 그래프 생성 | [`stage5_graph/`](projectwiki/stage5_graph) | 후보 연결 → 근거 쌍 선택 → 관계·방향·직접/추론 판정, 인용 검증 | **bge-reranker-v2-m3**, **Claude Sonnet 5.5** |
+| 6 선호도 교정 🧪 | [`stage6_correct/`](projectwiki/stage6_correct) | `drift`: 커널 끌림/밀어냄 (회의 4안) / `align`: 피드백으로 선호 정렬, Bradley–Terry (회의 1안) / `baseline`: 일반화 없음 | bge-m3 벡터 |
+| 7 최종 그래프 | [`stage7_final/`](projectwiki/stage7_final) | 교정 제안 + 사용자의 직접 편집 (항상 우선, 매번 다시 적용) | |
+| 8 시각화 | [`stage8_viz/`](projectwiki/stage8_viz) | HTML 뷰어 (근거 보기·교정·피드백 내보내기), Obsidian 볼트 | vis-network |
+
+단계 폴더마다 입력·출력·고칠 지점을 적은 `README.md`가 있습니다. 구현 상세는 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), 방법 추가 절차는 [CONTRIBUTING.md](CONTRIBUTING.md)에 있습니다.
+
+## TODO
+
+- [x] 공통 베이스라인 (1·2·3·5·7·8단계)
+- [x] 실험 구간 회의안: 군집화 `pref`, 교정 `drift`(4안)·`align`(1안), 대조군 `baseline`
+- [x] Claude 연결: 구독 계정(Claude Code CLI)과 API 키 둘 다
+- [x] 단계별 확인 리포트 (`projectwiki report`)
+- [ ] 정렬도 측정: 사용자 관계도 ↔ AI 지도의 Gromov–Wasserstein 거리 (4안)
+- [ ] 뷰어 이미지 썸네일 (1안 ⑥)
+- [ ] 그룹·프로젝트 위키 페이지 생성
+- [ ] 유저 스터디용 과제·로그 수집
 
 ## 설치
 
@@ -132,7 +145,7 @@ projectwiki build ~/my_project --purpose "다음 주 발표 준비"
 # 대조군
 projectwiki build ~/my_project -o runs/base --clusterer baseline --corrector baseline
 
-projectwiki report runs/sample --open        # 단계별 확인 리포트 stages.html (교정 방법 비교 포함)
+projectwiki report runs/sample --open        # 단계별 확인 리포트 stages.html (교정 방법 비교 포함, 아래 그림)
 projectwiki view runs/sample --open          # view.html만 다시 만들기
 projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 ```
@@ -148,6 +161,8 @@ projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 | `--no-rerank` | 근거 쌍을 코사인으로만 고름 |
 | `--language English` | 요약·설명 언어 (기본 Korean) |
 | `--config cfg.json` | [`config.py`](projectwiki/config.py)의 다른 설정값 바꾸기 |
+
+![stage report](assets/stage_report.png)
 
 ### 뷰어 (`view.html`)
 
@@ -172,6 +187,35 @@ runs/sample/
   correction.json      6단계 결과        final_graph.json   7단계 결과
   view.html            뷰어              stages.html        단계별 확인 리포트 (report)
   run_info.json        변경 감지·단계별 시간  cache/        임베딩·Claude 응답 캐시
+```
+
+## 프로젝트 구조
+
+```
+AI618_ProjectWiki/
+├── projectwiki/              패키지 (명령: projectwiki)
+│   ├── cli.py                build / correct / view / report / obsidian / doctor
+│   ├── pipeline.py           1→8단계를 순서대로 실행
+│   ├── config.py             모든 설정값
+│   ├── schema.py             단계 사이 데이터 형식 (Chunk, FileRecord, Group, Edge, Graph, FeedbackEvent)
+│   ├── feedback.py           피드백 로그 읽기·병합
+│   ├── plugins.py            실험 구간 방법을 이름이나 module:Class로 불러오기
+│   ├── models/               bge-m3, bge-reranker-v2-m3, Claude (API · CLI)
+│   ├── stage1_ingest/        파일 → 근거 조각 (parsers, images)
+│   ├── stage2_encode/        조각 → 벡터
+│   ├── stage3_record/        요약 → 프로젝트 레코드
+│   ├── stage4_cluster/  🧪   baseline · pref · 그룹 이름
+│   ├── stage5_graph/         candidates → evidence → judge
+│   ├── stage6_correct/  🧪   baseline · drift · align
+│   ├── stage7_final/         최종 그래프
+│   ├── stage8_viz/           뷰어 · Obsidian
+│   └── tools/                report (stages.html) · doctor
+├── examples/                 예제 프로젝트 폴더, prefs·feedback 예시
+├── scripts/                  setup.sh · setup.ps1 · download_models.py
+├── tests/                    pytest (GPU·API 키 없이 실행)
+├── docs/ARCHITECTURE.md      구현 상세
+├── assets/                   README 그림
+└── requirements.txt · environment.yml · pyproject.toml
 ```
 
 ## 테스트

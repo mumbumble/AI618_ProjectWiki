@@ -3,6 +3,12 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 
+# Relation types the stage-5 judge may assign.
+RELATIONS = ["implements", "describes", "uses", "produces", "extends", "same_method", "supports",
+             "contradicts", "compares", "same_topic", "duplicate", "other"]
+EXPLICIT = ("imports", "links_to", "mentions")  # candidate reasons stated in the files themselves
+STRUCTURAL = ("imports", "links_to")  # facts: only the user can remove them
+
 # Edge statuses the viewer shows by default; the others are kept for inspection.
 VISIBLE_STATUS = ("proposed", "confirmed")
 

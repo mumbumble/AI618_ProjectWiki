@@ -5,13 +5,13 @@ import pymupdf
 import pytest
 
 from projectwiki import pipeline
-from projectwiki.cluster import get_clusterer
 from projectwiki.config import Config
-from projectwiki.graph import reference_candidates
-from projectwiki.ingest import ingest
-from projectwiki.record import Record
 from projectwiki.schema import FeedbackEvent, Graph, Preferences
-from projectwiki.viz import export_obsidian
+from projectwiki.stage1_ingest import ingest
+from projectwiki.stage3_record import Record
+from projectwiki.stage4_cluster import get_clusterer
+from projectwiki.stage5_graph import reference_candidates
+from projectwiki.stage8_viz import export_obsidian
 
 
 @pytest.fixture
@@ -120,6 +120,7 @@ def test_feedback_and_drift(project, tmp_path):
         FeedbackEvent(type="edge_wrong", source="paper.pdf", target="src/train.py"),
         FeedbackEvent(type="edge_add", source="notes.md", target="paper.pdf", relation="발표에 함께 쓸 자료"),
         FeedbackEvent(type="node_move", node="Makefile", group="빌드"),
+        FeedbackEvent(type="edge_confirm", source="fig.png", target="data_utils.py", relation="uses"),
     ]
     final = pipeline.correct(out, cfg, new_feedback=events)["graph"]
     status = {e.id: e for e in final.edges}
@@ -129,6 +130,8 @@ def test_feedback_and_drift(project, tmp_path):
     assert status[key("paper.pdf", "src/train.py")].status == "removed_wrong"
     added = status[key("notes.md", "paper.pdf")]
     assert added.origin == "user" and added.relation == "발표에 함께 쓸 자료"
+    kept = status[key("fig.png", "data_utils.py")]  # confirmed although stage 5 never proposed it
+    assert kept.status == "confirmed" and kept.origin == "user" and kept.relation == "uses"
     node = next(n for n in final.nodes if n.path == "Makefile")
     assert next(g for g in final.groups if g.id == node.group).name == "빌드"
     assert any(e.correction for e in final.edges)  # drift explained the edges it changed
@@ -140,16 +143,16 @@ def test_feedback_and_drift(project, tmp_path):
     cfg.corrector = "align"
     aligned = pipeline.correct(out, cfg)["graph"]
     note = json.loads((out / "correction.json").read_text(encoding="utf-8"))["notes"][0]
-    assert note.startswith("Bradley–Terry fit on 2 approved x 2 rejected")
+    assert note.startswith("Bradley–Terry fit on 3 approved x 2 rejected")
     untouched = [e for e in aligned.edges if e.origin == "ai" and e.status in ("proposed", "removed_by_corrector")]
     assert untouched and all(0.0 <= e.score <= 1.0 for e in untouched)
 
     # stage report covers every stage and every registered corrector
-    from projectwiki.report import report
+    from projectwiki.tools.report import report
     page = report(out).read_text(encoding="utf-8")
     assert "회의 파이프라인(1안 + 4안) 대비" in page and "<svg" in page
     assert all(name in page for name in ("baseline", "drift", "align"))
-    assert page.count("유지됨") == 5
+    assert page.count("유지됨") == 6
 
 
 def test_pref_clusterer_anchors(project, tmp_path):
@@ -167,7 +170,7 @@ def test_pref_clusterer_anchors(project, tmp_path):
 
 def test_plugin_and_obsidian(project, tmp_path):
     out = tmp_path / "out"
-    cfg = make_cfg(llm=False, clusterer="projectwiki.cluster.baseline:BaselineClusterer")
+    cfg = make_cfg(llm=False, clusterer="projectwiki.stage4_cluster.baseline:BaselineClusterer")
     pipeline.build(project, out, cfg, Preferences())
     final = Graph.from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
     vault = export_obsidian(final, Record.load(out), tmp_path / "vault")

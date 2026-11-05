@@ -8,12 +8,13 @@ import os
 import webbrowser
 from pathlib import Path
 
-from . import doctor, pipeline
+from . import pipeline
 from .config import Config
 from .feedback import read_events
-from .record import Record
 from .schema import Graph, Preferences
-from .viz import export_obsidian
+from .stage3_record import Record
+from .stage8_viz import export_obsidian
+from .tools import doctor
 
 
 def load_dotenv() -> None:
@@ -125,7 +126,7 @@ def main(argv=None) -> None:
         final = Graph.from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
         print(f"vault: {export_obsidian(final, Record.load(out), Path(args.vault))}")
     elif args.cmd == "report":
-        from .report import report
+        from .tools.report import report
         path = report(Path(args.out).resolve())
         print(f"report: {path}")
         if args.open:

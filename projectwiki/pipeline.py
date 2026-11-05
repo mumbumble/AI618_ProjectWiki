@@ -1,4 +1,14 @@
-"""Run the stages end to end; every intermediate result is written under the output folder."""
+"""Run the eight stages in order; every intermediate result is written under the output folder.
+
+    1 stage1_ingest    files -> evidence chunks (images described by Claude)
+    2 stage2_encode    chunks (+ summaries) -> bge-m3 vectors
+    3 stage3_record    summaries, file vectors -> project record
+    4 stage4_cluster   record + preferences -> groups                 (experimental slot)
+    5 stage5_graph     candidates -> evidence -> Claude judgment     -> graph.json
+    6 stage6_correct   graph + feedback -> correction                 (experimental slot)
+    7 stage7_final     graph + correction + explicit edits           -> final_graph.json
+    8 stage8_viz       final graph -> view.html (and Obsidian vault)
+"""
 from __future__ import annotations
 
 import json
@@ -8,17 +18,18 @@ import time
 from dataclasses import asdict
 from pathlib import Path
 
-from .cluster import get_clusterer
 from .config import Config
-from .correct import get_corrector
 from .feedback import merge, read_events, resolve
-from .finalize import finalize
-from .graph import build_graph
-from .groups import name_groups
 from .models import Claude
-from .record import Record, build_record
 from .schema import VISIBLE_STATUS, FeedbackEvent, Graph, Preferences
-from .viz import write_view
+from .stage1_ingest import describe_images, ingest
+from .stage2_encode import encode_record
+from .stage3_record import Record, build_record, diff_files, summarize
+from .stage4_cluster import get_clusterer, name_groups
+from .stage5_graph import build_graph
+from .stage6_correct import get_corrector
+from .stage7_final import finalize
+from .stage8_viz import write_view
 
 log = logging.getLogger(__name__)
 
@@ -42,11 +53,11 @@ def make_llm(cfg: Config, out: Path, client=None) -> Claude | None:
 
 def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=None) -> dict:
     """Stages 1-8."""
+    root = Path(root).resolve()
     out.mkdir(parents=True, exist_ok=True)
     cfg.save(out / "config.json")
     write_json(out / "prefs.json", asdict(prefs))
     llm = make_llm(cfg, out, llm_client)
-
     times, t = {}, time.time()
 
     def lap(name: str) -> None:
@@ -54,8 +65,22 @@ def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=Non
         times[name] = round(time.time() - t, 2)
         t = time.time()
 
-    record, changes = build_record(root, out, cfg, llm)  # 1-3
-    lap("1-3 record")
+    files, chunks = ingest(root, cfg)  # 1
+    if llm is not None and cfg.describe_images:
+        describe_images(root, files, chunks, llm, cfg)
+    changes = diff_files(out, files)
+    log.info("changes since last run: %d added, %d changed, %d removed",
+             len(changes["added"]), len(changes["changed"]), len(changes["removed"]))
+    lap("1 ingest")
+    if llm is not None and cfg.summarize:  # 3, first part: summaries are encoded together with the chunks
+        summarize(files, chunks, llm, cfg)
+    lap("3 summaries")
+    encoded = encode_record(files, chunks, cfg, out / "cache")  # 2
+    changes["encoded"] = encoded.new
+    lap("2 encode")
+    record = build_record(root, files, chunks, encoded)  # 3
+    record.save(out)
+
     groups = get_clusterer(cfg.clusterer, cfg).cluster(record, prefs)  # 4
     name_groups(groups, record, llm, cfg)
     lap("4 clustering")

@@ -4,12 +4,12 @@
 
 군집화(4단계)와 선호도 교정(6단계)이 실험 구간입니다. 나머지 단계는 공통이라 되도록 건드리지 않습니다.
 
-1. 브랜치를 만듭니다: `git switch -c cluster/<방법이름>` 또는 `correct/<방법이름>`.
+1. 브랜치를 만듭니다: `git switch -c cluster/<방법이름>` 또는 `git switch -c correct/<방법이름>`.
 2. 파일 하나에 클래스 하나를 만듭니다.
-   - 군집화: `projectwiki/cluster/<방법이름>.py`, `cluster(record, prefs) -> list[Group]`
-   - 교정: `projectwiki/correct/<방법이름>.py`, `correct(graph, feedback, record) -> Correction`
+   - 군집화: `projectwiki/stage4_cluster/<방법이름>.py`, `cluster(record, prefs) -> list[Group]`
+   - 교정: `projectwiki/stage6_correct/<방법이름>.py`, `correct(graph, feedback, record) -> Correction`
    - 생성자는 `__init__(self, cfg)` 하나만 받습니다. 새 설정값이 필요하면 `config.py`에 필드를 추가하고 기본값을 둡니다.
-3. `cluster/__init__.py`의 `CLUSTERERS`나 `correct/__init__.py`의 `CORRECTORS`에 등록합니다.
+3. `stage4_cluster/__init__.py`의 `CLUSTERERS`나 `stage6_correct/__init__.py`의 `CORRECTORS`에 등록합니다.
 4. `tests/`에 작은 테스트를 추가합니다. 예시는 `tests/test_pipeline.py`의 `make_cfg()`로, TF-IDF 인코더를 써서 GPU나 API 키 없이 돕니다.
 5. 같은 폴더에서 대조군과 비교합니다.
    ```bash

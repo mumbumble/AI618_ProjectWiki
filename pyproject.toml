@@ -28,7 +28,7 @@ projectwiki = "projectwiki.cli:main"
 include = ["projectwiki*"]
 
 [tool.setuptools.package-data]
-"projectwiki.viz" = ["template.html"]
+"projectwiki.stage8_viz" = ["template.html"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
