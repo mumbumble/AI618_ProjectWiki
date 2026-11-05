@@ -30,8 +30,13 @@ def write_json(path: Path, obj) -> None:
 def make_llm(cfg: Config, out: Path, client=None) -> Claude | None:
     if not cfg.llm:
         return None
-    if client is None and not os.environ.get("ANTHROPIC_API_KEY"):
-        raise SystemExit("ANTHROPIC_API_KEY is not set. Set it, or pass --no-llm to skip the Claude stages.")
+    if client is None and cfg.llm_backend == "cli":
+        from .claude_cli import ClaudeCodeClient
+        client = ClaudeCodeClient()
+        cfg.llm_workers = min(cfg.llm_workers, 4)  # each call is a separate CLI process
+    elif client is None and not os.environ.get("ANTHROPIC_API_KEY"):
+        raise SystemExit("ANTHROPIC_API_KEY is not set. Set it, use --llm-backend cli (logged-in Claude Code), "
+                         "or pass --no-llm to skip the Claude stages.")
     return Claude(cfg, out / "cache" / "llm.json", client=client)
 
 
@@ -42,17 +47,30 @@ def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=Non
     write_json(out / "prefs.json", asdict(prefs))
     llm = make_llm(cfg, out, llm_client)
 
+    times, t = {}, time.time()
+
+    def lap(name: str) -> None:
+        nonlocal t
+        times[name] = round(time.time() - t, 2)
+        t = time.time()
+
     record, changes = build_record(root, out, cfg, llm)  # 1-3
+    lap("1-3 record")
     groups = get_clusterer(cfg.clusterer, cfg).cluster(record, prefs)  # 4
     name_groups(groups, record, llm, cfg)
+    lap("4 clustering")
     graph = build_graph(record, groups, cfg, llm, prefs.purpose)  # 5
     write_json(out / "graph.json", graph.to_dict())
+    lap("5 graph")
     result = correct(out, cfg, record=record, graph=graph)  # 6-8
+    lap("6-8 correct, final, view")
     result["changes"] = changes
     if llm is not None:
         llm.save()
         result["llm_cost"] = llm.cost_report()
         log.info("LLM usage: %s", result["llm_cost"])
+    write_json(out / "run_info.json", {"finished": time.strftime("%Y-%m-%d %H:%M:%S"), "seconds": times,
+                                       "changes": changes, "llm": result.get("llm_cost", "off")})
     return result
 
 

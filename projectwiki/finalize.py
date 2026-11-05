@@ -1,7 +1,8 @@
 """Stage 7: final graph = stage-5 graph + the corrector's proposals + the user's explicit edits.
 
 Explicit edits always win, and they are replayed from the feedback log on every run, so they survive
-re-generation after files change.
+re-generation after files change. A corrector may rescore any edge but cannot hide imports or links,
+which are facts stated in the files; only the user can remove those.
 """
 from __future__ import annotations
 
@@ -9,6 +10,7 @@ import copy
 
 from .config import Config
 from .correct import Correction
+from .graph import STRUCTURAL
 from .schema import Edge, FeedbackEvent, Graph, Group, edge_key
 
 
@@ -22,12 +24,14 @@ def finalize(graph: Graph, correction: Correction, feedback: list[FeedbackEvent]
     for eid, s in correction.edge_scores.items():
         if eid in edges:
             edges[eid].score = s
-    for eid in correction.hide:
-        if eid in edges and edges[eid].status == "proposed":
-            edges[eid].status = "removed_by_corrector"
+    hidden = {eid for eid in correction.hide
+              if eid in edges and edges[eid].status == "proposed" and edges[eid].reason not in STRUCTURAL}
+    for eid in hidden:
+        edges[eid].status = "removed_by_corrector"
     for eid, text in correction.explanations.items():
         if eid in edges:
-            edges[eid].correction = text
+            kept = eid in correction.hide and eid not in hidden
+            edges[eid].correction = text + (" — 명시적 참조라 숨기지 않고 점수만 조정" if kept else "")
     for e in correction.new_edges:
         edges.setdefault(e.id, copy.deepcopy(e))
     for nid, gid in correction.node_groups.items():

@@ -136,6 +136,21 @@ def test_feedback_and_drift(project, tmp_path):
     again = pipeline.build(project, out, cfg, Preferences())["graph"]
     assert {e.id: e.status for e in again.edges}[key("paper.pdf", "src/train.py")] == "removed_wrong"
 
+    # 1안 method on the same feedback: a Bradley–Terry fit that rescores the untouched edges
+    cfg.corrector = "align"
+    aligned = pipeline.correct(out, cfg)["graph"]
+    note = json.loads((out / "correction.json").read_text(encoding="utf-8"))["notes"][0]
+    assert note.startswith("Bradley–Terry fit on 2 approved x 2 rejected")
+    untouched = [e for e in aligned.edges if e.origin == "ai" and e.status in ("proposed", "removed_by_corrector")]
+    assert untouched and all(0.0 <= e.score <= 1.0 for e in untouched)
+
+    # stage report covers every stage and every registered corrector
+    from projectwiki.report import report
+    page = report(out).read_text(encoding="utf-8")
+    assert "회의 파이프라인(1안 + 4안) 대비" in page and "<svg" in page
+    assert all(name in page for name in ("baseline", "drift", "align"))
+    assert page.count("유지됨") == 5
+
 
 def test_pref_clusterer_anchors(project, tmp_path):
     out = tmp_path / "out"

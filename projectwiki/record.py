@@ -152,11 +152,13 @@ def summarize(files: list[FileRecord], chunk_by_id: dict, llm: Claude, cfg: Conf
     log.info("summarized %d files", sum(1 for f in targets if f.summary))
 
 
-def encode_cached(cfg: Config, texts: list[str], cache_dir: Path) -> tuple[np.ndarray, str]:
-    """Encode with an on-disk cache keyed by text hash, so a refresh only encodes new or changed chunks."""
+def encode_cached(cfg: Config, texts: list[str], cache_dir: Path) -> tuple[np.ndarray, str, int]:
+    """Encode with an on-disk cache keyed by text hash, so a refresh only encodes new or changed chunks.
+
+    Returns (vectors, encoder id, number of texts that were actually encoded)."""
     if cfg.encoder == "tfidf":
         enc = make_encoder(cfg)
-        return enc.encode(texts), enc.id
+        return enc.encode(texts), enc.id, len(texts)
     enc_id = f"{cfg.encoder_model}@{cfg.max_length}"
     path = cache_dir / f"emb_{sha1(enc_id)[:8]}.npz"
     cache = {}
@@ -172,7 +174,7 @@ def encode_cached(cfg: Config, texts: list[str], cache_dir: Path) -> tuple[np.nd
         cache.update(zip(missing, vecs))
         cache_dir.mkdir(parents=True, exist_ok=True)
         np.savez(path, keys=np.array(list(cache)), vecs=np.stack(list(cache.values())))
-    return np.stack([cache[k] for k in keys]), enc_id
+    return np.stack([cache[k] for k in keys]), enc_id, len(missing)
 
 
 def diff_files(out: Path, files: list[FileRecord]) -> dict:
@@ -203,7 +205,7 @@ def build_record(root: Path, out: Path, cfg: Config, llm: Claude | None) -> tupl
     texts = [f"{file_by_id[c.file_id].path} | {c.locator}\n{c.text}" for c in chunks]
     summary_files = [f for f in files if f.summary]
     texts += [f"{f.path}\n{f.role}\n{f.summary}" for f in summary_files]
-    emb, enc_id = encode_cached(cfg, texts, out / "cache")
+    emb, enc_id, changes["encoded"] = encode_cached(cfg, texts, out / "cache")
     chunk_emb, summary_emb = emb[:len(chunks)], dict(zip((f.id for f in summary_files), emb[len(chunks):]))
 
     # file vector: mean of its chunk vectors, plus its summary vector when there is one

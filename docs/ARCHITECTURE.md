@@ -113,10 +113,15 @@ flowchart LR
   - 커널: k = exp(−(1−s)/τ)이고, 관계 종류가 다르면 ×0.7을 합니다 (τ=0.1).
   - 점수: score += gain·(승인 연결과의 k 평균 − 거절 연결과의 k 평균).
   - 숨김: 가장 비슷한 판정 연결이 거절된 것이고 k ≥ margin(0.2)이면 숨깁니다. 승인된 것이면 강화하고 이유를 남깁니다.
+- **`align`** (회의 1안, 피드백으로 선호 정렬):
+  - 학습 데이터: 승인한 연결(`edge_confirm`, `edge_add`)과 거절한 연결(`edge_wrong`, `edge_irrelevant`)의 모든 쌍
+  - 모델: Bradley–Terry s(e) = w·φ(e), 손실 −log σ(s(승인) − s(거절)) + L2 (`align_l2`=1.0). 학습하는 것은 w뿐입니다.
+  - 특징 φ(e): 두 파일 벡터의 원소곱(PCA 16차원), 두 파일의 코사인 유사도, 폴더 거리, 같은 그룹 여부. 사용자가 추가한 연결도 AI 연결과 같은 방식으로 표현되도록 파일 내용과 위치만 씁니다.
+  - 적용: 사용자가 건드리지 않은 연결을 다시 점수 매깁니다. 거절한 어떤 연결보다 점수가 낮으면 숨기고, 승인 평균보다 높으면 강화합니다. 새 점수는 거절 평균이 약 0.12, 승인 평균이 약 0.88이 되도록 맞춘 확률입니다.
 
 ## 7. 최종 그래프 — `finalize.py`
 
-1. 교정 방법의 제안(점수, 숨김, 새 연결, 그룹, 이유)을 적용합니다.
+1. 교정 방법의 제안(점수, 숨김, 새 연결, 그룹, 이유)을 적용합니다. 단, import와 링크는 파일에 적힌 사실이라 교정 방법이 숨길 수 없고 점수만 바뀝니다. 이런 연결은 사용자만 지울 수 있습니다.
 2. `feedback.jsonl`의 직접 편집을 순서대로 다시 적용합니다. 나중 이벤트가 앞 이벤트를 덮습니다.
    - `edge_add`: 사용자 연결이 생기고 `confirmed`가 됩니다.
    - `node_move`: 기존 그룹 id나 새 그룹 이름(`u1`, `u2`…)으로 옮깁니다.
@@ -129,33 +134,57 @@ flowchart LR
 - `view.html`: 데이터를 HTML 안에 넣은 단일 파일입니다. vis-network는 unpkg CDN에서 받으므로 인터넷이 필요합니다. 세션 중 피드백은 브라우저 localStorage에 임시 저장되고, "내보내기"로 `feedback.jsonl`을 받습니다.
 - `projectwiki obsidian <out> <vault>`: 파일마다 노트 하나를 만들고, 연결은 `[[위키링크]]`와 근거 인용으로, 그룹은 `group/<이름>` 태그와 `_groups/` 노트로 내보냅니다.
 
+## 단계별 확인 리포트 — `report.py`
+
+`projectwiki report <out>`은 `stages.html`을 만듭니다. 한 페이지에 다음이 들어갑니다.
+
+- 8단계 띠와 회의 파이프라인(1안 + 4안) 대비 판정표
+- 단계마다 실제 출력: 형식·폴더 분포, PCA 산점도, 레코드 예시, 그룹표, 후보 이유와 근거 예시, 최종 그래프 그림
+- 6단계 비교: 등록된 교정 방법(`baseline`, `drift`, `align`, 새로 추가한 방법)을 같은 그래프와 피드백으로 다시 계산해 나란히 보여줌
+- 직접 편집이 최종 그래프에 남았는지 확인하는 표, 증분 갱신 결과, 단계별 시간
+
+차트는 외부 라이브러리 없이 인라인 SVG로 그립니다.
+
+## Claude 호출 방식 — `llm.py`, `claude_cli.py`
+
+| `--llm-backend` | 인증 | 동작 |
+|---|---|---|
+| `cli` (기본) | `claude` CLI에 로그인한 구독 계정 | 요청마다 `claude -p --json-schema ...`를 실행합니다 (호출당 약 5초, 동시 4개). 이미지는 임시 PNG로 저장한 뒤 CLI의 Read 도구로 읽힙니다. 사용자 설정(hook 등)은 `--setting-sources ""`로 끕니다 |
+| `api` | `ANTHROPIC_API_KEY` | Anthropic Python SDK로 `messages.create`를 호출합니다 (동시 8개) |
+
+- 두 방식 모두 같은 JSON 스키마와 캐시를 씁니다.
+- `cli`의 비용 줄은 CLI가 알려주는 API 환산 금액이에요. 구독 계정이면 실제 청구가 아니라 사용 한도에서 차감됩니다.
+
 ## 캐시·비용·시간
 
-- **LLM 캐시**: Claude 응답은 `cache/llm.json`에 (모델, 프롬프트, 스키마, 입력) 해시로 저장합니다. 같은 입력은 다시 호출하지 않고, 실행이 끝나면 모델별 토큰 수와 예상 비용이 로그에 찍힙니다.
-- **가격** ($/MTok): Sonnet 5.5는 입력 2 / 출력 10, Haiku 5.5는 0.10 / 0.50.
-- **예제 폴더 측정값** (파일 14개, RTX 2070 SUPER, `--no-llm`):
-  - 첫 실행: 약 3분 20초. 대부분 Hugging Face 확인과 모델 로딩입니다.
+- **LLM 캐시**: Claude 응답은 `cache/llm.json`에 (모델, 프롬프트, 스키마, 입력) 해시로 저장합니다. 같은 입력은 다시 호출하지 않고, 실행이 끝나면 모델별 호출 수, 토큰 수, 비용이 로그에 찍힙니다.
+- **API 가격** ($/MTok): Sonnet 5.5는 입력 2 / 출력 10, Haiku 5.5는 0.10 / 0.50.
+- **예제 폴더 측정값** (파일 14개, RTX 2070 SUPER):
+  - `--no-llm` 첫 실행: 약 3분 20초. 대부분 Hugging Face 확인과 모델 로딩입니다.
   - 캐시가 있을 때 다시 실행: 13초
-  - Claude 단계를 켠 시간과 비용은 아직 측정하지 않았습니다.
+  - `--llm-backend cli`(Sonnet 판정 + Haiku 요약): 3분 20초, 52회 호출, API 환산 약 $1.07
+- **5단계 시간**: 연결이 많으면 리랭커 시간이 큽니다. AI618 폴더(연결 약 390개)에서 약 85초가 걸렸습니다.
 
 ## 코드 지도
 
 ```
 projectwiki/
-  cli.py          명령줄 (build / correct / view / obsidian / doctor), .env 읽기
-  pipeline.py     단계 연결, 중간 결과 저장
+  cli.py          명령줄 (build / correct / view / obsidian / report / doctor), .env 읽기
+  pipeline.py     단계 연결, 중간 결과·run_info.json 저장
   config.py       설정 기본값
   schema.py       데이터 형식
   ingest.py       1
   models.py       2 (bge-m3, bge-reranker-v2-m3)
   record.py       2–3 (요약, 그림 설명, 인코딩 캐시)
-  llm.py          Claude 호출, JSON 스키마, 캐시, 비용
+  llm.py          Claude 호출 (JSON 스키마, 캐시, 비용)
+  claude_cli.py   Claude Code CLI 백엔드 (구독 로그인)
   cluster/        4 (base, baseline, preference)
   groups.py       4 그룹 이름
   graph.py        5
-  correct/        6 (base, baseline, drift)
+  correct/        6 (base, baseline, drift, align)
   finalize.py     7
   feedback.py     피드백 로그 읽기·병합·경로 해석
   viz/            8 (template.html, html.py, obsidian.py)
+  report.py       단계별 확인 리포트 (stages.html)
   doctor.py       환경 점검
 ```

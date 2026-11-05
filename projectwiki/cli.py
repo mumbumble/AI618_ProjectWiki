@@ -31,7 +31,7 @@ def load_dotenv() -> None:
 def load_config(args) -> Config:
     cfg = Config.load(Path(args.config)) if getattr(args, "config", None) else Config()
     overrides = {"encoder": args.encoder, "clusterer": args.clusterer, "corrector": args.corrector,
-                 "llm_model": args.llm_model, "language": args.language}
+                 "llm_model": args.llm_model, "language": args.language, "llm_backend": args.llm_backend}
     for k, v in overrides.items():
         if v is not None:
             setattr(cfg, k, v)
@@ -68,6 +68,8 @@ def main(argv=None) -> None:
     b.add_argument("--encoder", choices=["bge-m3", "tfidf"])
     b.add_argument("--clusterer", help="registered name or package.module:Class")
     b.add_argument("--corrector", help="registered name or package.module:Class")
+    b.add_argument("--llm-backend", choices=["api", "cli"],
+                   help="cli: logged-in Claude Code CLI, no API key (default) / api: ANTHROPIC_API_KEY")
     b.add_argument("--llm-model", help="model for relation judgment and image descriptions")
     b.add_argument("--language", help="language of summaries and labels (default Korean)")
     b.add_argument("--no-llm", action="store_true", help="skip all Claude stages")
@@ -88,7 +90,11 @@ def main(argv=None) -> None:
     o.add_argument("out")
     o.add_argument("vault")
 
-    sub.add_parser("doctor", help="check packages, GPU, cached models and the API key")
+    sub.add_parser("doctor", help="check packages, GPU, cached models and the LLM backend")
+
+    r = sub.add_parser("report", help="write stages.html: each stage's output, checked against the meeting plan")
+    r.add_argument("out")
+    r.add_argument("--open", action="store_true")
 
     load_dotenv()
     args = p.parse_args(argv)
@@ -118,6 +124,12 @@ def main(argv=None) -> None:
         out = Path(args.out).resolve()
         final = Graph.from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
         print(f"vault: {export_obsidian(final, Record.load(out), Path(args.vault))}")
+    elif args.cmd == "report":
+        from .report import report
+        path = report(Path(args.out).resolve())
+        print(f"report: {path}")
+        if args.open:
+            webbrowser.open(path.as_uri())
 
 
 if __name__ == "__main__":

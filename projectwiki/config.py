@@ -22,6 +22,7 @@ class Config:
 
     # 3. project record (LLM enrichment)
     llm: bool = True
+    llm_backend: str = "cli"  # cli (logged-in Claude Code CLI, uses the subscription) | api (ANTHROPIC_API_KEY)
     llm_model: str = "claude-sonnet-5-5"  # relation judgment, image descriptions
     llm_small_model: str = "claude-haiku-5-5"  # file summaries, group names
     llm_effort: str = "low"
@@ -46,11 +47,12 @@ class Config:
     judge: bool = True  # LLM relation judgment on every candidate edge
     max_judge_edges: int = 2000  # cost cap; edges beyond it keep their rule-based relation
 
-    # 6-7. preference correction (experimental slot): baseline | drift
+    # 6-7. preference correction (experimental slot): baseline | drift (4안) | align (1안)
     corrector: str = "drift"
     drift_tau: float = 0.1  # kernel width on edge-pair similarity
     drift_margin: float = 0.2  # kernel value at which a similar judged edge changes this one
     drift_gain: float = 1.0  # weight of attraction minus repulsion added to the edge score
+    align_l2: float = 1.0  # L2 weight of the Bradley–Terry preference model
     min_score: float = float("-inf")  # inferred edges scoring below this are dropped
 
     def save(self, path: Path) -> None:

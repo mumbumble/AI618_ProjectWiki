@@ -19,6 +19,8 @@
    projectwiki correct runs/mine --feedback feedback.jsonl
    ```
    두 실행은 1–3단계와 Claude 응답 캐시를 각자 만듭니다. 같은 `-o` 폴더에서 방법만 바꾸면 캐시를 그대로 다시 씁니다.
+
+   교정 방법은 build를 두 번 할 필요 없이 리포트에서 바로 비교할 수 있습니다. `projectwiki report runs/mine --open`을 실행하면 6단계 표에 등록된 모든 교정 방법(baseline·drift·align·내 방법)이 같은 그래프와 피드백으로 계산돼 나란히 나옵니다.
 6. `pytest -q`가 통과하면 PR을 올립니다.
 
 `record`에서 쓸 수 있는 것:

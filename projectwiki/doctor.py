@@ -50,6 +50,12 @@ def run() -> int:
         pass
 
     key = bool(os.environ.get("ANTHROPIC_API_KEY"))
-    _line(key, "ANTHROPIC_API_KEY " + ("set" if key else "not set: Claude stages need it (or run with --no-llm)"))
-    print("ready" if good and key else "ready for --no-llm runs" if good else "fix the items marked !!")
+    _line(key, "ANTHROPIC_API_KEY " + ("set (--llm-backend api)" if key else "not set"))
+    from .claude_cli import find_claude
+    cli = find_claude()
+    _line(bool(cli), f"Claude Code CLI: {cli} (--llm-backend cli)" if cli else "Claude Code CLI not found")
+    if good and (key or cli):
+        print("ready" if key else "ready with --llm-backend cli (or --no-llm)")
+    else:
+        print("ready for --no-llm runs" if good else "fix the items marked !!")
     return 0 if good else 1

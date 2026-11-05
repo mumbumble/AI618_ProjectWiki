@@ -29,7 +29,7 @@ class Claude:
         self.effort, self.workers = cfg.llm_effort, cfg.llm_workers
         self.cache_path = cache_path
         self.cache = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else {}
-        self.usage: dict[str, list[int]] = {}
+        self.usage: dict[str, list[float]] = {}  # model -> [calls, input tokens, output tokens, reported $]
         self.lock = threading.Lock()
 
     def json(self, model: str, system: str, content, schema: dict, key: str, max_tokens: int = 4000):
@@ -57,9 +57,11 @@ class Claude:
             return None
         with self.lock:
             self.cache[k] = data
-            u = self.usage.setdefault(model, [0, 0])
-            u[0] += resp.usage.input_tokens
-            u[1] += resp.usage.output_tokens
+            u = self.usage.setdefault(model, [0, 0, 0, 0.0])
+            u[0] += 1
+            u[1] += resp.usage.input_tokens
+            u[2] += resp.usage.output_tokens
+            u[3] += getattr(resp, "cost_usd", None) or 0.0  # the CLI backend reports its own cost
         return data
 
     def map(self, fn, items: list) -> list:
@@ -75,9 +77,9 @@ class Claude:
 
     def cost_report(self) -> str:
         parts, total = [], 0.0
-        for model, (i, o) in self.usage.items():
+        for model, (n, i, o, reported) in self.usage.items():
             pin, pout = PRICES.get(model, (0.0, 0.0))
-            cost = i / 1e6 * pin + o / 1e6 * pout
+            cost = reported or i / 1e6 * pin + o / 1e6 * pout
             total += cost
-            parts.append(f"{model}: in {i:,} / out {o:,} tok (${cost:.3f})")
+            parts.append(f"{model}: {n} calls, in {i:,} / out {o:,} tok (${cost:.3f})")
         return "; ".join(parts) + f"; total ${total:.3f}" if parts else "no new LLM calls (all cached)"

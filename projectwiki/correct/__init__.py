@@ -7,15 +7,17 @@ Register it in CORRECTORS, or pass `--corrector package.module:Method`.
 """
 from ..config import Config
 from ..plugins import load_component
+from .align import AlignCorrector
 from .base import Correction, Corrector
 from .baseline import BaselineCorrector
 from .drift import DriftCorrector
 
-CORRECTORS = {"baseline": BaselineCorrector, "drift": DriftCorrector}
+CORRECTORS = {"baseline": BaselineCorrector, "drift": DriftCorrector, "align": AlignCorrector}
 
 
 def get_corrector(name: str, cfg: Config) -> Corrector:
     return load_component(name, CORRECTORS, cfg)
 
 
-__all__ = ["CORRECTORS", "Correction", "Corrector", "BaselineCorrector", "DriftCorrector", "get_corrector"]
+__all__ = ["CORRECTORS", "Correction", "Corrector", "AlignCorrector", "BaselineCorrector", "DriftCorrector",
+           "get_corrector"]
