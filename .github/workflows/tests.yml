@@ -1,0 +1,15 @@
+name: tests
+on: [push, pull_request]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Tests use the TF-IDF encoder and a fake Claude client, so torch, transformers and an API key are not needed.
+      - run: pip install numpy==2.4.6 scikit-learn==1.9.1 scipy==1.17.1 pymupdf==2.1 anthropic==2.5.0 pytest==9.2.0
+      - run: pip install -e . --no-deps
+      - run: pytest -q

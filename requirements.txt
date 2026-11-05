@@ -1,0 +1,14 @@
+# Tested together on Python 3.11 (2026-11-05). PyTorch is installed separately because the
+# wheel depends on your GPU: see scripts/setup.sh or README "설치".
+#   NVIDIA GPU (Linux / WSL / Windows): pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cu126
+#   macOS or CPU only:                  pip install torch==2.7.1
+numpy==2.4.6
+scikit-learn==1.9.1
+scipy==1.17.1
+pymupdf==2.1
+transformers==5.22.1  # needs torch>=2.6
+tokenizers==0.23.3
+safetensors==0.8.0
+huggingface_hub==2.4.0
+anthropic==2.5.0
+pydantic==2.14.2

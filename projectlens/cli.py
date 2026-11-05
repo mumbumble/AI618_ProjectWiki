@@ -1,18 +1,31 @@
-"""Command line: build, correct, view, obsidian."""
+"""Command line: build, correct, view, obsidian, doctor."""
 from __future__ import annotations
 
 import argparse
 import json
 import logging
+import os
 import webbrowser
 from pathlib import Path
 
-from . import pipeline
+from . import doctor, pipeline
 from .config import Config
 from .feedback import read_events
 from .record import Record
 from .schema import Graph, Preferences
 from .viz import export_obsidian
+
+
+def load_dotenv() -> None:
+    """Read KEY=VALUE lines from ./.env or the repository's .env without overriding the environment."""
+    for path in (Path.cwd() / ".env", Path(__file__).resolve().parents[1] / ".env"):
+        if path.is_file():
+            for line in path.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    os.environ.setdefault(k.strip(), v.strip().strip("\"'"))
+            return
 
 
 def load_config(args) -> Config:
@@ -75,7 +88,12 @@ def main(argv=None) -> None:
     o.add_argument("out")
     o.add_argument("vault")
 
+    sub.add_parser("doctor", help="check packages, GPU, cached models and the API key")
+
+    load_dotenv()
     args = p.parse_args(argv)
+    if args.cmd == "doctor":
+        raise SystemExit(doctor.run())
     logging.basicConfig(level=logging.INFO, format="[%(name)s] %(message)s")
     for noisy in ("httpx", "httpx2", "httpcore", "anthropic", "urllib3", "huggingface_hub", "filelock"):
         logging.getLogger(noisy).setLevel(logging.WARNING)

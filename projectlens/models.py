@@ -12,7 +12,11 @@ log = logging.getLogger(__name__)
 
 def _device():
     import torch
-    return "cuda" if torch.cuda.is_available() else "cpu"
+    if torch.cuda.is_available():
+        return "cuda"
+    if getattr(torch.backends, "mps", None) and torch.backends.mps.is_available():
+        return "mps"
+    return "cpu"
 
 
 def _load(cls, name: str, device: str):
