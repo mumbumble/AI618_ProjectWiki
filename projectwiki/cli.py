@@ -64,7 +64,7 @@ def main(argv=None) -> None:
     b.add_argument("root", help="project folder")
     b.add_argument("-o", "--out", help="output folder (default: <root>/.projectwiki)")
     b.add_argument("--purpose", help="the user's purpose for this project")
-    b.add_argument("--prefs", help="preferences JSON for the clustering stage (see examples/prefs.example.json)")
+    b.add_argument("--prefs", help="clustering preferences JSON; pairs.score=1-5 means desire to group together")
     b.add_argument("--config", help="JSON file with Config fields")
     b.add_argument("--encoder", choices=["bge-m3", "tfidf"])
     b.add_argument("--clusterer", help="registered name or package.module:Class")

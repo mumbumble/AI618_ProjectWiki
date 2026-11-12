@@ -31,6 +31,10 @@
 - `record.chunks`, `record.chunk_emb`: 근거 조각과 그 벡터
 - `record.resolve(path)`: 경로를 파일 id로 바꿈
 
+군집화 비교에는 `python scripts/evaluate_clustering.py <출력폴더> --test <평가쌍.json>`을 쓸 수 있습니다. `prefs.pairs`는 현재 목적에서 **같은 그룹으로 묶고 싶은 정도**(1–5)이며 테스트 쌍과 겹치면 안 됩니다. `--validation <검증쌍.json> --l2-grid 0.01 0.1 1.0`으로 `metric`의 정규화 강도를 검증 데이터에서 선택할 수 있습니다. 동일한 저장 레코드에서 `baseline`·`pref`·`metric`을 비교하므로 인코딩과 LLM 호출은 반복하지 않습니다.
+
+`--methods baseline pref metric constrained graph hdbscan`으로 추가 방법을 선택하고, `--tasks examples/onboarding.tasks.example.json --html <출력.html>`로 실제 그룹과 탐색 부담을 검토할 수 있습니다. `--sensitivity`는 고정된 설정 범위의 결과를 모두 보여주며 최적값을 고르지 않습니다. 미분류 파일을 올바른 분리로 계산하지 않으며, 참조 응집도·체크리스트 비용은 보조 지표입니다. 방법별 선호·앵커 처리 차이를 기록하고, 작은 예제의 순위를 실제 사용자 효용으로 해석하지 않습니다.
+
 ## 지킬 것
 
 - `runs/`, `.env`, 개인 프로젝트 폴더는 커밋하지 않습니다 (`.gitignore`에 있음).

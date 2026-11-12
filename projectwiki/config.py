@@ -32,10 +32,18 @@ class Config:
     describe_images: bool = True
     max_images: int = 200
 
-    # ② clustering, experimental slot (models/clustering.py): baseline | pref
+    # ② clustering: baseline | pref | metric | constrained | graph | hdbscan
     clusterer: str = "pref"
     cluster_alpha: float = 0.6  # weight of embedding distance against folder-tree distance
     cluster_pct: float = 35.0  # merge threshold, percentile of pairwise distances
+    metric_l2: float = 0.1  # shrink learned distance weights toward the content/folder prior
+    metric_use_type: bool = True  # include file-type mismatch as a third distance channel
+    graph_neighbors: int = 3  # semantic kNN edges per file before adding imports/links
+    graph_max_clusters: int = 8  # upper bound for unsupervised eigengap group-count selection
+    graph_reference_weight: float = 1.0  # extra affinity for each raw import/link file pair
+    cluster_seed: int = 0  # spectral eigensolver seed
+    hdbscan_min_cluster_size: int = 2
+    hdbscan_min_samples: int = 2  # scikit-learn counts the point itself
     name_groups: bool = True
 
     # ③ structure generation (models/structure.py)

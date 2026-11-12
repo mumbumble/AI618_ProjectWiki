@@ -14,6 +14,8 @@
 | `claude_cli.py` | 전체 | 구독 계정 백엔드: `claude -p --json-schema` 실행 (`--llm-backend cli`) |
 | `plugins.py` | 2·4단계 | 방법을 등록 이름이나 `module:Class`로 불러오기 |
 | `report.py` | 도구 | `projectwiki report` → `stages.html` (단계별 출력, 회의안 대비 판정, 교정 방법 비교) |
+| `cluster_eval.py` | 도구 | 저장된 레코드로 선택한 군집화 방법 비교. 평가 분리, 탐색 체크리스트, 노이즈·커버리지, 설정 민감도 |
+| `cluster_report.py` | 도구 | 자체 포함 HTML: 실제 그룹·중심 파일·원문, 평가 쌍과 탐색 비용·미분류 파일 비교 |
 | `doctor.py` | 도구 | `projectwiki doctor` → 패키지·GPU·모델 캐시·Claude 연결 점검 |
 | `view_template.html` | 5 시각화 | 뷰어 HTML. 안의 `applyEvents()`는 `finalize.py`와 같은 규칙을 따라야 함 |
 

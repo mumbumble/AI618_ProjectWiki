@@ -176,3 +176,30 @@ def test_plugin_and_obsidian(project, tmp_path):
     vault = export_obsidian(final, Record.load(out), tmp_path / "vault")
     note = (vault / "train.py.md").read_text(encoding="utf-8")
     assert "[[model.py]]" in note
+
+
+def test_metric_build_saves_diagnostics(project, tmp_path):
+    out = tmp_path / "metric"
+    prefs = Preferences(pairs=[{"a": "src/train.py", "b": "src/model.py", "score": 5},
+                               {"a": "notes.md", "b": "data_utils.py", "score": 1}])
+    result = pipeline.build(project, out, make_cfg(llm=False, clusterer="metric"), prefs)
+    info = json.loads((out / "clustering_info.json").read_text(encoding="utf-8"))
+    assert info["rating_meaning"] == "same_group_preference" and info["ratings"]["valid"] == 2
+    assert set(info["weights"]) == {"content", "folder", "type"}
+    assert info["train_rmse_after"] <= info["train_rmse_before"]
+    assert result["view"].exists() and (out / "final_graph.json").exists()
+    # Reusing an output for another method replaces, rather than leaves, metric diagnostics.
+    pipeline.build(project, out, make_cfg(llm=False, clusterer="pref"), prefs)
+    assert json.loads((out / "clustering_info.json").read_text(encoding="utf-8")) == {"method": "pref"}
+
+
+@pytest.mark.parametrize("method", ["constrained", "graph", "hdbscan"])
+def test_additional_clusterers_keep_all_files_in_final_graph(project, tmp_path, method):
+    out = tmp_path / method
+    prefs = Preferences(pairs=[{"a": "src/train.py", "b": "src/model.py", "score": 5}])
+    result = pipeline.build(project, out, make_cfg(llm=False, clusterer=method, corrector="baseline"), prefs)
+    info = json.loads((out / "clustering_info.json").read_text(encoding="utf-8"))
+    record = Record.load(out)
+    assert info["method"] == method
+    assert {node.id for node in result["graph"].nodes} == set(record.file_by_id)
+    assert result["view"].exists()

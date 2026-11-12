@@ -26,7 +26,7 @@ flowchart LR
 | 모델 단계 | 파일 | 하는 일 | 모델·방법 |
 |---|---|---|---|
 | 1 인코딩 | [`encoder.py`](projectwiki/models/encoder.py) | 근거 조각과 파일 요약을 벡터로 (캐시) | **bge-m3** |
-| 2 군집화 🧪 | [`clustering.py`](projectwiki/models/clustering.py) | 파일 → 그룹, 사용자 선호 반영 | `pref`: 중요 파일·쌍 1–5 평가·객관식 가이드 (회의안) / `baseline`: 선호 미반영 |
+| 2 군집화 🧪 | [`clustering.py`](projectwiki/models/clustering.py) | 파일 → 그룹, 사용자 선호 반영 | `baseline`, `pref`, `metric`, `constrained`, `graph`, `hdbscan` |
 | 3 구조 생성 | [`structure.py`](projectwiki/models/structure.py) | 후보 연결 → 근거 쌍 선택 → 관계·방향·직접/추론 판정, 인용 검증 | **bge-reranker-v2-m3**, **Claude Sonnet 5.5** |
 | 4 선호도 반영 🧪 | [`preference.py`](projectwiki/models/preference.py) | 사용자 피드백을 건드리지 않은 연결에 일반화 | `drift`: 커널 끌림/밀어냄 (회의 4안) / `align`: Bradley–Terry 선호 정렬 (회의 1안) / `baseline` |
 | 5 시각화 | [`visualization.py`](projectwiki/models/visualization.py) | 뷰어(근거 보기·교정·피드백 내보내기), Obsidian 볼트 | vis-network |
@@ -38,6 +38,8 @@ flowchart LR
 - **최종 그래프**: `finalize.py`. 교정 제안에 사용자의 직접 편집을 항상 우선해서 매번 다시 적용합니다.
 
 폴더마다 파일별 역할을 적은 `README.md`가 있습니다. 구현 상세는 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), 방법 추가 절차는 [CONTRIBUTING.md](CONTRIBUTING.md)에 있습니다.
+
+군집화의 합의 사항·구현·실험 결과·문헌·후속 검증은 [Clustering 작업 정리](docs/CLUSTERING_PROGRESS.md)에 모았습니다 (2026-11-12 기준).
 
 ## TODO
 
@@ -90,6 +92,8 @@ pip install -r requirements-dev.txt
 pip install -e . --no-deps
 python scripts/download_models.py      # bge-m3, bge-reranker-v2-m3 (약 4.5GB)
 ```
+
+군집화 실험만 할 때는 `python scripts/download_models.py --model BAAI/bge-m3`로 인코더만 받을 수 있습니다. `--cache-dir <폴더>`로 저장 위치를 지정했다면 실행 시 `HF_HUB_CACHE`도 같은 폴더로 설정합니다. 스크립트는 사용 가능한 safetensors 또는 PyTorch `.bin` 가중치를 선택하고, 다운로드 후 체크포인트가 있는지 확인합니다. 리랭커 없이 실행하려면 build에 `--no-rerank`를 추가합니다.
 
 ### Claude 연결 방식
 
@@ -159,8 +163,8 @@ projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 | 옵션 | 뜻 |
 |---|---|
 | `--purpose "..."` | 사용자 목적. 관계 판정에 들어감 |
-| `--prefs prefs.json` | 군집화 선호 입력 (중요 파일, 쌍 평가, 가이드). [예시](examples/prefs.example.json) |
-| `--clusterer` / `--corrector` | 실험 구간 방법. 군집화 `pref`(기본)·`baseline`, 교정 `drift`(기본)·`align`·`baseline`. `패키지.모듈:클래스`도 가능 |
+| `--prefs prefs.json` | 군집화 선호 입력 (중요 파일, 같은 그룹으로 묶고 싶은 정도 1–5점, 가이드). [예시](examples/prefs.example.json) |
+| `--clusterer` / `--corrector` | 군집화 `pref`(기본)·`metric`·`baseline`·`constrained`·`graph`·`hdbscan`, 교정 `drift`(기본)·`align`·`baseline`. `패키지.모듈:클래스`도 가능 |
 | `--llm-backend cli\|api` | Claude 연결 방식 (기본 `cli`) |
 | `--llm-model` | 관계 판정·그림 설명 모델 (기본 `claude-sonnet-5-5`, 아끼려면 `claude-haiku-5-5`) |
 | `--no-llm` | Claude 단계를 끔 (요약·그림 설명·그룹 이름·관계 판정) |
@@ -171,6 +175,63 @@ projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 `projectwiki report`가 만드는 `stages.html`은 회의에서 정한 흐름(파일 입력부터 시각화까지 8칸) 그대로, 칸마다 실제 출력과 판정을 보여줍니다.
 
 ![stage report](assets/stage_report.png)
+
+### 선호로 거리 학습하기 (`--clusterer metric`)
+
+`prefs.pairs`의 점수는 **현재 목적에서 두 파일을 같은 그룹으로 묶고 싶은 정도**입니다. 5점은 함께 묶고 싶음, 1점은 따로 두고 싶음이며, 목표 거리는 `(5-score)/4`입니다. `feedback.jsonl`의 연결 승인·거절과는 별도 입력입니다.
+
+`metric`은 bge-m3 벡터를 유지하면서 **내용 거리·폴더 거리·파일 형식 차이**의 가중치를 학습합니다. 가중치는 음수가 아니고 합이 1입니다. 평가한 쌍에서 학습한 계산법을 모든 파일 쌍에 적용하며, 이후 앵커 배치와 계층 군집화는 `pref`와 같습니다. 높은 점수도 같은 그룹 배치를 보장하지는 않으며, 앵커끼리는 기존 정책에 따라 별도 그룹이 됩니다.
+
+```bash
+python -m projectwiki build examples/sample_project -o runs/metric --clusterer metric --corrector baseline --prefs examples/prefs.example.json --no-llm
+python scripts/evaluate_clustering.py runs/metric --test examples/pairs.test.example.json
+```
+
+모델 다운로드 없이 빠르게 동작을 확인하려면 build에 `--encoder tfidf --no-rerank`를 추가합니다. 실제 임베딩 비교 실험은 동일한 bge-m3 레코드를 사용합니다.
+
+- `clustering_info.json`: 학습한 가중치, 초기 가중치, 유효 평가 수, 학습 전후 오차, 기본값 사용 이유를 저장합니다.
+- `--config`의 `metric_l2`(기본 0.1)는 초기 가중치에서 벗어나는 정도에 벌점을 줍니다. 양수여야 하며, 이 기본값은 실제 데이터에서 최적화한 값이 아닙니다. `metric_use_type: false`로 파일 형식 특징을 제외할 수 있습니다.
+- 초기 가중치는 `cluster_alpha` 또는 `guide.group_by`에서 정하며, 평가가 없으면 기존 내용·폴더 거리로 돌아갑니다. 학습 시에는 평가한 쌍의 거리를 다시 덮어쓰지 않습니다.
+- 잘못된 경로·자기 자신·유효 범위를 벗어난 점수는 경고 후 제외하고, 같은 쌍의 중복 평가는 방향과 무관하게 마지막 유효 평가를 사용합니다.
+- 평가 스크립트는 저장된 레코드로 `baseline`·`pref`·`metric`을 비교해 `clustering_eval.json`을 만듭니다. 새 인코딩·Claude 호출 없이 테스트 쌍의 거리 RMSE, 그룹 배치 일치율, 그룹 수, 시간을 기록합니다. 4–5점은 같은 그룹, 1–2점은 분리로 채점하고 중간 점수는 거리 오차에만 사용합니다.
+- 학습·검증·테스트 사이에 같은 파일 쌍이 있으면 중단합니다. 이 비교는 같은 프로젝트의 미평가 쌍에 대한 평가이며, 새 프로젝트로의 일반화 평가는 프로젝트 단위로 별도 분리해야 합니다.
+
+정규화 강도는 별도 검증 쌍으로 선택할 수 있습니다. `validation.json`과 `test.json`은 예제 테스트 파일처럼 평가 배열을 담습니다.
+
+```bash
+python scripts/evaluate_clustering.py runs/metric --validation validation.json --l2-grid 0.01 0.1 1.0 --test test.json
+```
+
+검증 RMSE로 `metric_l2`를 선택하고, 최종 가중치도 학습 쌍만으로 학습합니다. 테스트 쌍은 보고서 계산에만 사용합니다. 제공한 학습 2쌍·테스트 6쌍은 사용법을 보여주는 예시이므로, 실제 효과는 목적에 맞게 수집한 별도 평가로 확인해야 합니다. `projectwiki report`의 자동 방법 비교는 선호도 교정 대상이며 군집화 비교는 위 스크립트에서 수행합니다.
+
+### 프로젝트 파악에 도움이 되는 군집화 비교
+
+추가한 세 방법도 `--clusterer`로 선택할 수 있습니다. 기존 기본값은 `pref`입니다.
+
+| 방법 | 정리 방식 | 선호·앵커 처리 |
+|---|---|---|
+| `constrained` | 같은 그룹/다른 그룹 제약을 적용한 평균 연결 계층 군집화 | 4–5점은 must-link, 1–2점은 cannot-link. 앵커끼리는 분리. 모순이 있으면 분리 제약을 우선하고 충돌한 must-link를 진단에 기록 |
+| `graph` | 의미 kNN 유사도 + 원문 import·문서 링크의 spectral 군집화. 연결된 그래프의 그룹 수는 eigengap으로 선택하고, 끊긴 성분은 별도 그룹으로 유지 | 평가는 연결 가중치에 반영. 앵커별 그룹은 강제하지 않음 |
+| `hdbscan` | 밀도가 높은 파일 묶음과 미분류 파일 | 가이드·평가가 반영된 거리를 사용. 앵커별 그룹은 강제하지 않음 |
+
+`constrained`는 제약 아이디어를 현재 계층 군집화에 적용한 구현이며 COP-KMeans 재현은 아닙니다. `graph`는 구조 생성 뒤의 그래프를 가져오지 않고 `Record`의 원문 참조만 사용합니다. 세 방법 모두 같은 bge-m3 벡터를 유지합니다. HDBSCAN은 scikit-learn 1.3 이상이 필요합니다.
+
+```bash
+python scripts/evaluate_clustering.py runs/metric --test examples/pairs.test.example.json --methods baseline pref metric constrained graph hdbscan --tasks examples/onboarding.tasks.example.json --sensitivity -o runs/clustering-six/comparison.json --html runs/clustering-six/comparison.html
+```
+
+이 명령은 기존 build 출력의 레코드를 재사용합니다. `--methods`를 생략하면 이전처럼 baseline·pref·metric 세 방법만 비교합니다. HTML은 외부 라이브러리 없이 다음을 보여줍니다.
+
+- 실제 그룹 구성, 임베딩상 중심 파일과 원문 일부, 파일별 원본 링크, 미분류 파일
+- 평가 쌍별 결과와 균형 일치율, 파일·평가 쌍 커버리지. 미분류를 올바른 분리로 세지 않음
+- import·링크가 같은 그룹에 놓인 비율. 이는 graph의 입력에도 쓰이는 내부 지표이며 독립 정확도가 아님
+- 탐색 체크리스트별 방문 그룹 수와 훑을 파일 수. 미분류 대상은 개별 방문으로 계산. 큰 그룹 하나에 모두 넣으면 방문 수만 줄어들므로 두 지표를 함께 확인
+
+체크리스트는 [`onboarding.tasks.example.json`](examples/onboarding.tasks.example.json)의 `name`·`files` 배열입니다. 현재 네 과제는 학습 실행 흐름, 방법과 구현, 평가와 결과, 회의 결정·아이디어 찾기입니다. 파일 내용에서 구성한 대리 과제로, 알고리즘 입력이나 실제 사용자 연구 정답으로 사용하지 않습니다.
+
+`--sensitivity`는 사전에 정한 세 설정 범위(제약 병합 백분위 25/35/45, 그래프 이웃 수 2/3/4, HDBSCAN 최소 그룹 크기 2/3/4)를 모두 보고합니다. 같은 작은 평가셋을 반복 사용한 탐색이며 여기서 최적값을 자동 선택하지 않습니다. 기본 설정은 `config.py`의 `graph_*`, `hdbscan_*`, `cluster_seed`로 조정할 수 있습니다.
+
+방법마다 선호·앵커를 사용하는 방식이 다르므로 여섯 조건은 전체 방법 비교입니다. 군집화 알고리즘 한 요소만의 효과를 분리한 실험은 아니며, 입력 거리 RMSE도 그룹 배치 자체의 품질을 뜻하지 않습니다.
 
 ### 뷰어 (`view.html`)
 
@@ -190,6 +251,7 @@ projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 ```
 runs/sample/
   record/              프로젝트 레코드: 파일·근거 조각·벡터 (파일 입력 + ① 인코딩)
+  clustering_info.json  ② 군집화 방법·학습 진단 (metric: 가중치·오차)
   graph.json           ③ 구조 생성 결과 (교정 전)
   feedback.jsonl       누적 피드백 (실행할 때마다 다시 적용)
   correction.json      ④ 선호도 반영 결과     final_graph.json   최종 그래프
@@ -204,7 +266,7 @@ AI618_ProjectWiki/
 ├── projectwiki/
 │   ├── models/               모델 5단계 (단계마다 파일 하나)
 │   │   ├── encoder.py            1 인코딩: bge-m3
-│   │   ├── clustering.py         2 군집화 🧪: baseline · pref
+│   │   ├── clustering.py         2 군집화 🧪: baseline · pref · metric · constrained · graph · hdbscan
 │   │   ├── structure.py          3 구조 생성: reranker · Claude 판정
 │   │   ├── preference.py         4 선호도 반영 🧪: baseline · drift · align
 │   │   └── visualization.py      5 시각화: view.html · Obsidian
@@ -215,13 +277,14 @@ AI618_ProjectWiki/
 │   │   ├── finalize.py · feedback.py   최종 그래프, 피드백 로그
 │   │   ├── llm.py · claude_cli.py      Claude (API · 구독 CLI)
 │   │   ├── report.py · doctor.py       단계별 리포트, 환경 점검
+│   │   ├── cluster_eval.py · cluster_report.py  군집화 비교·탐색 과제·HTML
 │   │   └── plugins.py · view_template.html
 │   ├── pipeline.py           전체 순서
 │   ├── cli.py                build / correct / view / report / obsidian / doctor
 │   ├── config.py             모든 설정값
 │   └── schema.py             단계 사이 데이터 형식
 ├── examples/                 예제 프로젝트 폴더, prefs·feedback 예시
-├── scripts/                  setup.sh · setup.ps1 · download_models.py · make_sample_assets.py
+├── scripts/                  setup.sh · setup.ps1 · download_models.py · make_sample_assets.py · evaluate_clustering.py
 ├── tests/                    pytest (GPU·API 키 없이 실행)
 ├── docs/ARCHITECTURE.md      구현 상세
 ├── assets/                   README 그림

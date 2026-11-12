@@ -1,0 +1,18 @@
+[
+  {
+    "name": "학습 진입점에서 모델·데이터·설정까지 실행 흐름 파악",
+    "files": ["src/train.py", "src/model.py", "src/data.py", "configs/base.yaml"]
+  },
+  {
+    "name": "방법 설명과 구현·논문 초안을 함께 확인",
+    "files": ["docs/method.md", "src/model.py", "paper/draft.pdf"]
+  },
+  {
+    "name": "실험 결과를 평가 코드·그래프와 대조",
+    "files": ["experiments/results.md", "src/evaluate.py", "figures/lve_plot.png"]
+  },
+  {
+    "name": "회의 결정과 후속 아이디어 확인",
+    "files": ["notes/meeting_2026-10-29.md", "notes/ideas.md"]
+  }
+]

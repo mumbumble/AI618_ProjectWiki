@@ -82,7 +82,9 @@ def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=Non
     record = build_record(root, files, chunks, encoded)  # project record
     record.save(out)
 
-    groups = get_clusterer(cfg.clusterer, cfg).cluster(record, prefs)  # 2 clustering
+    clusterer = get_clusterer(cfg.clusterer, cfg)
+    groups = clusterer.cluster(record, prefs)  # 2 clustering
+    write_json(out / "clustering_info.json", getattr(clusterer, "diagnostics", None) or {"method": cfg.clusterer})
     name_groups(groups, record, llm, cfg)
     lap("2 clustering")
     graph = build_graph(record, groups, cfg, llm, prefs.purpose)  # 3 structure

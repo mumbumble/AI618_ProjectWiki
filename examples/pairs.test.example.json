@@ -1,0 +1,8 @@
+[
+  {"a": "src/train.py", "b": "src/model.py", "score": 5},
+  {"a": "docs/method.md", "b": "paper/draft.pdf", "score": 5},
+  {"a": "src/evaluate.py", "b": "experiments/results.md", "score": 5},
+  {"a": "figures/lve_plot.png", "b": "experiments/results.md", "score": 4},
+  {"a": "notes/meeting_2026-10-29.md", "b": "src/data.py", "score": 1},
+  {"a": "docs/related_work.md", "b": "configs/base.yaml", "score": 1}
+]

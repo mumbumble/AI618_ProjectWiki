@@ -133,6 +133,7 @@ class Preferences:
     purpose: str = ""
     anchors: list[str] = field(default_factory=list)  # files the user marked as central (paths)
     guide: dict[str, str] = field(default_factory=dict)  # multiple-choice answers on how to organize
+    # score 1-5: how much the user wants the pair in the same group for this purpose (5 = most).
     pairs: list[dict] = field(default_factory=list)  # {"a": path, "b": path, "score": 1-5}
 
 
