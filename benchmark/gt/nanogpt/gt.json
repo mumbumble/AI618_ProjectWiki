@@ -1,0 +1,1526 @@
+{
+ "project": "nanogpt",
+ "edges": [
+  {
+   "a": "README.md",
+   "b": "assets/nanogpt.jpg",
+   "relation": "describes",
+   "also": [
+    "supports",
+    "other",
+    "uses"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "# nanoGPT ![nanoGPT](assets/nanogpt.jpg) --- **Update Nov 2025** nanoGPT has a new and improved cousin called [nanochat](https://github.com/karpathy/nanochat). It is very likely you meant to use/find nanochat instead. nanoGPT (this repo) is now very old and deprecated but I will leave it up for p"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "assets/gpt2_124M_loss.png",
+   "relation": "describes",
+   "also": [
+    "supports",
+    "other",
+    "uses"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "late training loop and `model.py` a ~300-line GPT model definition, which can optionally load the GPT-2 weights from OpenAI. That's it. ![repro124m](assets/gpt2_124M_loss.png) Because the code is so simple, it is very easy to hack to your needs, train new models from scratch, or finetune pretraine"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "config/train_shakespeare_char.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "h depends on the computational resources of your system: **I have a GPU**. Great, we can quickly train a baby GPT with the settings provided in the [config/train_shakespeare_char.py](config/train_shakespeare_char.py) config file: ```sh python train.py config/train_shakespeare_char.py ``` If you p"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "bench.py",
+   "b": "model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "bench.py",
+    "span": "A much shorter version of train.py for benchmarking \"\"\" import os from contextlib import nullcontext import numpy as np import time import torch from model import GPTConfig, GPT batch_size = 12 block_size = 1024 bias = False real_data = True seed = 1337 device = 'cuda' # examples: 'cpu', 'cuda', 'cu"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "sample.py",
+   "b": "model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "sample.py",
+    "span": "\"\"\" Sample from a trained model \"\"\" import os import pickle from contextlib import nullcontext import torch import tiktoken from model import GPTConfig, GPT init_from = 'resume' # either 'resume' (from an out_dir) or a gpt2 variant (e.g. 'gpt2-xl') out_dir = 'out' # ignored if init_from is not 'resu"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "train.py",
+   "b": "model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "train.py",
+    "span": "\"\"\"\nThis training script can be run both on a single gpu in debug mode,\nand also in a larger training run with distributed data parallel (ddp).\n\nTo run on a single GPU, example:\n$ python train.py --batch_size=32 --compile=False\n\nTo run with DDP on 4 gpus on 1 node, example:\n$ torchrun --standalone -"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "train.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "ewrite of [minGPT](https://github.com/karpathy/minGPT) that prioritizes teeth over education. Still under active development, but currently the file `train.py` reproduces GPT-2 (124M) on OpenWebText, running on a single 8XA100 40GB node in about 4 days of training. The code itself is plain and reada"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "model.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "single 8XA100 40GB node in about 4 days of training. The code itself is plain and readable: `train.py` is a ~300-line boilerplate training loop and `model.py` a ~300-line GPT model definition, which can optionally load the GPT-2 weights from OpenAI. That's it. ![repro124m](assets/gpt2_124M_loss.pn"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "data/shakespeare_char/prepare.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "on the works of Shakespeare. First, we download it as a single (1MB) file and turn it from raw text into one large stream of integers: ```sh python data/shakespeare_char/prepare.py ``` This creates a `train.bin` and `val.bin` in that data directory. Now it is time to train your GPT. The size of i"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "sample.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "t-shakespeare-char`. So once the training finishes we can sample from the best model by pointing the sampling script at this directory: ```sh python sample.py --out_dir=out-shakespeare-char ``` This generates a few samples, for example:"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "data/openwebtext/prepare.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "et, in this case the [OpenWebText](https://openwebtext2.readthedocs.io/en/latest/), an open reproduction of OpenAI's (private) WebText: ```sh python data/openwebtext/prepare.py ``` This downloads and tokenizes the [OpenWebText](https://huggingface.co/datasets/openwebtext) dataset. It will create a"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "config/train_gpt2.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "k off training. To reproduce GPT-2 (124M) you'll want at least an 8X A100 40GB node and run: ```sh torchrun --standalone --nproc_per_node=8 train.py config/train_gpt2.py ``` This will run for about 4 days using PyTorch Distributed Data Parallel (DDP) and go down to loss of ~2.85. Now, a GPT-2 mode"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "config/eval_gpt2.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "elines OpenAI GPT-2 checkpoints allow us to get some baselines in place for openwebtext. We can get the numbers as follows: ```sh $ python train.py config/eval_gpt2.py $ python train.py config/eval_gpt2_medium.py $ python train.py config/eval_gpt2_large.py $ python train.py config/eval_gpt2_xl.py"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "config/eval_gpt2_medium.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "us to get some baselines in place for openwebtext. We can get the numbers as follows: ```sh $ python train.py config/eval_gpt2.py $ python train.py config/eval_gpt2_medium.py $ python train.py config/eval_gpt2_large.py $ python train.py config/eval_gpt2_xl.py ``` and observe the following losses"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "config/eval_gpt2_large.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "btext. We can get the numbers as follows: ```sh $ python train.py config/eval_gpt2.py $ python train.py config/eval_gpt2_medium.py $ python train.py config/eval_gpt2_large.py $ python train.py config/eval_gpt2_xl.py ``` and observe the following losses on train and val: | model | params | train l"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "config/eval_gpt2_xl.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "``sh $ python train.py config/eval_gpt2.py $ python train.py config/eval_gpt2_medium.py $ python train.py config/eval_gpt2_large.py $ python train.py config/eval_gpt2_xl.py ``` and observe the following losses on train and val: | model | params | train loss | val loss | | ------| ------ | --------"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "config/finetune_shakespeare.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "run in seconds. Finetuning can take very little time, e.g. on a single GPU just a few minutes. Run an example finetuning like: ```sh python train.py config/finetune_shakespeare.py ``` This will load the config parameter overrides in `config/finetune_shakespeare.py` (I didn't tune them much though)"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "bench.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## efficiency notes For simple model benchmarking and profiling, `bench.py` might be useful. It's identical to what happens in the meat of the training loop of `train.py`, but omits much of the other complexities. Note that the code by default uses [PyTorch 2.0](https://pytorch.org/get-started/pyt"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "bench.py",
+   "b": "train.py",
+   "relation": "same_method",
+   "also": [
+    "produces",
+    "other",
+    "uses"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "bench.py",
+    "span": "\"\"\" A much shorter version of train.py for benchmarking \"\"\" import os from contextlib import nullcontext import numpy as np import time import torch from model import GPTConfig, GPT batch_size = 12 block_size = 1024 bias = False real_data = True seed = 1337 device = 'cuda' # examples: 'cpu', 'cuda',"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "bench.py",
+   "b": "configurator.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "bench.py",
+    "span": "6' compile = True # use PyTorch 2.0 to compile the model to be faster profile = False # use pytorch profiler, or just simple benchmarking? exec(open('configurator.py').read()) # overrides from command line or config file torch.manual_seed(seed) torch.cuda.manual_seed(seed) torch.backends.cuda.matmul"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "configurator.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "configurator.py",
+    "span": "\"\"\" Poor Man's Configurator. Probably a terrible idea. Example usage: $ python train.py config/override_file.py --batch_size=32 this will first run config/override_file.py, then override batch_size to 32 The code in this file will be run as follows from e.g. train.py: >>> exec(open('configurator.py"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "sample.py",
+   "b": "configurator.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "sample.py",
+    "span": "bf16_supported() else 'float16' # 'float32' or 'bfloat16' or 'float16' compile = False # use PyTorch 2.0 to compile the model to be faster exec(open('configurator.py').read()) # overrides from command line or config file torch.manual_seed(seed) torch.cuda.manual_seed(seed) torch.backends.cuda.matmul"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/train_shakespeare_char.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "bench.py",
+   "b": "transformer_sizing.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/gpt2_124M_loss.png",
+   "b": "config/train_gpt2.py",
+   "relation": "supports",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/openwebtext/prepare.py",
+   "b": "data/shakespeare_char/prepare.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/shakespeare_char/prepare.py",
+   "b": "sample.py",
+   "relation": "produces",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2.py",
+   "b": "config/eval_gpt2_xl.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "bench.py",
+   "b": "scaling_laws.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/finetune_shakespeare.py",
+   "b": "config/train_shakespeare_char.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/shakespeare/prepare.py",
+   "b": "data/shakespeare_char/readme.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "bench.py",
+   "b": "data/openwebtext/prepare.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/shakespeare/prepare.py",
+   "b": "data/shakespeare/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "model.py",
+   "b": "transformer_sizing.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/train_shakespeare_char.py",
+   "b": "model.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2.py",
+   "b": "config/eval_gpt2_medium.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "sample.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_large.py",
+   "b": "config/train_gpt2.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_xl.py",
+   "b": "config/finetune_shakespeare.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_xl.py",
+   "b": "config/train_gpt2.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_xl.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/train_gpt2.py",
+   "b": "transformer_sizing.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_large.py",
+   "b": "config/finetune_shakespeare.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "bench.py",
+   "b": "sample.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/finetune_shakespeare.py",
+   "b": "data/shakespeare/prepare.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/train_gpt2.py",
+   "b": "config/train_shakespeare_char.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "model.py",
+   "b": "scaling_laws.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/train_gpt2.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/openwebtext/readme.md",
+   "b": "data/shakespeare/readme.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/shakespeare_char/prepare.py",
+   "b": "data/shakespeare_char/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_large.py",
+   "b": "config/eval_gpt2_medium.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/nanogpt.jpg",
+   "b": "model.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_large.py",
+   "b": "model.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/nanogpt.jpg",
+   "b": "train.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/finetune_shakespeare.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2.py",
+   "b": "config/eval_gpt2_large.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/train_shakespeare_char.py",
+   "b": "data/shakespeare/prepare.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/gpt2_124M_loss.png",
+   "b": "config/eval_gpt2.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_large.py",
+   "b": "config/eval_gpt2_xl.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/finetune_shakespeare.py",
+   "b": "model.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_medium.py",
+   "b": "config/train_gpt2.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2.py",
+   "b": "config/finetune_shakespeare.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/openwebtext/prepare.py",
+   "b": "train.py",
+   "relation": "produces",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/train_gpt2.py",
+   "b": "data/openwebtext/prepare.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2.py",
+   "b": "configurator.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/openwebtext/readme.md",
+   "b": "data/shakespeare_char/readme.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/train_shakespeare_char.py",
+   "b": "data/shakespeare_char/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/openwebtext/prepare.py",
+   "b": "data/shakespeare/prepare.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/shakespeare/readme.md",
+   "b": "data/shakespeare_char/prepare.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scaling_laws.ipynb",
+   "b": "transformer_sizing.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_medium.py",
+   "b": "config/eval_gpt2_xl.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/train_shakespeare_char.py",
+   "b": "data/shakespeare_char/prepare.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/shakespeare/readme.md",
+   "b": "data/shakespeare_char/readme.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/openwebtext/prepare.py",
+   "b": "data/openwebtext/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_medium.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2_large.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/gpt2_124M_loss.png",
+   "b": "train.py",
+   "relation": "produces",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scaling_laws.ipynb",
+   "b": "train.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/shakespeare/prepare.py",
+   "b": "data/shakespeare_char/prepare.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "config/eval_gpt2.py",
+   "b": "config/train_gpt2.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "train.py",
+   "b": "transformer_sizing.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "data/shakespeare_char/prepare.py",
+   "b": "train.py",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The char-level data and meta.pkl are consumed by train.py in the quick-start; analogous to the openwebtext link.",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "transformer_sizing.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "README links to the sizing and scaling notebooks as supporting analysis.",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "assets/gpt2_124M_loss.png",
+   "b": "config/eval_gpt2_xl.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "configurator.py",
+   "b": "data/shakespeare/prepare.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "assets/nanogpt.jpg",
+   "b": "bench.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "config/eval_gpt2_xl.py",
+   "b": "data/openwebtext/prepare.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "assets/nanogpt.jpg",
+   "b": "transformer_sizing.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "configurator.py",
+   "b": "data/openwebtext/readme.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "data/openwebtext/readme.md",
+   "b": "data/shakespeare/prepare.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "assets/nanogpt.jpg",
+   "b": "data/shakespeare/prepare.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "config/eval_gpt2_large.py",
+   "b": "data/openwebtext/prepare.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "assets/gpt2_124M_loss.png",
+   "b": "config/eval_gpt2_medium.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "config/finetune_shakespeare.py",
+   "b": "data/openwebtext/readme.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "config/eval_gpt2_xl.py",
+   "b": "scaling_laws.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "config/train_shakespeare_char.py",
+   "b": "data/openwebtext/readme.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "data/shakespeare/prepare.py",
+   "b": "model.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "config/eval_gpt2.py",
+   "b": "data/openwebtext/readme.md",
+   "source": "review",
+   "note": "Tenuous link between an eval config and a dataset readme."
+  },
+  {
+   "a": "config/eval_gpt2_xl.py",
+   "b": "sample.py",
+   "source": "review",
+   "note": "Eval config for XL has no particular link to sample.py."
+  },
+  {
+   "a": "config/eval_gpt2_medium.py",
+   "b": "config/train_shakespeare_char.py",
+   "source": "review",
+   "note": "Unrelated eval vs char-training config"
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "repo": "karpathy/nanoGPT",
+  "commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
+  "code_license": "MIT",
+  "papers": [],
+  "pool_size": 96,
+  "reviewed": 0,
+  "review_agreement_related_vs_not": null,
+  "labeler": "claude-sonnet-5-5 first pass, human review",
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    4,
+    3,
+    4
+   ],
+   "summaries": [
+    "The graph captures the main structure well: README hub, train/model/configurator core, configs feeding train.py, and prepare/readme pairs. A few links are wrong or odd (shakespeare_char prepare producing sample.py, config describing a readme, bench using a prepare script), and some obvious links are missing (train.py to configurator is present, but train.py to data prepare scripts and README to the notebooks).",
+    "The graph captures the core structure well (README describes files, train/model/configurator/sample dependencies, config-to-train links, prepare-to-readme links). It has some odd links: data prepare \"produces\" sample.py or train.py, model \"describes\" a notebook, and eval-only configs \"using\" model.py, plus the notebook link to config/train_gpt2.py.",
+    "The graph captures the main structure well: README hub, config→train.py, train/model/sample/configurator dependencies, and data prepare↔readme pairs. A few links are misdirected or weak (bench using data prepare, shakespeare_char prepare \"produces\" sample.py, model \"describes\" a notebook), and some links to the README are missing."
+   ],
+   "proposed": 30,
+   "applied": [
+    {
+     "op": "weaken",
+     "a": "data/shakespeare_char/prepare.py",
+     "b": "sample.py",
+     "relation": "produces",
+     "votes": 2,
+     "reasons": [
+      "prepare.py produces meta.pkl used by sample.py only indirectly (optional vocab lookup); not a strong link",
+      "prepare.py produces meta.pkl that sample.py can optionally read, but the link is indirect."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "bench.py",
+     "b": "data/openwebtext/prepare.py",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "bench.py only optionally reads the bin file produced by prepare.py; indirect dependency.",
+      "bench only optionally reads train.bin; it does not run prepare.py."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "data/shakespeare_char/prepare.py",
+     "b": "train.py",
+     "relation": "produces",
+     "votes": 2,
+     "reasons": [
+      "The char-level data and meta.pkl are consumed by train.py in the quick-start; analogous to the openwebtext link.",
+      "Produces train.bin/val.bin that train.py reads for the shakespeare_char example"
+     ]
+    },
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "transformer_sizing.ipynb",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "README links to the sizing and scaling notebooks as supporting analysis.",
+      "README references the transformer sizing notebook for FLOPs/MFU analysis."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "model.py",
+     "b": "transformer_sizing.ipynb",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "The notebook analyzes the GPT-2 architecture theoretically; it is a loose conceptual link, not documentation of model.py.",
+      "The notebook analyzes the GPT-2 architecture theoretically; the link is loose and 'describes' is odd."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "config/eval_gpt2.py",
+     "b": "data/openwebtext/readme.md",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "Tenuous link between an eval config and a dataset readme.",
+      "Generic similarity only"
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "config/eval_gpt2_xl.py",
+     "b": "sample.py",
+     "relation": "same_topic",
+     "votes": 3,
+     "reasons": [
+      "Eval config for XL has no particular link to sample.py.",
+      "Eval config has no link to sample.py",
+      "Only a generic topical similarity; no meaningful link."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "config/eval_gpt2_medium.py",
+     "b": "config/train_shakespeare_char.py",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "Unrelated eval vs char-training config",
+      "Eval config for pretrained GPT-2 vs char Shakespeare training; not meaningfully related."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 5,
+   "key_links": 16,
+   "required_before": 41,
+   "notes": [
+    "nanoGPT는 model.py와 train.py를 핵심으로 하고, config/의 설정 파일이 configurator를 통해 학습·평가를 지정하며, data/ 전처리 스크립트가 train.bin을 만들어 주고 README와 노트북이 이를 설명하는 구조입니다.",
+    "nanoGPT는 model.py와 train.py(+configurator, sample, bench)를 중심으로, config 파일이 학습·평가 설정을 덮어쓰고 data/*/prepare.py가 만든 bin 데이터를 학습에 공급하며, README와 노트북이 이를 설명·분석하는 구조입니다.",
+    "nanoGPT는 model.py·train.py·sample.py 핵심 코드를 중심으로, config 파일이 train.py의 설정을 덮어쓰고 data/*/prepare.py가 학습 데이터를 만들며, README와 노트북이 이를 설명하는 구조입니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "데이터 준비",
+   "members": [
+    "data/openwebtext/prepare.py",
+    "data/openwebtext/readme.md",
+    "data/shakespeare/prepare.py",
+    "data/shakespeare/readme.md",
+    "data/shakespeare_char/prepare.py",
+    "data/shakespeare_char/readme.md"
+   ]
+  },
+  {
+   "name": "모델·학습 코드",
+   "members": [
+    "bench.py",
+    "configurator.py",
+    "model.py",
+    "sample.py",
+    "train.py"
+   ]
+  },
+  {
+   "name": "평가 설정 (config)",
+   "members": [
+    "config/eval_gpt2.py",
+    "config/eval_gpt2_large.py",
+    "config/eval_gpt2_medium.py",
+    "config/eval_gpt2_xl.py"
+   ]
+  },
+  {
+   "name": "문서 및 이미지",
+   "members": [
+    "README.md",
+    "assets/gpt2_124M_loss.png",
+    "assets/nanogpt.jpg"
+   ]
+  },
+  {
+   "name": "학습 설정 (config)",
+   "members": [
+    "config/finetune_shakespeare.py",
+    "config/train_gpt2.py",
+    "config/train_shakespeare_char.py"
+   ]
+  },
+  {
+   "name": "분석 노트북",
+   "members": [
+    "scaling_laws.ipynb",
+    "transformer_sizing.ipynb"
+   ]
+  }
+ ]
+}

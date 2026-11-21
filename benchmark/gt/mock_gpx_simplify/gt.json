@@ -1,0 +1,1670 @@
+{
+ "project": "mock_gpx_simplify",
+ "edges": [
+  {
+   "a": "trackslim/__init__.py",
+   "b": "trackslim/core.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "trackslim/__init__.py",
+    "span": "\"\"\"trackslim: simplify GPS tracks while keeping turns and elevation changes.\n\ntrackslim reads GPX 1.1 tracks, reduces the number of points with the\nTurn-Aware Elevation-Weighted Douglas-Peucker algorithm (TAEW-DP), and\nwrites the result back out as GPX. The library uses only the standard\nlibrary, so"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "trackslim/__init__.py",
+   "b": "trackslim/io.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "trackslim/__init__.py",
+    "span": "\"\"\"trackslim: simplify GPS tracks while keeping turns and elevation changes.\n\ntrackslim reads GPX 1.1 tracks, reduces the number of points with the\nTurn-Aware Elevation-Weighted Douglas-Peucker algorithm (TAEW-DP), and\nwrites the result back out as GPX. The library uses only the standard\nlibrary, so"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "trackslim/cli.py",
+   "b": "trackslim/core.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "trackslim/cli.py",
+    "span": "port argparse import sys from pathlib import Path try: import tomllib except ImportError: # Python 3.9 and 3.10 import tomli as tomllib from core import Simplifier, compression_ratio from io import read_gpx, write_gpx from plugins import PLUGINS DEFAULT_CONFIG = Path(__file__).resolve().par"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "trackslim/cli.py",
+   "b": "trackslim/io.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "trackslim/cli.py",
+    "span": "or trackslim. Examples: trackslim simplify ride.gpx ride_small.gpx --tolerance 8.0 trackslim simplify hike.gpx hike_small.gpx --plugin elevation_guard trackslim stats hike.gpx \"\"\" import argparse import sys from pathlib import Path try: import tomllib except ImportError: # Python 3"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "trackslim/cli.py",
+   "b": "configs/default.toml",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "trackslim/cli.py",
+    "span": "mpression_ratio from io import read_gpx, write_gpx from plugins import PLUGINS DEFAULT_CONFIG = Path(__file__).resolve().parent.parent / \"configs\" / \"default.toml\" if __name__ == \"__main__\": sys.exit(main())"
+   },
+   "source": "designed",
+   "note": "explicit: the default config path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "trackslim/plugins/elevation_guard.py",
+   "b": "trackslim/core.py",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "trackslim/plugins/elevation_guard.py",
+    "span": "erts original points wherever the cumulative climb of the simplified track drifts from the original by more than ``max_ele_error_m`` metres. \"\"\" from trackslim.core import Simplifier, Track PLUGIN_NAME = \"elevation_guard\""
+   },
+   "source": "designed",
+   "note": "import: subclasses a core class",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "tests/test_core.py",
+   "b": "trackslim/core.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tests/test_core.py",
+    "span": "\"\"\"Unit tests for the TAEW-DP core algorithm.\"\"\" import pytest from trackslim.core import Simplifier, Track, TrackPoint, turn_angle_deg"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "tests/test_io.py",
+   "b": "trackslim/io.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tests/test_io.py",
+    "span": "\"\"\"Unit tests for GPX reading and writing.\"\"\" from datetime import timedelta import pytest from trackslim.io import read_gpx, write_gpx, parse_time from trackslim import Track, TrackPoint GPX_NS = \"http://www.topografix.com/GPX/1/1\" SEG_A = [(37.5000, 127.0000, 50), (37.5010, 127.0010, 55), (37.5020"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "trackslim/core.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "benchmarks/bench_speed.py",
+    "span": "s/bench_speed.py --version 0.4.0 \"\"\" import argparse import csv import math import random import statistics import time from pathlib import Path from trackslim.core import Simplifier, Track, TrackPoint SIZES = [1000, 10000, 100000] REPEATS = 5 SEED = 2026 RESULTS = Path(__file__).resolve().parent /"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "benchmarks/results.csv",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "benchmarks/bench_speed.py",
+    "span": "Simplifier. Times Simplifier.simplify on random-walk tracks of increasing size. Each size is run REPEATS times and the median is kept. Results go to benchmarks/results.csv as n_points,version,seconds. Rows recorded for other versions are kept, so older runs stay in the file. Usage: python benc"
+   },
+   "source": "designed",
+   "note": "explicit: writes the results CSV at its path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "docs/design.md",
+   "b": "trackslim/core.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/design.md",
+    "span": "turns and erase elevation peaks. trackslim keeps both. Its core algorithm is Turn-Aware Elevation-Weighted Douglas-Peucker (TAEW-DP), implemented in trackslim/core.py. The package is named `trackslim` on PyPI, is MIT licensed, and supports Python 3.9 and newer."
+   },
+   "source": "designed",
+   "note": "explicit: names the core module file and its algorithm",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/design.md",
+   "b": "trackslim/io.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: describes the reader/writer module's functions and responsibilities without naming the file",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/design.md",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: describes the plugin mechanism and this plugin's purpose",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "docs/api.md",
+   "b": "trackslim/__init__.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: documents exactly the functions the package exports",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "trackslim/cli.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Command-line usage The `trackslim` console script is installed with the package. The CLI lives in `trackslim/cli.py`."
+   },
+   "source": "designed",
+   "note": "explicit: shows the CLI entry point file and its commands",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "examples/demo.ipynb",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "ce of 5.0 m: - A 12,480-point track simplifies to 1,106 points (compression ratio 0.911), with a total ascent error of 1.8 m. The demo notebook in `examples/demo.ipynb` walks through a sample ridge track: 1,842 points become 311 points at tolerance 8.0 (compression ratio about 0.831)."
+   },
+   "source": "designed",
+   "note": "explicit: points to the demo notebook",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "trackslim/__init__.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "examples/demo.ipynb",
+    "span": "import trackslim print(\"trackslim version:\", trackslim.__version__) print(\"Public API:\", \", \".join(sorted(trackslim.__all__ if hasattr(trackslim, \"__all__\") else [\"read_gpx\", \"write_gpx\", \"simplify_track\", \"Simplifier\", \"Track\", \"TrackPoint\", \"compression_ratio\"])))"
+   },
+   "source": "designed",
+   "note": "import: `import trackslim`",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "issues/issue_37.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: a version entry says the bug was fixed (same symptom and #number)",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "issues/issue_37.md",
+   "b": "trackslim/io.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the bug is in the reader's behavior (its function names), the file is not named",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "tests/test_io.py",
+   "b": "issues/issue_37.md",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: a regression test reproduces the reported symptom",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notes/roadmap.md",
+   "b": "docs/design.md",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: plans changes to the documented architecture",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "issues/issue_37.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/dev_meeting.md",
+    "span": "## 2. 이슈 #37 검토 - 상세 내용은 issues/issue_37.md 참고. - 현상: `<trkseg>`가 2개 이상인 GPX 파일을 `read_gpx`로 읽으면 마지막 트랙포인트가 빠진다. - 원인: `_read_trkpts`에서 두 번째 이후 세그먼트마다 `points[:-1]`을 사용하고 있었다. 그래서 세그먼트마다 마지막 점이 하나씩 사라졌다. - 재현 예시: 세그먼트 A(3점) + 세그먼트 B(3점)을 읽으면 6점이어야 하는데 5점이 반환된다. - A: (37.5000, 127.0000, 50), (37.5"
+   },
+   "source": "designed",
+   "note": "explicit: discusses the bug report (its path) and who fixes it",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "benchmarks/results.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: reviews the benchmark numbers",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "tests/test_io.py",
+   "b": "trackslim/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tests/test_io.py",
+    "span": "\"\"\"Unit tests for GPX reading and writing.\"\"\" from datetime import timedelta import pytest from trackslim.io import read_gpx, write_gpx, parse_time from trackslim import Track, TrackPoint GPX_NS = \"http://www.topografix.com/GPX/1/1\" SEG_A = [(37.5000, 127.0000, 50), (37.5010, 127.0010, 55), (37.5020"
+   },
+   "source": "static-analysis",
+   "note": "incidental imports",
+   "personas": []
+  },
+  {
+   "a": "trackslim/cli.py",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "CLI loads the plugin via --plugin elevation_guard; the default config also names it.",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "README has a section on the elevation guard plugin.",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "configs/default.toml",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "README documents the default parameters set in the config.",
+   "personas": []
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "benchmarks/results.csv",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The 0.4.0 changelog reports the performance improvement recorded in the results.",
+   "personas": []
+  },
+  {
+   "a": "docs/api.md",
+   "b": "trackslim/core.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "API reference documents Simplifier, TrackPoint and the TAEW-DP error formula implemented in core.",
+   "personas": []
+  },
+  {
+   "a": "docs/api.md",
+   "b": "trackslim/io.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "API reference documents read_gpx and write_gpx implemented in io.",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "CHANGELOG.md",
+   "b": "README.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "benchmarks/bench_speed.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "configs/default.toml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "docs/api.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "docs/design.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "examples/demo.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "notes/conference_trip.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "notes/dev_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "notes/roadmap.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "CHANGELOG.md",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "benchmarks/bench_speed.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "benchmarks/results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "docs/api.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "docs/design.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "issues/issue_37.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/conference_trip.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/dev_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/roadmap.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "configs/default.toml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "docs/api.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "docs/design.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "examples/demo.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "issues/issue_37.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "notes/conference_trip.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "notes/dev_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "notes/roadmap.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/bench_speed.py",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "configs/default.toml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "docs/api.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "docs/design.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "examples/demo.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "issues/issue_37.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "notes/conference_trip.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "notes/roadmap.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "benchmarks/results.csv",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "docs/api.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "docs/design.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "examples/demo.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "issues/issue_37.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "notes/conference_trip.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "notes/dev_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "notes/roadmap.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/default.toml",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "docs/design.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "examples/demo.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "issues/issue_37.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "notes/conference_trip.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "notes/dev_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "notes/roadmap.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/api.md",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/design.md",
+   "b": "examples/demo.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/design.md",
+   "b": "issues/issue_37.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/design.md",
+   "b": "notes/conference_trip.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/design.md",
+   "b": "notes/dev_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/design.md",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/design.md",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/design.md",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/design.md",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/design.md",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "issues/issue_37.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "notes/conference_trip.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "notes/dev_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "notes/roadmap.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "examples/demo.ipynb",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "issues/issue_37.md",
+   "b": "notes/conference_trip.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "issues/issue_37.md",
+   "b": "notes/roadmap.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "issues/issue_37.md",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "issues/issue_37.md",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "issues/issue_37.md",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "issues/issue_37.md",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "issues/issue_37.md",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "issues/issue_37.md",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/conference_trip.md",
+   "b": "notes/dev_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/conference_trip.md",
+   "b": "notes/roadmap.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/conference_trip.md",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/conference_trip.md",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/conference_trip.md",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/conference_trip.md",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/conference_trip.md",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/conference_trip.md",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/conference_trip.md",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/conference_trip.md",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "notes/roadmap.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/dev_meeting.md",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/roadmap.md",
+   "b": "scratch/old_prototype.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/roadmap.md",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/roadmap.md",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/roadmap.md",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/roadmap.md",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/roadmap.md",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/roadmap.md",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/roadmap.md",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "scratch/old_prototype.py",
+   "b": "tests/test_core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "scratch/old_prototype.py",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "scratch/old_prototype.py",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "scratch/old_prototype.py",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "scratch/old_prototype.py",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "scratch/old_prototype.py",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "scratch/old_prototype.py",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "tests/test_core.py",
+   "b": "tests/test_io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "tests/test_core.py",
+   "b": "trackslim/__init__.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "tests/test_core.py",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "tests/test_core.py",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "tests/test_core.py",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "tests/test_io.py",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "tests/test_io.py",
+   "b": "trackslim/core.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "tests/test_io.py",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "trackslim/__init__.py",
+   "b": "trackslim/cli.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "trackslim/__init__.py",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "trackslim/core.py",
+   "b": "trackslim/io.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "trackslim/io.py",
+   "b": "trackslim/plugins/elevation_guard.py",
+   "source": "designed",
+   "note": ""
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "family": "tool",
+  "topic": "An open-source Python library that simplifies GPS tracks (GPX files) while preserving turns and elevation changes.",
+  "generator": "benchmark/mock/make_mock.py (claude-sonnet-5-5)",
+  "closed_world": true,
+  "hard_negatives": [
+   "scratch/old_prototype.py|trackslim/core.py",
+   "notes/conference_trip.md|notes/dev_meeting.md"
+  ],
+  "check": {
+   "planted": 23,
+   "cue_ok": 15,
+   "cue_lost": [],
+   "cue_gained": [],
+   "incidental": [
+    "tests/test_io.py -> trackslim/__init__.py"
+   ]
+  },
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    4,
+    4,
+    4
+   ],
+   "summaries": [
+    "The graph captures the core code dependencies, docs, tests and the issue/meeting trail well. It misses a few obvious links (README to the plugin and API docs, CLI to the plugin, bench results to the changelog) and a couple of links are slightly off.",
+    "The graph captures the main code, docs, tests and benchmark relationships well, and correctly isolates the unrelated scratch and trip-note files. A few clear links are missing (README to the elevation guard plugin and config, the changelog to the benchmark results, the CLI to the plugin) and a couple of existing links are slightly mislabeled or weak.",
+    "The graph captures the main code, docs, tests and benchmark relationships well, and the unrelated files (conference trip notes, old prototype) are correctly isolated. A few obvious links are missing: README to the elevation guard plugin and config, the CLI to the plugin, and the changelog to the benchmark results."
+   ],
+   "proposed": 24,
+   "applied": [
+    {
+     "op": "add",
+     "a": "trackslim/cli.py",
+     "b": "trackslim/plugins/elevation_guard.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "CLI loads the plugin via --plugin elevation_guard; the default config also names it.",
+      "The CLI --plugin elevation_guard option loads this plugin.",
+      "CLI loads the plugin via --plugin elevation_guard."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "trackslim/plugins/elevation_guard.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "README has a section on the elevation guard plugin.",
+      "README has a dedicated elevation guard plugin section describing this module.",
+      "README has a section on the elevation guard plugin."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "configs/default.toml",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "README documents the default parameters set in the config.",
+      "README documents default parameters and the config file used by the CLI.",
+      "README documents default parameters that the config defines."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "CHANGELOG.md",
+     "b": "benchmarks/results.csv",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "The 0.4.0 changelog reports the performance improvement recorded in the results.",
+      "0.4.0 performance improvement is reflected in the benchmark results."
+     ]
+    },
+    {
+     "op": "strengthen",
+     "a": "issues/issue_37.md",
+     "b": "tests/test_io.py",
+     "relation": "supports",
+     "votes": 2,
+     "reasons": [
+      "The issue explicitly names the regression test test_multi_segment_keeps_last_point.",
+      "The issue names the regression test test_multi_segment_keeps_last_point, which lives in test_io.py."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "docs/api.md",
+     "b": "trackslim/core.py",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "API reference documents Simplifier, TrackPoint and the TAEW-DP error formula implemented in core.",
+      "API doc documents Simplifier and the TAEW-DP error formula implemented in core."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "docs/api.md",
+     "b": "trackslim/io.py",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "API reference documents read_gpx and write_gpx implemented in io.",
+      "API doc documents read_gpx and write_gpx implemented in io."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 5,
+   "key_links": 12,
+   "required_before": 22,
+   "notes": [
+    "trackslim 라이브러리는 core·io·플러그인 코드를 패키지 진입점이 묶고 CLI와 설정이 이를 사용하며, 테스트·벤치마크·예제가 검증하고 문서·이슈·회의록이 이를 설명하는 구조입니다.",
+    "trackslim 라이브러리는 core·io·플러그인 코드를 중심으로 CLI와 설정이 이를 사용하고, 테스트와 벤치마크가 검증하며, 문서·예제·이슈·회의록이 이를 설명하는 구조입니다.",
+    "trackslim 패키지(core·io·플러그인)를 중심으로 CLI/설정, 테스트, 벤치마크가 이를 사용하고, 문서·예제와 이슈·회의·변경 이력이 이를 설명하는 구조입니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "문서와 예제",
+   "members": [
+    "CHANGELOG.md",
+    "README.md",
+    "docs/api.md",
+    "docs/design.md",
+    "examples/demo.ipynb"
+   ]
+  },
+  {
+   "name": "핵심 라이브러리 코드",
+   "members": [
+    "trackslim/__init__.py",
+    "trackslim/core.py",
+    "trackslim/io.py",
+    "trackslim/plugins/elevation_guard.py"
+   ]
+  },
+  {
+   "name": "이슈·회의·로드맵",
+   "members": [
+    "issues/issue_37.md",
+    "notes/dev_meeting.md",
+    "notes/roadmap.md"
+   ]
+  },
+  {
+   "name": "CLI와 설정",
+   "members": [
+    "configs/default.toml",
+    "trackslim/cli.py"
+   ]
+  },
+  {
+   "name": "벤치마크와 결과",
+   "members": [
+    "benchmarks/bench_speed.py",
+    "benchmarks/results.csv"
+   ]
+  },
+  {
+   "name": "테스트",
+   "members": [
+    "tests/test_core.py",
+    "tests/test_io.py"
+   ]
+  },
+  {
+   "name": "관련 없음",
+   "members": [
+    "notes/conference_trip.md",
+    "scratch/old_prototype.py"
+   ]
+  }
+ ]
+}

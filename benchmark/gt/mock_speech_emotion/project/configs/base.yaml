@@ -1,0 +1,70 @@
+# Default hyperparameters for ProsodySER on KoEn-Emo
+# Experiment configs inherit from this file and override only what they change.
+
+project: prosody_ser
+seed: 1234
+device: cuda:0
+
+data:
+  corpus: koen_emo_corpus
+  sample_rate: 16000
+  n_mels: 80
+  win_length_ms: 25
+  hop_length_ms: 10
+  min_duration_s: 1.2
+  max_duration_s: 7.5
+  split_ratio: [0.70, 0.15, 0.15]   # train / val / test, speaker-independent
+  num_classes: 6
+  emotions: [neutral, happy, sad, angry, fearful, surprised]
+  languages: [ko, en]
+  num_workers: 4
+  noise:
+    type: babble
+    test_snr_db: [20, 10, 5, 0]
+
+prosody:
+  feature_dim: 6                    # logf0_z, energy_db, voiced, d_logf0, d_energy, d_voiced
+  hidden_dim: 128
+  kernel_size: 5
+  num_layers: 2
+  speaker_norm_f0: true
+
+model:
+  conv_stem_layers: 2
+  conv_stride: 2
+  d_model: 256
+  num_layers: 6
+  num_heads: 4
+  dropout: 0.1
+  pooling_heads: 4
+  lambda_init: 0.5                  # learnable prosody bias weight, initial value
+  prosody_proj_dim: 128             # d_model / 2
+
+train:
+  optimizer: adamw
+  lr: 3.0e-4                        # same for all parameters
+  weight_decay: 0.01
+  batch_size: 32
+  epochs: 20
+  warmup_steps: 500
+  lr_schedule: cosine
+  grad_clip: 1.0
+  label_smoothing: 0.1
+  num_workers_eval: 2
+
+loss:
+  lang_loss_weight: 0.0             # base default; the bilingual experiment sets 0.2
+  grl_ramp_epochs: 5                # reversal strength ramps 0 -> 1 (DANN-style)
+
+eval:
+  metric: unweighted_accuracy       # UA, mean per-class recall, reported in percent
+  secondary_metric: weighted_accuracy
+  bootstrap_resamples: 1000
+  confidence_level: 0.95
+  checkpoint_metric: val_ua
+
+logging:
+  log_dir: logs
+  log_every_steps: 100
+  checkpoint_dir: checkpoints
+  experiment_name: base

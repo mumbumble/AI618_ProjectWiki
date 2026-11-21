@@ -1,0 +1,3018 @@
+{
+ "project": "mock_robot_grasp",
+ "edges": [
+  {
+   "a": "src/train.py",
+   "b": "src/graspdr_policy.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "nfigs/base.yaml \"\"\" import argparse import time from datetime import datetime from pathlib import Path import torch from torch.optim import Adam from graspdr_policy import GraspPolicy from data import StructuredRandomizer, build_datasets from utils import load_config, set_seed, make_logger ROLLOUT_S"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "src/data.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "\"\"\"Training entry point for GraspDR. Reads a YAML config (inherits chains are resolved by load_config), builds the object datasets, the structured randomizer and the GraspPolicy, then runs PPO with the contact auxiliary loss and the range curriculum. Usage: python src/train.py --config configs"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "src/utils.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "port Path import torch from torch.optim import Adam from graspdr_policy import GraspPolicy from data import StructuredRandomizer, build_datasets from utils import load_config, set_seed, make_logger ROLLOUT_STEPS = 32 MINIBATCH = 4096 CLIP = 0.2 GAE_LAMBDA = 0.95 VF_COEF = 0.5 ENT_COEF = 0.01 LOG_EVE"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/graspdr_policy.py",
+   "b": "src/contact_reward.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/graspdr_policy.py",
+    "span": "ees the privileged physics parameters theta; the actor never does. \"\"\" import torch import torch.nn as nn from torch.distributions import Normal from contact_reward import ContactAwareReward"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/graspdr_policy.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/evaluate.py",
+    "span": "fidence interval, and writes the rows to results/main_results.csv. \"\"\" import argparse import csv import math import os import torch import yaml from graspdr_policy import GraspPolicy from data import StructuredRandomizer, make_eval_env COLUMNS = [\"method\", \"randomization_range\", \"success_rate\", \"ci"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/data.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/evaluate.py",
+    "span": "o results/main_results.csv. \"\"\" import argparse import csv import math import os import torch import yaml from graspdr_policy import GraspPolicy from data import StructuredRandomizer, make_eval_env COLUMNS = [\"method\", \"randomization_range\", \"success_rate\", \"ci95_half_width\", \"n_episodes\"] if __name"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "configs/base.yaml",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "ured randomizer and the GraspPolicy, then runs PPO with the contact auxiliary loss and the range curriculum. Usage: python src/train.py --config configs/base.yaml \"\"\" import argparse import time from datetime import datetime from pathlib import Path import torch from torch.optim import Adam fro"
+   },
+   "source": "designed",
+   "note": "explicit: the default value of --config is the base config path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "configs/base.yaml",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "configs/sdr_contact_panda.yaml",
+    "span": "# Main GraspDR experiment: Panda arm, tabletop_objs_v2, seed 3 # Inherits all defaults from base.yaml (PPO, reward weights, SRS, curriculum). # Only the values that differ for this experiment are set here. inherits: base.yaml # Experiment identity experiment_name: graspdr_main_panda description: >"
+   },
+   "source": "designed",
+   "note": "explicit: first line: `inherits: base.yaml`",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "results/main_results.csv",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/evaluate.py",
+    "span": "d-out grasp episodes with shifted physics, reports the grasp success rate with a 95% normal-approximation confidence interval, and writes the rows to results/main_results.csv. \"\"\" import argparse import csv import math import os import torch import yaml from graspdr_policy import GraspPolicy from da"
+   },
+   "source": "designed",
+   "note": "explicit: writes the main results CSV at its path",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "results/main_results.csv",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/plot_results.py",
+    "span": "\"\"\"Plot grasp success rate vs. randomization range for the main GraspDR results. Reads results/main_results.csv and writes the Figure 2 PNG used in the paper. Run from the repository root: python src/plot_results.py \"\"\" import csv import os from collections import defaultdict import matplotlib"
+   },
+   "source": "designed",
+   "note": "explicit: reads the main results CSV at its path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "figures/success_rate_vs_randomization_range.png",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/plot_results.py",
+    "span": "tions import defaultdict import matplotlib matplotlib.use(\"Agg\") import matplotlib.pyplot as plt RESULTS_CSV = \"results/main_results.csv\" FIG_PATH = \"figures/success_rate_vs_randomization_range.png\" METHOD_ORDER = [\"GraspDR\", \"ADR-Grasp\", \"SimBridge\", \"Uniform DR\", \"No DR\"] STYLE = { \"GraspDR\":"
+   },
+   "source": "designed",
+   "note": "explicit: saves the main figure at its path",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "logs/train_2026-09-12.log",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: writes logs/train_<date>.log built from a date pattern; the literal log file name never appears",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "configs/sdr_contact_panda.yaml",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "logs/train_2026-09-12.log",
+    "span": "config: configs/sdr_contact_panda.yaml 2026-09-12 09:14:03 INFO run start seed=3 robot=panda simulator=PhysBox 2.3 2026-09-12 09:14:03 INFO device=cuda:0 (A6000) num_envs=1024 rollout_steps=32 minibatch=4096 2026-09-12 09:14:03 INFO optimizer=Adam lr=3e-4 gamma=0.99 gae_lambda=0.95 clip_eps=0.2 2026"
+   },
+   "source": "designed",
+   "note": "explicit: the first log line prints the experiment config path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/contact_reward.py",
+   "b": "docs/method.md",
+   "relation": "implements",
+   "also": [
+    "describes"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: implements the key module exactly as the method doc describes it (same name, same equation, same hyperparameter values)",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "src/graspdr_policy.py",
+   "b": "docs/method.md",
+   "relation": "implements",
+   "also": [
+    "describes"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/graspdr_policy.py",
+    "span": "\"\"\"Main network for GraspDR. See docs/method.md for the full method description. GraspPolicy takes the 96x96 RGB-D wrist camera frame and proprioception and outputs a 7-D action (6-D delta pose + gripper). The asymmetric critic also sees the privileged physics parameters theta; the actor never does"
+   },
+   "source": "designed",
+   "note": "explicit: module docstring says the design is in docs/method.md",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "src/train.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Training ``` python src/train.py --config configs/<config>.yaml ``` Use the Panda config in `configs/` (robot panda, dataset tabletop_objs_v2, eval ranges 0.5 to 2.5). That config inherits from the base config. If `--config` is omitted, `src/train.py` falls back to the base config. Main settin"
+   },
+   "source": "designed",
+   "note": "explicit: shows the training command with the script path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "docs/method.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Repository layout - `src/`: training, evaluation, policy, randomizer, reward and plotting code - `configs/`: base and per-robot YAML configs - `docs/method.md`: detailed method description - `paper/graspdr_draft_v2.pdf`: current draft (abstract, method, experiments, limitations) - `results/`: ev"
+   },
+   "source": "designed",
+   "note": "explicit: Markdown link to docs/method.md",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "src/evaluate.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Evaluation ``` python src/evaluate.py --config configs/<config>.yaml --ckpt checkpoints/best.pt ``` Evaluation runs shifted physics at randomization scales 0.5, 1.0, 1.5, 2.0 and 2.5, with 2,000 episodes per cell. It writes a CSV to `results/`. The plotting script in `src/` reads that CSV and s"
+   },
+   "source": "designed",
+   "note": "explicit: shows the evaluation command",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "uation, policy, randomizer, reward and plotting code - `configs/`: base and per-robot YAML configs - `docs/method.md`: detailed method description - `paper/graspdr_draft_v2.pdf`: current draft (abstract, method, experiments, limitations) - `results/`: evaluation CSV and ablation table - `figures/`:"
+   },
+   "source": "designed",
+   "note": "explicit: points to the current draft",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "docs/method.md",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the paper's method section presents the same components and equations",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: same title and story; v1 is the earlier version",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the paper's main table repeats exactly the CSV's numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the paper's ablation table repeats exactly these numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "figures/success_rate_vs_randomization_range.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: Figure 2's caption describes this chart (same axes and trend)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "figures/overview.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: Figure 1's caption describes this pipeline diagram (same boxes)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "paper/talk_outline.md",
+    "span": "spDR: Structured Domain Randomization and Contact-Aware Rewards for Sim-to-Real Grasping - 발표자: 이도현 (PhD, 프로젝트 리드) - 발표일: 2026-10-08 (랩 세미나) - 기반 자료: paper/graspdr_draft_v2.pdf - 핵심 그림: figures/success_rate_vs_randomization_range.png (논문 Figure 2) - 청중 가정: 로보틱스/강화학습 기본 지식 보유, sim-to-real 세부 용어는 설명 필"
+   },
+   "source": "designed",
+   "note": "explicit: says the talk is based on the current draft (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "figures/success_rate_vs_randomization_range.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "paper/talk_outline.md",
+    "span": "n and Contact-Aware Rewards for Sim-to-Real Grasping - 발표자: 이도현 (PhD, 프로젝트 리드) - 발표일: 2026-10-08 (랩 세미나) - 기반 자료: paper/graspdr_draft_v2.pdf - 핵심 그림: figures/success_rate_vs_randomization_range.png (논문 Figure 2) - 청중 가정: 로보틱스/강화학습 기본 지식 보유, sim-to-real 세부 용어는 설명 필요"
+   },
+   "source": "designed",
+   "note": "explicit: plans to show the main figure (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "papers/notes_adrgrasp2020.md",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/related_work.md",
+    "span": "It covers the two prior methods we build on or compare against most directly, then states where GraspDR differs. Reading notes for each paper are in papers/notes_adrgrasp2020.md and papers/notes_simbridge2022.md. Check the claims below against those notes before the text is frozen."
+   },
+   "source": "designed",
+   "note": "explicit: cites the reading-notes file of adrgrasp2020 by path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "papers/notes_simbridge2022.md",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/related_work.md",
+    "span": "we build on or compare against most directly, then states where GraspDR differs. Reading notes for each paper are in papers/notes_adrgrasp2020.md and papers/notes_simbridge2022.md. Check the claims below against those notes before the text is frozen."
+   },
+   "source": "designed",
+   "note": "explicit: cites the reading-notes file of simbridge2022 by path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/method.md",
+   "b": "papers/notes_adrgrasp2020.md",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: says the method builds on the prior work (by its name, not the notes file) and what it changes",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "papers/notes_simbridge2022.md",
+   "relation": "compares",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the competing approach is a baseline row in the paper's table",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "results/main_results.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the chart plots the CSV's numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "src/contact_reward.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the meeting decides to add the key module (described in words)",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "src/graspdr_policy.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting_2026-03-09.md",
+    "span": "### 3.3 정책 모델 수정 (담당: 최지우) - `src/graspdr_policy.py`에 contact auxiliary head를 추가한다. - 이 head는 visual과 proprioception feature를 입력으로 받아서, 패드별 접촉 여부를 예측한다. 손실은 BCE로 계산한다. - 전체 loss에 contact auxiliary 항을 0.2 가중치로 더한다. - 비대칭 critic이 물리 파라미터 theta를 볼 수 있도록 유지한다."
+   },
+   "source": "designed",
+   "note": "explicit: assigns someone to change the model file (its path)",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "results/main_results.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting_2026-08-24.md",
+    "span": "## 1. 주요 결과 검토 결과 파일은 `results/main_results.csv`입니다. 각 셀은 2000 episodes, 5 seeds(0–4) 기준이고, 값은 grasp success rate(%)와 95% CI 반폭입니다. 1차 draft(6/20)의 수치(3 seeds)는 모두 폐기하고 이 CSV 값으로 통일합니다. randomization range 1.5 기준 결과는 다음과 같습니다. | 방법 | success (%) | 95% CI | |---|---|---| | GraspDR | 87.4 | ±1.4 |"
+   },
+   "source": "designed",
+   "note": "explicit: reviews the main results CSV (its path) and its key number",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "results/ablation.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: plans exactly the ablations that the ablation file reports",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting_2026-08-24.md",
+    "span": "## 3. 논문 일정 및 역할 - 목표 venue: RoboSim Workshop 2026 - draft v2 마감: **2026-09-30 (수)** - draft v2 파일: `paper/graspdr_draft_v2.pdf` - 구성: abstract, intro, method, experiments(main table + ablation table), captions, related work, limitations | 담당 | 작업 | 기한 | |---|---|---| | 이도현 | 전체 원고 통합, abstract/in"
+   },
+   "source": "designed",
+   "note": "explicit: sets the deadline for the current draft (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "docs/method.md",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: proposes extensions of the method's named components",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "site/index.html",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "site/index.html",
+    "span": "rds for Sim-to-Real Grasping</h1> <p class=\"authors\">Dohyeon Lee, Hayun Jeong, Jiwoo Choi, Taemin Kim, Seoyeon Park</p> <p class=\"links\"> <a href=\"paper/graspdr_draft_v2.pdf\">Paper (PDF)</a> <a href=\"#code\">Code</a> <a href=\"#bibtex\">BibTeX</a> </p>"
+   },
+   "source": "designed",
+   "note": "explicit: links to the current draft PDF by its relative path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "site/index.html",
+   "b": "figures/overview.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "site/index.html",
+    "span": "<figure> <img src=\"figures/overview.png\" alt=\"GraspDR pipeline overview\"> <figcaption>Figure 1. GraspDR pipeline: object meshes, the Structured Randomizer (SRS), the PhysBox simulator, the GraspPolicy, the Contact-Aware Reward (CAR), and the PPO update, with the Range Curriculum feeding SRS and"
+   },
+   "source": "designed",
+   "note": "explicit: shows the overview figure with an <img> tag whose src is its relative path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "site/index.html",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the page's results table repeats the main numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "site/index.html",
+   "b": "docs/method.md",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the page's method summary names the same components",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "src/data.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## What the method does - **SRS (Structured Randomization Sampler)**: `StructuredRandomizer` in `src/data.py`. Physics and visual parameters are split into three groups (visual, dynamics, geometry). Each group draws a latent vector and maps it through the Cholesky factor of a group correlation matr"
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "src/contact_reward.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "atrix with within-group correlation rho = 0.6, so parameters within a group move together. - **CAR (Contact-Aware Reward)**: `ContactAwareReward` in `src/contact_reward.py`. Per step, `r_t = r_reach + r_lift + lambda_c * r_contact - lambda_f * max(0, F_t - F_max) / F_max`. Fingertip pads that press"
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "src/data.py",
+   "b": "docs/method.md",
+   "relation": "implements",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "data.py implements SRS sampling and Range Curriculum described in the method doc.",
+   "personas": []
+  },
+  {
+   "a": "src/train.py",
+   "b": "src/contact_reward.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The training loop computes the contact-aware reward.",
+   "personas": []
+  },
+  {
+   "a": "src/train.py",
+   "b": "configs/sdr_contact_panda.yaml",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "train.py reads the experiment YAML; the log was produced with this config.",
+   "personas": []
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/utils.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "Evaluation uses shared utilities (seed, logger, checkpoint loading).",
+   "personas": []
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "related_work.md is a draft section of the GraspDR paper that the draft covers.",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "README.md",
+   "b": "admin/travel_reimbursement_form.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "configs/base.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "configs/sdr_contact_panda.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "figures/success_rate_vs_randomization_range.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "logs/train_2026-09-12.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/meeting_2026-03-09.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "configs/base.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "configs/sdr_contact_panda.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "docs/method.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "figures/success_rate_vs_randomization_range.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "logs/train_2026-09-12.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "notes/meeting_2026-03-09.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "docs/method.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "figures/success_rate_vs_randomization_range.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "logs/train_2026-09-12.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "notes/meeting_2026-03-09.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "docs/method.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "figures/success_rate_vs_randomization_range.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "notes/meeting_2026-03-09.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/sdr_contact_panda.yaml",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "figures/success_rate_vs_randomization_range.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "logs/train_2026-09-12.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "notes/meeting_2026-03-09.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "figures/success_rate_vs_randomization_range.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "logs/train_2026-09-12.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "notes/meeting_2026-03-09.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "figures/success_rate_vs_randomization_range.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "logs/train_2026-09-12.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "notes/meeting_2026-03-09.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "logs/train_2026-09-12.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "notes/meeting_2026-03-09.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/success_rate_vs_randomization_range.png",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "notes/meeting_2026-03-09.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-12.log",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "notes/meeting_2026-03-09.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "notes/meeting_2026-08-24.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "paper/graspdr_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-09.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "paper/graspdr_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-24.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v1.pdf",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/graspdr_draft_v2.pdf",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "papers/notes_adrgrasp2020.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "papers/notes_simbridge2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_adrgrasp2020.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "reading/graph_neural_pde_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_simbridge2022.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/graph_neural_pde_reading_list.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/graph_neural_pde_reading_list.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/graph_neural_pde_reading_list.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/graph_neural_pde_reading_list.md",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/graph_neural_pde_reading_list.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/graph_neural_pde_reading_list.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/graph_neural_pde_reading_list.md",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/graph_neural_pde_reading_list.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/graph_neural_pde_reading_list.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/graph_neural_pde_reading_list.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/contact_reward.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/contact_reward.py",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/contact_reward.py",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/contact_reward.py",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/contact_reward.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/graspdr_policy.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/graspdr_policy.py",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/graspdr_policy.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "family": "ml_paper",
+  "topic": "Sim-to-real robotic grasping trained with structured domain randomization and a contact-aware reward.",
+  "generator": "benchmark/mock/make_mock.py (claude-sonnet-5-5)",
+  "closed_world": true,
+  "hard_negatives": [
+   "admin/travel_reimbursement_form.md|notes/meeting_2026-08-24.md",
+   "docs/related_work.md|reading/graph_neural_pde_reading_list.md",
+   "papers/notes_adrgrasp2020.md|reading/graph_neural_pde_reading_list.md",
+   "src/plot_results.py|src/utils.py"
+  ],
+  "check": {
+   "planted": 42,
+   "cue_ok": 26,
+   "cue_lost": [],
+   "cue_gained": [],
+   "incidental": [
+    "README.md -> src/data.py",
+    "README.md -> src/contact_reward.py"
+   ]
+  },
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    4,
+    4,
+    4
+   ],
+   "summaries": [
+    "The graph captures the main structure well: README, method docs, config inheritance, src pipeline, results, figures, and paper. A few links are questionable (method extending reading notes), and some obvious links are missing (data.py implementing the method, train using contact_reward and the experiment config).",
+    "The graph captures the main structure well: code dependencies, config inheritance, paper-to-figure/result links and meeting notes. It misses a few direct code and config links (train.py to the experiment config, data.py to the method doc), and two relations look off (the v1/v2 duplicate label, and the method doc extending a reading note).",
+    "The graph captures the main structure well: code-to-method links, config inheritance, the evaluate→results→plot→figure→paper chain, and the notes→paper links. It misses a few code-to-config and code-to-method links, and it overstates the docs/method.md→ADR-Grasp notes link. The admin and reading-list files are correctly left isolated."
+   ],
+   "proposed": 24,
+   "applied": [
+    {
+     "op": "add",
+     "a": "docs/method.md",
+     "b": "src/data.py",
+     "relation": "implements",
+     "votes": 3,
+     "reasons": [
+      "data.py implements SRS sampling and Range Curriculum described in the method doc.",
+      "data.py implements the SRS sampler and Range Curriculum specified in the method doc.",
+      "data.py implements the SRS sampler and Range Curriculum that the method doc describes."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "src/contact_reward.py",
+     "b": "src/train.py",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "The training loop computes the contact-aware reward.",
+      "PPO training needs the contact-aware dense reward."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "configs/sdr_contact_panda.yaml",
+     "b": "src/train.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "train.py reads the experiment YAML; the log was produced with this config.",
+      "train.py reads the YAML experiment config; the training log was produced from this config.",
+      "train.py reads a YAML config, and the training log was produced by this config run through train.py."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "src/evaluate.py",
+     "b": "src/utils.py",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "Evaluation uses shared utilities (seed, logger, checkpoint loading).",
+      "The utils module is documented as shared by training and evaluation (checkpoint loading, seeding, logging)."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "docs/method.md",
+     "b": "papers/notes_adrgrasp2020.md",
+     "relation": "extends",
+     "votes": 3,
+     "reasons": [
+      "A method spec does not extend reading notes; only a looser connection.",
+      "The method doc only loosely builds on a reading note about prior work; this is a topical link rather than a strong extension.",
+      "The method doc only cites ADR-Grasp as prior work. It does not extend the reading notes."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "docs/related_work.md",
+     "b": "paper/graspdr_draft_v2.pdf",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "related_work.md is a draft section of the GraspDR paper that the draft covers.",
+      "The related-work file is a draft section of the paper."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 5,
+   "key_links": 24,
+   "required_before": 37,
+   "notes": [
+    "GraspDR 프로젝트는 src의 모델·학습·평가 코드가 configs 설정으로 학습되어 results와 figures를 만들고, 이를 docs/method.md와 논문 초안(v2), 웹사이트, 발표 자료가 정리하며 회의록과 관련 연구 노트가 이를 뒷받침하는 구조입니다.",
+    "GraspDR 프로젝트는 src의 학습·평가 코드가 configs 설정으로 실행되어 results와 figures를 만들고, 이것이 방법 문서와 논문 초안·웹페이지·관련 연구 노트로 이어지며 회의 노트가 전체 진행을 기록하는 구조입니다.",
+    "GraspDR 프로젝트는 src의 학습·평가 코드가 configs 설정으로 학습되어 로그와 results를 만들고, 이 결과와 method 문서·관련 연구 노트가 논문 초안, 웹페이지, 발표 자료로 이어지며 회의 노트가 전체 진행을 기록하는 구조입니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "논문·관련 연구",
+   "members": [
+    "docs/related_work.md",
+    "paper/graspdr_draft_v1.pdf",
+    "paper/graspdr_draft_v2.pdf",
+    "paper/talk_outline.md",
+    "papers/notes_adrgrasp2020.md",
+    "papers/notes_simbridge2022.md"
+   ]
+  },
+  {
+   "name": "모델·학습 코드",
+   "members": [
+    "src/contact_reward.py",
+    "src/data.py",
+    "src/evaluate.py",
+    "src/graspdr_policy.py",
+    "src/train.py",
+    "src/utils.py"
+   ]
+  },
+  {
+   "name": "결과 및 그림",
+   "members": [
+    "figures/overview.png",
+    "figures/success_rate_vs_randomization_range.png",
+    "results/ablation.md",
+    "results/main_results.csv",
+    "src/plot_results.py"
+   ]
+  },
+  {
+   "name": "방법 문서·프로젝트 소개",
+   "members": [
+    "README.md",
+    "docs/method.md",
+    "site/index.html"
+   ]
+  },
+  {
+   "name": "설정 및 학습 로그",
+   "members": [
+    "configs/base.yaml",
+    "configs/sdr_contact_panda.yaml",
+    "logs/train_2026-09-12.log"
+   ]
+  },
+  {
+   "name": "회의·아이디어 노트",
+   "members": [
+    "notes/ideas.md",
+    "notes/meeting_2026-03-09.md",
+    "notes/meeting_2026-08-24.md"
+   ]
+  },
+  {
+   "name": "관련 없음",
+   "members": [
+    "admin/travel_reimbursement_form.md",
+    "reading/graph_neural_pde_reading_list.md"
+   ]
+  }
+ ]
+}

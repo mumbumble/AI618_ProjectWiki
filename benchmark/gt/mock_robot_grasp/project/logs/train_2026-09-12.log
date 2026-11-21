@@ -1,0 +1,26 @@
+config: configs/sdr_contact_panda.yaml
+2026-09-12 09:14:03 INFO run start seed=3 robot=panda simulator=PhysBox 2.3
+2026-09-12 09:14:03 INFO device=cuda:0 (A6000) num_envs=1024 rollout_steps=32 minibatch=4096
+2026-09-12 09:14:03 INFO optimizer=Adam lr=3e-4 gamma=0.99 gae_lambda=0.95 clip_eps=0.2
+2026-09-12 09:14:04 INFO dataset=tabletop_objs_v2 train=640 val=80 test=80 (held-out=160)
+2026-09-12 09:14:04 INFO SRS groups: visual(light, texture hue, camera jitter +-2 cm) | dynamics(friction, mass, joint damping) | geometry(scale, pad stiffness)
+2026-09-12 09:14:04 INFO SRS group correlation rho=0.6 (Cholesky per group)
+2026-09-12 09:14:05 INFO range curriculum: s 0.5 -> 1.0 linear over curriculum_steps=2000000, then fixed at 1.0
+2026-09-12 09:14:05 INFO CAR: lambda_c=0.5 lambda_f=0.1 f_max=25.0 N f_min=0.8 N
+2026-09-12 09:14:05 INFO loss weights: value=0.5 entropy=0.01 contact_aux=0.2
+2026-09-12 09:14:06 INFO model=GraspPolicy (ResNet-18 encoder width=32, proprio MLP hidden=128, fused=256, asymmetric critic)
+2026-09-12 09:14:09 INFO environments ready: 1024 PhysBox instances, 640 training meshes loaded
+2026-09-12 09:14:11 INFO eval ranges=[0.5, 1.0, 1.5, 2.0, 2.5] (val split, every 500k steps)
+2026-09-12 09:31:33 INFO step=500000 s=0.625 loss=0.842 val_success=31.5
+2026-09-12 09:31:33 INFO checkpoint saved: checkpoints/best.pt (val_success=31.5)
+2026-09-12 12:09:03 INFO step=5000000 s=1.000 loss=0.311 val_success=68.2
+2026-09-12 12:09:03 INFO checkpoint saved: checkpoints/best.pt (val_success=68.2)
+2026-09-12 15:04:03 INFO step=10000000 s=1.000 loss=0.204 val_success=80.4
+2026-09-12 15:04:03 INFO checkpoint saved: checkpoints/best.pt (val_success=80.4)
+2026-09-12 17:59:03 INFO step=15000000 s=1.000 loss=0.158 val_success=85.3
+2026-09-12 17:59:03 INFO checkpoint saved: checkpoints/best.pt (val_success=85.3)
+2026-09-12 20:54:03 INFO step=20000000 s=1.000 loss=0.131 val_success=87.0
+2026-09-12 20:54:03 INFO checkpoint saved: checkpoints/best.pt (val_success=87.0)
+2026-09-12 20:54:04 INFO training finished: total_steps=20000000 elapsed=11:40:01
+2026-09-12 20:54:04 INFO final val_success=87.0 (best checkpoint kept)
+2026-09-12 20:54:05 INFO run complete, exit code 0

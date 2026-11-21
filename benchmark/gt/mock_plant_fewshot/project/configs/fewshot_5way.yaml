@@ -1,0 +1,27 @@
+inherits: base.yaml
+
+# Main experiment: 5-way, 5-shot episodes on leafdoc_fs.
+# Every key not listed here comes from base.yaml.
+# Run with:
+#   python src/train.py --config configs/fewshot_5way.yaml
+
+n_way: 5            # same as base, listed so the episode setup is readable here
+k_shot: 5           # overrides base k_shot = 1
+n_query: 15         # same as base
+episodes: 40000     # same as base; training length for the main run
+
+# Outputs
+log_dir: logs                   # training log goes to logs/train_{YYYY-MM-DD}.log
+results_csv: results/           # summary accuracy table is written into the results folder
+checkpoint_dir: checkpoints     # best checkpoint is saved here (best.pt)
+
+# Evaluation protocol (used by src/evaluate.py)
+eval:
+  test_episodes: 600        # 5-way test episodes
+  queries_per_class: 15
+  metric: accuracy_percent  # reported with 95% confidence interval over episodes
+  seed: 42
+
+# FreqMix settings are inherited from base.yaml
+# (beta 0.1, p 0.5, lambda_cons 0.5), so they are not repeated here.
+# Ablation runs change these values in their own runs, not in this file.

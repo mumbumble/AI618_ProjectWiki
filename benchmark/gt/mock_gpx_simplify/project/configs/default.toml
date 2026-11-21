@@ -1,0 +1,38 @@
+# trackslim default configuration
+#
+# This file holds the default settings that the `trackslim` command line
+# tool reads when no other config is given. Copy it, edit the values you
+# need, and pass the new path with --config. Any key you leave out falls
+# back to the built-in default shown here.
+
+[simplify]
+# Maximum allowed horizontal deviation in meters before a point is kept.
+tolerance_m = 5.0
+
+# Weight of the turn penalty. Larger values keep more points at bends.
+turn_weight = 2.0
+
+# Weight of the vertical deviation from the interpolated elevation.
+# Set to 0.0 to ignore elevation entirely.
+elev_weight = 0.5
+
+# Any point whose turn angle is at or above this value (in degrees)
+# is always kept, regardless of the error budget.
+min_turn_deg = 35.0
+
+
+[plugin]
+# Name of an optional plugin to run after simplification.
+# Leave empty to use the core simplifier only.
+# Available plugin names are listed in the plugins package registry.
+name = ""
+
+
+[output]
+# Number of decimal places written for latitude, longitude and elevation.
+# Six decimals is about 0.1 m on the ground, which is enough for GPS data.
+precision = 6
+
+# Keep the <time> element of each trackpoint when writing GPX output.
+# Set to false to drop timestamps and shrink the output file.
+keep_time = true

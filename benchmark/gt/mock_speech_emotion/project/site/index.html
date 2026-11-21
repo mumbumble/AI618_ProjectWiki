@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ProsodySER: Prosody-Aware Attention for Bilingual Speech Emotion Recognition</title>
+<style>
+body { font-family: system-ui, sans-serif; max-width: 920px; margin: 2rem auto; padding: 0 1rem; line-height: 1.55; color: #222; }
+h1 { font-size: 1.6rem; margin-bottom: .3rem; }
+.authors { font-size: 1rem; margin: .2rem 0; }
+.links a { margin-right: 1.2rem; }
+table { border-collapse: collapse; width: 100%; font-size: .85rem; margin-top: .6rem; }
+th, td { border: 1px solid #ccc; padding: .35rem .45rem; text-align: center; }
+th:first-child, td:first-child { text-align: left; }
+tr.ours td { font-weight: bold; background: #eef5ff; }
+figure { margin: 1.2rem 0; }
+figure img { max-width: 100%; border: 1px solid #ddd; }
+figcaption, .note { font-size: .88rem; color: #555; }
+pre { background: #f5f5f5; padding: .8rem; overflow-x: auto; font-size: .85rem; }
+code { background: #f5f5f5; padding: 0 .2rem; }
+</style>
+</head>
+<body>
+
+<h1>Listening to How It Is Said: Prosody-Aware Attention for Bilingual Korean-English Speech Emotion Recognition</h1>
+<p class="authors">Seoyeon Kim, Hyunwoo Park, Doyun Lee, Minji Jeong, Jihoon Choi</p>
+<p class="links">
+  <a href="../paper/prosody_ser_draft_v2.pdf">Paper (PDF)</a>
+  <a href="https://github.com/your-lab/prosody_ser">Code</a>
+  <a href="#bibtex">BibTeX</a>
+</p>
+
+<h2>Abstract</h2>
+<p>
+Speech carries emotion both in what is said and in how it is said. We present ProsodySER, a speech emotion
+recognizer that adds an explicit prosody path to a Transformer encoder. Its key component, Prosody-Aware Pooling (PAP),
+biases the attention weights over frames with a term computed from F0, energy and voicing contours, so that
+emotionally salient pitch and loudness patterns shape the utterance embedding. A gradient reversal branch discourages
+language identity from leaking into the emotion representation. We evaluate on KoEn-Emo, a new acted corpus of
+14,820 utterances from 118 speakers in Korean and English, with a speaker-independent split. On the six-class task
+(neutral, happy, sad, angry, fearful, surprised), ProsodySER reaches 72.4% unweighted accuracy (UA) on the mixed
+test set, 3.4 points above the strongest baseline. Its advantage grows under babble noise, where it keeps 53.2% UA at 0 dB SNR.
+</p>
+
+<h2>Overview</h2>
+<figure>
+  <img src="../figures/overview.png" alt="Overview of the ProsodySER pipeline">
+  <figcaption>Figure 1. Overview of ProsodySER. The log-Mel and Transformer path is joined by a Prosody Extractor and Prosody Encoder at Prosody-Aware Pooling; a Gradient Reversal layer feeds the Language Classifier.</figcaption>
+</figure>
+
+<h2>Method</h2>
+<ul>
+  <li><strong>Front end.</strong> Waveform (16 kHz) is converted to an 80-bin log-Mel spectrogram (25 ms window, 10 ms hop), then passed through a Conv Stem of two convolution layers with stride 2 each.</li>
+  <li><strong>Transformer Encoder.</strong> 6 layers, d_model 256, 4 heads, dropout 0.1.</li>
+  <li><strong>Prosody Extractor.</strong> Six frame-level features: <code>[logf0_z, energy_db, voiced, d_logf0, d_energy, d_voiced]</code>, where log-F0 is speaker-normalized with a z-score.</li>
+  <li><strong>Prosody Encoder.</strong> Two 1D convolution layers (kernel 5, hidden 128, ReLU) projected to 128 dimensions per frame, giving p_t.</li>
+  <li><strong>Prosody-Aware Pooling (PAP).</strong> The score for frame t is
+    <code>e_t = (h_t W_q)(c W_k)^T / sqrt(d_k) + λ g_t</code>, with a learned query c, prosody bias <code>g_t = v^T tanh(W_p p_t)</code>,
+    and a learnable scalar λ initialized at 0.5. Weights are a softmax over unpadded frames, and the embedding is <code>z = Σ_t a_t h_t</code>.
+    Four pooling heads are concatenated and projected to 256.</li>
+  <li><strong>Emotion Classifier.</strong> Predicts the six emotion classes.</li>
+  <li><strong>Language branch.</strong> A Gradient Reversal layer followed by a Language Classifier (ko/en). The reversal strength ramps from 0 to 1 over the first 5 epochs.</li>
+  <li><strong>Loss.</strong> <code>L = L_ce + 0.2 · L_lang</code>, with cross-entropy using label smoothing 0.1 for L_ce.</li>
+  <li><strong>Training.</strong> AdamW, learning rate 3e-4, weight decay 0.01, batch size 32, 30 epochs, 500 warmup steps, cosine decay, gradient clipping at 1.0, seed 1234. The model has 11.3M parameters and trains in about 2.1 h on one A100 40GB.</li>
+</ul>
+
+<h2>Dataset</h2>
+<p>
+KoEn-Emo contains 14,820 acted utterances (1.2 to 7.5 s, 16 kHz mono, about 21.4 hours) from 118 speakers, 60 Korean and 58 English.
+The split is speaker-independent: 10,374 train, 2,223 validation and 2,223 test utterances (70/15/15), with no speaker in two splits.
+Robustness is measured by mixing the test set with babble noise at 20, 10, 5 and 0 dB SNR. The corpus was curated by Minji Jeong.
+</p>
+
+<h2>Results</h2>
+<p>Unweighted accuracy (UA, %) on the test set with 95% bootstrap confidence intervals over 1,000 resamples. Korean, English and Mixed use the clean test set; SNR columns use the full mixed test set with babble noise.</p>
+<table>
+  <thead>
+    <tr><th>Method</th><th>Korean</th><th>English</th><th>Mixed (all)</th><th>SNR 20 dB</th><th>SNR 10 dB</th><th>SNR 5 dB</th><th>SNR 0 dB</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>openSMILE eGeMAPS + SVM</td><td>58.4 [56.1, 60.7]</td><td>55.9 [53.5, 58.3]</td><td>57.0 [55.4, 58.6]</td><td>54.2 [52.7, 55.7]</td><td>47.5 [46.0, 49.0]</td><td>41.0 [39.5, 42.5]</td><td>33.9 [32.4, 35.4]</td></tr>
+    <tr><td>EmoFormer (2021)</td><td>68.7 [66.6, 70.8]</td><td>66.2 [64.0, 68.4]</td><td>67.5 [66.1, 68.9]</td><td>65.4 [63.9, 66.9]</td><td>60.3 [58.8, 61.8]</td><td>53.6 [52.1, 55.1]</td><td>44.1 [42.6, 45.6]</td></tr>
+    <tr><td>CrossLingSER (2023)</td><td>70.1 [68.1, 72.1]</td><td>67.8 [65.7, 69.9]</td><td>69.0 [67.6, 70.4]</td><td>67.2 [65.7, 68.7]</td><td>62.1 [60.6, 63.6]</td><td>55.4 [53.9, 56.9]</td><td>46.8 [45.3, 48.3]</td></tr>
+    <tr class="ours"><td>ProsodySER (ours)</td><td>73.6 [71.7, 75.5]</td><td>70.9 [68.9, 72.9]</td><td>72.4 [71.0, 73.8]</td><td>70.8 [69.3, 72.3]</td><td>66.9 [65.4, 68.4]</td><td>61.7 [60.2, 63.2]</td><td>53.2 [51.7, 54.7]</td></tr>
+  </tbody>
+</table>
+<p class="note">SNR rows are reported as the point estimate ±1.5 points for the interval.
+ProsodySER improves on CrossLingSER by 3.4 points on the mixed test set and by 6.4 points at 0 dB SNR.</p>
+
+<h2 id="bibtex">BibTeX</h2>
+<pre>@inproceedings{kim2026prosodyser,
+  title     = {Listening to How It Is Said: Prosody-Aware Attention for Bilingual Korean-English Speech Emotion Recognition},
+  author    = {Kim, Seoyeon and Park, Hyunwoo and Lee, Doyun and Jeong, Minji and Choi, Jihoon},
+  booktitle = {SpeechAffect Workshop 2026},
+  year      = {2026}
+}</pre>
+
+</body>
+</html>

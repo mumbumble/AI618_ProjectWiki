@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeafProto: Few-Shot Plant Disease Classification with Frequency-Domain Mixing and a Cosine Prototype Head</title>
+<style>
+body { font-family: Arial, Helvetica, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; color: #222; line-height: 1.55; }
+h1 { font-size: 1.8em; margin-bottom: 0.3em; }
+.authors { font-size: 1.05em; margin: 0; }
+.affil { color: #555; margin-top: 4px; }
+.links a { display: inline-block; margin-right: 12px; padding: 6px 14px; border: 1px solid #2e7d32; border-radius: 4px; color: #2e7d32; text-decoration: none; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: center; }
+th:first-child, td:first-child { text-align: left; }
+tr.ours td { font-weight: bold; background: #e8f5e9; }
+img { max-width: 100%; border: 1px solid #eee; }
+pre { background: #f5f5f5; padding: 12px; overflow-x: auto; font-size: 0.9em; }
+.caption { font-size: 0.9em; color: #555; }
+</style>
+</head>
+<body>
+
+<h1>LeafProto: Few-Shot Plant Disease Classification with Frequency-Domain Mixing and a Cosine Prototype Head</h1>
+<p class="authors">Park Hyunwoo, Kim Seoyeon, Lee Doyun, Choi Jimin, Jung Minjun</p>
+<p class="affil">Plant Vision Lab, Hanbit University</p>
+
+<div class="links">
+  <a href="../paper/leafproto_draft_v2.pdf">Paper (PDF)</a>
+  <a href="https://github.com/plant-vision-lab/leafproto">Code</a>
+</div>
+
+<h2>Abstract</h2>
+<p>Diagnosing plant disease from field photos usually has only a handful of labeled examples per disease.
+We present LeafProto, a few-shot classifier for leaf photos that extends the ProtoClass prototype network in three ways:
+a cosine similarity head with a learnable scale, a frequency-domain augmentation called FreqMix that mixes low-frequency
+Fourier amplitude between images while keeping phase, and a consistency loss that aligns predictions on clean and mixed views.
+On leafdoc_fs, a 54-class dataset of 18,420 field photos, LeafProto reaches 87.4% 5-way 5-shot accuracy,
+3.8 points above FastAdapt and 6.5 points above ProtoClass. In our ablation, removing FreqMix causes the largest drop.</p>
+
+<h2>Overview</h2>
+<figure>
+  <img src="../figures/overview.png" alt="LeafProto pipeline overview">
+  <figcaption class="caption">Overview of the LeafProto pipeline. A leaf photo is transformed by FFT, mixed in its low-frequency band by FreqMix, and returned by iFFT.
+  The ResNet-12 encoder and cosine prototype head produce class scores. A lower branch sends the clean view directly to the encoder,
+  and a consistency loss (KL) links the clean and mixed predictions.</figcaption>
+</figure>
+
+<h2>Method</h2>
+<ul>
+  <li><strong>FreqMix.</strong> Each 84x84 leaf image is transformed with a 2D FFT per channel and split into amplitude and phase.
+  Inside a centered square covering 10% of the shorter side of the shifted spectrum (beta = 0.1), the amplitude of one image is
+  interpolated with the amplitude of another image from the same episode, using lam drawn from Uniform(0.3, 0.7).
+  Phase is kept and the inverse FFT returns the mixed image, which keeps the label of the original. It is applied with probability 0.5 per image, in training only.</li>
+  <li><strong>Encoder.</strong> ResNet-12 with channels 64-160-320-640 and a 640-d embedding after global average pooling.</li>
+  <li><strong>Cosine prototype head.</strong> Each prototype is the mean of L2-normalized support embeddings of its class.
+  Query logits are s * cos(f_q, p_c), where the scale s is learnable and initialized to 10.0.</li>
+  <li><strong>Losses.</strong> The total loss is L = L_ce + lambda_cons * L_cons with lambda_cons = 0.5.
+  L_ce is cross-entropy over the query logits. L_cons is the KL divergence between the softmax predictions of the clean query view
+  (detached) and the FreqMix query view.</li>
+  <li><strong>Training.</strong> Episodic training with 5-way episodes and 15 queries per class, 40,000 episodes, Adam with learning rate 0.001
+  and weight decay 0.0005, a cosine learning-rate schedule, and seed 42. One RTX 4090 took 5 h 40 min.</li>
+</ul>
+
+<h2>Results</h2>
+<p>Accuracy (%) on the 12 novel test classes of leafdoc_fs, 5-way episodes, 15 queries per class. Mean &plusmn; 95% confidence interval over 600 test episodes.</p>
+<table>
+  <thead>
+    <tr><th>Method</th><th>1-shot</th><th>2-shot</th><th>5-shot</th><th>10-shot</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Finetune</td><td>52.3 &plusmn; 0.9</td><td>61.8 &plusmn; 0.8</td><td>72.5 &plusmn; 0.7</td><td>79.1 &plusmn; 0.6</td></tr>
+    <tr><td>ProtoClass</td><td>60.4 &plusmn; 0.9</td><td>70.2 &plusmn; 0.8</td><td>80.9 &plusmn; 0.6</td><td>85.0 &plusmn; 0.5</td></tr>
+    <tr><td>FastAdapt</td><td>64.8 &plusmn; 0.9</td><td>73.5 &plusmn; 0.8</td><td>83.6 &plusmn; 0.6</td><td>87.2 &plusmn; 0.5</td></tr>
+    <tr class="ours"><td>LeafProto (ours)</td><td>69.7 &plusmn; 0.9</td><td>78.3 &plusmn; 0.7</td><td>87.4 &plusmn; 0.5</td><td>90.6 &plusmn; 0.4</td></tr>
+  </tbody>
+</table>
+
+<p><strong>Ablation (5-shot).</strong> Full LeafProto 87.4. Without FreqMix 84.0 (-3.4). Euclidean head instead of cosine 85.2 (-2.2).
+Without consistency loss (lambda_cons = 0) 86.3 (-1.1). FreqMix over the full spectrum (beta = 1.0) 85.6 (-1.8).</p>
+
+<h2>Paper</h2>
+<p>Draft v2 of the paper is available as <a href="../paper/leafproto_draft_v2.pdf">leafproto_draft_v2.pdf</a>.
+Known limitations: one dataset, 84x84 resolution, no cross-species transfer, and a fixed beta.</p>
+
+<h2>Citation</h2>
+<pre>@misc{park2026leafproto,
+  title  = {LeafProto: Few-Shot Plant Disease Classification with Frequency-Domain Mixing and a Cosine Prototype Head},
+  author = {Park, Hyunwoo and Kim, Seoyeon and Lee, Doyun and Choi, Jimin and Jung, Minjun},
+  year   = {2026},
+  note   = {Draft, Plant Vision Lab, Hanbit University},
+  url    = {https://github.com/plant-vision-lab/leafproto}
+}</pre>
+
+</body>
+</html>

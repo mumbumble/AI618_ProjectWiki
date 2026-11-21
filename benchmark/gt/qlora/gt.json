@@ -1,0 +1,1393 @@
+{
+ "project": "qlora",
+ "edges": [
+  {
+   "a": "README.md",
+   "b": "requirements.txt",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "ollow instructions [here](https://pytorch.org/get-started/locally/)), you can achieve the above with the following command: ```bash pip install -U -r requirements.txt ```"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "qlora.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Getting Started The `qlora.py` code is a starting point for finetuning and inference on various datasets. Basic command for finetuning a baseline model on the Alpaca dataset: ```bash python qlora.py --model_name_or_path <path_or_name> ``` For models larger than 13B, we recommend adjusting the le"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "examples/guanaco_generate.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "Zbf2-9VQTtGJ24k?usp=sharing) Other examples are found under the `examples/` folder. We include a generation getting started example with guanaco at `examples/guanaco_generate.py`."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "eval/EVAL_README.md",
+   "relation": "describes",
+   "also": [
+    "extends",
+    "same_topic",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "we release GPT-4 and human ratings of our systems. These are found under `eval/ratings-human` and `eval/ratings-gpt4`. More details can be found at `eval/EVAL_README.md`."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/EVAL_README.md",
+   "b": "eval/eval_gpt_review.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "eval/EVAL_README.md",
+    "span": "ve.jsonl` or `prompts/oa_prompt_threeclass.jsonl`. The ratings for the Vicuna benchmark can be obtained with the following command: ```bash python eval_gpt_review.py \\ -a generations/vicuna/answer_gpt35.jsonl generations/vicuna/65b-guanaco-vicuna-generations-topp0.9-beam1.jsonl \\ -q promp"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "related_work/8bit_optimizers.pdf",
+   "b": "README.md",
+   "relation": "same_topic",
+   "also": [
+    "describes",
+    "extends",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "related_work/8bit_optimizers.pdf",
+    "span": "n. Our 8-bit optimizers save up to 8.5 GB of GPU memory for our largest 1.5B pa- 2https://github.com/pytorch/fairseq/tiny/master/examples/scaling_nmt/README.md 3https://github.com/pytorch/fairseq/blob/master/examples/roberta/README.glue.md 4https://github.com/NVIDIA/DeepLearningExamples/tree/master/"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune.sh",
+   "b": "qlora.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "scripts/finetune.sh",
+    "span": "python qlora.py \\ --model_name_or_path EleutherAI/pythia-12b \\ --output_dir ./output \\ --dataset alpaca \\ --do_train True \\ --do_eval True \\ --do_mmlu_eval True \\ --source_max_len 384 \\ --target_max_len 128 \\ --per_device_train_batch_size 4 \\ --per_device_eval"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_13b.sh",
+   "b": "qlora.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "scripts/finetune_guanaco_13b.sh",
+    "span": "python qlora.py \\ --model_name_or_path huggyllama/llama-13b \\ --output_dir ./output/guanaco-13b \\ --logging_steps 10 \\ --save_strategy steps \\ --data_seed 42 \\ --save_steps 500 \\ --save_total_limit 40 \\ --evaluation_strategy steps \\ --eval_dataset_size 1024 \\"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_33b.sh",
+   "b": "qlora.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "scripts/finetune_guanaco_33b.sh",
+    "span": "python qlora.py \\ --model_name_or_path huggyllama/llama-30b \\ --output_dir ./output/guanaco-33b \\ --logging_steps 10 \\ --save_strategy steps \\ --data_seed 42 \\ --save_steps 200 \\ --save_total_limit 40 \\ --evaluation_strategy steps \\ --eval_dataset_size 1024 \\"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_65b.sh",
+   "b": "qlora.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "scripts/finetune_guanaco_65b.sh",
+    "span": "python qlora.py \\ --model_name_or_path huggyllama/llama-65b \\ --output_dir ./output/guanaco-65b \\ --logging_steps 10 \\ --save_strategy steps \\ --data_seed 42 \\ --save_steps 200 \\ --save_total_limit 40 \\ --evaluation_strategy steps \\ --eval_dataset_size 1024 \\"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_7b.sh",
+   "b": "qlora.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "scripts/finetune_guanaco_7b.sh",
+    "span": "python qlora.py \\ --model_name_or_path huggyllama/llama-7b \\ --output_dir ./output/guanaco-7b \\ --logging_steps 10 \\ --save_strategy steps \\ --data_seed 42 \\ --save_steps 500 \\ --save_total_limit 40 \\ --evaluation_strategy steps \\ --eval_dataset_size 1024 \\ --"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_llama2_guanaco_7b.sh",
+   "b": "qlora.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "scripts/finetune_llama2_guanaco_7b.sh",
+    "span": "python qlora.py \\ --model_name_or_path meta-llama/Llama-2-7b-hf \\ --use_auth \\ --output_dir ./output/llama-2-guanaco-7b \\ --logging_steps 10 \\ --save_strategy steps \\ --data_seed 42 \\ --save_steps 500 \\ --save_total_limit 40 \\ --evaluation_strategy steps \\ --e"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/generate.sh",
+   "b": "qlora.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "scripts/generate.sh",
+    "span": "python qlora.py \\ --model_name_or_path EleutherAI/pythia-12b \\ --output_dir ./output \\ --do_train False \\ --do_eval False \\ --do_predict True \\ --predict_with_generate \\ --per_device_eval_batch_size 4 \\ --dataset alpaca \\ --source_max_len 512 \\ --target_max_le"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/requirements.txt",
+   "b": "requirements.txt",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_13b.sh",
+   "b": "scripts/finetune_guanaco_65b.sh",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "examples/guanaco_generate.py",
+   "b": "scripts/finetune_llama2_guanaco_7b.sh",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "scripts/finetune_llama2_guanaco_7b.sh",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_13b.sh",
+   "b": "scripts/finetune_guanaco_7b.sh",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/eval_gpt_review.py",
+   "b": "eval/ratings-human/mturk_ui.html",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "requirements.txt",
+   "b": "scripts/finetune_guanaco_7b.sh",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb",
+   "b": "paper/qlora.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "qlora.py",
+   "b": "related_work/llm_int8.pdf",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/EVAL_README.md",
+   "b": "related_work/openassistant_conversations.pdf",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/ratings-human/mturk_ui.html",
+   "b": "related_work/openassistant_conversations.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_13b.sh",
+   "b": "scripts/finetune_llama2_guanaco_7b.sh",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/qa_baseline_gpt.py",
+   "b": "qlora.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/qlora.pdf",
+   "b": "scripts/finetune_guanaco_65b.sh",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/qlora.pdf",
+   "b": "related_work/llm_int8.pdf",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_llama2_guanaco_7b.sh",
+   "b": "scripts/generate.sh",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "examples/guanaco_generate.py",
+   "b": "scripts/finetune_guanaco_13b.sh",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_33b.sh",
+   "b": "scripts/finetune_guanaco_7b.sh",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_65b.sh",
+   "b": "scripts/finetune_guanaco_7b.sh",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "scripts/finetune_guanaco_7b.sh",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/EVAL_README.md",
+   "b": "eval/qa_baseline_gpt.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "paper/qlora.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb",
+   "b": "examples/guanaco_generate.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "qlora.py",
+   "b": "related_work/openassistant_conversations.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "related_work/llm_int8.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune.sh",
+   "b": "scripts/finetune_guanaco_13b.sh",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/qa_baseline_gpt.py",
+   "b": "paper/qlora.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "examples/guanaco_generate.py",
+   "b": "scripts/generate.sh",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "examples/guanaco_generate.py",
+   "b": "qlora.py",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "examples/guanaco_generate.py",
+   "b": "scripts/finetune_guanaco_7b.sh",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune.sh",
+   "b": "scripts/finetune_guanaco_7b.sh",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb",
+   "b": "eval/ratings-human/mturk_ui.html",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_13b.sh",
+   "b": "scripts/finetune_guanaco_33b.sh",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/eval_gpt_review.py",
+   "b": "eval/qa_baseline_gpt.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "examples/guanaco_7B_demo_colab.ipynb",
+   "b": "examples/guanaco_generate.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_7b.sh",
+   "b": "scripts/generate.sh",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/qa_baseline_gpt.py",
+   "b": "eval/requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "related_work/8bit_optimizers.pdf",
+   "b": "related_work/llm_int8.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/EVAL_README.md",
+   "b": "eval/ratings-human/mturk_ui.html",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "examples/guanaco_7B_demo_colab.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "examples/guanaco_7B_demo_colab.ipynb",
+   "b": "scripts/finetune_llama2_guanaco_7b.sh",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_33b.sh",
+   "b": "scripts/finetune_guanaco_65b.sh",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune.sh",
+   "b": "scripts/generate.sh",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_65b.sh",
+   "b": "scripts/finetune_llama2_guanaco_7b.sh",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/qa_baseline_gpt.py",
+   "b": "examples/guanaco_generate.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/qlora.pdf",
+   "b": "related_work/8bit_optimizers.pdf",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "qlora.py",
+   "b": "requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_7b.sh",
+   "b": "scripts/finetune_llama2_guanaco_7b.sh",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune.sh",
+   "b": "scripts/finetune_llama2_guanaco_7b.sh",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/qlora.pdf",
+   "b": "related_work/openassistant_conversations.pdf",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/qlora.pdf",
+   "b": "qlora.py",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/eval_gpt_review.py",
+   "b": "qlora.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "scripts/finetune_guanaco_33b.sh",
+   "b": "scripts/finetune_llama2_guanaco_7b.sh",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "examples/guanaco_7B_demo_colab.ipynb",
+   "b": "scripts/finetune_guanaco_7b.sh",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/EVAL_README.md",
+   "b": "eval/requirements.txt",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "eval/eval_gpt_review.py",
+   "b": "eval/requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "scripts/generate.sh",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "README documents running qlora.py for generation; generate.sh is the entry point.",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "scripts/finetune_guanaco_65b.sh",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "README mentions the Guanaco training scripts for reproducing models.",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "related_work/8bit_optimizers.pdf",
+   "b": "related_work/openassistant_conversations.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "eval/requirements.txt",
+   "b": "scripts/finetune_guanaco_65b.sh",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "eval/ratings-human/mturk_ui.html",
+   "b": "related_work/llm_int8.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "eval/eval_gpt_review.py",
+   "b": "related_work/openassistant_conversations.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "eval/ratings-human/mturk_ui.html",
+   "b": "related_work/8bit_optimizers.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "examples/guanaco_generate.py",
+   "b": "related_work/8bit_optimizers.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb",
+   "b": "examples/guanaco_7B_demo_colab.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "eval/ratings-human/mturk_ui.html",
+   "b": "scripts/finetune_guanaco_65b.sh",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "related_work/8bit_optimizers.pdf",
+   "b": "scripts/generate.sh",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "related_work/llm_int8.pdf",
+   "b": "related_work/openassistant_conversations.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "eval/eval_gpt_review.py",
+   "b": "scripts/finetune_guanaco_33b.sh",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "eval/qa_baseline_gpt.py",
+   "b": "scripts/generate.sh",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "related_work/openassistant_conversations.pdf",
+   "b": "scripts/finetune_guanaco_7b.sh",
+   "source": "review",
+   "note": "A dataset paper does not describe a shell script; at most a weak topical link."
+  },
+  {
+   "a": "related_work/llm_int8.pdf",
+   "b": "requirements.txt",
+   "source": "review",
+   "note": "A related-work PDF does not describe a requirements file."
+  },
+  {
+   "a": "related_work/8bit_optimizers.pdf",
+   "b": "scripts/finetune.sh",
+   "source": "review",
+   "note": "Speculative link; no clear connection beyond optimizer topic."
+  },
+  {
+   "a": "related_work/8bit_optimizers.pdf",
+   "b": "scripts/finetune_llama2_guanaco_7b.sh",
+   "source": "review",
+   "note": "Generic, not a link a reader would make."
+  },
+  {
+   "a": "examples/guanaco_7B_demo_colab.ipynb",
+   "b": "scripts/finetune_guanaco_33b.sh",
+   "source": "review",
+   "note": "Demo of 7B has no particular relation to the 33B script."
+  },
+  {
+   "a": "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb",
+   "b": "scripts/finetune_guanaco_65b.sh",
+   "source": "review",
+   "note": "Loose; notebook compares outputs and doesn't relate to the training script directly."
+  },
+  {
+   "a": "examples/guanaco_7B_demo_colab.ipynb",
+   "b": "related_work/llm_int8.pdf",
+   "source": "review",
+   "note": "Demo notebook does not use the paper."
+  },
+  {
+   "a": "eval/eval_gpt_review.py",
+   "b": "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb",
+   "source": "review",
+   "note": "The review script does not use the human-eval notebook."
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "repo": "artidoro/qlora",
+  "commit": "7f4e95a68dc076bea9b3a413d2b512eca6d004e5",
+  "code_license": "MIT",
+  "papers": [
+   {
+    "arxiv": "2305.14314",
+    "version": 1,
+    "license": "CC-BY-4.0",
+    "file": "paper/qlora.pdf",
+    "role": "main",
+    "title": "QLoRA (Dettmers et al., 2023)"
+   },
+   {
+    "arxiv": "2208.07339",
+    "version": 2,
+    "license": "CC-BY-4.0",
+    "file": "related_work/llm_int8.pdf",
+    "role": "related",
+    "title": "LLM.int8() (Dettmers et al., 2022)"
+   },
+   {
+    "arxiv": "2110.02861",
+    "version": 2,
+    "license": "CC-BY-4.0",
+    "file": "related_work/8bit_optimizers.pdf",
+    "role": "related",
+    "title": "8-bit Optimizers via Block-wise Quantization (Dettmers et al., 2022)"
+   },
+   {
+    "arxiv": "2304.07327",
+    "version": 2,
+    "license": "CC-BY-4.0",
+    "file": "related_work/openassistant_conversations.pdf",
+    "role": "related",
+    "title": "OpenAssistant Conversations (Köpf et al., 2023)"
+   }
+  ],
+  "pool_size": 89,
+  "reviewed": 0,
+  "review_agreement_related_vs_not": null,
+  "labeler": "claude-sonnet-5-5 first pass, human review",
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    3,
+    3,
+    3
+   ],
+   "summaries": [
+    "The core structure (README to components, scripts to qlora.py, eval README to eval scripts) is sound. The graph is noisy with many speculative weak links, a few wrong relations (e.g., duplicate, paper-implements-shell-script, related-work PDFs \"describing\" scripts), and some missing obvious links such as README to finetune.sh/generate.sh.",
+    "The core structure (README describing files, scripts using qlora.py, eval README describing eval scripts) is sound. Many weak same_topic links and several dubious ones (e.g., PDF describing scripts, requirements using a script, duplicate relation) add noise.",
+    "The graph captures the core structure well: README to its documented files, the scripts to qlora.py, and the eval README to the eval scripts. It also contains many spurious or weak same_topic links, some wrongly directed or mislabeled links (e.g. the guanaco_generate.py/qlora.py duplicate, related-work PDFs described as describing scripts), and it misses some obvious links."
+   ],
+   "proposed": 43,
+   "applied": [
+    {
+     "op": "remove",
+     "a": "related_work/openassistant_conversations.pdf",
+     "b": "scripts/finetune_guanaco_7b.sh",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "A dataset paper does not describe a shell script; at most a weak topical link.",
+      "A dataset paper does not describe a shell script; at most a weak topical link.",
+      "The dataset paper does not describe the shell script. The link is at best weak."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "related_work/llm_int8.pdf",
+     "b": "requirements.txt",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "A related-work PDF does not describe a requirements file.",
+      "A related-work paper does not describe the requirements file; only loosely linked via bitsandbytes.",
+      "A related-work paper does not describe the requirements file."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "examples/guanaco_generate.py",
+     "b": "scripts/finetune_guanaco_7b.sh",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "The generation example does not run the finetune script; it only loads the resulting adapter.",
+      "The generate script only loads the resulting adapter and does not use the training script, so the link is loose."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "related_work/8bit_optimizers.pdf",
+     "b": "scripts/finetune.sh",
+     "relation": "supports",
+     "votes": 2,
+     "reasons": [
+      "Speculative link; no clear connection beyond optimizer topic.",
+      "Weak and tenuous link between a paper and a generic script."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "related_work/8bit_optimizers.pdf",
+     "b": "scripts/finetune_llama2_guanaco_7b.sh",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "Generic, not a link a reader would make.",
+      "No real connection."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "examples/guanaco_7B_demo_colab.ipynb",
+     "b": "scripts/finetune_guanaco_33b.sh",
+     "relation": "same_topic",
+     "votes": 3,
+     "reasons": [
+      "Demo of 7B has no particular relation to the 33B script.",
+      "The 7B demo is not related to the 33B training script.",
+      "The 7B Colab demo has no meaningful link to the 33B training script."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb",
+     "b": "scripts/finetune_guanaco_65b.sh",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "Loose; notebook compares outputs and doesn't relate to the training script directly.",
+      "Only a tenuous link, through the shared model name."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "examples/guanaco_7B_demo_colab.ipynb",
+     "b": "related_work/llm_int8.pdf",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "Demo notebook does not use the paper.",
+      "A demo notebook does not use a paper.",
+      "A demo notebook does not use a related-work paper."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "scripts/generate.sh",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "README documents running qlora.py for generation; generate.sh is the entry point.",
+      "The README documents running qlora.py for generation."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "scripts/finetune_guanaco_65b.sh",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "README mentions the Guanaco training scripts for reproducing models.",
+      "README documents Guanaco training scripts including 65B; weak link.",
+      "The README documents the Guanaco training scripts."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "eval/eval_gpt_review.py",
+     "b": "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "The review script does not use the human-eval notebook.",
+      "The script does not use the notebook."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 5,
+   "key_links": 14,
+   "required_before": 27,
+   "notes": [
+    "README가 전체를 안내하고, 핵심 qlora.py를 여러 실행 스크립트가 호출해 학습·생성하며, 예제·평가 파이프라인과 논문/관련 연구가 이를 뒷받침하는 구조입니다.",
+    "README가 전체를 안내하며, 논문을 구현한 qlora.py를 여러 실행 스크립트가 호출해 모델을 학습·생성하고, eval 폴더가 GPT-4·사람 평가를, examples가 Guanaco 데모를, related_work가 배경 논문을 담고 있습니다.",
+    "QLoRA 프로젝트는 핵심 학습 스크립트 qlora.py를 중심으로, 이를 호출하는 모델별 실행 스크립트, Guanaco 예제, GPT-4·사람 평가 파이프라인, README와 논문 및 관련 연구 PDF로 구성됩니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "학습·생성 실행 스크립트",
+   "members": [
+    "scripts/finetune.sh",
+    "scripts/finetune_guanaco_13b.sh",
+    "scripts/finetune_guanaco_33b.sh",
+    "scripts/finetune_guanaco_65b.sh",
+    "scripts/finetune_guanaco_7b.sh",
+    "scripts/finetune_llama2_guanaco_7b.sh",
+    "scripts/generate.sh"
+   ]
+  },
+  {
+   "name": "평가 파이프라인",
+   "members": [
+    "eval/EVAL_README.md",
+    "eval/eval_gpt_review.py",
+    "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb",
+    "eval/qa_baseline_gpt.py",
+    "eval/ratings-human/mturk_ui.html",
+    "eval/requirements.txt"
+   ]
+  },
+  {
+   "name": "관련 연구 논문",
+   "members": [
+    "related_work/8bit_optimizers.pdf",
+    "related_work/llm_int8.pdf",
+    "related_work/openassistant_conversations.pdf"
+   ]
+  },
+  {
+   "name": "Guanaco 데모 예제",
+   "members": [
+    "examples/guanaco_7B_demo_colab.ipynb",
+    "examples/guanaco_generate.py"
+   ]
+  },
+  {
+   "name": "문서와 논문",
+   "members": [
+    "README.md",
+    "paper/qlora.pdf"
+   ]
+  },
+  {
+   "name": "핵심 학습 코드",
+   "members": [
+    "qlora.py",
+    "requirements.txt"
+   ]
+  }
+ ]
+}

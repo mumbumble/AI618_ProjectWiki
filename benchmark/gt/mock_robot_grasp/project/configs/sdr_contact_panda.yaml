@@ -1,0 +1,27 @@
+# Main GraspDR experiment: Panda arm, tabletop_objs_v2, seed 3
+# Inherits all defaults from base.yaml (PPO, reward weights, SRS, curriculum).
+# Only the values that differ for this experiment are set here.
+inherits: base.yaml
+
+# Experiment identity
+experiment_name: graspdr_main_panda
+description: >
+  Main GraspDR run for the paper table. Structured randomization sampler,
+  contact-aware reward, and range curriculum all enabled.
+
+# Run settings
+seed: 3                      # seeds 0-4 are used for the reported results; this file is the seed 3 run
+robot: panda                 # 7-DoF Franka-style arm with parallel gripper
+dataset: tabletop_objs_v2    # 640 train meshes, 80 val, 80 test (held-out 160 split into val/test)
+
+# Evaluation
+# Shifted-physics evaluation at randomization range scales s in {0.5, 1.0, 1.5, 2.0, 2.5}.
+# Each cell is reported with 2000 episodes.
+eval_ranges: [0.5, 1.0, 1.5, 2.0, 2.5]
+eval_episodes_per_range: 2000
+
+# Logging and outputs
+log_interval_steps: 500000   # log loss and val_success every 500k env steps
+checkpoint_dir: checkpoints/
+best_checkpoint_name: best.pt
+results_dir: results/

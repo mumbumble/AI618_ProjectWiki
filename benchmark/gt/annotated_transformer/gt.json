@@ -1,0 +1,675 @@
+{
+ "project": "annotated_transformer",
+ "edges": [
+  {
+   "a": "AnnotatedTransformer.ipynb",
+   "b": "images/ModalNet-21.png",
+   "relation": "uses",
+   "also": [
+    "other",
+    "produces"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "AnnotatedTransformer.ipynb",
+    "span": "![](images/ModalNet-21.png)"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "AnnotatedTransformer.ipynb",
+   "b": "images/ModalNet-19.png",
+   "relation": "uses",
+   "also": [
+    "other",
+    "produces"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "AnnotatedTransformer.ipynb",
+    "span": "pute the dot products of the query with all keys, divide each by $\\sqrt{d_k}$, and apply a softmax function to obtain the weights on the values. ![](images/ModalNet-19.png)"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "AnnotatedTransformer.ipynb",
+   "b": "images/ModalNet-20.png",
+   "relation": "uses",
+   "also": [
+    "other",
+    "produces"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "AnnotatedTransformer.ipynb",
+    "span": "![](images/ModalNet-20.png)"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "AnnotatedTransformer.ipynb",
+   "b": "the_annotated_transformer.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "AnnotatedTransformer.ipynb",
+    "span": "def train_distributed_model(vocab_src, vocab_tgt, spacy_de, spacy_en, config): from the_annotated_transformer import train_worker ngpus = torch.cuda.device_count() os.environ[\"MASTER_ADDR\"] = \"localhost\" os.environ[\"MASTER_PORT\"] = \"12356\" print(f\"Number of GPUs detected: {ngpus"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "AnnotatedTransformer.ipynb",
+   "b": "images/aiayn.png",
+   "relation": "uses",
+   "also": [
+    "other",
+    "produces"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "AnnotatedTransformer.ipynb",
+    "span": "Annotated Transformer</h1> </center> <center> <p><a href=\"https://arxiv.org/abs/1706.03762\">Attention is All You Need </a></p> </center> <img src=\"images/aiayn.png\" width=\"70%\"/> * *v2022: Austin Huang, Suraj Subramanian, Jonathan Sum, Khalid Almubarak, and Stella Biderman.* * *[Original](htt"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "AnnotatedTransformer.ipynb",
+   "b": "requirements.txt",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "AnnotatedTransformer.ipynb",
+    "span": "# !pip install -r requirements.txt"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "the_annotated_transformer.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "Makefile",
+    "span": "notebook: the_annotated_transformer.py jupytext --to ipynb the_annotated_transformer.py py: the_annotated_transformer.ipynb jupytext --to py:percent the_annotated_transformer.ipynb the_annotated_transformer.ipynb: the_annotated_transformer.py jupytext --to ipynb the_annotated_transformer.py ex"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "docs/header-includes.yaml",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "Makefile",
+    "span": "e_annotated_transformer.ipynb jupyter nbconvert --to markdown --execute the_annotated_transformer.ipynb blog: the_annotated_transformer.md pandoc docs/header-includes.yaml the_annotated_transformer.md --katex=/usr/local/lib/node_modules/katex/dist/ --output=docs/index.html --to=html5 --css=docs"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "docs/tufte.css",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "Makefile",
+    "span": "aml the_annotated_transformer.md --katex=/usr/local/lib/node_modules/katex/dist/ --output=docs/index.html --to=html5 --css=docs/github.min.css --css=docs/tufte.css --no-highlight --self-contained --metadata pagetitle=\"The Annotated Transformer\" --resource-path=/home/srush/Projects/annotated-transfo"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "README.md",
+   "relation": "describes",
+   "also": [
+    "extends",
+    "same_topic",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "Makefile",
+    "span": "# see README.md - IWSLT needs to be downloaded manually to obtain 2016-01.tgz move-dataset: mkdir -p ~/.torchtext/cache/IWSLT2016 cp 2016-01.tgz ~/.torchtext/cache/IWSLT2016/. setup: move-dataset pip install -r requirements.txt"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "requirements.txt",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "Makefile",
+    "span": "2016-01.tgz move-dataset: mkdir -p ~/.torchtext/cache/IWSLT2016 cp 2016-01.tgz ~/.torchtext/cache/IWSLT2016/. setup: move-dataset pip install -r requirements.txt"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "AnnotatedTransformer.ipynb",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "lab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/harvardnlp/annotated-transformer/blob/master/AnnotatedTransformer.ipynb) ![image](https://user-images.githubusercontent.com/35882/166251887-9da909a9-660b-45a9-ae72-0aae89fb38d4.png)"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "requirements.txt",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "# Package Dependencies Use `requirements.txt` to install library dependencies with pip: ``` pip install -r requirements.txt ```"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "the_annotated_transformer.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": ". To produce the `.ipynb` notebook file using the markdown source, run (under the hood, the `notebook` build target simply runs `jupytext --to ipynb the_annotated_transformer.py`): ``` make notebook ``` To produce the html version of the notebook, run: ``` make html ``` `make html` is just a sh"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "writeup/acl2018.sty",
+   "b": "writeup/acl_natbib.bst",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "writeup/acl2018.sty",
+    "span": "Lu % 2017: modified to support DOI links in bibliography. Now uses % natbib package rather than defining citation commands in this file. % Use with acl_natbib.bst bib style. -- Dan Gildea % This is the LaTeX style for ACL 2016. It contains Margaret Mitchell's % line number adaptations (ported by"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "requirements.txt",
+   "b": "the_annotated_transformer.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "images/aiayn.png",
+   "b": "the_annotated_transformer.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "images/ModalNet-21.png",
+   "b": "the_annotated_transformer.py",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "images/ModalNet-20.png",
+   "b": "the_annotated_transformer.py",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "images/ModalNet-19.png",
+   "b": "the_annotated_transformer.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "images/ModalNet-20.png",
+   "b": "images/aiayn.png",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "images/ModalNet-19.png",
+   "b": "images/ModalNet-21.png",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "images/ModalNet-20.png",
+   "b": "images/ModalNet-21.png",
+   "relation": "extends",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/header-includes.yaml",
+   "b": "docs/tufte.css",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "images/ModalNet-19.png",
+   "b": "images/ModalNet-20.png",
+   "relation": "extends",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "docs/header-includes.yaml",
+   "b": "images/ModalNet-20.png",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "AnnotatedTransformer.ipynb",
+   "b": "writeup/acl_natbib.bst",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/tufte.css",
+   "b": "the_annotated_transformer.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/tufte.css",
+   "b": "writeup/acl2018.sty",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/header-includes.yaml",
+   "b": "requirements.txt",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "README.md",
+   "b": "writeup/acl2018.sty",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/tufte.css",
+   "b": "writeup/acl_natbib.bst",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/header-includes.yaml",
+   "b": "writeup/acl2018.sty",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/tufte.css",
+   "b": "requirements.txt",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "images/aiayn.png",
+   "b": "writeup/acl2018.sty",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "README.md",
+   "b": "writeup/acl_natbib.bst",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "AnnotatedTransformer.ipynb",
+   "b": "writeup/acl2018.sty",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "images/ModalNet-20.png",
+   "b": "requirements.txt",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "images/aiayn.png",
+   "b": "writeup/acl_natbib.bst",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "AnnotatedTransformer.ipynb",
+   "b": "Makefile",
+   "source": "review",
+   "note": "The notebook does not produce the Makefile; the Makefile generates the notebook from the .py."
+  },
+  {
+   "a": "docs/tufte.css",
+   "b": "images/aiayn.png",
+   "source": "review",
+   "note": "A stylesheet does not use a specific author-list image."
+  },
+  {
+   "a": "docs/header-includes.yaml",
+   "b": "the_annotated_transformer.py",
+   "source": "review",
+   "note": "A highlight.js header config does not describe the Python source."
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "repo": "harvardnlp/annotated-transformer",
+  "commit": "debc9fd747bb2123160a98046ad1c2d4da44a567",
+  "code_license": "MIT",
+  "papers": [],
+  "pool_size": 41,
+  "reviewed": 0,
+  "review_agreement_related_vs_not": null,
+  "labeler": "claude-sonnet-5-5 first pass, human review",
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    3,
+    3,
+    3
+   ],
+   "summaries": [
+    "The graph captures the main structure (README, Makefile, .py source, notebook, images, requirements) reasonably well. It has several questionable edges: the notebook \"producing\" the Makefile, the CSS using aiayn.png, and some directions/relations are odd. The Makefile-to-README link is also dubious.",
+    "The graph captures the main structure (README, Makefile, py source, notebook, requirements, images, writeup pair), but a few edges have reversed direction or are tenuous. The Makefile→notebook generation link is missing and a reversed \"ipynb produces Makefile\" edge exists instead.",
+    "The graph captures the main hub structure (README, Makefile, the .py source, notebook, images) reasonably well. Several links are questionable, though: the notebook \"producing\" the Makefile, the CSS using aiayn.png, the images \"extending\" each other, and the Makefile being described by the README with the wrong direction and relation."
+   ],
+   "proposed": 26,
+   "applied": [
+    {
+     "op": "remove",
+     "a": "AnnotatedTransformer.ipynb",
+     "b": "Makefile",
+     "relation": "produces",
+     "votes": 3,
+     "reasons": [
+      "The notebook does not produce the Makefile; the Makefile generates the notebook from the .py.",
+      "Direction is wrong; the notebook does not produce the Makefile.",
+      "The notebook does not produce the Makefile; the Makefile generates the notebook from the .py file."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "docs/tufte.css",
+     "b": "images/aiayn.png",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "A stylesheet does not use a specific author-list image.",
+      "A generic stylesheet does not reference the author-list image.",
+      "The stylesheet does not reference the author image; generic styling only."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "docs/header-includes.yaml",
+     "b": "the_annotated_transformer.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "A highlight.js header config does not describe the Python source.",
+      "Pandoc header include does not describe the source script.",
+      "A pandoc header config does not describe the Python source."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "AnnotatedTransformer.ipynb",
+     "b": "requirements.txt",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "Notebook only loosely depends on requirements file.",
+      "Notebook only indirectly depends on requirements; loose link.",
+      "The notebook is only loosely tied to requirements.txt; its imports are implied by the dependencies."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "AnnotatedTransformer.ipynb",
+     "b": "images/aiayn.png",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "Author-list image is a minor header illustration; less central.",
+      "The authors image is only a decorative header, not essential to the implementation."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 3,
+   "key_links": 9,
+   "required_before": 16,
+   "notes": [
+    "핵심 소스 the_annotated_transformer.py를 노트북으로 변환·설명하며, Makefile과 README가 빌드·실행을 안내하고 docs 스타일과 이미지가 문서를 꾸미며 writeup은 논문 양식 파일입니다.",
+    "핵심은 the_annotated_transformer.py 스크립트이며, 이를 Makefile이 노트북·HTML로 변환하고 README가 설명하며, 노트북은 구조 다이어그램 이미지를 사용하고 writeup 폴더에는 ACL 논문 양식 파일이 따로 있다.",
+    "핵심 소스 the_annotated_transformer.py를 Makefile이 노트북과 HTML로 변환하고, README와 구조도 이미지들이 이를 설명하며, writeup 폴더는 ACL 논문 양식 파일입니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "아키텍처 그림",
+   "members": [
+    "images/ModalNet-19.png",
+    "images/ModalNet-20.png",
+    "images/ModalNet-21.png",
+    "images/aiayn.png"
+   ]
+  },
+  {
+   "name": "문서 및 README",
+   "members": [
+    "README.md",
+    "docs/header-includes.yaml",
+    "docs/tufte.css"
+   ]
+  },
+  {
+   "name": "논문 양식 (writeup)",
+   "members": [
+    "writeup/acl2018.sty",
+    "writeup/acl_natbib.bst"
+   ]
+  },
+  {
+   "name": "모델 구현 코드",
+   "members": [
+    "AnnotatedTransformer.ipynb",
+    "the_annotated_transformer.py"
+   ]
+  },
+  {
+   "name": "빌드와 환경 설정",
+   "members": [
+    "Makefile",
+    "requirements.txt"
+   ]
+  }
+ ]
+}

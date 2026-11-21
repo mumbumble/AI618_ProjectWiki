@@ -1,0 +1,1586 @@
+{
+ "project": "llama2c",
+ "edges": [
+  {
+   "a": "README.md",
+   "b": "run.c",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "om/llama/) model in pure C? No? Well, now you can! Train the Llama 2 LLM architecture in PyTorch then inference it with one simple 700-line C file ([run.c](run.c)). You might think that you need many billion parameter LLMs to do anything useful, but in fact very small LLMs can have surprisingly str"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "runq.c",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "e the 0 means that the weight quantization is symmetric around 0, quantizing to the range [-127, 127]. The quantized forward pass is implemented in [runq.c](runq.c). To use it, we have to export the model in the quantized format. For example, the float32 version of Llama 2 7B was exported as: ```"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "export.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## huggingface models We can load any huggingface models that use the Llama 2 architecture. See the script [export.py](export.py) and the `--hf` flag to export the model .bin file."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "Makefile",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## performance There are many ways to potentially speed up this code depending on your system. Have a look at the [Makefile](Makefile), which contains a lot of notes. The `make run` command currently uses the `-O3` optimization by default, i.e.: ```bash gcc -O3 -o run run.c -lm ``` -O3 includes o"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "test.c",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "have to download and cache the stories260K models in a temporary `test` directory (only ~2MB download). There are also some tests in C, in the file [test.c](test.c). You can run these with `make testcc`, or to see more stuff printed: ``` make testcc VERBOSITY=1 ``` Call for help: help add more te"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "export.py",
+   "b": "model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "export.py",
+    "span": "\"\"\" This script has functions and utilties for model export. Basically, we have a bunch of versions of the model, and we want to export them to .bin files to be read from and inferenced in C. Among the \"input\" versions of PyTorch files/models: - Official Llama 2 weights released by Meta - Huggingfa"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "run.ipynb",
+   "b": "README.md",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "run.ipynb",
+    "span": "gle.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karpathy/llama2.c/blob/master/run.ipynb) More details can be found in the [README.md](README.md) ."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "sample.py",
+   "b": "model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "sample.py",
+    "span": "\"\"\" Sample from the trained model with PyTorch \"\"\" import os import pickle from contextlib import nullcontext import torch from model import ModelArgs, Transformer from tokenizer import Tokenizer from tinystories import get_tokenizer_model_path checkpoint = 'out/ckpt.pt' start = \"\" # or \"<|endoftext"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "sample.py",
+   "b": "tokenizer.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "sample.py",
+    "span": "trained model with PyTorch \"\"\" import os import pickle from contextlib import nullcontext import torch from model import ModelArgs, Transformer from tokenizer import Tokenizer from tinystories import get_tokenizer_model_path checkpoint = 'out/ckpt.pt' start = \"\" # or \"<|endoftext|>\" or etc. Can als"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "sample.py",
+   "b": "tinystories.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "sample.py",
+    "span": "import os import pickle from contextlib import nullcontext import torch from model import ModelArgs, Transformer from tokenizer import Tokenizer from tinystories import get_tokenizer_model_path checkpoint = 'out/ckpt.pt' start = \"\" # or \"<|endoftext|>\" or etc. Can also specify a file, use as: \"FILE:"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "test_all.py",
+   "b": "model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "test_all.py",
+    "span": "\"\"\" Run simply with $ pytest \"\"\" import os import pytest # pip install pytest import requests import subprocess import torch from model import ModelArgs, Transformer from tokenizer import Tokenizer test_ckpt_dir = \"test\" expected_stdout = b'Once upon a time, there was a little girl named Lily. She l"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "test_all.py",
+   "b": "tokenizer.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "test_all.py",
+    "span": "pytest \"\"\" import os import pytest # pip install pytest import requests import subprocess import torch from model import ModelArgs, Transformer from tokenizer import Tokenizer test_ckpt_dir = \"test\" expected_stdout = b'Once upon a time, there was a little girl named Lily. She loved to play outside"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tinystories.py",
+   "b": "tokenizer.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tinystories.py",
+    "span": "mport partial import numpy as np import requests import sentencepiece as spm import torch import torch.distributed as dist from tqdm import tqdm from tokenizer import Tokenizer DATA_CACHE_DIR = \"data\" if __name__ == \"__main__\": \"\"\" These stages are designed to be run in order. To tokeni"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "train.py",
+   "b": "model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "train.py",
+    "span": "\"\"\"\nThis training script can be run both on a single gpu in debug mode,\nand also in a larger training run with distributed data parallel (ddp).\n\nTo run on a single GPU small debug run, example:\n$ python -m train.py --compile=False --eval_iters=10 --batch_size=8\n\nTo run with DDP on 4 gpus on 1 node, "
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "train.py",
+   "b": "tinystories.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "train.py",
+    "span": "\"\"\"\nThis training script can be run both on a single gpu in debug mode,\nand also in a larger training run with distributed data parallel (ddp).\n\nTo run on a single GPU small debug run, example:\n$ python -m train.py --compile=False --eval_iters=10 --batch_size=8\n\nTo run with DDP on 4 gpus on 1 node, "
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "train.py",
+   "b": "export.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "train.py",
+    "span": "\"\"\"\nThis training script can be run both on a single gpu in debug mode,\nand also in a larger training run with distributed data parallel (ddp).\n\nTo run on a single GPU small debug run, example:\n$ python -m train.py --compile=False --eval_iters=10 --batch_size=8\n\nTo run with DDP on 4 gpus on 1 node, "
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "run.c",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "Makefile",
+    "span": "example override to clang: make run CC=clang CC = gcc # the most basic way of building that is most likely to work on most systems .PHONY: run run: run.c $(CC) -O3 -o run run.c -lm $(CC) -O3 -o runq runq.c -lm # useful for a debug build, can then e.g. analyze with valgrind, example: # $ valgrin"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "runq.c",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "Makefile",
+    "span": "c # the most basic way of building that is most likely to work on most systems .PHONY: run run: run.c $(CC) -O3 -o run run.c -lm $(CC) -O3 -o runq runq.c -lm # useful for a debug build, can then e.g. analyze with valgrind, example: # $ valgrind --leak-check=full ./run out/model.bin -n 3 rundebug"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "win.c",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "Makefile",
+    "span": ".PHONY: win64 win64: x86_64-w64-mingw32-gcc -Ofast -D_WIN32 -o run.exe -I. run.c win.c x86_64-w64-mingw32-gcc -Ofast -D_WIN32 -o runq.exe -I. runq.c win.c # compiles with gnu99 standard flags for amazon linux, coreos, etc. compatibility .PHONY: rungnu rungnu: $(CC) -Ofast -std=gnu11 -o run run.c"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "test.c",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "Makefile",
+    "span": "to increase verbosity level run e.g. as `make testcc VERBOSITY=1` VERBOSITY ?= 0 .PHONY: testcc testcc: $(CC) -DVERBOSITY=$(VERBOSITY) -O3 -o testc test.c -lm ./testc .PHONY: clean clean: rm -f run rm -f runq"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "assets/llama_cute.jpg",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "supports",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## llama2.c <p align=\"center\"> <img src=\"assets/llama_cute.jpg\" width=\"300\" height=\"300\" alt=\"Cute Llama\"> </p> Have you ever wanted to inference a baby [Llama 2](https://ai.meta.com/llama/) model in pure C? No? Well, now you can! Train the Llama 2 LLM architecture in PyTorch then inference it"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "requirements.txt",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "nce we have those checkpoints, we have to convert them into the llama2.c format. For this we need to install the python dependencies (`pip install -r requirements.txt`) and then use the `export.py` file, e.g. for 7B model: ```bash python export.py llama2_7b.bin --meta-llama path/to/llama/model/7B `"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "tokenizer.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "e plain and instruct variants and pass it when doing inference. ```bash python export.py codellama2_7b.bin --meta-llama /path/to/CodeLlama-7b python tokenizer.py --tokenizer-model=/path/to/CodeLlama-7b/tokenizer.model ./run codellama2_7b.bin -z /path/to/CodeLlama-7b/tokenizer.bin ``` Chat with Cod"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "tinystories.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "/TinyStories) so this is the only example currently available in this repo. But it should be very easy to add datasets, see the code. ```bash python tinystories.py download python tinystories.py pretokenize ``` Then train our model: ```bash python train.py ```"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "train.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "y to add datasets, see the code. ```bash python tinystories.py download python tinystories.py pretokenize ``` Then train our model: ```bash python train.py ```"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "sample.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "s stream by, fun! We can also run the PyTorch inference script for a comparison. Download one of the models again from huggingface hub and point the `sample.py` script at it:"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "build_msvc.bat",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## platforms On **Windows**, use `build_msvc.bat` in a Visual Studio Command Prompt to build with msvc, or you can use `make win64` to use mingw compiler toolchain from linux or windows to build the windows target. MSVC build will automatically use openmp and max threads appropriate for your CPU un"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "test_all.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## tests You can run tests simply with pytest: ```bash $ pip install pytest $ pytest ``` This will currently invoke two tests inside `test_all.py`, which forward the model in both C and Python for 200 steps and check the output against a known good expected output. The tests currently run in only"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "build_msvc.bat",
+   "b": "run.c",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "build_msvc.bat",
+    "span": "cl.exe /fp:fast /Ox /openmp /I. run.c win.c"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "build_msvc.bat",
+   "b": "win.c",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "build_msvc.bat",
+    "span": "cl.exe /fp:fast /Ox /openmp /I. run.c win.c"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "configurator.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "configurator.py",
+    "span": "\"\"\" Poor Man's Configurator. Probably a terrible idea. Example usage: $ python train.py config/override_file.py --batch_size=32 this will first run config/override_file.py, then override batch_size to 32 The code in this file will be run as follows from e.g. train.py: >>> exec(open('configurator.py"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "run.c",
+   "b": "win.h",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "run.c",
+    "span": "h> #include <stdlib.h> #include <ctype.h> #include <time.h> #include <math.h> #include <string.h> #include <fcntl.h> #if defined _WIN32 #include \"win.h\" #else #include <unistd.h> #include <sys/mman.h> #endif // ----------------------------------------------------------------------------"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "run.ipynb",
+   "b": "export.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "run.ipynb",
+    "span": "access token\" #@param {type:\"string\"} path = snapshot_download(repo_id=\"meta-llama/Llama-2-7b\",cache_dir=\"Llama-2-7b\", use_auth_token=token) !python export.py llama2_7b.bin --meta-llama $path print(\"./run llama2_7b.bin\\n\") !./run llama2_7b.bin"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "runq.c",
+   "b": "win.h",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "runq.c",
+    "span": "h> #include <ctype.h> #include <stdint.h> #include <time.h> #include <math.h> #include <string.h> #include <fcntl.h> #if defined _WIN32 #include \"win.h\" #else #include <unistd.h> #include <sys/mman.h> #endif // ----------------------------------------------------------------------------"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "sample.py",
+   "b": "configurator.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "sample.py",
+    "span": "# examples: 'cpu', 'cuda', 'cuda:0', 'cuda:1', etc. dtype = \"float32\" compile = False # use PyTorch 2.0 to compile the model to be faster exec(open('configurator.py').read()) # overrides from command line or config file torch.manual_seed(seed) torch.cuda.manual_seed(seed) torch.backends.cuda.matmul"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "test.c",
+   "b": "run.c",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "test.c",
+    "span": "#define TESTING #include \"run.c\" void assert_eq(int a, int b) { if (a != b) { printf(\"Assertion failed: %d != %d\\n\", a, b); exit(EXIT_FAILURE); } } void test_prompt_encoding(Tokenizer* tokenizer, char* prompt, int* expected_tokens, int num_expected_tokens) { // encode"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "test_all.py",
+   "b": "run.c",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "test_all.py",
+    "span": "def test_runc(): \"\"\" Forwards a model against a known-good desired outcome in run.c for 200 steps\"\"\" attempt_download_files() model_path = os.path.join(test_ckpt_dir, \"stories260K.bin\") tokenizer_path = os.path.join(test_ckpt_dir, \"tok512.bin\") command = [\"./run\", model_path, \"-"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "test_all.py",
+   "b": "sample.py",
+   "relation": "same_method",
+   "also": [
+    "produces",
+    "other",
+    "uses"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "test_all.py",
+    "span": "def test_python(): \"\"\" Forwards a model against a known-good desired outcome in sample.py for 200 steps\"\"\" attempt_download_files() device = \"cpu\" # stories260K is small enough to just breeze through it on CPU checkpoint = os.path.join(test_ckpt_dir, \"stories260K.pt\") checkpoint"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "win.c",
+   "b": "win.h",
+   "relation": "implements",
+   "also": [
+    "produces",
+    "other",
+    "uses"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "win.c",
+    "span": "#include \"win.h\" #include <errno.h> #include <io.h> #ifndef FILE_MAP_EXECUTE #define FILE_MAP_EXECUTE 0x0020 #endif /* FILE_MAP_EXECUTE */ static int __map_mman_error(const uint32_t err, const int deferr) { if (err == 0) return 0; //TODO: implement return err; }"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "doc/stories260K.md",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [
+    "other",
+    "describes"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "doc/stories260K.md",
+    "span": "ggginface link](https://huggingface.co/karpathy/tinyllamas) The 260K model is a tiny model used for testing, and was trained as follows: ``` python train.py \\ --out_dir=\"outmini\" \\ --batch_size=128 \\ --max_seq_len=512 \\ --gradient_accumulation_steps=1 \\ --vocab_source=\"custom\""
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "doc/stories260K.md",
+   "b": "sample.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "doc/stories260K.md",
+    "span": "\"I'm sorry, mom. I didn't know what to do.\" Her mom said, \"Don't worry, Lily. We can help you. ``` You can reproduce the same in Python by running `sample.py`: ``` $ python sample.py --checkpoint=stories260K/stories260K.pt --tokenizer=stories260K/tok512.model --temperature=0.0 --max_new_tokens=25"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "doc/stories260K.md",
+   "b": "run.c",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "doc/stories260K.md",
+    "span": "okens=257 ``` I hardcoded max tokens to be 257 manually because the `sample.py` script doesn't currently terminate on the special BOS token like the run.c script does. Sampling at 1.0 with topp of 0.9 gives a bit more reasonable samples:"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "doc/train_llama_tokenizer.md",
+   "b": "tinystories.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "doc/train_llama_tokenizer.md",
+    "span": "this design choice around a weird concept of a \"sentence\". It should just be block of text with no assumptions. But here we are. Look into the file `tinystories.py` where we train the vocab in the same way, but using Python bindings instead."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "runq.c",
+   "b": "win.c",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "doc/stories260K.md",
+   "b": "tokenizer.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "export.py",
+   "b": "sample.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "run.c",
+   "b": "sample.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "requirements.txt",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "requirements.txt",
+   "b": "test_all.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "model.py",
+   "b": "run.c",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "export.py",
+   "b": "runq.c",
+   "relation": "produces",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "export.py",
+   "b": "run.c",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "doc/stories260K.md",
+   "b": "test_all.py",
+   "relation": "supports",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "test.c",
+   "b": "test_all.py",
+   "relation": "compares",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "test_all.py",
+   "b": "tinystories.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "run.ipynb",
+   "b": "tokenizer.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "doc/stories260K.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "test_all.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "model.py",
+   "b": "runq.c",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "build_msvc.bat",
+   "b": "win.h",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "requirements.txt",
+   "b": "run.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "run.c",
+   "b": "tokenizer.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "doc/stories260K.md",
+   "b": "tinystories.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tokenizer.py",
+   "b": "train.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "run.c",
+   "b": "win.c",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "runq.c",
+   "b": "test.c",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "runq.c",
+   "b": "sample.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "requirements.txt",
+   "b": "tinystories.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "run.c",
+   "b": "run.ipynb",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "run.c",
+   "b": "runq.c",
+   "relation": "extends",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "model.py",
+   "b": "requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "doc/train_llama_tokenizer.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "Makefile",
+   "b": "build_msvc.bat",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "sample.py",
+   "b": "train.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "run.ipynb",
+   "b": "test_all.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "export.py",
+   "b": "test_all.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "doc/train_llama_tokenizer.md",
+   "b": "tokenizer.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "test.c",
+   "b": "tokenizer.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "export.py",
+   "b": "tokenizer.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "Both convert artifacts into binary formats for the C runtime, and the README describes them together.",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "configurator.py",
+   "b": "test_all.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "assets/llama_cute.jpg",
+   "b": "run.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "assets/llama_cute.jpg",
+   "b": "model.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "assets/llama_cute.jpg",
+   "b": "test.c",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "doc/train_llama_tokenizer.md",
+   "b": "runq.c",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "configurator.py",
+   "b": "tinystories.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "build_msvc.bat",
+   "b": "model.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tinystories.py",
+   "b": "win.c",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "doc/stories260K.md",
+   "b": "win.h",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "assets/llama_cute.jpg",
+   "b": "runq.c",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "doc/train_llama_tokenizer.md",
+   "b": "train.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "configurator.py",
+   "b": "win.c",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "doc/train_llama_tokenizer.md",
+   "b": "win.h",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "Makefile",
+   "b": "run.ipynb",
+   "source": "review",
+   "note": "The notebook runs make runfast, but the Makefile does not use the notebook. The link is too weak to keep as Y."
+  },
+  {
+   "a": "run.c",
+   "b": "train.py",
+   "source": "review",
+   "note": "run.c does not use train.py. The link is only indirect, through the exported checkpoint."
+  },
+  {
+   "a": "run.c",
+   "b": "tinystories.py",
+   "source": "review",
+   "note": "There is no direct relation between run.c and the data preparation script."
+  },
+  {
+   "a": "Makefile",
+   "b": "train.py",
+   "source": "review",
+   "note": "The Makefile does not relate to training."
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "repo": "karpathy/llama2.c",
+  "commit": "350e04fe35433e6d2941dce5a1f53308f87058eb",
+  "code_license": "MIT",
+  "papers": [],
+  "pool_size": 85,
+  "reviewed": 0,
+  "review_agreement_related_vs_not": null,
+  "labeler": "claude-sonnet-5-5 first pass, human review",
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    3,
+    3,
+    3
+   ],
+   "summaries": [
+    "The graph captures the core structure well (README hub, run.c/runq.c with win shims, export/model/train pipeline, tests). It is over-dense with questionable links such as sample.py to tinystories.py or train.py, Makefile to run.ipynb, and run.c to train.py.",
+    "The graph captures the core structure well (Makefile/build scripts, run.c/runq.c with win shims, export/model/train/sample chain). It has some noisy links, such as sample.py->tinystories.py/train.py and run.c->train.py/tinystories.py, plus a few wrongly directed or mislabeled ones.",
+    "The graph captures the core structure well (build files, run.c/runq.c, export, train, and tests), but it is over-dense with spurious links. Many links are loose or wrong: sample.py to tinystories.py, run.c to tinystories.py, run.c to train.py, and the Makefile to run.ipynb."
+   ],
+   "proposed": 35,
+   "applied": [
+    {
+     "op": "remove",
+     "a": "Makefile",
+     "b": "run.ipynb",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "The notebook runs make runfast, but the Makefile does not use the notebook. The link is too weak to keep as Y.",
+      "The Makefile does not use the notebook; the notebook calls make, not the reverse."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "sample.py",
+     "b": "tinystories.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "sample.py does not depend on tinystories.py. At most it shares the tokenizer topic.",
+      "sample.py does not use tinystories.py; at most it finds the tokenizer via the data dir.",
+      "sample.py does not use tinystories.py in any meaningful way."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "run.c",
+     "b": "train.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "run.c does not use train.py. The link is only indirect, through the exported checkpoint.",
+      "run.c does not use train.py; the link is only indirect.",
+      "run.c has no direct link to train.py."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "run.c",
+     "b": "tinystories.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "There is no direct relation between run.c and the data preparation script.",
+      "No direct relationship; the C code is independent of data preparation.",
+      "run.c has no direct link to tinystories.py."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "sample.py",
+     "b": "train.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "sample.py loads checkpoints that train.py produces, but it does not import train.py. This is a loose link.",
+      "sample.py loads checkpoints produced by train.py; this is a loose connection, not a direct dependency.",
+      "sample.py only loads checkpoints produced by train.py; the link is indirect."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "export.py",
+     "b": "run.c",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "export.py writes the binary format that run.c reads. It does not use run.c directly.",
+      "export.py writes the format that run.c reads; it does not use run.c."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "export.py",
+     "b": "tokenizer.py",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "Both convert artifacts into binary formats for the C runtime, and the README describes them together.",
+      "export.py's tokenizer handling is related to tokenizer.py."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "Makefile",
+     "b": "train.py",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "The Makefile does not relate to training.",
+      "The Makefile has nothing to do with training."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 4,
+   "key_links": 19,
+   "required_before": 55,
+   "notes": [
+    "PyTorch로 모델을 학습(train.py, model.py)하고 export.py로 변환해 순수 C(run.c, runq.c)로 추론하며, Makefile과 테스트, README·문서가 이를 뒷받침하는 구조입니다.",
+    "PyTorch로 TinyStories 데이터를 준비·학습(train.py, model.py)하고 export.py로 변환한 가중치를 순수 C 추론 코드(run.c, runq.c)가 실행하며, Makefile과 테스트, README·문서가 이를 빌드하고 설명하는 구조입니다.",
+    "순수 C 추론 코드(run.c, runq.c)를 중심으로, PyTorch 학습·내보내기 스크립트가 .bin 가중치를 만들어 주고, Makefile과 Windows 지원 파일이 빌드를, 테스트와 README·문서가 이를 뒷받침하는 구조입니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "모델과 학습",
+   "members": [
+    "configurator.py",
+    "export.py",
+    "model.py",
+    "sample.py",
+    "train.py"
+   ]
+  },
+  {
+   "name": "문서와 예제",
+   "members": [
+    "README.md",
+    "assets/llama_cute.jpg",
+    "doc/stories260K.md",
+    "doc/train_llama_tokenizer.md",
+    "run.ipynb"
+   ]
+  },
+  {
+   "name": "빌드와 테스트",
+   "members": [
+    "Makefile",
+    "build_msvc.bat",
+    "requirements.txt",
+    "test.c",
+    "test_all.py"
+   ]
+  },
+  {
+   "name": "C 추론 코드",
+   "members": [
+    "run.c",
+    "runq.c",
+    "win.c",
+    "win.h"
+   ]
+  },
+  {
+   "name": "데이터와 토크나이저",
+   "members": [
+    "tinystories.py",
+    "tokenizer.py"
+   ]
+  }
+ ]
+}

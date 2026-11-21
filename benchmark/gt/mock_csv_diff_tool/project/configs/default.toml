@@ -1,0 +1,51 @@
+# csvdelta default settings
+# These values are read by the csvdelta command line tool when no --config
+# path is given. Any option passed on the command line overrides these values.
+#
+# The file is plain TOML. Lists and strings use the usual TOML syntax.
+
+# Column names used to match rows between the two files.
+# An empty list means no key is set, so rows are compared by position
+# using the LCS alignment. Example: key_columns = ["id"]
+key_columns = []
+
+# Field separator used when reading CSV files.
+# Use "\t" for tab-separated files, or ";" for many European exports.
+delimiter = ","
+
+# Text encoding used when reading CSV files.
+# A UTF-8 byte order mark is removed automatically, so files saved
+# from Excel with a BOM read correctly.
+encoding = "utf-8"
+
+# Output format for `csvdelta diff` and `csvdelta summary`.
+# Allowed values: "text", "json", "html".
+output_format = "text"
+
+# Numeric cells are treated as equal when abs(a - b) <= float_tolerance.
+# 0.0 means an exact comparison.
+float_tolerance = 0.0
+
+# The keyed index for the diff is kept in memory. This limit is the largest
+# number of rows that will be indexed at once. Larger files need a
+# higher value or a smaller input.
+max_rows_in_memory = 500000
+
+# Colour the text output. Set to false for plain text, for example when
+# writing to a log file or a pipe.
+color = true
+
+# Notes on the settings above:
+#   - key_columns, delimiter, encoding and float_tolerance can all be
+#     overridden with --key, --delimiter, --encoding and --tolerance.
+#   - output_format can be overridden with --format.
+#   - --ignore-case is a command line flag only and has no entry here.
+#   - Exit codes are 0 for identical files, 1 when differences are found,
+#     and 2 when an error occurs.
+
+[profile.strict]
+# Example profile for a stricter comparison. Use it with a custom
+# config path. It is not loaded by default.
+float_tolerance = 0.0
+color = false
+output_format = "json"

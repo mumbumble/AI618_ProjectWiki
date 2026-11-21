@@ -1,0 +1,3004 @@
+{
+ "project": "mock_code_summary",
+ "edges": [
+  {
+   "a": "src/train.py",
+   "b": "src/reposum_model.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "repo_java.yaml \"\"\" import argparse import os from datetime import datetime import torch import yaml from data import build_loaders, bleu4_corpus from reposum_model import RepoSumModel from utils import set_seed, get_logger, save_checkpoint, load_checkpoint LOG_EVERY = 200 if __name__ == \"__main__\":"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "src/data.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "\"\"\"Training entry point for RepoSum. Reads a YAML config (configs/base.yaml holds the defaults), builds the data loaders and the model, trains with L = L_ce + lambda * L_ret and writes a training log to logs/train_<date>.log. Example: python src/train.py --config configs/intra_repo_java.yaml \""
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "src/utils.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "rt os from datetime import datetime import torch import yaml from data import build_loaders, bleu4_corpus from reposum_model import RepoSumModel from utils import set_seed, get_logger, save_checkpoint, load_checkpoint LOG_EVERY = 200 if __name__ == \"__main__\": main()"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/reposum_model.py",
+   "b": "src/sibling_retriever.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/reposum_model.py",
+    "span": "ter the encoder. See docs/method.md for the full description. \"\"\" import math import torch import torch.nn as nn import torch.nn.functional as F from sibling_retriever import SiblingRetriever, GatedFusion PAD_ID, BOS_ID, EOS_ID = 0, 1, 2 RET_WEIGHT = 0.3 # lambda in L = L_ce + lambda * L_ret"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/reposum_model.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/evaluate.py",
+    "span": "--ckpt checkpoints/best.pt \"\"\" import argparse import csv import math import os from collections import Counter import numpy as np import torch from reposum_model import RepoSumModel from data import load_config, load_split, make_loader, get_tokenizer FIELDS = [\"method\", \"setting\", \"bleu4\", \"ci_low"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/data.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/evaluate.py",
+    "span": "argparse import csv import math import os from collections import Counter import numpy as np import torch from reposum_model import RepoSumModel from data import load_config, load_split, make_loader, get_tokenizer FIELDS = [\"method\", \"setting\", \"bleu4\", \"ci_low\", \"ci_high\"] N_BOOT = 1000 SEED = 13 M"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "configs/base.yaml",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "\"\"\"Training entry point for RepoSum. Reads a YAML config (configs/base.yaml holds the defaults), builds the data loaders and the model, trains with L = L_ce + lambda * L_ret and writes a training log to logs/train_<date>.log. Example: python src/train.py --config configs/intra_repo_java.yaml \""
+   },
+   "source": "designed",
+   "note": "explicit: the default value of --config is the base config path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "configs/base.yaml",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "configs/intra_repo_java.yaml",
+    "span": "ava.yaml # python src/evaluate.py --config configs/intra_repo_java.yaml --ckpt checkpoints/best.pt # # Everything not listed here is inherited from configs/base.yaml. inherits: base.yaml experiment: name: reposum_intra_repo_java method: RepoSum version: 0.3.1 notes: \"Main setting for Tab"
+   },
+   "source": "designed",
+   "note": "explicit: first line: `inherits: base.yaml`",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "results/main_results.csv",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/evaluate.py",
+    "span": "of a trained checkpoint with beam search, computes corpus-level BLEU-4 with a 95% bootstrap confidence interval, and records the result as one row of results/main_results.csv (one row per method and setting). Usage: python src/evaluate.py --config CONFIG --ckpt checkpoints/best.pt \"\"\" import ar"
+   },
+   "source": "designed",
+   "note": "explicit: writes the main results CSV at its path",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "results/main_results.csv",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/plot_results.py",
+    "span": "atplotlib.pyplot as plt # noqa: E402 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) RESULTS_CSV = os.path.join(ROOT, \"results\", \"main_results.csv\") FIG_DIR = os.path.join(ROOT, \"figures\") FIG_PATH = os.path.join(FIG_DIR, \"bleu4_vs_num_retrieved.png\") SETTING = \"intra_repo\" K_VAL"
+   },
+   "source": "designed",
+   "note": "explicit: reads the main results CSV at its path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "figures/bleu4_vs_num_retrieved.png",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/plot_results.py",
+    "span": "__file__))) RESULTS_CSV = os.path.join(ROOT, \"results\", \"main_results.csv\") FIG_DIR = os.path.join(ROOT, \"figures\") FIG_PATH = os.path.join(FIG_DIR, \"bleu4_vs_num_retrieved.png\") SETTING = \"intra_repo\" K_VALUES = [0, 1, 2, 4, 8, 16] K_MAIN = 4 # k used for the main table and the reported CIs SWEEP"
+   },
+   "source": "designed",
+   "note": "explicit: saves the main figure at its path",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "logs/train_2026-09-02.log",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: writes logs/train_<date>.log built from a date pattern; the literal log file name never appears",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "configs/intra_repo_java.yaml",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "logs/train_2026-09-02.log",
+    "span": "config: configs/intra_repo_java.yaml 2026-09-02 10:12:49 seed set to 13 2026-09-02 10:12:49 device: cuda:0 (1x A100 40GB) 2026-09-02 10:12:55 split: intra_repo (per-repo chronological 80/10/10) 2026-09-02 10:12:55 test functions: 31120 2026-09-02 10:12:58 model: transformer encoder-decoder, 6+6 laye"
+   },
+   "source": "designed",
+   "note": "explicit: the first log line prints the experiment config path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/sibling_retriever.py",
+   "b": "docs/method.md",
+   "relation": "implements",
+   "also": [
+    "describes"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: implements the key module exactly as the method doc describes it (same name, same equation, same hyperparameter values)",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "src/reposum_model.py",
+   "b": "docs/method.md",
+   "relation": "implements",
+   "also": [
+    "describes"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/reposum_model.py",
+    "span": "siblings\") are retrieved, encoded with the shared encoder as \"sibling code + sibling summary\", and fused into the query states after the encoder. See docs/method.md for the full description. \"\"\" import math import torch import torch.nn as nn import torch.nn.functional as F from sibling_retriever imp"
+   },
+   "source": "designed",
+   "note": "explicit: module docstring says the design is in docs/method.md",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "src/train.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": ", 1,000 warmup steps, batch size 32, 20 epochs, dropout 0.1, max source length 400 tokens, max summary length 48 tokens, and seed 13. ```bash python src/train.py --config configs/<config>.yaml ``` Use the config for the intra-repo Java setting in `configs/`. That config inherits the defaults from"
+   },
+   "source": "designed",
+   "note": "explicit: shows the training command with the script path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "docs/method.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "des their code and summaries, and fuses them into the decoder. The paper draft is in `paper/reposum_draft_v2.pdf`. A longer method description is in `docs/method.md`."
+   },
+   "source": "designed",
+   "note": "explicit: Markdown link to docs/method.md",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "src/evaluate.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Evaluation ```bash python src/evaluate.py --config configs/<config>.yaml --ckpt checkpoints/best.pt ``` Evaluation uses beam search with beam size 5 and reports corpus BLEU-4 with bootstrap confidence intervals."
+   },
+   "source": "designed",
+   "note": "explicit: shows the evaluation command",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "paper/reposum_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "ons from the **same repository** (we call them *siblings*), encodes their code and summaries, and fuses them into the decoder. The paper draft is in `paper/reposum_draft_v2.pdf`. A longer method description is in `docs/method.md`."
+   },
+   "source": "designed",
+   "note": "explicit: points to the current draft",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "docs/method.md",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the paper's method section presents the same components and equations",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "paper/reposum_draft_v1.pdf",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: same title and story; v1 is the earlier version",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "paper/reposum_draft_v2.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the paper's main table repeats exactly the CSV's numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "paper/reposum_draft_v2.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the paper's ablation table repeats exactly these numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "figures/bleu4_vs_num_retrieved.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: Figure 2's caption describes this chart (same axes and trend)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "figures/overview.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: Figure 1's caption describes this pipeline diagram (same boxes)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "paper/reposum_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "paper/talk_outline.md",
+    "span": "# RepoSum 랩 세미나 발표 아웃라인 (12분) - 발표일: 2026-11-27 - 발표 길이: 12분 (Q&A 별도) - 기준 자료: paper/reposum_draft_v2.pdf - 발표자: 이도현 (제안)"
+   },
+   "source": "designed",
+   "note": "explicit: says the talk is based on the current draft (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "figures/bleu4_vs_num_retrieved.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "paper/talk_outline.md",
+    "span": "## 7. k에 따른 변화 (1분) [그림: figures/bleu4_vs_num_retrieved.png] - x축: k in {0, 1, 2, 4, 8, 16}, y축: intra_repo BLEU-4 - RepoSum: 20.4 -> 24.3 -> 25.4 -> 26.1 -> 26.0 -> 25.6 - CodeSibling과 RetroSum도 k=4에서 최고점이지만 k가 커지면 더 빨리 떨어진다 - 해석: k=4가 최적이며, RepoSum은 완만하게 감소한다 - 발표 팁: 이 그림(Figure 2)에 가장 많은 시간을 배정한다"
+   },
+   "source": "designed",
+   "note": "explicit: plans to show the main figure (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "papers/notes_retrosum2021.md",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/related_work.md",
+    "span": "# Related Work This is a working draft of the related-work section for RepoSum. Reading notes for the two closest systems are in papers/notes_retrosum2021.md and papers/notes_codesibling2022.md."
+   },
+   "source": "designed",
+   "note": "explicit: cites the reading-notes file of retrosum2021 by path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "papers/notes_codesibling2022.md",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/related_work.md",
+    "span": "k This is a working draft of the related-work section for RepoSum. Reading notes for the two closest systems are in papers/notes_retrosum2021.md and papers/notes_codesibling2022.md."
+   },
+   "source": "designed",
+   "note": "explicit: cites the reading-notes file of codesibling2022 by path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/method.md",
+   "b": "papers/notes_retrosum2021.md",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: says the method builds on the prior work (by its name, not the notes file) and what it changes",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "papers/notes_codesibling2022.md",
+   "relation": "compares",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the competing approach is a baseline row in the paper's table",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "results/main_results.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the chart plots the CSV's numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "src/sibling_retriever.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the meeting decides to add the key module (described in words)",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "src/reposum_model.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting_2026-03-04.md",
+    "span": "**저장소 범위 검색 모듈 추가 (확정)** - 같은 저장소 안에서 질의 함수와 가장 비슷한 함수 k개(\"형제 함수\")를 찾는 모듈을 핵심 신규 모듈로 추가한다. - 저장소마다 별도 인덱스를 만들고, 전역 검색은 하지 않는다. - 이 모듈의 출력을 `src/reposum_model.py`의 인코더 뒤에 더해서 디코더가 사용하도록 한다. 2. **검색 개수 k = 4로 시작 (확정)** - 이후 k 값을 바꿔 보는 실험은 나중에 진행한다. 3. **누수 방지 규칙 (확정)** - 질의 함수 자신은 인덱스에"
+   },
+   "source": "designed",
+   "note": "explicit: assigns someone to change the model file (its path)",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "results/main_results.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting_2026-08-19.md",
+    "span": "## 1. 안건 1. 메인 결과 검토 (results/main_results.csv) 2. ablation 실험 계획 3. 논문 초안 v2 마감 및 역할 분담 (paper/reposum_draft_v2.pdf 기준)"
+   },
+   "source": "designed",
+   "note": "explicit: reviews the main results CSV (its path) and its key number",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "results/ablation.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: plans exactly the ablations that the ablation file reports",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "paper/reposum_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting_2026-08-19.md",
+    "span": "## 1. 안건 1. 메인 결과 검토 (results/main_results.csv) 2. ablation 실험 계획 3. 논문 초안 v2 마감 및 역할 분담 (paper/reposum_draft_v2.pdf 기준)"
+   },
+   "source": "designed",
+   "note": "explicit: sets the deadline for the current draft (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "docs/method.md",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: proposes extensions of the method's named components",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "site/index.html",
+   "b": "paper/reposum_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "site/index.html",
+    "span": "s in the Same Repository</h1> <p class=\"authors\">Dohyeon Lee, Yujin Choi, Haneul Jung, Jiwoo Han, Seoyeon Park</p> <p class=\"links\"> <a href=\"paper/reposum_draft_v2.pdf\">Paper (draft v2)</a> <a href=\"#code\">Code (reposum 0.3.1)</a> <a href=\"#bibtex\">BibTeX</a> </p> </header> <sect"
+   },
+   "source": "designed",
+   "note": "explicit: links to the current draft PDF by its relative path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "site/index.html",
+   "b": "figures/overview.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "site/index.html",
+    "span": "<section> <h2>Overview</h2> <figure> <img src=\"figures/overview.png\" alt=\"RepoSum overview: query function, code encoder, repository index, top-k siblings, gated fusion, decoder, summary\"> <figcaption>Figure 1. The query is encoded and matched against a repo-scoped index. The top-k sibli"
+   },
+   "source": "designed",
+   "note": "explicit: shows the overview figure with an <img> tag whose src is its relative path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "site/index.html",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the page's results table repeats the main numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "site/index.html",
+   "b": "docs/method.md",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the page's method summary names the same components",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "src/train.py",
+   "relation": "other",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "uses",
+    "supports"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "configs/intra_repo_java.yaml",
+    "span": "# RepoSum main experiment: Java, intra-repository split # Usage: # python src/train.py --config configs/intra_repo_java.yaml # python src/evaluate.py --config configs/intra_repo_java.yaml --ckpt checkpoints/best.pt # # Everything not listed here is inherited from configs/base.yaml. inherits: ba"
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "src/evaluate.py",
+   "relation": "other",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "uses",
+    "supports"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "configs/intra_repo_java.yaml",
+    "span": "# RepoSum main experiment: Java, intra-repository split # Usage: # python src/train.py --config configs/intra_repo_java.yaml # python src/evaluate.py --config configs/intra_repo_java.yaml --ckpt checkpoints/best.pt # # Everything not listed here is inherited from configs/base.yaml. inherits: ba"
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/train.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "site/index.html",
+    "span": "section id=\"code\"> <h2>Code</h2> <p>The implementation is released as reposum 0.3.1 (Python 3.10, PyTorch 2.2). Training is run with <code>python src/train.py --config configs/intra_repo_java.yaml</code>, and evaluation with <code>python src/evaluate.py --config configs/intra_repo_java.yaml --ck"
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "site/index.html",
+   "b": "configs/intra_repo_java.yaml",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "site/index.html",
+    "span": "h2>Code</h2> <p>The implementation is released as reposum 0.3.1 (Python 3.10, PyTorch 2.2). Training is run with <code>python src/train.py --config configs/intra_repo_java.yaml</code>, and evaluation with <code>python src/evaluate.py --config configs/intra_repo_java.yaml --ckpt checkpoints/best.pt"
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/evaluate.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "site/index.html",
+    "span": "hon 3.10, PyTorch 2.2). Training is run with <code>python src/train.py --config configs/intra_repo_java.yaml</code>, and evaluation with <code>python src/evaluate.py --config configs/intra_repo_java.yaml --ckpt checkpoints/best.pt</code>.</p> <!-- TODO: add the public repository URL before the sem"
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/utils.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "Evaluation loads checkpoints via the shared utility helpers (load_checkpoint, logger).",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "README.md",
+   "b": "admin/conference_travel_reimbursement.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "configs/base.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "configs/intra_repo_java.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "figures/bleu4_vs_num_retrieved.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "logs/train_2026-09-02.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/meeting_2026-03-04.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "configs/base.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "configs/intra_repo_java.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "docs/method.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "figures/bleu4_vs_num_retrieved.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "logs/train_2026-09-02.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "notes/meeting_2026-03-04.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "paper/reposum_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/conference_travel_reimbursement.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "docs/method.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "figures/bleu4_vs_num_retrieved.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "logs/train_2026-09-02.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "notes/meeting_2026-03-04.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "paper/reposum_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "docs/method.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "figures/bleu4_vs_num_retrieved.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "notes/meeting_2026-03-04.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "paper/reposum_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/intra_repo_java.yaml",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "figures/bleu4_vs_num_retrieved.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "logs/train_2026-09-02.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "notes/meeting_2026-03-04.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "figures/bleu4_vs_num_retrieved.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "logs/train_2026-09-02.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "notes/meeting_2026-03-04.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "paper/reposum_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "logs/train_2026-09-02.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "notes/meeting_2026-03-04.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/bleu4_vs_num_retrieved.png",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "logs/train_2026-09-02.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "notes/meeting_2026-03-04.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "notes/meeting_2026-03-04.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "paper/reposum_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-09-02.log",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "notes/meeting_2026-03-04.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "paper/reposum_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "notes/meeting_2026-08-19.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "paper/reposum_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-04.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "paper/reposum_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-08-19.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v1.pdf",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/reposum_draft_v2.pdf",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "papers/notes_codesibling2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "papers/notes_retrosum2021.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_codesibling2022.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "reading/coral_reef_monitoring_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_retrosum2021.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_monitoring_reading_list.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_monitoring_reading_list.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_monitoring_reading_list.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_monitoring_reading_list.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_monitoring_reading_list.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_monitoring_reading_list.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_monitoring_reading_list.md",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_monitoring_reading_list.md",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_monitoring_reading_list.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_monitoring_reading_list.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "src/reposum_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "src/sibling_retriever.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/reposum_model.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/sibling_retriever.py",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/sibling_retriever.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "family": "ml_paper",
+  "topic": "Retrieval-augmented source-code summarization that retrieves similar functions from the same repository.",
+  "generator": "benchmark/mock/make_mock.py (claude-sonnet-5-5)",
+  "closed_world": true,
+  "hard_negatives": [
+   "admin/conference_travel_reimbursement.md|notes/meeting_2026-08-19.md",
+   "docs/related_work.md|reading/coral_reef_monitoring_reading_list.md",
+   "papers/notes_retrosum2021.md|reading/coral_reef_monitoring_reading_list.md",
+   "src/plot_results.py|src/utils.py"
+  ],
+  "check": {
+   "planted": 42,
+   "cue_ok": 26,
+   "cue_lost": [],
+   "cue_gained": [],
+   "incidental": [
+    "configs/intra_repo_java.yaml -> src/train.py",
+    "configs/intra_repo_java.yaml -> src/evaluate.py",
+    "site/index.html -> src/train.py",
+    "site/index.html -> configs/intra_repo_java.yaml",
+    "site/index.html -> src/evaluate.py"
+   ]
+  },
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    4,
+    4,
+    4
+   ],
+   "summaries": [
+    "The graph captures the core structure well: code, configs, results, paper and notes are linked sensibly, and the unrelated admin and reading files are correctly isolated. A few links are loose, such as the meeting note to reposum_model, and some obvious links are missing, such as evaluate to utils and the paper to the RetroSum note.",
+    "The graph captures the main code dependencies, the config inheritance, the paper, results and figure links, and the notes. It correctly leaves the unrelated admin and coral-reef files isolated. It has a few gaps: evaluate.py's use of utils.py is missing, and two weak links are weaker than a maintainer would judge.",
+    "The graph captures the main code, config, results and paper structure well, and correctly leaves out the unrelated admin and reading files. A few links are questionable (for example, the notes-to-notes \"extends\" edge and the weak meeting-to-retriever link), and some obvious links are missing (evaluate.py to utils.py, results/ablation.md to docs/method.md)."
+   ],
+   "proposed": 16,
+   "applied": [
+    {
+     "op": "add",
+     "a": "src/evaluate.py",
+     "b": "src/utils.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "Evaluation loads checkpoints via the shared utility helpers (load_checkpoint, logger).",
+      "evaluate.py loads the trained checkpoint and sets seeds, which the shared utils helpers (load_checkpoint, set_seed) provide.",
+      "evaluate.py loads checkpoints and sets seeds via utils helpers (load_checkpoint/set_seed), like train.py does."
+     ]
+    },
+    {
+     "op": "strengthen",
+     "a": "notes/meeting_2026-03-04.md",
+     "b": "src/sibling_retriever.py",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "The meeting's repo-scoped retrieval, k=4 and temporal leakage rule are implemented directly in the retriever.",
+      "The meeting's core decisions (repo-scoped retrieval, k=4, time-ordered leakage rule) are implemented in sibling_retriever.py."
+     ]
+    },
+    {
+     "op": "strengthen",
+     "a": "configs/intra_repo_java.yaml",
+     "b": "src/train.py",
+     "relation": "other",
+     "votes": 3,
+     "reasons": [
+      "The training script consumes this config, so it is a clear link.",
+      "train.py reads this config directly, and the training log shows it was run with it.",
+      "train.py reads the experiment YAML, which the log shows was passed as config; E7 only links them weakly in the reverse direction."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 5,
+   "key_links": 20,
+   "required_before": 38,
+   "notes": [
+    "RepoSum 프로젝트는 src의 모델·검색기 코드를 configs 설정으로 train/evaluate가 돌려 결과(results)와 그림을 만들고, 이를 method 문서와 논문·발표·웹페이지, 회의 노트가 뒷받침하는 구조입니다.",
+    "RepoSum 프로젝트는 src의 모델·검색기·학습/평가 코드가 configs 설정으로 실행되어 results와 figures를 만들고, 이것이 논문 v2·웹사이트·발표로 정리되며 docs/method와 관련 연구 노트, 회의록이 이를 뒷받침하는 구조입니다.",
+    "RepoSum 프로젝트는 src의 모델·검색기 코드를 설정 파일로 학습·평가해 결과표와 그림을 만들고, 이를 방법 문서와 관련 연구 노트와 함께 논문 초안·발표·웹페이지로 정리하며 회의 노트가 전 과정을 기록하는 구조입니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "결과와 그림",
+   "members": [
+    "figures/bleu4_vs_num_retrieved.png",
+    "figures/overview.png",
+    "results/ablation.md",
+    "results/main_results.csv",
+    "src/plot_results.py"
+   ]
+  },
+  {
+   "name": "방법 문서·관련 연구",
+   "members": [
+    "README.md",
+    "docs/method.md",
+    "docs/related_work.md",
+    "papers/notes_codesibling2022.md",
+    "papers/notes_retrosum2021.md"
+   ]
+  },
+  {
+   "name": "학습·평가·설정",
+   "members": [
+    "configs/base.yaml",
+    "configs/intra_repo_java.yaml",
+    "logs/train_2026-09-02.log",
+    "src/evaluate.py",
+    "src/train.py"
+   ]
+  },
+  {
+   "name": "논문·발표·웹",
+   "members": [
+    "paper/reposum_draft_v1.pdf",
+    "paper/reposum_draft_v2.pdf",
+    "paper/talk_outline.md",
+    "site/index.html"
+   ]
+  },
+  {
+   "name": "모델 코드",
+   "members": [
+    "src/data.py",
+    "src/reposum_model.py",
+    "src/sibling_retriever.py",
+    "src/utils.py"
+   ]
+  },
+  {
+   "name": "회의·아이디어 노트",
+   "members": [
+    "notes/ideas.md",
+    "notes/meeting_2026-03-04.md",
+    "notes/meeting_2026-08-19.md"
+   ]
+  },
+  {
+   "name": "관련 없음",
+   "members": [
+    "admin/conference_travel_reimbursement.md",
+    "reading/coral_reef_monitoring_reading_list.md"
+   ]
+  }
+ ]
+}
