@@ -1,0 +1,17 @@
+method,shots,accuracy,ci95
+Finetune,1,52.3,0.9
+Finetune,2,61.8,0.8
+Finetune,5,72.5,0.7
+Finetune,10,79.1,0.6
+ProtoClass,1,60.4,0.9
+ProtoClass,2,70.2,0.8
+ProtoClass,5,80.9,0.6
+ProtoClass,10,85.0,0.5
+FastAdapt,1,64.8,0.9
+FastAdapt,2,73.5,0.8
+FastAdapt,5,83.6,0.6
+FastAdapt,10,87.2,0.5
+LeafProto,1,69.7,0.9
+LeafProto,2,78.3,0.7
+LeafProto,5,87.4,0.5
+LeafProto,10,90.6,0.4

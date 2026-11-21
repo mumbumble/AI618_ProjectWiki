@@ -1,0 +1,9 @@
+method,setting,bleu4,ci_low,ci_high
+Transformer,intra_repo,20.4,20.0,20.8
+RetroSum,intra_repo,22.6,22.2,23.0
+CodeSibling,intra_repo,23.7,23.3,24.1
+RepoSum,intra_repo,26.1,25.7,26.5
+Transformer,cross_repo,18.2,17.7,18.7
+RetroSum,cross_repo,20.1,19.6,20.6
+CodeSibling,cross_repo,20.9,20.4,21.4
+RepoSum,cross_repo,22.4,21.9,22.9

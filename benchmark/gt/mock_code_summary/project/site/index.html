@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RepoSum: Summarizing Functions by Retrieving Their Siblings in the Same Repository</title>
+<style>
+  body { font-family: Georgia, "Times New Roman", serif; max-width: 860px; margin: 40px auto; padding: 0 20px; color: #222; line-height: 1.55; }
+  h1 { font-size: 1.8em; text-align: center; margin-bottom: 0.3em; }
+  h2 { border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-top: 1.8em; }
+  .authors, .links { text-align: center; }
+  .links a { margin: 0 10px; }
+  table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+  th, td { border-bottom: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.ours td { font-weight: bold; }
+  figure { text-align: center; margin: 1.5em 0; }
+  figure img { max-width: 100%; border: 1px solid #ddd; }
+  figcaption, caption { font-size: 0.9em; color: #555; }
+  caption { caption-side: bottom; text-align: left; padding-top: 6px; }
+  pre { background: #f5f5f5; padding: 12px; overflow-x: auto; font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>RepoSum: Summarizing Functions by Retrieving Their Siblings in the Same Repository</h1>
+  <p class="authors">Dohyeon Lee, Yujin Choi, Haneul Jung, Jiwoo Han, Seoyeon Park</p>
+  <p class="links">
+    <a href="paper/reposum_draft_v2.pdf">Paper (draft v2)</a>
+    <a href="#code">Code (reposum 0.3.1)</a>
+    <a href="#bibtex">BibTeX</a>
+  </p>
+</header>
+
+<section>
+  <h2>Abstract</h2>
+  <p>
+    Short natural-language summaries of source functions are most useful when they reflect the
+    conventions of the project they come from. Existing retrieval-augmented summarizers either search
+    a global multi-project corpus, where neighbors often use unrelated naming conventions, or
+    concatenate same-file neighbors without learning how to use them. We present RepoSum, which
+    retrieves the k most similar functions ("siblings") from the same repository, encodes each sibling
+    as its code plus its summary, and fuses them into a Transformer decoder through a learned gate.
+    The retriever is trained jointly with an InfoNCE objective whose positives share a call-graph
+    neighbor with the query, and the query itself and any later-commit functions are excluded from the
+    index. On 1,240 Java repositories, RepoSum reaches 26.1 BLEU-4 in the intra-repository setting,
+    2.4 points above the strongest baseline, and 22.4 BLEU-4 on unseen repositories.
+  </p>
+</section>
+
+<section>
+  <h2>Overview</h2>
+  <figure>
+    <img src="figures/overview.png" alt="RepoSum overview: query function, code encoder, repository index, top-k siblings, gated fusion, decoder, summary">
+    <figcaption>Figure 1. The query is encoded and matched against a repo-scoped index. The top-k siblings are fused into the decoder, and the retrieval loss flows back to the encoder.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Method</h2>
+  <ul>
+    <li><b>SiblingRetriever.</b> Builds a dense index over the functions of one repository and scores candidates by cosine similarity between the query and candidate embeddings. The query itself and any function from a later commit are removed from the index. The top k = 4 siblings are kept.</li>
+    <li><b>Sibling weights.</b> The k siblings are weighted by alpha_i = softmax(cos(e_q, e_i) / 0.07).</li>
+    <li><b>GatedFusion.</b> The context vector c = sum_i alpha_i h_i is combined with the query state as h = h_q + g * c, where g = sigmoid(W [h_q; c]). Each sibling state h_i encodes the sibling code together with its summary.</li>
+    <li><b>RepoSumModel.</b> A Transformer encoder-decoder with 6 encoder and 6 decoder layers, hidden size 512, 8 heads, and a 32,000-token BPE vocabulary. The fused sibling output is added after the encoder.</li>
+  </ul>
+
+  <p><b>Loss.</b> L = L_ce + 0.3 * L_ret. L_ce is the token-level cross-entropy of the summary. L_ret is an InfoNCE loss with temperature 0.07 on the retrieval encoder. Positives are functions that share a call-graph neighbor with the query, and negatives are other in-batch functions from the same repository.</p>
+
+  <p><b>Training.</b> AdamW with learning rate 3e-4, weight decay 0.01, and 1,000 warmup steps. Batch size 32, 20 epochs, dropout 0.1, maximum source length 400 tokens, maximum summary length 48 tokens, seed 13. Beam search with beam size 5 at test time.</p>
+</section>
+
+<section>
+  <h2>Results</h2>
+  <table>
+    <caption>BLEU-4 (0-100 scale, corpus level) with 95% bootstrap confidence intervals. intra_repo: chronological 80/10/10 split within each repository (31,120 test functions). cross_repo: 124 unseen test repositories.</caption>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th class="num">intra_repo BLEU-4</th>
+        <th class="num">intra_repo 95% CI</th>
+        <th class="num">cross_repo BLEU-4</th>
+        <th class="num">cross_repo 95% CI</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Transformer</td><td class="num">20.4</td><td class="num">[20.0, 20.8]</td><td class="num">18.2</td><td class="num">[17.7, 18.7]</td></tr>
+      <tr><td>RetroSum</td><td class="num">22.6</td><td class="num">[22.2, 23.0]</td><td class="num">20.1</td><td class="num">[19.6, 20.6]</td></tr>
+      <tr><td>CodeSibling</td><td class="num">23.7</td><td class="num">[23.3, 24.1]</td><td class="num">20.9</td><td class="num">[20.4, 21.4]</td></tr>
+      <tr class="ours"><td>RepoSum (ours)</td><td class="num">26.1</td><td class="num">[25.7, 26.5]</td><td class="num">22.4</td><td class="num">[21.9, 22.9]</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="code">
+  <h2>Code</h2>
+  <p>The implementation is released as reposum 0.3.1 (Python 3.10, PyTorch 2.2). Training is run with <code>python src/train.py --config configs/intra_repo_java.yaml</code>, and evaluation with <code>python src/evaluate.py --config configs/intra_repo_java.yaml --ckpt checkpoints/best.pt</code>.</p>
+  <!-- TODO: add the public repository URL before the seminar -->
+</section>
+
+<section id="bibtex">
+  <h2>BibTeX</h2>
+  <pre>@unpublished{lee2026reposum,
+  title  = {RepoSum: Summarizing Functions by Retrieving Their Siblings in the Same Repository},
+  author = {Lee, Dohyeon and Choi, Yujin and Jung, Haneul and Han, Jiwoo and Park, Seoyeon},
+  year   = {2026},
+  note   = {Draft v2}
+}</pre>
+</section>
+
+</body>
+</html>

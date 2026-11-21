@@ -1,0 +1,67 @@
+# RepoSum default configuration
+# Shared defaults for all experiments. Run-specific settings live in files
+# that start with "inherits: base.yaml" and override only what they change.
+
+seed: 13
+
+data:
+  dataset: repojava_sum
+  root: data/repojava_sum
+  split: cross_repo            # options: intra_repo, cross_repo
+  bpe_vocab_size: 32000
+  max_source_len: 400          # tokens of the function body
+  max_summary_len: 48          # tokens of the target summary
+  num_workers: 4
+
+model:
+  name: RepoSumModel
+  encoder_layers: 6
+  decoder_layers: 6
+  hidden_size: 512
+  num_heads: 8
+  dropout: 0.1
+  share_encoder_for_siblings: true   # sibling states use the same encoder
+
+retrieval:
+  enabled: true
+  scope: repo                  # repo: index only the query's repository; global: all repos
+  k: 4                         # number of siblings kept per query
+  index_encoder: code_encoder
+  similarity: cosine
+  temperature: 0.07            # tau in alpha_i = softmax(cos / tau)
+  exclude_query: true          # remove the query function from its own index
+  exclude_later_commits: true  # remove functions newer than the query commit
+  fusion: gated                # gated or concat
+  gate_input: [query_state, sibling_context]
+
+loss:
+  lambda_ret: 0.3              # weight of the retrieval loss
+  ret_temperature: 0.07        # InfoNCE temperature
+  positives: call_graph        # call_graph or random
+  negatives: in_batch_same_repo
+
+train:
+  epochs: 20
+  batch_size: 32
+  optimizer: adamw
+  lr: 3.0e-4
+  weight_decay: 0.01
+  warmup_steps: 1000
+  grad_clip: 1.0
+  eval_every_epochs: 1
+  checkpoint_dir: checkpoints
+  save_best_metric: dev_bleu4
+
+test:
+  beam_size: 5
+  length_penalty: 1.0
+
+logging:
+  log_dir: logs
+  log_name_pattern: "train_%Y-%m-%d.log"
+  results_dir: results
+  print_every_steps: 200
+
+hardware:
+  device: cuda
+  mixed_precision: true

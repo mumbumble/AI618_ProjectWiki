@@ -1,0 +1,1326 @@
+{
+ "project": "mock_bike_demand",
+ "edges": [
+  {
+   "a": "src/clean_data.py",
+   "b": "data/raw_seoul_bike_2025.csv",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/clean_data.py",
+    "span": "unparseable rows. 6. Drop exact duplicate rows (first occurrence is kept). Output keeps the same 10 columns in the original order. \"\"\" RAW_PATH = \"data/raw_seoul_bike_2025.csv\" CLEAN_PATH = \"data/clean_seoul_bike_2025.csv\" COLUMNS = [\"datetime\", \"rented_bikes\", \"hour\", \"temp_c\", \"humidity_pct\","
+   },
+   "source": "designed",
+   "note": "explicit: reads the raw CSV at its path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/clean_data.py",
+   "b": "data/clean_seoul_bike_2025.csv",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/clean_data.py",
+    "span": "rows (first occurrence is kept). Output keeps the same 10 columns in the original order. \"\"\" RAW_PATH = \"data/raw_seoul_bike_2025.csv\" CLEAN_PATH = \"data/clean_seoul_bike_2025.csv\" COLUMNS = [\"datetime\", \"rented_bikes\", \"hour\", \"temp_c\", \"humidity_pct\", \"wind_ms\", \"rain_mm\", \"snow_cm\", \""
+   },
+   "source": "designed",
+   "note": "explicit: writes the clean CSV at its path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "data/raw_seoul_bike_2025.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "data/codebook.md",
+    "span": "-jun, Lee Seo-yeon, Park Do-hyun, Choi Ha-eun Instructor: Prof. Seo Jung-min. TA: Moon Ji-woo. This codebook describes every column in the raw file `data/raw_seoul_bike_2025.csv`. The raw file is kept as delivered. All fixes happen in the cleaning step, and the cleaned data keeps the same documente"
+   },
+   "source": "designed",
+   "note": "explicit: names the raw CSV and documents its columns",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "data/clean_seoul_bike_2025.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the clean data has the same documented columns",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notebooks/01_eda.ipynb",
+   "b": "data/clean_seoul_bike_2025.csv",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notebooks/01_eda.ipynb",
+    "span": "ring data before any modelling. We want to see how demand (`rented_bikes`) changes with hour of day, rain, temperature, season and holidays. Input: `data/clean_seoul_bike_2025.csv` (produced by the cleaning step in the README). Output: `report/figures/demand_by_hour.png`, used in Section 4 of the r"
+   },
+   "source": "designed",
+   "note": "explicit: pd.read_csv on the clean CSV path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notebooks/01_eda.ipynb",
+   "b": "report/figures/demand_by_hour.png",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notebooks/01_eda.ipynb",
+    "span": "hour of day, rain, temperature, season and holidays. Input: `data/clean_seoul_bike_2025.csv` (produced by the cleaning step in the README). Output: `report/figures/demand_by_hour.png`, used in Section 4 of the report. Note: the course subset is small (about 30 hourly rows), so every pattern below"
+   },
+   "source": "designed",
+   "note": "explicit: savefig to the EDA figure path",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "notebooks/02_model.ipynb",
+   "b": "src/features.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notebooks/02_model.ipynb",
+    "span": "arRegression from sklearn.model_selection import train_test_split from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score from src.features import build_feature_matrix # Run from the project root so relative paths work, even if Jupyter starts in notebooks/ if os.path.basename"
+   },
+   "source": "designed",
+   "note": "import: `from src.features import ...`",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notebooks/02_model.ipynb",
+   "b": "data/clean_seoul_bike_2025.csv",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notebooks/02_model.ipynb",
+    "span": "esearch question:** How much of hourly bike-sharing demand in Seoul is explained by weather and holidays, and which factors matter most? **Input:** `data/clean_seoul_bike_2025.csv` (produced by the cleaning step in the README). **Output:** `report/figures/pred_vs_actual.png`, plus printed metrics"
+   },
+   "source": "designed",
+   "note": "explicit: pd.read_csv on the clean CSV path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notebooks/02_model.ipynb",
+   "b": "report/figures/pred_vs_actual.png",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notebooks/02_model.ipynb",
+    "span": "nd holidays, and which factors matter most? **Input:** `data/clean_seoul_bike_2025.csv` (produced by the cleaning step in the README). **Output:** `report/figures/pred_vs_actual.png`, plus printed metrics that go into the final report."
+   },
+   "source": "designed",
+   "note": "explicit: savefig to the model figure path",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "report/final_report.md",
+   "b": "report/figures/demand_by_hour.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "report/final_report.md",
+    "span": "`hour_cos` 0.14, `humidity_pct` 0.09, `rain_mm` 0.07, `is_rainy` 0.05, all other features together 0.10. **Exploratory findings.** Figure 1 (`report/figures/demand_by_hour.png`) shows mean rentals by hour (0-23, in bikes per hour). On working days demand peaks at 8h (about 1,150 bikes/h) and 18h (a"
+   },
+   "source": "designed",
+   "note": "explicit: Markdown image link to the EDA figure",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "report/final_report.md",
+   "b": "report/figures/pred_vs_actual.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "report/final_report.md",
+    "span": "- | The Random Forest reduces RMSE by about 28% relative to the linear baseline (318.4 vs 441.9) and raises R2 from 0.43 to 0.71. Figure 2 (`report/figures/pred_vs_actual.png`) plots predicted against actual hourly rentals; points cluster around the y = x diagonal, with the largest errors at high-"
+   },
+   "source": "designed",
+   "note": "explicit: Markdown image link to the model figure",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "report/final_report.md",
+   "b": "notebooks/02_model.ipynb",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the results section reports exactly the notebook's model and metric values",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "report/final_report.md",
+   "b": "assignment/project_spec.pdf",
+   "relation": "implements",
+   "also": [
+    "describes"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the report follows the spec's required sections and answers its required analyses",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "src/clean_data.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Cleaning rules The cleaning script is `src/clean_data.py`. It applies these rules: 1. Strip commas from `rented_bikes` and cast it to integer. 2. Fill missing `temp_c` and `humidity_pct` with the median of the same season. Rows are not dropped for missing values. 3. Normalize the holiday labels"
+   },
+   "source": "designed",
+   "note": "explicit: shows how to run the cleaning script",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "report/final_report.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "e data: `python src/clean_data.py`. 4. Run the two notebooks in order: first the EDA notebook, then the modelling notebook. 5. The written report is `report/final_report.md`."
+   },
+   "source": "designed",
+   "note": "explicit: points to the final report",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/ta_feedback.md",
+   "b": "report/final_report.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: comments on specific sections and numbers of the report",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/team_meeting.md",
+   "b": "src/features.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: assigns the feature engineering work (described in words)",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notes/team_meeting.md",
+   "b": "assignment/project_spec.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/team_meeting.md",
+    "span": "## 1. 회의 목적 - 프로젝트 주제: 서울 시간별 공공자전거 대여량이 날씨와 공휴일로 얼마나 설명되는지 분석 - 연구 질문: 서울의 시간별 대여량(rented_bikes)에서 날씨와 공휴일이 얼마나 설명되며, 어떤 요인이 가장 중요한가? - 과제 명세 확인 (assignment/project_spec.pdf 기준) - A1: 데이터 정제 규칙 문서화 - A2: EDA, 시간대별 패턴 그림을 포함해 그림 2개 이상 - A3: 회귀 모델 1개와 기준(baseline) 모델 - A4: 테스트셋 기준 RMSE, R2 보"
+   },
+   "source": "designed",
+   "note": "explicit: mentions the spec PDF (its path) and its deadline",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "report/final_report.md",
+   "b": "references/notes_han2023_bike_weather.md",
+   "relation": "compares",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: compares the findings with the prior study (by its authors and year)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "src/clean_data.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "assignment/project_spec.pdf",
+    "span": "e README must give the environment (Python 3.11, pandas 2.1, scikit-learn 1.4, matplotlib 3.8), the install step, the cleaning script command (python src/clean_data.py), the order in which to run the two analysis notebooks (01_eda, then 02_model), and the location of the final report. Key dates: wee"
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "notes/team_meeting.md",
+   "b": "src/clean_data.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/team_meeting.md",
+    "span": "Holliday\" → Holiday. - hour가 0-23 범위를 벗어나는 행(hour=24)은 제거한다. - datetime 문자열을 파싱하고 중복 행을 제거한다. - 최종 출력은 20-35행, 원본과 같은 10개 열을 유지한다. - 정제 스크립트는 `python src/clean_data.py` 한 줄로 실행되어야 한다."
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "report/final_report.md",
+   "b": "src/features.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The report's feature engineering section documents features.py.",
+   "personas": []
+  },
+  {
+   "a": "report/final_report.md",
+   "b": "notebooks/01_eda.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The report's EDA section reports the results of the EDA notebook.",
+   "personas": []
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "src/clean_data.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The codebook's cleaning rules are implemented in clean_data.py.",
+   "personas": []
+  },
+  {
+   "a": "report/final_report.md",
+   "b": "src/clean_data.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The report's data section describes the cleaning rules implemented in clean_data.py.",
+   "personas": []
+  },
+  {
+   "a": "notes/ta_feedback.md",
+   "b": "references/notes_han2023_bike_weather.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The TA feedback asks for a comparison with Han et al. (2023).",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "assignment/project_spec.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The README summarises the project spec's research question and requirements.",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "README.md",
+   "b": "data/clean_seoul_bike_2025.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "data/codebook.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "data/raw_seoul_bike_2025.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "misc/hw1_solution.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notebooks/01_eda.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notebooks/02_model.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/personal_schedule.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/ta_feedback.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/team_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "references/notes_han2023_bike_weather.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "data/clean_seoul_bike_2025.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "data/codebook.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "data/raw_seoul_bike_2025.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "misc/hw1_solution.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "notebooks/01_eda.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "notebooks/02_model.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "notes/personal_schedule.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "notes/ta_feedback.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "references/notes_han2023_bike_weather.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "assignment/project_spec.pdf",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/clean_seoul_bike_2025.csv",
+   "b": "data/raw_seoul_bike_2025.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/clean_seoul_bike_2025.csv",
+   "b": "misc/hw1_solution.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/clean_seoul_bike_2025.csv",
+   "b": "notes/personal_schedule.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/clean_seoul_bike_2025.csv",
+   "b": "notes/ta_feedback.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/clean_seoul_bike_2025.csv",
+   "b": "notes/team_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/clean_seoul_bike_2025.csv",
+   "b": "references/notes_han2023_bike_weather.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/clean_seoul_bike_2025.csv",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/clean_seoul_bike_2025.csv",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/clean_seoul_bike_2025.csv",
+   "b": "report/final_report.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/clean_seoul_bike_2025.csv",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "misc/hw1_solution.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "notebooks/01_eda.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "notebooks/02_model.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "notes/personal_schedule.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "notes/ta_feedback.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "notes/team_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "references/notes_han2023_bike_weather.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "report/final_report.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/codebook.md",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "misc/hw1_solution.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "notebooks/01_eda.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "notebooks/02_model.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "notes/personal_schedule.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "notes/ta_feedback.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "notes/team_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "references/notes_han2023_bike_weather.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "report/final_report.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/raw_seoul_bike_2025.csv",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "notebooks/01_eda.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "notebooks/02_model.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "notes/personal_schedule.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "notes/ta_feedback.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "notes/team_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "references/notes_han2023_bike_weather.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "report/final_report.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "src/clean_data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "misc/hw1_solution.py",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/01_eda.ipynb",
+   "b": "notebooks/02_model.ipynb",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/01_eda.ipynb",
+   "b": "notes/personal_schedule.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/01_eda.ipynb",
+   "b": "notes/ta_feedback.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/01_eda.ipynb",
+   "b": "notes/team_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/01_eda.ipynb",
+   "b": "references/notes_han2023_bike_weather.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/01_eda.ipynb",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/01_eda.ipynb",
+   "b": "src/clean_data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/01_eda.ipynb",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/02_model.ipynb",
+   "b": "notes/personal_schedule.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/02_model.ipynb",
+   "b": "notes/ta_feedback.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/02_model.ipynb",
+   "b": "notes/team_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/02_model.ipynb",
+   "b": "references/notes_han2023_bike_weather.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/02_model.ipynb",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notebooks/02_model.ipynb",
+   "b": "src/clean_data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/personal_schedule.md",
+   "b": "notes/ta_feedback.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/personal_schedule.md",
+   "b": "notes/team_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/personal_schedule.md",
+   "b": "references/notes_han2023_bike_weather.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/personal_schedule.md",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/personal_schedule.md",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/personal_schedule.md",
+   "b": "report/final_report.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/personal_schedule.md",
+   "b": "src/clean_data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/personal_schedule.md",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ta_feedback.md",
+   "b": "notes/team_meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ta_feedback.md",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ta_feedback.md",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ta_feedback.md",
+   "b": "src/clean_data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ta_feedback.md",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/team_meeting.md",
+   "b": "references/notes_han2023_bike_weather.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/team_meeting.md",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/team_meeting.md",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/team_meeting.md",
+   "b": "report/final_report.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "references/notes_han2023_bike_weather.md",
+   "b": "report/figures/demand_by_hour.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "references/notes_han2023_bike_weather.md",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "references/notes_han2023_bike_weather.md",
+   "b": "src/clean_data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "references/notes_han2023_bike_weather.md",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "report/figures/demand_by_hour.png",
+   "b": "report/figures/pred_vs_actual.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "report/figures/demand_by_hour.png",
+   "b": "src/clean_data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "report/figures/demand_by_hour.png",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "report/figures/pred_vs_actual.png",
+   "b": "src/clean_data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "report/figures/pred_vs_actual.png",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/clean_data.py",
+   "b": "src/features.py",
+   "source": "designed",
+   "note": ""
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "family": "analysis",
+  "topic": "A data-science course project analysing hourly bike-sharing demand against weather and holidays in a large city.",
+  "generator": "benchmark/mock/make_mock.py (claude-sonnet-5-5)",
+  "closed_world": true,
+  "hard_negatives": [
+   "misc/hw1_solution.py|src/features.py",
+   "notes/personal_schedule.md|notes/team_meeting.md"
+  ],
+  "check": {
+   "planted": 19,
+   "cue_ok": 13,
+   "cue_lost": [],
+   "cue_gained": [],
+   "incidental": [
+    "assignment/project_spec.pdf -> src/clean_data.py",
+    "notes/team_meeting.md -> src/clean_data.py"
+   ]
+  },
+  "created": "2026-11-20",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    4,
+    4,
+    4
+   ],
+   "summaries": [
+    "The graph captures the main pipeline well (raw → clean_data → clean CSV → notebooks → figures → report) and correctly leaves out the unrelated personal schedule and hw1 solution. A few gaps remain: the README and report links to the notebooks and the spec, the codebook-to-clean_data link, and features.py to the report.",
+    "The graph captures the main pipeline (raw data -> clean_data -> clean CSV -> notebooks -> figures -> report) well, and correctly leaves out the personal schedule and the unrelated homework file. A few missing links remain, such as the README to the spec and notebooks, the report to the EDA notebook, and the clean script's own Y/W strength.",
+    "The graph captures the main pipeline well (raw data → cleaning → clean CSV → notebooks → figures → report, plus spec, TA feedback and literature). A few obvious links are missing: the report to the EDA notebook, and the README to the spec and the report's sources. The README→report link is weaker than it should be."
+   ],
+   "proposed": 25,
+   "applied": [
+    {
+     "op": "add",
+     "a": "report/final_report.md",
+     "b": "src/features.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "The report's feature engineering section documents features.py.",
+      "The report describes the feature engineering that features.py implements.",
+      "The report's feature engineering section describes the features built in features.py."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "notebooks/01_eda.ipynb",
+     "b": "report/final_report.md",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "The report's EDA section reports the results of the EDA notebook.",
+      "The report's EDA section reports results from the EDA notebook, which produces its figure.",
+      "The report's EDA section (section 4) is generated from the EDA notebook, which also makes the figure the report uses."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "data/codebook.md",
+     "b": "src/clean_data.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "The codebook's cleaning rules are implemented in clean_data.py.",
+      "The codebook documents the cleaning rules that clean_data.py applies.",
+      "The codebook lists the known data problems and cleaning methods that clean_data.py applies."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "report/final_report.md",
+     "b": "src/clean_data.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "The report's data section describes the cleaning rules implemented in clean_data.py.",
+      "The report's Data section documents the cleaning rules that clean_data.py implements.",
+      "The report's data section documents the cleaning rules that clean_data.py implements."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "notes/ta_feedback.md",
+     "b": "references/notes_han2023_bike_weather.md",
+     "relation": "same_topic",
+     "votes": 3,
+     "reasons": [
+      "The TA feedback asks for a comparison with Han et al. (2023).",
+      "The TA feedback asks for a comparison with Han et al. (2023), which the literature note covers.",
+      "The TA feedback asks for a comparison with Han et al. (2023), which the literature notes summarize."
+     ]
+    },
+    {
+     "op": "strengthen",
+     "a": "data/clean_seoul_bike_2025.csv",
+     "b": "data/codebook.md",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "The codebook's column definitions also apply to the clean data.",
+      "The codebook defines the columns, and the clean CSV shares most of them."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "assignment/project_spec.pdf",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "The README summarises the project spec's research question and requirements.",
+      "The README restates the research question and the requirements from the spec."
+     ]
+    },
+    {
+     "op": "strengthen",
+     "a": "README.md",
+     "b": "report/final_report.md",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "The README gives the project overview and results that are detailed in the final report.",
+      "The README summarizes the project and its results, which the final report presents in full.",
+      "The README summarizes the project's results and methods, which the final report presents in full."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 5,
+   "key_links": 11,
+   "required_before": 21,
+   "notes": [
+    "원시 데이터를 src 스크립트로 정제해 노트북에서 EDA와 모델링을 수행하고, 그 결과와 그림을 최종 보고서로 묶어 명세·README·회의록·TA 피드백·선행연구가 둘러싸는 구조입니다.",
+    "명세에 따라 원시 데이터를 정제 스크립트로 정리하고, 노트북에서 EDA와 모델링을 수행해 그림을 만든 뒤 최종 보고서로 묶으며, 회의록·TA 피드백·선행연구가 이를 보조하는 구조입니다.",
+    "서울 따릉이 원시 데이터를 src/clean_data.py로 정제하고, 노트북에서 EDA와 모델링을 수행해 그림을 만든 뒤 최종 보고서가 이를 종합하며, 명세서·README·회의록·TA 피드백이 이를 둘러싼다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "데이터와 코드북",
+   "members": [
+    "data/clean_seoul_bike_2025.csv",
+    "data/codebook.md",
+    "data/raw_seoul_bike_2025.csv"
+   ]
+  },
+  {
+   "name": "보고서와 그림",
+   "members": [
+    "report/figures/demand_by_hour.png",
+    "report/figures/pred_vs_actual.png",
+    "report/final_report.md"
+   ]
+  },
+  {
+   "name": "회의·피드백·선행연구",
+   "members": [
+    "notes/ta_feedback.md",
+    "notes/team_meeting.md",
+    "references/notes_han2023_bike_weather.md"
+   ]
+  },
+  {
+   "name": "EDA·모델링 노트북",
+   "members": [
+    "notebooks/01_eda.ipynb",
+    "notebooks/02_model.ipynb"
+   ]
+  },
+  {
+   "name": "데이터 정제 코드",
+   "members": [
+    "src/clean_data.py",
+    "src/features.py"
+   ]
+  },
+  {
+   "name": "문서·명세",
+   "members": [
+    "README.md",
+    "assignment/project_spec.pdf"
+   ]
+  },
+  {
+   "name": "관련 없음",
+   "members": [
+    "misc/hw1_solution.py",
+    "notes/personal_schedule.md"
+   ]
+  }
+ ]
+}

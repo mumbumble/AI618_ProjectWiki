@@ -1,0 +1,2082 @@
+{
+ "project": "mamba",
+ "edges": [
+  {
+   "a": "README.md",
+   "b": "assets/selection.png",
+   "relation": "describes",
+   "also": [
+    "supports",
+    "other",
+    "uses"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "# Mamba ![Mamba](assets/selection.png \"Selective State Space\") > **Mamba: Linear-Time Sequence Modeling with Selective State Spaces**\\ > Albert Gu*, Tri Dao*\\ > Paper: https://arxiv.org/abs/2312.00752 ![Mamba-2](assets/ssd_algorithm.png \"State Space Dual Model\") > **Transformers are SSMs: Generali"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "assets/ssd_algorithm.png",
+   "relation": "describes",
+   "also": [
+    "supports",
+    "other",
+    "uses"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "> **Mamba: Linear-Time Sequence Modeling with Selective State Spaces**\\ > Albert Gu*, Tri Dao*\\ > Paper: https://arxiv.org/abs/2312.00752 ![Mamba-2](assets/ssd_algorithm.png \"State Space Dual Model\") > **Transformers are SSMs: Generalized Models and Efficient Algorithms**\\ > **Through Structure"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mamba_ssm/ops/selective_scan_interface.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "ve SSM Mamba is based on a selective SSM layer, which is the focus of the paper (Section 3; Algorithm 2). Source: [ops/selective_scan_interface.py](mamba_ssm/ops/selective_scan_interface.py)."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mamba_ssm/modules/mamba_simple.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "### Mamba Block The main module of this repository is the Mamba architecture block wrapping the selective SSM. Source: [modules/mamba_simple.py](mamba_ssm/modules/mamba_simple.py). Usage: ``` python import torch from mamba_ssm import Mamba batch, length, dim = 2, 64, 16 x = torch.randn(batch, le"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mamba_ssm/modules/mamba2.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "### Mamba-2 The Mamba-2 block is implemented at [modules/mamba2.py](mamba_ssm/modules/mamba2.py). A simpler version is at [modules/mamba2_simple.py](mamba_ssm/modules/mamba2_simple.py) The usage is similar to Mamba(-1): ``` python from mamba_ssm import Mamba2 model = Mamba2( # This module use"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mamba_ssm/modules/mamba2_simple.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Mamba-2 The Mamba-2 block is implemented at [modules/mamba2.py](mamba_ssm/modules/mamba2.py). A simpler version is at [modules/mamba2_simple.py](mamba_ssm/modules/mamba2_simple.py) The usage is similar to Mamba(-1): ``` python from mamba_ssm import Mamba2 model = Mamba2( # This module uses"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mamba_ssm/modules/ssd_minimal.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "e inner SSD module (Listing 1 from the Mamba-2 paper) with conversion between \"discrete\" and \"continuous\" SSM versions is at [modules/ssd_minimal.py](mamba_ssm/modules/ssd_minimal.py)."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mamba_ssm/models/mixer_seq_simple.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "a complete language model: a deep sequence model backbone (with repeating Mamba blocks) + language model head. Source: [models/mixer_seq_simple.py](mamba_ssm/models/mixer_seq_simple.py). This is an example of how to integrate Mamba into an end-to-end neural network. This example is used in the ge"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "benchmarks/benchmark_generation_mamba_simple.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Inference The script [benchmarks/benchmark_generation_mamba_simple.py](benchmarks/benchmark_generation_mamba_simple.py) 1. autoloads a model from the Hugging Face Hub, 2. generates completions of a user-specified prompt, 3. benchmarks the inference speed of this generation. Other configurable o"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "benchmarks/benchmark_generation_mamba_simple.py",
+   "b": "mamba_ssm/models/mixer_seq_simple.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "benchmarks/benchmark_generation_mamba_simple.py",
+    "span": "port json import torch import torch.nn.functional as F from einops import rearrange from transformers import AutoTokenizer, AutoModelForCausalLM from mamba_ssm.models.mixer_seq_simple import MambaLMHeadModel parser = argparse.ArgumentParser(description=\"Generation benchmarking\") parser.add_argument("
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "evals/lm_harness_eval.py",
+   "b": "mamba_ssm/models/mixer_seq_simple.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "evals/lm_harness_eval.py",
+    "span": "import torch import transformers from transformers import AutoTokenizer from mamba_ssm.models.mixer_seq_simple import MambaLMHeadModel from lm_eval.api.model import LM from lm_eval.models.huggingface import HFLM from lm_eval.api.registry import register_model from lm_eval.__main__ import cli_evaluat"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/__init__.py",
+   "b": "mamba_ssm/ops/selective_scan_interface.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/__init__.py",
+    "span": "__version__ = \"2.3.2.post1\" from mamba_ssm.ops.selective_scan_interface import selective_scan_fn, mamba_inner_fn from mamba_ssm.modules.mamba_simple import Mamba from mamba_ssm.modules.mamba2 import Mamba2 from mamba_ssm.modules.mamba3 import Mamba3 from mamba_ssm.models.mixer_seq_simple import Mamb"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/__init__.py",
+   "b": "mamba_ssm/modules/mamba_simple.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/__init__.py",
+    "span": "__version__ = \"2.3.2.post1\" from mamba_ssm.ops.selective_scan_interface import selective_scan_fn, mamba_inner_fn from mamba_ssm.modules.mamba_simple import Mamba from mamba_ssm.modules.mamba2 import Mamba2 from mamba_ssm.modules.mamba3 import Mamba3 from mamba_ssm.models.mixer_seq_simple import Mamb"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/__init__.py",
+   "b": "mamba_ssm/modules/mamba2.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/__init__.py",
+    "span": "3.2.post1\" from mamba_ssm.ops.selective_scan_interface import selective_scan_fn, mamba_inner_fn from mamba_ssm.modules.mamba_simple import Mamba from mamba_ssm.modules.mamba2 import Mamba2 from mamba_ssm.modules.mamba3 import Mamba3 from mamba_ssm.models.mixer_seq_simple import MambaLMHeadModel"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/__init__.py",
+   "b": "mamba_ssm/models/mixer_seq_simple.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/__init__.py",
+    "span": "nner_fn from mamba_ssm.modules.mamba_simple import Mamba from mamba_ssm.modules.mamba2 import Mamba2 from mamba_ssm.modules.mamba3 import Mamba3 from mamba_ssm.models.mixer_seq_simple import MambaLMHeadModel"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/models/config_mamba.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/models/mixer_seq_simple.py",
+    "span": "mport math from functools import partial import json import os import copy from collections import namedtuple import torch import torch.nn as nn from mamba_ssm.models.config_mamba import MambaConfig from mamba_ssm.modules.mamba_simple import Mamba from mamba_ssm.modules.mamba2 import Mamba2 from mam"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/modules/mamba_simple.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/models/mixer_seq_simple.py",
+    "span": "mport os import copy from collections import namedtuple import torch import torch.nn as nn from mamba_ssm.models.config_mamba import MambaConfig from mamba_ssm.modules.mamba_simple import Mamba from mamba_ssm.modules.mamba2 import Mamba2 from mamba_ssm.modules.mamba3 import Mamba3 from mamba_ssm.mod"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/modules/mamba2.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/models/mixer_seq_simple.py",
+    "span": "dtuple import torch import torch.nn as nn from mamba_ssm.models.config_mamba import MambaConfig from mamba_ssm.modules.mamba_simple import Mamba from mamba_ssm.modules.mamba2 import Mamba2 from mamba_ssm.modules.mamba3 import Mamba3 from mamba_ssm.modules.mha import MHA from mamba_ssm.modules.mlp im"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/modules/mha.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/models/mixer_seq_simple.py",
+    "span": "aConfig from mamba_ssm.modules.mamba_simple import Mamba from mamba_ssm.modules.mamba2 import Mamba2 from mamba_ssm.modules.mamba3 import Mamba3 from mamba_ssm.modules.mha import MHA from mamba_ssm.modules.mlp import GatedMLP from mamba_ssm.modules.block import Block from mamba_ssm.utils.generation"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/modules/mlp.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/models/mixer_seq_simple.py",
+    "span": "imple import Mamba from mamba_ssm.modules.mamba2 import Mamba2 from mamba_ssm.modules.mamba3 import Mamba3 from mamba_ssm.modules.mha import MHA from mamba_ssm.modules.mlp import GatedMLP from mamba_ssm.modules.block import Block from mamba_ssm.utils.generation import GenerationMixin from mamba_ssm."
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/modules/block.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/models/mixer_seq_simple.py",
+    "span": "amba2 import Mamba2 from mamba_ssm.modules.mamba3 import Mamba3 from mamba_ssm.modules.mha import MHA from mamba_ssm.modules.mlp import GatedMLP from mamba_ssm.modules.block import Block from mamba_ssm.utils.generation import GenerationMixin from mamba_ssm.utils.hf import load_config_hf, load_state_"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/utils/generation.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/models/mixer_seq_simple.py",
+    "span": ".mamba3 import Mamba3 from mamba_ssm.modules.mha import MHA from mamba_ssm.modules.mlp import GatedMLP from mamba_ssm.modules.block import Block from mamba_ssm.utils.generation import GenerationMixin from mamba_ssm.utils.hf import load_config_hf, load_state_dict_hf try: from mamba_ssm.ops.triton"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/utils/hf.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/models/mixer_seq_simple.py",
+    "span": "MHA from mamba_ssm.modules.mlp import GatedMLP from mamba_ssm.modules.block import Block from mamba_ssm.utils.generation import GenerationMixin from mamba_ssm.utils.hf import load_config_hf, load_state_dict_hf try: from mamba_ssm.ops.triton.layer_norm import RMSNorm, layer_norm_fn, rms_norm_fn"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/ops/triton/layer_norm.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/models/mixer_seq_simple.py",
+    "span": "k import Block from mamba_ssm.utils.generation import GenerationMixin from mamba_ssm.utils.hf import load_config_hf, load_state_dict_hf try: from mamba_ssm.ops.triton.layer_norm import RMSNorm, layer_norm_fn, rms_norm_fn except ImportError: RMSNorm, layer_norm_fn, rms_norm_fn = None, None, N"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/block.py",
+   "b": "mamba_ssm/ops/triton/layer_norm.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/modules/block.py",
+    "span": "from typing import Optional import torch from torch import nn, Tensor from mamba_ssm.ops.triton.layer_norm import RMSNorm, layer_norm_fn"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "mamba_ssm/ops/triton/ssd_combined.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/modules/mamba2.py",
+    "span": "ed.tensor_parallel import ColumnParallelLinear, RowParallelLinear from mamba_ssm.distributed.distributed_utils import all_reduce, reduce_scatter from mamba_ssm.ops.triton.ssd_combined import mamba_chunk_scan_combined from mamba_ssm.ops.triton.ssd_combined import mamba_split_conv1d_scan_combined from"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "mamba_ssm/ops/triton/selective_state_update.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/modules/mamba2.py",
+    "span": "from causal_conv1d.causal_conv1d_varlen import causal_conv1d_varlen_states except ImportError: causal_conv1d_varlen_states = None try: from mamba_ssm.ops.triton.selective_state_update import selective_state_update except ImportError: selective_state_update = None from mamba_ssm.ops.tri"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2_simple.py",
+   "b": "mamba_ssm/ops/triton/ssd_combined.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/modules/mamba2_simple.py",
+    "span": "from mamba_ssm.ops.triton.layernorm_gated import RMSNorm as RMSNormGated, LayerNorm except ImportError: RMSNormGated, LayerNorm = None, None from mamba_ssm.ops.triton.ssd_combined import mamba_chunk_scan_combined from mamba_ssm.ops.triton.ssd_combined import mamba_split_conv1d_scan_combined"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba_simple.py",
+   "b": "mamba_ssm/ops/selective_scan_interface.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/modules/mamba_simple.py",
+    "span": "import Optional import torch import torch.nn as nn import torch.nn.functional as F from torch import Tensor from einops import rearrange, repeat from mamba_ssm.ops.selective_scan_interface import selective_scan_fn, mamba_inner_fn try: from causal_conv1d import causal_conv1d_fn, causal_conv1d_upd"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba_simple.py",
+   "b": "mamba_ssm/ops/triton/selective_state_update.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/modules/mamba_simple.py",
+    "span": "causal_conv1d import causal_conv1d_fn, causal_conv1d_update except ImportError: causal_conv1d_fn, causal_conv1d_update = None, None try: from mamba_ssm.ops.triton.selective_state_update import selective_state_update except ImportError: selective_state_update = None try: from mamba_ss"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba_simple.py",
+   "b": "mamba_ssm/ops/triton/layer_norm.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/modules/mamba_simple.py",
+    "span": "from mamba_ssm.ops.triton.selective_state_update import selective_state_update except ImportError: selective_state_update = None try: from mamba_ssm.ops.triton.layer_norm import RMSNorm, layer_norm_fn, rms_norm_fn except ImportError: RMSNorm, layer_norm_fn, rms_norm_fn = None, None, N"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/ssd_minimal.py",
+   "b": "mamba_ssm/ops/triton/ssd_combined.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/modules/ssd_minimal.py",
+    "span": "ion of SSD. This is the same as Listing 1 from the paper. \"\"\" import torch import torch.nn.functional as F from einops import rearrange, repeat from mamba_ssm.ops.triton.ssd_combined import mamba_chunk_scan_combined"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/ops/selective_scan_interface.py",
+   "b": "mamba_ssm/ops/triton/layer_norm.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/ops/selective_scan_interface.py",
+    "span": "causal_conv1d_fn = None causal_conv1d_fwd_function = None causal_conv1d_bwd_function = None causal_conv1d_update_function = None from mamba_ssm.ops.triton.layer_norm import _layer_norm_fwd try: import selective_scan_cuda except ImportError: selective_scan_cuda = None"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/ops/triton/ssd_combined.py",
+   "b": "mamba_ssm/ops/selective_scan_interface.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mamba_ssm/ops/triton/ssd_combined.py",
+    "span": ", seqlen, nheads, headdim) dt_bias: (nheads,) or (nheads, headdim) Return: out: (batch, seqlen, nheads, headdim) \"\"\" from mamba_ssm.ops.selective_scan_interface import selective_scan_fn"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tests/test_generation.py",
+   "b": "mamba_ssm/models/mixer_seq_simple.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tests/test_generation.py",
+    "span": "import torch import torch.nn.functional as F from mamba_ssm.models.mixer_seq_simple import MambaLMHeadModel from mamba_ssm.models.config_mamba import MambaConfig from mamba_ssm.utils.generation import InferenceParams import pytest from einops import rearrange, repeat"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tests/test_generation.py",
+   "b": "mamba_ssm/models/config_mamba.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tests/test_generation.py",
+    "span": "import torch import torch.nn.functional as F from mamba_ssm.models.mixer_seq_simple import MambaLMHeadModel from mamba_ssm.models.config_mamba import MambaConfig from mamba_ssm.utils.generation import InferenceParams import pytest from einops import rearrange, repeat"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tests/test_generation.py",
+   "b": "mamba_ssm/utils/generation.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tests/test_generation.py",
+    "span": "rt torch.nn.functional as F from mamba_ssm.models.mixer_seq_simple import MambaLMHeadModel from mamba_ssm.models.config_mamba import MambaConfig from mamba_ssm.utils.generation import InferenceParams import pytest from einops import rearrange, repeat"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tests/ops/test_selective_scan.py",
+   "b": "mamba_ssm/ops/selective_scan_interface.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tests/ops/test_selective_scan.py",
+    "span": "import math import torch import torch.nn.functional as F import pytest from einops import rearrange from mamba_ssm.ops.selective_scan_interface import selective_scan_fn, selective_scan_ref from mamba_ssm.ops.selective_scan_interface import mamba_inner_fn, mamba_inner_ref"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "evals/lm_harness_eval.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "ined=state-spaces/mamba-130m --tasks lambada_openai,hellaswag,piqa,arc_easy,arc_challenge,winogrande,openbookqa --device cuda --batch_size 256 python evals/lm_harness_eval.py --model hf --model_args pretrained=EleutherAI/pythia-160m --tasks lambada_openai,hellaswag,piqa,arc_easy,arc_challenge,winogr"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "setup.py",
+   "b": "README.md",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "setup.py",
+    "span": "as _bdist_wheel import torch from torch.utils.cpp_extension import ( BuildExtension, CUDAExtension, CUDA_HOME, HIP_HOME ) with open(\"README.md\", \"r\", encoding=\"utf-8\") as fh: long_description = fh.read() this_dir = os.path.dirname(os.path.abspath(__file__)) PACKAGE_NAME = \"mamba"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "setup.py",
+   "b": "csrc/selective_scan/selective_scan.cpp",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "setup.py",
+    "span": "ext_modules.append( CUDAExtension( name=\"selective_scan_cuda\", sources=[ \"csrc/selective_scan/selective_scan.cpp\", \"csrc/selective_scan/selective_scan_fwd_fp32.cu\", \"csrc/selective_scan/selective_scan_fwd_fp16.cu\","
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "mamba_ssm/modules/mha.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "benchmarks/benchmark_generation_mamba_simple.py",
+   "b": "paper/mamba.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/ops/triton/selective_state_update.py",
+   "b": "tests/ops/test_selective_scan.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/ssd_algorithm.png",
+   "b": "related_work/mamba2_transformers_are_ssms.pdf",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "mamba_ssm/modules/mlp.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/modules/mamba2_simple.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/block.py",
+   "b": "mamba_ssm/modules/mlp.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/block.py",
+   "b": "mamba_ssm/modules/mamba2.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "benchmarks/benchmark_generation_mamba_simple.py",
+   "b": "mamba_ssm/modules/mamba_simple.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/ops/triton/selective_state_update.py",
+   "b": "mamba_ssm/ops/triton/ssd_combined.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "related_work/mamba2_transformers_are_ssms.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba_simple.py",
+   "b": "mamba_ssm/utils/generation.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2_simple.py",
+   "b": "mamba_ssm/modules/ssd_minimal.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "mamba_ssm/utils/generation.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/mamba.pdf",
+   "b": "related_work/s5_simplified_state_space.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "related_work/mamba2_transformers_are_ssms.pdf",
+   "b": "related_work/rwkv.pdf",
+   "relation": "compares",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "mamba_ssm/modules/mamba2_simple.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/selection.png",
+   "b": "csrc/selective_scan/selective_scan.cpp",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/ssd_algorithm.png",
+   "b": "mamba_ssm/ops/triton/ssd_combined.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "csrc/selective_scan/selective_scan.cpp",
+   "b": "mamba_ssm/ops/selective_scan_interface.py",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mamba_ssm/__init__.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/ops/selective_scan_interface.py",
+   "b": "paper/mamba.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba_simple.py",
+   "b": "usage.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/mamba.pdf",
+   "b": "related_work/rwkv.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/__init__.py",
+   "b": "paper/mamba.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/selection.png",
+   "b": "assets/ssd_algorithm.png",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/mamba.pdf",
+   "b": "tests/ops/test_selective_scan.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba_simple.py",
+   "b": "paper/mamba.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "usage.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "mamba_ssm/modules/mamba_simple.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/selection.png",
+   "b": "mamba_ssm/modules/mamba2_simple.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "evals/lm_harness_eval.py",
+   "b": "mamba_ssm/utils/generation.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "mamba_ssm/ops/selective_scan_interface.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "evals/lm_harness_eval.py",
+   "b": "usage.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "related_work/s5_simplified_state_space.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "csrc/selective_scan/selective_scan.cpp",
+   "b": "tests/ops/test_selective_scan.py",
+   "relation": "supports",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/ssd_algorithm.png",
+   "b": "mamba_ssm/modules/ssd_minimal.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba_simple.py",
+   "b": "mamba_ssm/modules/mlp.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tests/ops/test_selective_scan.py",
+   "b": "tests/test_generation.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mha.py",
+   "b": "mamba_ssm/utils/generation.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "evals/lm_harness_eval.py",
+   "b": "mamba_ssm/modules/mamba_simple.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/selection.png",
+   "b": "paper/mamba.pdf",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2_simple.py",
+   "b": "related_work/mamba2_transformers_are_ssms.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "csrc/selective_scan/selective_scan.cpp",
+   "b": "paper/mamba.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/mamba.pdf",
+   "b": "usage.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "benchmarks/benchmark_generation_mamba_simple.py",
+   "b": "mamba_ssm/ops/triton/selective_state_update.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "csrc/selective_scan/selective_scan.cpp",
+   "b": "mamba_ssm/ops/triton/selective_state_update.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "benchmarks/benchmark_generation_mamba_simple.py",
+   "b": "evals/lm_harness_eval.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "csrc/selective_scan/selective_scan.cpp",
+   "b": "mamba_ssm/ops/triton/ssd_combined.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/mixer_seq_simple.py",
+   "b": "mamba_ssm/ops/triton/selective_state_update.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba_simple.py",
+   "b": "mamba_ssm/modules/ssd_minimal.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "mamba_ssm/modules/ssd_minimal.py",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "paper/mamba.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "related_work/mamba2_transformers_are_ssms.pdf",
+   "b": "related_work/s5_simplified_state_space.pdf",
+   "relation": "extends",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2_simple.py",
+   "b": "mamba_ssm/modules/mamba_simple.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mamba_simple.py",
+   "b": "mamba_ssm/modules/mha.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/ssd_minimal.py",
+   "b": "related_work/mamba2_transformers_are_ssms.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "benchmarks/benchmark_generation_mamba_simple.py",
+   "b": "mamba_ssm/utils/generation.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/mamba.pdf",
+   "b": "related_work/mamba2_transformers_are_ssms.pdf",
+   "relation": "extends",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/utils/generation.py",
+   "b": "mamba_ssm/utils/hf.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/config_mamba.py",
+   "b": "mamba_ssm/modules/mamba2.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/block.py",
+   "b": "mamba_ssm/modules/mamba_simple.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "evals/lm_harness_eval.py",
+   "b": "paper/mamba.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/ops/selective_scan_interface.py",
+   "b": "mamba_ssm/ops/triton/selective_state_update.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/models/config_mamba.py",
+   "b": "mamba_ssm/modules/mamba_simple.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "related_work/rwkv.pdf",
+   "b": "related_work/s5_simplified_state_space.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "related_work/mamba2_transformers_are_ssms.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/__init__.py",
+   "b": "mamba_ssm/modules/mamba2_simple.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "assets/selection.png",
+   "b": "mamba_ssm/ops/triton/selective_state_update.py",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/ops/triton/ssd_combined.py",
+   "b": "related_work/mamba2_transformers_are_ssms.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mamba_ssm/modules/mha.py",
+   "b": "related_work/mamba2_transformers_are_ssms.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "mamba_ssm/ops/selective_scan_interface.py",
+   "b": "mamba_ssm/utils/generation.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/utils/generation.py",
+   "b": "setup.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/modules/ssd_minimal.py",
+   "b": "setup.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "assets/ssd_algorithm.png",
+   "b": "mamba_ssm/ops/selective_scan_interface.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/ops/triton/layer_norm.py",
+   "b": "paper/mamba.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "tests/ops/test_selective_scan.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "evals/lm_harness_eval.py",
+   "b": "mamba_ssm/modules/mha.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "assets/selection.png",
+   "b": "related_work/s5_simplified_state_space.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/utils/hf.py",
+   "b": "setup.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/modules/mha.py",
+   "b": "related_work/rwkv.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tests/test_generation.py",
+   "b": "usage.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2_simple.py",
+   "b": "setup.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2_simple.py",
+   "b": "mamba_ssm/modules/mlp.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/models/config_mamba.py",
+   "b": "mamba_ssm/modules/mamba2_simple.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2_simple.py",
+   "b": "usage.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/ops/triton/layer_norm.py",
+   "b": "related_work/s5_simplified_state_space.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/models/config_mamba.py",
+   "b": "mamba_ssm/utils/generation.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mamba_ssm/modules/mha.py",
+   "b": "mamba_ssm/utils/hf.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "benchmarks/benchmark_generation_mamba_simple.py",
+   "b": "tests/test_generation.py",
+   "source": "review",
+   "note": "A benchmark script does not use a test file; no real link."
+  },
+  {
+   "a": "mamba_ssm/modules/mamba2.py",
+   "b": "tests/test_generation.py",
+   "source": "review",
+   "note": "A module does not use a test; test_generation exercises the model, not mamba2 directly."
+  },
+  {
+   "a": "mamba_ssm/modules/mamba_simple.py",
+   "b": "tests/ops/test_selective_scan.py",
+   "source": "review",
+   "note": "A module does not use a test file; test targets selective_scan_interface."
+  },
+  {
+   "a": "mamba_ssm/ops/selective_scan_interface.py",
+   "b": "setup.py",
+   "source": "review",
+   "note": "The interface does not use setup.py; the link goes through the compiled CUDA extension."
+  },
+  {
+   "a": "mamba_ssm/ops/triton/layer_norm.py",
+   "b": "mamba_ssm/ops/triton/ssd_combined.py",
+   "source": "review",
+   "note": "layer_norm is a standalone kernel; ssd_combined is not meant to be used from it."
+  },
+  {
+   "a": "mamba_ssm/__init__.py",
+   "b": "setup.py",
+   "source": "review",
+   "note": "__init__ does not describe setup.py; at most it holds the version that setup reads."
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "repo": "state-spaces/mamba",
+  "commit": "e9594ce1c732d97440f0332fdc43170a2294dbfa",
+  "code_license": "Apache-2.0",
+  "papers": [
+   {
+    "arxiv": "2312.00752",
+    "version": 2,
+    "license": "CC-BY-4.0",
+    "file": "paper/mamba.pdf",
+    "role": "main",
+    "title": "Mamba (Gu & Dao, 2023)"
+   },
+   {
+    "arxiv": "2405.21060",
+    "version": 1,
+    "license": "CC-BY-4.0",
+    "file": "related_work/mamba2_transformers_are_ssms.pdf",
+    "role": "related",
+    "title": "Transformers are SSMs / Mamba-2 (Dao & Gu, 2024)"
+   },
+   {
+    "arxiv": "2208.04933",
+    "version": 3,
+    "license": "CC-BY-4.0",
+    "file": "related_work/s5_simplified_state_space.pdf",
+    "role": "related",
+    "title": "S5 (Smith et al., 2023)"
+   },
+   {
+    "arxiv": "2305.13048",
+    "version": 2,
+    "license": "CC-BY-4.0",
+    "file": "related_work/rwkv.pdf",
+    "role": "related",
+    "title": "RWKV (Peng et al., 2023)"
+   }
+  ],
+  "pool_size": 107,
+  "reviewed": 0,
+  "review_agreement_related_vs_not": null,
+  "labeler": "claude-sonnet-5-5 first pass, human review",
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    3,
+    3,
+    3
+   ],
+   "summaries": [
+    "The graph captures the main structure (README to docs/assets, model to modules, modules to ops, papers to implementations). It also has many dubious links: reversed or incorrect \"uses\" edges, tenuous same_topic links, and some noisy asset-to-code links.",
+    "The graph captures the core structure well (README to docs/assets, model to modules, modules to ops, paper to implementation). It also contains several wrong-direction or implausible links, such as the benchmark \"using\" a test file, Mamba-2 \"using\" a test, and layer_norm \"using\" ssd_combined.",
+    "The graph captures the core structure well: README to its components, modules to papers, and usage among model, module and ops files. It has several questionable links, mostly test, benchmark and setup links with the wrong direction or no real dependency, plus an image-to-paper link labelled duplicate."
+   ],
+   "proposed": 35,
+   "applied": [
+    {
+     "op": "remove",
+     "a": "benchmarks/benchmark_generation_mamba_simple.py",
+     "b": "tests/test_generation.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "A benchmark script does not use a test file; no real link.",
+      "A benchmark script does not use a test file; at most a weak topical relation.",
+      "The benchmark does not use the test file; there is no real dependency."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mamba_ssm/modules/mamba2.py",
+     "b": "tests/test_generation.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "A module does not use a test; test_generation exercises the model, not mamba2 directly.",
+      "Module does not use a test file; the test exercises the model indirectly.",
+      "A module does not use a test file; the link is indirect at best."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mamba_ssm/modules/mamba_simple.py",
+     "b": "tests/ops/test_selective_scan.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "A module does not use a test file; test targets selective_scan_interface.",
+      "The module does not use a test; the test only uses mamba_inner_fn indirectly, and the relation is reversed.",
+      "mamba_simple does not use the test file; the test targets the interface and the CUDA op."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mamba_ssm/ops/selective_scan_interface.py",
+     "b": "setup.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "The interface does not use setup.py; the link goes through the compiled CUDA extension.",
+      "The interface does not use the build script; the dependency goes through the compiled extension.",
+      "The interface does not use setup.py; only the compiled extension is a loose connection."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mamba_ssm/ops/triton/layer_norm.py",
+     "b": "mamba_ssm/ops/triton/ssd_combined.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "layer_norm is a standalone kernel; ssd_combined is not meant to be used from it.",
+      "The layer norm kernel is a low-level utility and does not use ssd_combined.",
+      "ssd_combined does not use these LayerNorm kernels in a way a reader would link."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mamba_ssm/__init__.py",
+     "b": "setup.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "__init__ does not describe setup.py; at most it holds the version that setup reads.",
+      "__init__ does not describe setup.py; at most it supplies the version.",
+      "The __init__ file does not describe setup.py; at most it is a weak version relationship."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "mamba_ssm/ops/selective_scan_interface.py",
+     "b": "mamba_ssm/ops/triton/ssd_combined.py",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "The Mamba-2 SSD ops are not tied to the Mamba-1 selective scan interface.",
+      "The Mamba-2 SSD ops do not depend on the Mamba-1 selective scan interface."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 5,
+   "key_links": 19,
+   "required_before": 58,
+   "notes": [
+    "mamba_ssm 패키지가 모델 조립(mixer_seq_simple, Block)→Mamba/Mamba2 믹서→CUDA/Triton 커널 순으로 쌓여 있고, 벤치마크·평가·테스트가 이를 사용하며 README·도식·논문이 이를 설명합니다.",
+    "README가 소개하는 mamba_ssm 패키지는 모델/블록 → Mamba·Mamba-2 믹서 → selective scan·Triton·CUDA 커널로 이어지는 계층 구조이며, 벤치마크·평가·테스트가 이를 사용하고 논문 PDF들이 각 구현의 근거가 됩니다.",
+    "Mamba 프로젝트는 mamba_ssm 패키지가 모델 조립(mixer_seq_simple, Block) → Mamba/Mamba-2 믹서 → CUDA/Triton 연산 커널 순으로 쌓여 있고, 생성·평가·테스트 코드와 논문, README 문서가 이를 둘러싸는 구조입니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "모델 구성·블록 조립",
+   "members": [
+    "mamba_ssm/__init__.py",
+    "mamba_ssm/models/config_mamba.py",
+    "mamba_ssm/models/mixer_seq_simple.py",
+    "mamba_ssm/modules/block.py",
+    "mamba_ssm/modules/mha.py",
+    "mamba_ssm/modules/mlp.py"
+   ]
+  },
+  {
+   "name": "생성·평가·테스트",
+   "members": [
+    "benchmarks/benchmark_generation_mamba_simple.py",
+    "evals/lm_harness_eval.py",
+    "mamba_ssm/utils/generation.py",
+    "mamba_ssm/utils/hf.py",
+    "tests/ops/test_selective_scan.py",
+    "tests/test_generation.py"
+   ]
+  },
+  {
+   "name": "연산 커널·빌드",
+   "members": [
+    "csrc/selective_scan/selective_scan.cpp",
+    "mamba_ssm/ops/selective_scan_interface.py",
+    "mamba_ssm/ops/triton/layer_norm.py",
+    "mamba_ssm/ops/triton/selective_state_update.py",
+    "mamba_ssm/ops/triton/ssd_combined.py",
+    "setup.py"
+   ]
+  },
+  {
+   "name": "Mamba 믹서 레이어",
+   "members": [
+    "mamba_ssm/modules/mamba2.py",
+    "mamba_ssm/modules/mamba2_simple.py",
+    "mamba_ssm/modules/mamba_simple.py",
+    "mamba_ssm/modules/ssd_minimal.py"
+   ]
+  },
+  {
+   "name": "논문·관련 연구",
+   "members": [
+    "paper/mamba.pdf",
+    "related_work/mamba2_transformers_are_ssms.pdf",
+    "related_work/rwkv.pdf",
+    "related_work/s5_simplified_state_space.pdf"
+   ]
+  },
+  {
+   "name": "문서·도식",
+   "members": [
+    "README.md",
+    "assets/selection.png",
+    "assets/ssd_algorithm.png",
+    "usage.md"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,35 @@
+2026-08-19 14:02:11 INFO run start
+2026-08-19 14:02:11 INFO config: configs/bilingual_6class.yaml (inherits resolved)
+2026-08-19 14:02:11 INFO experiment_name=bilingual_6class seed=1234
+2026-08-19 14:02:11 INFO device=cuda:0 (NVIDIA A100-SXM4-40GB)
+2026-08-19 14:02:12 INFO data: KoEnEmoDataset train=10374 val=2223 test=2223 (speaker-independent)
+2026-08-19 14:02:12 WARNING prosody: F0 extraction returned no voiced frames for 3 utterances, zero-filled
+2026-08-19 14:02:13 INFO model=ProsodySER params=11.3M
+2026-08-19 14:02:13 INFO optimizer=AdamW lr=3e-4 weight_decay=0.01 batch_size=32 epochs=30 steps_per_epoch=325 total_steps=9750
+2026-08-19 14:02:13 INFO warmup_steps=500 scheduler=cosine grad_clip=1.0 label_smoothing=0.1 lambda_init=0.5
+2026-08-19 14:02:13 INFO lang_loss_weight=0.2 grl_ramp=0->1 over 5 epochs prosody_dim=6 prosody_hidden=128
+2026-08-19 14:02:13 INFO d_model=256 num_heads=4 num_layers=6 checkpoint_dir=checkpoints/
+2026-08-19 14:02:20 INFO step=100 epoch=1 loss=1.742 lr=6.00e-05
+2026-08-19 14:02:27 INFO step=200 epoch=1 loss=1.721 lr=1.20e-04
+2026-08-19 14:02:34 INFO step=300 epoch=1 loss=1.598 lr=1.80e-04
+2026-08-19 14:02:38 INFO epoch=1 done (step 325) val_ua=41.3
+2026-08-19 14:02:41 INFO step=400 epoch=2 loss=1.512 lr=2.40e-04
+2026-08-19 14:02:48 INFO step=500 epoch=2 loss=1.455 lr=3.00e-04
+2026-08-19 14:03:52 INFO step=1000 epoch=4 loss=1.213 lr=2.98e-04
+2026-08-19 14:08:49 INFO epoch=5 done (step 1625) val_ua=58.9
+2026-08-19 14:13:20 INFO step=2000 epoch=7 loss=0.982 lr=2.81e-04
+2026-08-19 14:21:33 INFO step=3000 epoch=10 loss=0.861 lr=2.49e-04
+2026-08-19 14:25:02 INFO epoch=10 done (step 3250) val_ua=66.5
+2026-08-19 14:31:14 INFO step=4000 epoch=13 loss=0.762 lr=2.07e-04
+2026-08-19 14:40:57 INFO step=5000 epoch=16 loss=0.688 lr=1.57e-04
+2026-08-19 14:49:38 INFO step=6000 epoch=19 loss=0.640 lr=1.07e-04
+2026-08-19 14:55:06 INFO epoch=20 done (step 6500) val_ua=72.6
+2026-08-19 14:58:12 INFO step=7000 epoch=22 loss=0.583 lr=6.18e-05
+2026-08-19 15:00:23 INFO epoch=22 done (step 7150) val_ua=73.1 best=True
+2026-08-19 15:00:24 INFO checkpoint saved: checkpoints/best.pt (epoch 22, val_ua=73.1)
+2026-08-19 15:07:41 INFO step=8000 epoch=25 loss=0.537 lr=2.58e-05
+2026-08-19 16:04:09 INFO step=9700 epoch=30 loss=0.471 lr=2.18e-08
+2026-08-19 16:05:50 INFO epoch=30 done (step 9750) val_ua=72.8
+2026-08-19 16:05:51 INFO training finished; reloading best checkpoint (epoch 22)
+2026-08-19 16:07:12 INFO test_ua=72.4 (best checkpoint, 2223 utterances)
+2026-08-19 16:09:02 INFO run end elapsed=2:06:51

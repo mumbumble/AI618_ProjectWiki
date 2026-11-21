@@ -1,0 +1,93 @@
+# Default hyperparameters for GraspDR.
+# Experiment configs inherit from this file and override only what they change.
+
+experiment:
+  name: graspdr
+  seed: 0
+  device: cuda
+
+robot:
+  arm: franka_7dof          # 7-DoF Franka-style arm
+  gripper: parallel
+  fingertip_pads: 2         # each pad has a simulated normal-force sensor
+  wrist_camera:
+    type: rgbd
+    resolution: [96, 96]
+
+simulator:
+  name: PhysBox 2.3
+
+dataset:
+  name: tabletop_objs_v2
+  num_categories: 12
+  total_meshes: 800
+  train_meshes: 640
+  val_meshes: 80
+  test_meshes: 80           # val + test = 160 held-out meshes
+
+model:
+  encoder: resnet18
+  encoder_width: 32
+  proprio_hidden: 128
+  fused_dim: 256
+  action_dim: 7             # 6-D delta pose + gripper
+  asymmetric_critic: true   # critic also sees privileged physics parameters
+
+training:
+  algorithm: ppo
+  total_steps: 20000000
+  num_envs: 1024
+  rollout_steps: 32
+  minibatch_size: 4096
+  learning_rate: 3.0e-4
+  optimizer: adam
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_eps: 0.2
+  value_loss_coef: 0.5
+  entropy_coef: 0.01
+  aux_weight: 0.2           # weight of the per-pad contact BCE loss
+
+randomization:
+  sampler: structured       # grouped, correlated sampling (SRS)
+  rho: 0.6                  # within-group correlation
+  s_start: 0.5
+  s_train: 1.0
+  groups:
+    visual:
+      light_intensity: true
+      texture_hue: true
+      camera_pose_jitter_cm: 2.0
+    dynamics:
+      friction: [0.4, 1.2]
+      object_mass_scale: 0.30       # +-30%
+      joint_damping_scale: 0.25     # +-25%
+    geometry:
+      object_scale: [0.8, 1.2]
+      pad_stiffness: true
+
+curriculum:
+  enabled: true
+  steps: 2000000            # linear ramp s: s_start -> s_train, then hold
+
+reward:
+  lambda_c: 0.5             # contact term weight
+  lambda_f: 0.1             # excess-force penalty weight
+  f_max: 25.0               # N
+  f_min: 0.8                # N, contact threshold
+  reach_weight: 0.1
+  reach_decay: 5.0          # r_reach = 0.1 * exp(-5 d), d in metres
+  lift_reward: 1.0
+  lift_height_m: 0.10
+  lift_hold_steps: 10
+
+evaluation:
+  ranges: [0.5, 1.0, 1.5, 2.0, 2.5]
+  episodes_per_range: 2000
+  metric: grasp_success_rate
+
+logging:
+  log_dir: logs
+  log_file_pattern: "train_%Y-%m-%d.log"
+  checkpoint_dir: checkpoints
+  eval_every_steps: 500000

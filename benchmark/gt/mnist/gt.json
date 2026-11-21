@@ -1,0 +1,811 @@
+{
+ "project": "mnist",
+ "edges": [
+  {
+   "a": "README.md",
+   "b": "mnist/README.md",
+   "relation": "describes",
+   "also": [
+    "extends",
+    "same_topic",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Available models - [Image classification (MNIST) using Convnets](./mnist/README.md) - [Word-level Language Modeling using RNN and Transformer](./word_language_model/README.md) - [Training Imagenet Classifiers with Popular Networks](./imagenet/README.md) - [Generative Adversarial Networks (DCGAN)"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mnist_forward_forward/README.md",
+   "relation": "describes",
+   "also": [
+    "extends",
+    "same_topic",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "ed/ddp/README.md) and [RPC](./distributed/rpc) - [Several examples illustrating the C++ Frontend](cpp) - [Image Classification Using Forward-Forward](./mnist_forward_forward/README.md) - [Language Translation using Transformers](./language_translation/README.md)"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_hogwild/main.py",
+   "b": "mnist_hogwild/train.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mnist_hogwild/main.py",
+    "span": ".nn.functional as F import torch.multiprocessing as mp from torch.utils.data.sampler import Sampler from torchvision import datasets, transforms from train import train, test parser = argparse.ArgumentParser(description='PyTorch MNIST Example') parser.add_argument('--batch-size', type=int, default=6"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mnist/main.py",
+   "b": "mnist_hogwild/main.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_forward_forward/main.py",
+   "b": "mnist_rnn/main.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_hogwild/main.py",
+   "b": "mnist_rnn/main.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_hogwild/README.md",
+   "b": "mnist_hogwild/main.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_forward_forward/README.md",
+   "b": "mnist_rnn/README.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist/README.md",
+   "b": "mnist/requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_forward_forward/main.py",
+   "b": "mnist_forward_forward/requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_forward_forward/main.py",
+   "b": "mnist_hogwild/main.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_rnn/README.md",
+   "b": "mnist_rnn/requirements.txt",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_hogwild/README.md",
+   "b": "mnist_hogwild/train.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_forward_forward/README.md",
+   "b": "mnist_forward_forward/main.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_hogwild/requirements.txt",
+   "b": "mnist_rnn/requirements.txt",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist/main.py",
+   "b": "mnist_forward_forward/main.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mnist_hogwild/README.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist/requirements.txt",
+   "b": "mnist_hogwild/requirements.txt",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist/main.py",
+   "b": "mnist_rnn/main.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_forward_forward/README.md",
+   "b": "mnist_forward_forward/requirements.txt",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mnist_rnn/README.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_rnn/README.md",
+   "b": "mnist_rnn/main.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist/README.md",
+   "b": "mnist_rnn/README.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_hogwild/README.md",
+   "b": "mnist_rnn/README.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist/requirements.txt",
+   "b": "mnist_forward_forward/requirements.txt",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist/README.md",
+   "b": "mnist/main.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist/README.md",
+   "b": "mnist_hogwild/README.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_hogwild/README.md",
+   "b": "mnist_hogwild/requirements.txt",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_forward_forward/README.md",
+   "b": "mnist_hogwild/README.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist/requirements.txt",
+   "b": "mnist_rnn/requirements.txt",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mnist_hogwild/main.py",
+   "b": "mnist_hogwild/requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The hogwild entry point depends on the packages listed in the requirements file, parallel to the forward_forward case.",
+   "personas": []
+  },
+  {
+   "a": "mnist/main.py",
+   "b": "mnist/requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "main.py needs the torch and torchvision packages in the requirements file, and the mnist README ties them together.",
+   "personas": []
+  },
+  {
+   "a": "mnist_rnn/main.py",
+   "b": "mnist_rnn/requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The rnn script depends on the packages in its own requirements file.",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "mnist_forward_forward/README.md",
+   "b": "mnist_hogwild/requirements.txt",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mnist_forward_forward/README.md",
+   "b": "mnist_hogwild/main.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mnist_forward_forward/main.py",
+   "b": "mnist_rnn/README.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mnist_forward_forward/main.py",
+   "b": "mnist_hogwild/train.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mnist/main.py",
+   "b": "mnist_forward_forward/requirements.txt",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mnist/main.py",
+   "b": "mnist_rnn/README.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mnist_forward_forward/main.py",
+   "b": "mnist_hogwild/requirements.txt",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mnist_forward_forward/requirements.txt",
+   "b": "mnist_hogwild/requirements.txt",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "README.md",
+   "b": "mnist_forward_forward/requirements.txt",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mnist_hogwild/train.py",
+   "b": "mnist_rnn/requirements.txt",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mnist_forward_forward/requirements.txt",
+   "b": "mnist_rnn/requirements.txt",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mnist/requirements.txt",
+   "b": "mnist_hogwild/train.py",
+   "source": "review",
+   "note": "A requirements file does not describe another project's training module."
+  },
+  {
+   "a": "mnist/requirements.txt",
+   "b": "mnist_rnn/README.md",
+   "source": "review",
+   "note": "A requirements file does not describe a README in another project."
+  },
+  {
+   "a": "mnist/requirements.txt",
+   "b": "mnist_rnn/main.py",
+   "source": "review",
+   "note": "The mnist requirements file is not used by the rnn script; mnist_rnn has its own requirements.txt."
+  },
+  {
+   "a": "README.md",
+   "b": "mnist_rnn/main.py",
+   "source": "review",
+   "note": "The root README lists the examples but does not describe the rnn script directly."
+  },
+  {
+   "a": "README.md",
+   "b": "mnist/main.py",
+   "source": "review",
+   "note": "The root README only points to the example directory, not directly to main.py."
+  },
+  {
+   "a": "mnist/README.md",
+   "b": "mnist_rnn/main.py",
+   "source": "review",
+   "note": "Cross-project README-to-code link that is too indirect."
+  },
+  {
+   "a": "mnist/main.py",
+   "b": "mnist_hogwild/train.py",
+   "source": "review",
+   "note": "This is a loose link. The two files share only the generic MNIST CNN setup."
+  },
+  {
+   "a": "mnist_hogwild/train.py",
+   "b": "mnist_rnn/main.py",
+   "source": "review",
+   "note": "The hogwild SGD training and the LSTM script share nothing beyond MNIST."
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "repo": "pytorch/examples",
+  "commit": "acc295dc7b90714f1bf47f06004fc19a7fe235c4",
+  "code_license": "BSD-3-Clause",
+  "papers": [],
+  "pool_size": 48,
+  "reviewed": 0,
+  "review_agreement_related_vs_not": null,
+  "labeler": "claude-sonnet-5-5 first pass, human review",
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    3,
+    3,
+    3
+   ],
+   "summaries": [
+    "The graph captures the core README-to-code and requirements structure within each subproject well. It has noise in the cross-project links: requirements.txt \"describes\" links to code/READMEs, and many weak same_topic links. It is also missing a few obvious links such as the mnist_hogwild main-to-requirements link and the mnist README to its sibling requirements.",
+    "The core README-to-main/requirements links within each subproject are right, and the hogwild main-to-train link is right. The graph has too many weak cross-project same_topic and duplicate links, and a few wrong ones: requirements.txt \"describes\" train.py and rnn/README.md, and some cross-project links the file summaries don't support.",
+    "The core README-to-main/requirements links are sound, but the graph has many noisy weak cross-project links. Some requirements links are clearly wrong, and a few obvious links are missing (mnist/main.py to mnist/requirements.txt, and hogwild main.py to train.py README links)."
+   ],
+   "proposed": 34,
+   "applied": [
+    {
+     "op": "remove",
+     "a": "mnist/requirements.txt",
+     "b": "mnist_hogwild/train.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "A requirements file does not describe another project's training module.",
+      "A requirements file does not describe a different project's train.py.",
+      "A requirements file in another project does not describe the hogwild training module."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mnist/requirements.txt",
+     "b": "mnist_rnn/README.md",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "A requirements file does not describe a README in another project.",
+      "Cross-project, and a requirements file does not describe a README.",
+      "A requirements file does not describe another project's README."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mnist/requirements.txt",
+     "b": "mnist_rnn/main.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "The mnist requirements file is not used by the rnn script; mnist_rnn has its own requirements.txt.",
+      "The mnist requirements file belongs to a different subproject than the rnn main.py; the rnn project has its own requirements file.",
+      "The requirements file is not used by the rnn script; that project has its own requirements file."
+     ]
+    },
+    {
+     "op": "relabel",
+     "a": "mnist_forward_forward/main.py",
+     "b": "mnist_forward_forward/requirements.txt",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "A script depends on requirements; it does not describe them. Relabeling is more accurate.",
+      "main.py depends on the requirements; it does not describe them. Edge direction and relation are wrong.",
+      "The script depends on the requirements file; it does not describe it."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "README.md",
+     "b": "mnist_rnn/main.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "The root README lists the examples but does not describe the rnn script directly.",
+      "The top-level README lists examples and does not describe a specific source file.",
+      "The root README lists examples but does not describe the rnn code file."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "README.md",
+     "b": "mnist/main.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "The root README only points to the example directory, not directly to main.py.",
+      "The top-level README lists examples and does not describe a specific source file.",
+      "The root README only points to the example directory, not the script itself."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mnist/README.md",
+     "b": "mnist_rnn/main.py",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "Cross-project README-to-code link that is too indirect.",
+      "A README is linked to a different project's script only through generic MNIST overlap."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "mnist_hogwild/main.py",
+     "b": "mnist_hogwild/requirements.txt",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "The hogwild entry point depends on the packages listed in the requirements file, parallel to the forward_forward case.",
+      "The hogwild script depends on the packages in its requirements file.",
+      "The script depends on the packages the requirements file lists, as in the forward_forward project."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "mnist/main.py",
+     "b": "mnist/requirements.txt",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "main.py needs the torch and torchvision packages in the requirements file, and the mnist README ties them together.",
+      "The script depends on torch and torchvision, which the requirements file lists."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "mnist_rnn/main.py",
+     "b": "mnist_rnn/requirements.txt",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "The rnn script depends on the packages in its own requirements file.",
+      "The script uses torch and torchvision from its own requirements file."
+     ]
+    },
+    {
+     "op": "strengthen",
+     "a": "mnist_hogwild/README.md",
+     "b": "mnist_hogwild/train.py",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "The hogwild README documents the training flow whose logic is in train.py, so a reader of one would want the other.",
+      "The README documents the hogwild training flow that train.py implements."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mnist/main.py",
+     "b": "mnist_hogwild/train.py",
+     "relation": "same_method",
+     "votes": 2,
+     "reasons": [
+      "This is a loose link. The two files share only the generic MNIST CNN setup.",
+      "Generic similarity only; weak and noisy."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mnist_hogwild/train.py",
+     "b": "mnist_rnn/main.py",
+     "relation": "same_method",
+     "votes": 2,
+     "reasons": [
+      "The hogwild SGD training and the LSTM script share nothing beyond MNIST.",
+      "The hogwild trainer and the LSTM script share no method; only the dataset is common."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 4,
+   "key_links": 18,
+   "required_before": 15,
+   "notes": [
+    "루트 README가 네 개의 MNIST 예제 폴더(기본 CNN, Forward-Forward, Hogwild, RNN)를 소개하고, 각 폴더는 README·main.py·requirements.txt(Hogwild는 train.py 추가)로 독립적으로 구성됩니다.",
+    "루트 README가 네 개의 MNIST 예제 폴더(기본 CNN, Forward-Forward, Hogwild, RNN)를 소개하고, 각 폴더는 README·main.py·requirements.txt(Hogwild는 train.py 추가)로 독립적으로 구성됩니다.",
+    "PyTorch 예제 저장소의 루트 README가 MNIST 변형 네 가지(기본 CNN, Forward-Forward, Hogwild, RNN) 하위 폴더를 소개하며, 각 폴더는 README, main.py, requirements.txt(Hogwild는 train.py 포함)로 독립적으로 구성됩니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "Hogwild 병렬 학습 예제",
+   "members": [
+    "mnist_hogwild/README.md",
+    "mnist_hogwild/main.py",
+    "mnist_hogwild/requirements.txt",
+    "mnist_hogwild/train.py"
+   ]
+  },
+  {
+   "name": "Forward-Forward 예제",
+   "members": [
+    "mnist_forward_forward/README.md",
+    "mnist_forward_forward/main.py",
+    "mnist_forward_forward/requirements.txt"
+   ]
+  },
+  {
+   "name": "RNN 예제",
+   "members": [
+    "mnist_rnn/README.md",
+    "mnist_rnn/main.py",
+    "mnist_rnn/requirements.txt"
+   ]
+  },
+  {
+   "name": "기본 CNN 예제",
+   "members": [
+    "mnist/README.md",
+    "mnist/main.py",
+    "mnist/requirements.txt"
+   ]
+  },
+  {
+   "name": "저장소 개요 문서",
+   "members": [
+    "README.md"
+   ]
+  }
+ ]
+}

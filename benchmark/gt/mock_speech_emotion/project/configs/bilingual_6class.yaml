@@ -1,0 +1,38 @@
+inherits: base.yaml
+
+# Main experiment config for ProsodySER on KoEn-Emo (bilingual, 6-class).
+# Everything not listed below comes from base.yaml.
+
+# Experiment identity (used for checkpoint and log naming)
+experiment_name: bilingual_6class
+
+# Language-adversarial branch (Gradient Reversal -> Language Classifier)
+# base.yaml uses 0.0 (no language branch); the bilingual run uses 0.2
+lang_loss_weight: 0.2
+
+# Training length
+# base.yaml uses 20 epochs; the reported run uses 30 epochs
+# (325 steps per epoch at batch size 32, 9,750 steps in total)
+epochs: 30
+
+# Values inherited from base.yaml (reference only, not overridden here):
+#   optimizer: AdamW, lr 3e-4, weight_decay 0.01
+#   batch_size 32, warmup_steps 500, cosine decay, grad_clip 1.0
+#   seed 1234, label_smoothing 0.1, lambda_init 0.5
+#   num_heads 4, d_model 256, num_layers 6
+#   prosody_dim 6, prosody_hidden 128
+
+# Task and data
+# Classes: neutral, happy, sad, angry, fearful, surprised
+# Dataset: koen_emo_corpus (KoEn-Emo), 14,820 acted utterances, 118 speakers
+# Speaker-independent split: train 10,374 / val 2,223 / test 2,223
+# Languages: ko and en
+
+# Model and compute (for the write-up, not used by the loader)
+# ProsodySER, about 11.3M parameters
+# Reference hardware: one A100 40GB, about 2.1 h for 30 epochs
+
+# Evaluation
+# Primary metric: unweighted accuracy (UA, mean per-class recall), in %
+# Noise robustness: test set mixed with babble noise at 20, 10, 5, 0 dB SNR
+# Final test numbers use the best validation checkpoint

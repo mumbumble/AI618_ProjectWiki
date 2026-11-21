@@ -1,0 +1,991 @@
+{
+ "project": "mingpt",
+ "edges": [
+  {
+   "a": "README.md",
+   "b": "mingpt.jpg",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "supports",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "# minGPT ![mingpt](mingpt.jpg) A PyTorch re-implementation of [GPT](https://github.com/openai/gpt-2), both training and inference. minGPT tries to be small, clean, interpretable and educational, as most of the currently available GPT model implementations can a bit sprawling. GPT is not a complica"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mingpt/model.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "GPT model implementations can a bit sprawling. GPT is not a complicated model and this implementation is appropriately about 300 lines of code (see [mingpt/model.py](mingpt/model.py)). All that's going on is that a sequence of indices feeds into a [Transformer](https://arxiv.org/abs/1706.03762), an"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mingpt/bpe.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "The minGPT library is three files: [mingpt/model.py](mingpt/model.py) contains the actual Transformer model definition, [mingpt/bpe.py](mingpt/bpe.py) contains a mildly refactored Byte Pair Encoder that translates between text and sequences of integers exactly like OpenAI did in GPT, [mingpt/trainer"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mingpt/trainer.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "mingpt/bpe.py) contains a mildly refactored Byte Pair Encoder that translates between text and sequences of integers exactly like OpenAI did in GPT, [mingpt/trainer.py](mingpt/trainer.py) is (GPT-independent) PyTorch boilerplate code that trains the model. Then there are a number of demos and projec"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "mingpt/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "demo.ipynb",
+    "span": "import torch from torch.utils.data import Dataset from torch.utils.data.dataloader import DataLoader from mingpt.utils import set_seed set_seed(3407)"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "mingpt/model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "demo.ipynb",
+    "span": "# create a GPT instance from mingpt.model import GPT model_config = GPT.get_default_config() model_config.model_type = 'gpt-nano' model_config.vocab_size = train_dataset.get_vocab_size() model_config.block_size = train_dataset.get_block_size() model = GPT(model_config)"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "mingpt/trainer.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "demo.ipynb",
+    "span": "# create a Trainer object from mingpt.trainer import Trainer train_config = Trainer.get_default_config() train_config.learning_rate = 5e-4 # the model we're using is so small that we can go a bit faster train_config.max_iters = 2000 train_config.num_workers = 0 trainer = Trainer(train_config, model"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "generate.ipynb",
+   "b": "mingpt/model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "generate.ipynb",
+    "span": "import torch from transformers import GPT2Tokenizer, GPT2LMHeadModel from mingpt.model import GPT from mingpt.utils import set_seed from mingpt.bpe import BPETokenizer set_seed(3407)"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "generate.ipynb",
+   "b": "mingpt/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "generate.ipynb",
+    "span": "import torch from transformers import GPT2Tokenizer, GPT2LMHeadModel from mingpt.model import GPT from mingpt.utils import set_seed from mingpt.bpe import BPETokenizer set_seed(3407)"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "generate.ipynb",
+   "b": "mingpt/bpe.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "generate.ipynb",
+    "span": "import torch from transformers import GPT2Tokenizer, GPT2LMHeadModel from mingpt.model import GPT from mingpt.utils import set_seed from mingpt.bpe import BPETokenizer set_seed(3407)"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mingpt/model.py",
+   "b": "mingpt/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mingpt/model.py",
+    "span": "/blob/main/src/transformers/models/gpt2/modeling_gpt2.py \"\"\" import math import torch import torch.nn as nn from torch.nn import functional as F from mingpt.utils import CfgNode as CN"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "mingpt/trainer.py",
+   "b": "mingpt/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "mingpt/trainer.py",
+    "span": "to do with GPT specifically. \"\"\" import time from collections import defaultdict import torch from torch.utils.data.dataloader import DataLoader from mingpt.utils import CfgNode as CN"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "projects/adder/adder.py",
+   "b": "mingpt/model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "projects/adder/adder.py",
+    "span": "mbers. \"\"\" import os import sys import json import torch from torch.utils.data import Dataset from torch.utils.data.dataloader import DataLoader from mingpt.model import GPT from mingpt.trainer import Trainer from mingpt.utils import set_seed, setup_logging, CfgNode as CN if __name__ == '__main__':"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "projects/adder/adder.py",
+   "b": "mingpt/trainer.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "projects/adder/adder.py",
+    "span": "ys import json import torch from torch.utils.data import Dataset from torch.utils.data.dataloader import DataLoader from mingpt.model import GPT from mingpt.trainer import Trainer from mingpt.utils import set_seed, setup_logging, CfgNode as CN if __name__ == '__main__': # get default config and"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "projects/adder/adder.py",
+   "b": "mingpt/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "projects/adder/adder.py",
+    "span": "rch.utils.data import Dataset from torch.utils.data.dataloader import DataLoader from mingpt.model import GPT from mingpt.trainer import Trainer from mingpt.utils import set_seed, setup_logging, CfgNode as CN if __name__ == '__main__': # get default config and overrides from the command line, i"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "projects/chargpt/chargpt.py",
+   "b": "mingpt/model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "projects/chargpt/chargpt.py",
+    "span": "el language model. \"\"\" import os import sys import torch from torch.utils.data import Dataset from torch.utils.data.dataloader import DataLoader from mingpt.model import GPT from mingpt.trainer import Trainer from mingpt.utils import set_seed, setup_logging, CfgNode as CN if __name__ == '__main__':"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "projects/chargpt/chargpt.py",
+   "b": "mingpt/trainer.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "projects/chargpt/chargpt.py",
+    "span": "os import sys import torch from torch.utils.data import Dataset from torch.utils.data.dataloader import DataLoader from mingpt.model import GPT from mingpt.trainer import Trainer from mingpt.utils import set_seed, setup_logging, CfgNode as CN if __name__ == '__main__': # get default config and"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "projects/chargpt/chargpt.py",
+   "b": "mingpt/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "projects/chargpt/chargpt.py",
+    "span": "rch.utils.data import Dataset from torch.utils.data.dataloader import DataLoader from mingpt.model import GPT from mingpt.trainer import Trainer from mingpt.utils import set_seed, setup_logging, CfgNode as CN if __name__ == '__main__': # get default config and overrides from the command line, i"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tests/test_huggingface_import.py",
+   "b": "mingpt/model.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tests/test_huggingface_import.py",
+    "span": "at we can load huggingface/transformer GPTs into minGPT \"\"\" import unittest import torch from transformers import GPT2Tokenizer, GPT2LMHeadModel from mingpt.model import GPT from mingpt.bpe import BPETokenizer if __name__ == '__main__': unittest.main()"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tests/test_huggingface_import.py",
+   "b": "mingpt/bpe.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tests/test_huggingface_import.py",
+    "span": "ansformer GPTs into minGPT \"\"\" import unittest import torch from transformers import GPT2Tokenizer, GPT2LMHeadModel from mingpt.model import GPT from mingpt.bpe import BPETokenizer if __name__ == '__main__': unittest.main()"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "demo.ipynb",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "pired by the addition section in the GPT-3 paper) - `projects/chargpt` trains a GPT to be a character-level language model on some input text file - `demo.ipynb` shows a minimal usage of the `GPT` and `Trainer` in a notebook format on a simple sorting example - `generate.ipynb` shows how one can loa"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "generate.ipynb",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "age model on some input text file - `demo.ipynb` shows a minimal usage of the `GPT` and `Trainer` in a notebook format on a simple sorting example - `generate.ipynb` shows how one can load a pretrained GPT2 and generate text given some prompt"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "mingpt/__init__.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "projects/adder/readme.md",
+   "b": "projects/chargpt/readme.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "projects/adder/adder.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mingpt.jpg",
+   "b": "mingpt/model.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "projects/adder/readme.md",
+   "b": "projects/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "projects/chargpt/readme.md",
+   "b": "projects/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "setup.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "generate.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mingpt/bpe.py",
+   "b": "mingpt/model.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "projects/adder/adder.py",
+   "b": "projects/adder/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "projects/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "projects/adder/adder.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "projects/chargpt/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "projects/chargpt/chargpt.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "projects/adder/adder.py",
+   "b": "projects/chargpt/chargpt.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "projects/chargpt/chargpt.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "mingpt/utils.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "projects/adder/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "tests/test_huggingface_import.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "projects/chargpt/chargpt.py",
+   "b": "projects/chargpt/readme.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "generate.ipynb",
+   "b": "tests/test_huggingface_import.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "mingpt/__init__.py",
+   "b": "setup.py",
+   "relation": "other",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "mingpt/__init__.py",
+   "b": "mingpt/utils.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt.jpg",
+   "b": "mingpt/__init__.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt/__init__.py",
+   "b": "mingpt/trainer.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt/__init__.py",
+   "b": "projects/readme.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt/utils.py",
+   "b": "projects/chargpt/readme.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "projects/adder/readme.md",
+   "b": "tests/test_huggingface_import.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "tests/test_huggingface_import.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt.jpg",
+   "b": "mingpt/utils.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt/bpe.py",
+   "b": "mingpt/utils.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt/bpe.py",
+   "b": "projects/adder/adder.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt/__init__.py",
+   "b": "mingpt/bpe.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt/utils.py",
+   "b": "tests/test_huggingface_import.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "generate.ipynb",
+   "b": "mingpt.jpg",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt/__init__.py",
+   "b": "mingpt/model.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "mingpt/model.py",
+   "b": "mingpt/trainer.py",
+   "source": "review",
+   "note": "model.py does not import or use trainer.py; the trainer takes a model, not the reverse."
+  },
+  {
+   "a": "mingpt/model.py",
+   "b": "setup.py",
+   "source": "review",
+   "note": "model.py does not describe setup.py; no meaningful link."
+  },
+  {
+   "a": "mingpt/utils.py",
+   "b": "setup.py",
+   "source": "review",
+   "note": "utils.py does not describe the install script; no meaningful link."
+  },
+  {
+   "a": "mingpt/utils.py",
+   "b": "projects/readme.md",
+   "source": "review",
+   "note": "A generic utility module and the projects folder README are not linked in a reader's mind."
+  },
+  {
+   "a": "projects/chargpt/chargpt.py",
+   "b": "setup.py",
+   "source": "review",
+   "note": "chargpt.py does not use the install script."
+  },
+  {
+   "a": "mingpt/__init__.py",
+   "b": "tests/test_huggingface_import.py",
+   "source": "review",
+   "note": "An empty package init has no real link to the HF import test."
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "repo": "karpathy/minGPT",
+  "commit": "37baab71b9abea1b76ab957409a1cc2fbfba8a26",
+  "code_license": "MIT",
+  "papers": [],
+  "pool_size": 48,
+  "reviewed": 0,
+  "review_agreement_related_vs_not": null,
+  "labeler": "claude-sonnet-5-5 first pass, human review",
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    4,
+    4,
+    4
+   ],
+   "summaries": [
+    "The graph captures the main structure well: the README overview, the library modules, the demo scripts that use model/trainer/utils, and the tests. It also contains several spurious links, such as \"describes\" setup.py from library modules and a model-uses-trainer link that points the wrong way.",
+    "The graph captures the core import structure (scripts and notebooks using model, trainer and utils) and the README and doc links well. It has several spurious weak links around setup.py, __init__.py and utils, plus a wrong model-to-trainer dependency.",
+    "The graph captures the main structure well: README to components, scripts and notebooks to the mingpt modules, and demo scripts to their readmes. It has several spurious weak links around setup.py, utils and the image. It also has one incorrect model.py to trainer.py \"uses\" link."
+   ],
+   "proposed": 21,
+   "applied": [
+    {
+     "op": "remove",
+     "a": "mingpt/model.py",
+     "b": "mingpt/trainer.py",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "model.py does not import or use trainer.py; the trainer takes a model, not the reverse.",
+      "model.py does not import or use trainer.py; the trainer takes a model, not the reverse."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mingpt/model.py",
+     "b": "setup.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "model.py does not describe setup.py; no meaningful link.",
+      "model.py does not describe setup.py, and there is no real dependency between them.",
+      "model.py does not describe setup.py; the link is spurious."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mingpt/utils.py",
+     "b": "setup.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "utils.py does not describe the install script; no meaningful link.",
+      "utils.py has no relation to the packaging script.",
+      "utils.py does not describe or relate to the setup script."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mingpt/utils.py",
+     "b": "projects/readme.md",
+     "relation": "same_topic",
+     "votes": 3,
+     "reasons": [
+      "A generic utility module and the projects folder README are not linked in a reader's mind.",
+      "The projects README is a generic blurb and has no relation to utils.py.",
+      "Generic utilities and the projects index readme share no real topic."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "projects/chargpt/chargpt.py",
+     "b": "setup.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "chargpt.py does not use the install script.",
+      "chargpt.py does not use setup.py. It only imports the installed package.",
+      "chargpt.py does not use setup.py; it only imports the mingpt package."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "mingpt/__init__.py",
+     "b": "tests/test_huggingface_import.py",
+     "relation": "other",
+     "votes": 2,
+     "reasons": [
+      "An empty package init has no real link to the HF import test.",
+      "__init__.py is empty, so the link is not meaningful."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 4,
+   "key_links": 10,
+   "required_before": 29,
+   "notes": [
+    "minGPT는 mingpt 패키지(model, bpe, trainer, utils)를 중심으로, 이를 사용하는 노트북·adder/chargpt 데모 프로젝트, 설치·테스트 파일, 그리고 이를 설명하는 README 문서들로 구성되어 있습니다.",
+    "minGPT는 mingpt 패키지(model·bpe·trainer·utils)를 중심으로, 이를 사용하는 데모 노트북, adder·chargpt 예제 프로젝트, HuggingFace 호환 테스트를 README가 하나로 묶는 구조입니다.",
+    "minGPT는 mingpt 패키지(model·bpe·trainer·utils)를 중심으로, 이를 사용하는 데모 노트북과 adder·chargpt 프로젝트, 설치·테스트 파일, 그리고 이를 소개하는 README 문서들로 구성됩니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "문서 (README)",
+   "members": [
+    "README.md",
+    "mingpt.jpg",
+    "projects/adder/readme.md",
+    "projects/chargpt/readme.md",
+    "projects/readme.md"
+   ]
+  },
+  {
+   "name": "핵심 모델 코드",
+   "members": [
+    "mingpt/__init__.py",
+    "mingpt/bpe.py",
+    "mingpt/model.py",
+    "mingpt/trainer.py",
+    "mingpt/utils.py"
+   ]
+  },
+  {
+   "name": "노트북 데모·생성",
+   "members": [
+    "demo.ipynb",
+    "generate.ipynb"
+   ]
+  },
+  {
+   "name": "데모 프로젝트 스크립트",
+   "members": [
+    "projects/adder/adder.py",
+    "projects/chargpt/chargpt.py"
+   ]
+  },
+  {
+   "name": "설치 및 테스트",
+   "members": [
+    "setup.py",
+    "tests/test_huggingface_import.py"
+   ]
+  }
+ ]
+}

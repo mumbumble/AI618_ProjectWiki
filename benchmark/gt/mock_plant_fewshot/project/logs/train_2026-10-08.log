@@ -1,0 +1,24 @@
+[2026-10-08 09:12:03] config: configs/fewshot_5way.yaml
+[2026-10-08 09:12:03] inherited base settings applied; overrides: k_shot=5, episodes=40000, log_dir=logs, results_csv=results/main_results.csv
+[2026-10-08 09:12:03] seed 42 set (torch, numpy, random)
+[2026-10-08 09:12:04] device cuda:0 NVIDIA GeForce RTX 4090
+[2026-10-08 09:12:04] data: leafdoc_fs, 18420 leaf photos, 54 classes, split train 30 / val 12 / test 12, image_size 84
+[2026-10-08 09:12:05] episode: n_way 5, k_shot 5, n_query 15, batch 1 episode/step, num_workers 4
+[2026-10-08 09:12:05] model: LeafProtoNet, ResNet-12 channels 64-160-320-640, embedding dim 640, CosineProtoHead scale_init 10.0
+[2026-10-08 09:12:05] optimizer adam lr 0.001 weight_decay 0.0005, scheduler cosine
+[2026-10-08 09:12:05] FreqMix beta 0.1, lam ~ U(0.3, 0.7), p 0.5 (train only); lambda_cons 0.5
+[2026-10-08 09:12:05] eval_every 500 steps, total episodes 40000
+[2026-10-08 09:16:18] step 500 loss 1.214 val_acc 0.712 (new best, saved checkpoints/best.pt)
+[2026-10-08 09:20:33] step 1000 loss 1.087 val_acc 0.734 (new best, saved checkpoints/best.pt)
+[2026-10-08 09:29:03] step 2000 loss 0.963 val_acc 0.758 (new best, saved checkpoints/best.pt)
+[2026-10-08 09:54:33] step 5000 loss 0.702 val_acc 0.801 (new best, saved checkpoints/best.pt)
+[2026-10-08 10:37:03] step 10000 loss 0.611 val_acc 0.829 (new best, saved checkpoints/best.pt)
+[2026-10-08 11:19:33] step 15000 loss 0.541 val_acc 0.842 (new best, saved checkpoints/best.pt)
+[2026-10-08 12:02:03] step 20000 loss 0.488 val_acc 0.853 (new best, saved checkpoints/best.pt)
+[2026-10-08 12:44:33] step 25000 loss 0.447 val_acc 0.859 (new best, saved checkpoints/best.pt)
+[2026-10-08 13:27:03] step 30000 loss 0.419 val_acc 0.864 (new best, saved checkpoints/best.pt)
+[2026-10-08 14:09:33] step 35000 loss 0.392 val_acc 0.868 (new best, saved checkpoints/best.pt)
+[2026-10-08 14:39:18] step 38500 loss 0.379 val_acc 0.874 (new best, saved checkpoints/best.pt)
+[2026-10-08 14:52:03] step 40000 loss 0.371 val_acc 0.871
+[2026-10-08 14:52:03] training finished: 40000 episodes, total time 5 h 40 min
+[2026-10-08 14:52:03] final val_acc 0.871; best val_acc 0.874 at step 38500, checkpoint checkpoints/best.pt kept for evaluation

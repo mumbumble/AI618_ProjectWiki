@@ -1,0 +1,1271 @@
+{
+ "project": "convnext",
+ "edges": [
+  {
+   "a": "README.md",
+   "b": "INSTALL.md",
+   "relation": "describes",
+   "also": [
+    "extends",
+    "same_topic",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Installation Please check [INSTALL.md](INSTALL.md) for installation instructions."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "TRAINING.md",
+   "relation": "describes",
+   "also": [
+    "extends",
+    "same_topic",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "th` is not strictly required in evaluation, as the `DropPath` module in timm behaves the same during evaluation; but it is required in training. See [TRAINING.md](TRAINING.md) or our paper for the values used for different models."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "TRAINING.md",
+   "b": "INSTALL.md",
+   "relation": "describes",
+   "also": [
+    "extends",
+    "same_topic",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "TRAINING.md",
+    "span": "# Training We provide ImageNet-1K training, ImageNet-22K pre-training, and ImageNet-1K fine-tuning commands here. Please check [INSTALL.md](INSTALL.md) for installation instructions first."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "engine.py",
+   "b": "utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "engine.py",
+    "span": "import math from typing import Iterable, Optional import torch from timm.data import Mixup from timm.utils import accuracy, ModelEma import utils"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "main.py",
+   "b": "optim_factory.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "main.py",
+    "span": "up from timm.models import create_model from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy from timm.utils import ModelEma from optim_factory import create_optimizer, LayerDecayValueAssigner from datasets import build_dataset from engine import train_one_epoch, evaluate from ut"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "main.py",
+   "b": "datasets.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "main.py",
+    "span": "moothingCrossEntropy, SoftTargetCrossEntropy from timm.utils import ModelEma from optim_factory import create_optimizer, LayerDecayValueAssigner from datasets import build_dataset from engine import train_one_epoch, evaluate from utils import NativeScalerWithGradNormCount as NativeScaler import util"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "main.py",
+   "b": "engine.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "main.py",
+    "span": "ssEntropy from timm.utils import ModelEma from optim_factory import create_optimizer, LayerDecayValueAssigner from datasets import build_dataset from engine import train_one_epoch, evaluate from utils import NativeScalerWithGradNormCount as NativeScaler import utils import models.convnext import mod"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "main.py",
+   "b": "utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "main.py",
+    "span": "timm.data.mixup import Mixup from timm.models import create_model from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy from timm.utils import ModelEma from optim_factory import create_optimizer, LayerDecayValueAssigner from datasets import build_dataset from engine import train_"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "main.py",
+   "b": "models/convnext.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "main.py",
+    "span": "import build_dataset from engine import train_one_epoch, evaluate from utils import NativeScalerWithGradNormCount as NativeScaler import utils import models.convnext import models.convnext_isotropic if __name__ == '__main__': parser = argparse.ArgumentParser('ConvNeXt training and evaluation scr"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "main.py",
+   "b": "models/convnext_isotropic.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "main.py",
+    "span": "om engine import train_one_epoch, evaluate from utils import NativeScalerWithGradNormCount as NativeScaler import utils import models.convnext import models.convnext_isotropic if __name__ == '__main__': parser = argparse.ArgumentParser('ConvNeXt training and evaluation script', parents=[get_args"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "run_with_submitit.py",
+   "b": "main.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "run_with_submitit.py",
+    "span": "import argparse import os import uuid from pathlib import Path import main as classification import submitit if __name__ == \"__main__\": main()"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "models/convnext_isotropic.py",
+   "b": "models/convnext.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "models/convnext_isotropic.py",
+    "span": ".nn as nn import torch.nn.functional as F from timm.models.layers import trunc_normal_, DropPath from timm.models.registry import register_model from .convnext import Block, LayerNorm"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "main.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Evaluation We give an example evaluation command for a ImageNet-22K pre-trained, then ImageNet-1K fine-tuned ConvNeXt-B: Single-GPU ``` python main.py --model convnext_base --eval true \\ --resume https://dl.fbaipublicfiles.com/convnext/convnext_base_22k_1k_224.pth \\ --input_size 224 --drop_path"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "TRAINING.md",
+   "b": "run_with_submitit.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "TRAINING.md",
+    "span": "## ImageNet-1K Training ConvNeXt-T training on ImageNet-1K with 4 8-GPU nodes: ``` python run_with_submitit.py --nodes 4 --ngpus 8 \\ --model convnext_tiny --drop_path 0.1 \\ --batch_size 128 --lr 4e-3 --update_freq 1 \\ --model_ema true --model_ema_eval true \\ --data_path /path/to/imagenet-1k \\ --job"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "TRAINING.md",
+   "b": "main.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "TRAINING.md",
+    "span": "GPU memory. You can use the following command to run this experiment on a single machine: ``` python -m torch.distributed.launch --nproc_per_node=8 main.py \\ --model convnext_tiny --drop_path 0.1 \\ --batch_size 128 --lr 4e-3 --update_freq 4 \\ --model_ema true --model_ema_eval true \\ --data_path /p"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/README.md",
+   "b": "README.md",
+   "relation": "describes",
+   "also": [
+    "extends",
+    "same_topic",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "object_detection/README.md",
+    "span": "er/Swin-Transformer-Object-Detection/tree/6a979e2164e3fb0de0ca2546545013a4d71b2f7d). Our code has been tested with commit `6a979e2`. Please refer to [README.md](https://github.com/SwinTransformer/Swin-Transformer-Object-Detection/blob/6a979e2164e3fb0de0ca2546545013a4d71b2f7d/README.md) for installat"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+   "b": "object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py",
+   "relation": "uses",
+   "also": [
+    "produces",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+    "span": "_base_ = [ '../_base_/models/mask_rcnn_convnext_fpn.py', '../_base_/datasets/coco_instance.py', '../_base_/schedules/schedule_1x.py', '../_base_/default_runtime.py' ] model = dict( backbone=dict( in_chans=3, depths=[3, 3, 9, 3], dims=[96, 192, 384, 768],"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "semantic_segmentation/README.md",
+   "b": "README.md",
+   "relation": "same_topic",
+   "also": [
+    "describes",
+    "extends",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "semantic_segmentation/README.md",
+    "span": "oft/unilm/tree/f8f3df80c65eb5e5fc6d6d3c9bd3137621795d1e/beit/semantic_segmentation). Our code has been tested with commit `8b57ed1`. Please refer to [README.md](https://github.com/microsoft/unilm/tree/f8f3df80c65eb5e5fc6d6d3c9bd3137621795d1e/beit/semantic_segmentation/README.md) for installation and"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "semantic_segmentation/README.md",
+   "b": "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "semantic_segmentation/README.md",
+    "span": "KPOINT_PATH> <NUM_GPUS> --eval mIoU ``` For example, evaluate a `ConvNeXt-T` backbone with UperNet: ```bash bash tools/dist_test.sh configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py \\ https://dl.fbaipublicfiles.com/convnext/ade20k/upernet_convnext_tiny_1k_512x512.pth 4 --eval mIoU `"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py",
+   "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+   "relation": "extends",
+   "also": [
+    "produces",
+    "other",
+    "uses"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py",
+    "span": "_base_ = [ '../_base_/models/upernet_convnext.py', '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py' ] crop_size = (512, 512) model = dict( backbone=dict( type='ConvNeXt', in_chans=3, depths=[3, 3, 9, 3],"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "models/convnext_isotropic.py",
+   "b": "semantic_segmentation/backbone/convnext.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+   "b": "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "related_work/swin_transformer.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "run_with_submitit.py",
+   "b": "utils.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "models/convnext_isotropic.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "semantic_segmentation/backbone/convnext.py",
+   "b": "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "semantic_segmentation/backbone/convnext.py",
+   "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "INSTALL.md",
+   "b": "datasets.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "models/convnext.py",
+   "b": "object_detection/mmdet/models/backbones/convnext.py",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "models/convnext.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "paper/convnext.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "TRAINING.md",
+   "b": "models/convnext.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "models/convnext_isotropic.py",
+   "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/mmdet/models/backbones/convnext.py",
+   "b": "paper/convnext.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/convnext.pdf",
+   "b": "semantic_segmentation/backbone/convnext.py",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "models/convnext_isotropic.py",
+   "b": "object_detection/mmdet/models/backbones/convnext.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/mmdet/models/backbones/convnext.py",
+   "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py",
+   "b": "semantic_segmentation/backbone/convnext.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "models/convnext.py",
+   "b": "paper/convnext.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/README.md",
+   "b": "object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/convnext.pdf",
+   "b": "related_work/swin_transformer.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "TRAINING.md",
+   "b": "engine.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+   "b": "object_detection/mmdet/models/backbones/convnext.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "models/convnext.py",
+   "b": "semantic_segmentation/backbone/convnext.py",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "engine.py",
+   "b": "optim_factory.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "semantic_segmentation/README.md",
+   "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/README.md",
+   "b": "object_detection/mmdet/models/backbones/convnext.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "models/convnext_isotropic.py",
+   "b": "paper/convnext.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "datasets.py",
+   "b": "utils.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/mmdet/models/backbones/convnext.py",
+   "b": "semantic_segmentation/backbone/convnext.py",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "optim_factory.py",
+   "b": "utils.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py",
+   "b": "object_detection/mmdet/models/backbones/convnext.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/README.md",
+   "b": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+   "b": "paper/convnext.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "TRAINING.md",
+   "b": "paper/convnext.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "semantic_segmentation/README.md",
+   "b": "semantic_segmentation/backbone/convnext.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py",
+   "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/README.md",
+   "b": "paper/convnext.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "object_detection/README.md",
+   "b": "related_work/swin_transformer.pdf",
+   "relation": "compares",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "TRAINING.md",
+   "b": "related_work/swin_transformer.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "semantic_segmentation/README.md",
+   "b": "paper/convnext.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The segmentation README reports results for the paper's models, like the detection README does.",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "engine.py",
+   "b": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "run_with_submitit.py",
+   "b": "semantic_segmentation/backbone/convnext.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "optim_factory.py",
+   "b": "semantic_segmentation/README.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py",
+   "b": "optim_factory.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "INSTALL.md",
+   "b": "object_detection/README.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "datasets.py",
+   "b": "semantic_segmentation/backbone/convnext.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "INSTALL.md",
+   "b": "semantic_segmentation/README.md",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "datasets.py",
+   "b": "object_detection/mmdet/models/backbones/convnext.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "optim_factory.py",
+   "b": "run_with_submitit.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "models/convnext.py",
+   "b": "run_with_submitit.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "models/convnext.py",
+   "b": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+   "source": "review",
+   "note": "The classification model file does not use the detection config; the relation is the reverse and only indirect."
+  },
+  {
+   "a": "models/convnext.py",
+   "b": "optim_factory.py",
+   "source": "review",
+   "note": "The model definition does not import or use the optimizer factory."
+  },
+  {
+   "a": "models/convnext.py",
+   "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+   "source": "review",
+   "note": "The classification model is not used by the segmentation base config."
+  },
+  {
+   "a": "paper/convnext.pdf",
+   "b": "utils.py",
+   "source": "review",
+   "note": "The paper does not describe the logging utilities."
+  },
+  {
+   "a": "INSTALL.md",
+   "b": "run_with_submitit.py",
+   "source": "review",
+   "note": "The install guide does not involve the SLURM launcher."
+  },
+  {
+   "a": "optim_factory.py",
+   "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+   "source": "review",
+   "note": "This pair has no meaningful relationship."
+  },
+  {
+   "a": "main.py",
+   "b": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+   "source": "review",
+   "note": "The classification entry point and the detection config have only a generic relationship."
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "repo": "facebookresearch/ConvNeXt",
+  "commit": "048efcea897d999aed302f2639b6270aedf8d4c8",
+  "code_license": "MIT",
+  "papers": [
+   {
+    "arxiv": "2201.03545",
+    "version": 2,
+    "license": "CC-BY-4.0",
+    "file": "paper/convnext.pdf",
+    "role": "main",
+    "title": "A ConvNet for the 2020s (Liu et al., 2022)"
+   },
+   {
+    "arxiv": "2103.14030",
+    "version": 2,
+    "license": "CC-BY-4.0",
+    "file": "related_work/swin_transformer.pdf",
+    "role": "related",
+    "title": "Swin Transformer (Liu et al., 2021)"
+   }
+  ],
+  "pool_size": 68,
+  "reviewed": 0,
+  "review_agreement_related_vs_not": null,
+  "labeler": "claude-sonnet-5-5 first pass, human review",
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    3,
+    3,
+    3
+   ],
+   "summaries": [
+    "The graph captures the core structure well (main.py uses its modules, READMEs describe configs, backbone duplicates, paper implementations). It has several spurious links, such as models/convnext.py using detection configs and optim_factory.py, paper describing utils.py, and INSTALL.md using run_with_submitit.py, plus a few missing obvious links.",
+    "The graph captures the core structure (main.py uses datasets/engine/models/utils, READMEs describe their code, backbones duplicate each other). It also contains several implausible links, such as models/convnext.py using a detection config, optim_factory.py using a segmentation config, and INSTALL.md describing datasets.py and run_with_submitit.py.",
+    "The graph captures the core structure well: main.py's imports, README-to-doc links, backbone duplicates, and config inheritance. It also has several spurious links, such as models/convnext.py using detection and segmentation configs and optim_factory.py, and utils.py linked to the paper. A few obvious links are missing too."
+   ],
+   "proposed": 36,
+   "applied": [
+    {
+     "op": "remove",
+     "a": "models/convnext.py",
+     "b": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "The classification model file does not use the detection config; the relation is the reverse and only indirect.",
+      "Classification model file does not use a detection config; the config uses the mmdet backbone.",
+      "The classification model file does not use the detection config."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "models/convnext.py",
+     "b": "optim_factory.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "The model definition does not import or use the optimizer factory.",
+      "The model file does not import the optimizer factory; main.py does.",
+      "The model file does not import or use the optimizer factory."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "models/convnext.py",
+     "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "The classification model is not used by the segmentation base config.",
+      "Classification model does not use a segmentation base config.",
+      "The classification model has no direct link to the segmentation base config."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "paper/convnext.pdf",
+     "b": "utils.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "The paper does not describe the logging utilities.",
+      "The paper does not describe a logging utility module.",
+      "The paper does not describe the logging utilities."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "INSTALL.md",
+     "b": "run_with_submitit.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "The install guide does not involve the SLURM launcher.",
+      "INSTALL does not involve the submitit launcher.",
+      "INSTALL.md does not relate to the submitit script."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "optim_factory.py",
+     "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+     "relation": "same_topic",
+     "votes": 3,
+     "reasons": [
+      "This pair has no meaningful relationship.",
+      "Only generic overlap.",
+      "Only a generic topic overlap."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "main.py",
+     "b": "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+     "relation": "same_method",
+     "votes": 2,
+     "reasons": [
+      "The classification entry point and the detection config have only a generic relationship.",
+      "Only a loose connection."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "semantic_segmentation/backbone/convnext.py",
+     "b": "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "The backbone does not use the config. The config references the backbone, so this is at most a weak link.",
+      "The backbone does not use the config. The config uses the backbone, so the link is weaker and its direction is reversed."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "semantic_segmentation/backbone/convnext.py",
+     "b": "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "The backbone does not use the base config. The base config references the backbone, so the link is weak.",
+      "The backbone does not use the config; the config references the backbone.",
+      "The base config references the backbone, not the other way around, so this link is weaker."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "paper/convnext.pdf",
+     "b": "semantic_segmentation/README.md",
+     "relation": "supports",
+     "votes": 2,
+     "reasons": [
+      "The segmentation README reports results for the paper's models, like the detection README does.",
+      "The segmentation README reports the paper's ADE20K results."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 5,
+   "key_links": 25,
+   "required_before": 31,
+   "notes": [
+    "ConvNeXt 저장소는 루트의 분류 모델·학습 스크립트(main.py 중심)와 문서, 그리고 COCO 객체 탐지·ADE20k 분할용 하위 프로젝트(각자 백본 복사본과 MMDetection/MMSegmentation 설정)로 이루어지며 모두 논문을 구현합니다.",
+    "루트의 README가 설치·학습 문서와 논문을 잇고, main.py가 데이터·엔진·모델을 조합하는 ImageNet 학습 코드가 중심이며, 같은 ConvNeXt 백본을 객체 탐지와 시맨틱 분할 하위 프로젝트가 각자 복제해 설정 파일로 활용하는 구조입니다.",
+    "ConvNeXt 저장소는 main.py가 데이터·엔진·모델을 묶는 ImageNet 분류 코드를 중심으로, 같은 백본을 쓰는 객체 탐지·의미 분할 하위 프로젝트와 논문/관련 연구, 문서로 구성됩니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "학습 파이프라인",
+   "members": [
+    "datasets.py",
+    "engine.py",
+    "main.py",
+    "optim_factory.py",
+    "run_with_submitit.py",
+    "utils.py"
+   ]
+  },
+  {
+   "name": "객체 탐지 (COCO)",
+   "members": [
+    "object_detection/README.md",
+    "object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py",
+    "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+    "object_detection/mmdet/models/backbones/convnext.py"
+   ]
+  },
+  {
+   "name": "의미 분할 (ADE20k)",
+   "members": [
+    "semantic_segmentation/README.md",
+    "semantic_segmentation/backbone/convnext.py",
+    "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+    "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py"
+   ]
+  },
+  {
+   "name": "문서 및 설치 가이드",
+   "members": [
+    "INSTALL.md",
+    "README.md",
+    "TRAINING.md"
+   ]
+  },
+  {
+   "name": "논문 및 관련 연구",
+   "members": [
+    "paper/convnext.pdf",
+    "related_work/swin_transformer.pdf"
+   ]
+  },
+  {
+   "name": "모델 코드 (분류)",
+   "members": [
+    "models/convnext.py",
+    "models/convnext_isotropic.py"
+   ]
+  }
+ ]
+}

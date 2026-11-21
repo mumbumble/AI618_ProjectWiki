@@ -1,0 +1,2500 @@
+{
+ "project": "kan",
+ "edges": [
+  {
+   "a": "README.md",
+   "b": "hellokan.ipynb",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Tutorials **Quickstart** Get started with [hellokan.ipynb](./hellokan.ipynb) notebook. **More demos** More Notebook tutorials can be found in [tutorials](tutorials)."
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "kan/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "hellokan.ipynb",
+    "span": "from kan import * torch.set_default_dtype(torch.float64) device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') print(device) # create a KAN: 2D inputs, 1D output, and 5 hidden neurons. cubic spline (k=3), 5 grid intervals (grid=5). model = KAN(width=[2,5,1], grid=3, k=3, seed=42, d"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "kan/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "hellokan.ipynb",
+    "span": "from kan.utils import create_dataset # create dataset f(x,y) = exp(sin(pi*x)+y^2) f = lambda x: torch.exp(torch.sin(torch.pi*x[:,[0]]) + x[:,[1]]**2) dataset = create_dataset(f, n_var=2, device=device) dataset['train_input'].shape, dataset['train_label'].shape"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/KANLayer.py",
+   "b": "kan/spline.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/KANLayer.py",
+    "span": "import torch import torch.nn as nn import numpy as np from .spline import * from .utils import sparse_mask"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/KANLayer.py",
+   "b": "kan/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/KANLayer.py",
+    "span": "import torch import torch.nn as nn import numpy as np from .spline import * from .utils import sparse_mask"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/MLP.py",
+   "b": "kan/LBFGS.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/MLP.py",
+    "span": "import torch import torch.nn as nn import matplotlib.pyplot as plt import numpy as np from tqdm import tqdm from .LBFGS import LBFGS seed = 0 torch.manual_seed(seed)"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "kan/KANLayer.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/MultKAN.py",
+    "span": "import torch import torch.nn as nn import numpy as np from .KANLayer import KANLayer from .Symbolic_KANLayer import Symbolic_KANLayer from .LBFGS import * import os import glob import matplotlib.pyplot as plt from tqdm import tqdm import random import copy import pandas as pd from sympy.printing imp"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "kan/Symbolic_KANLayer.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/MultKAN.py",
+    "span": "import torch import torch.nn as nn import numpy as np from .KANLayer import KANLayer from .Symbolic_KANLayer import Symbolic_KANLayer from .LBFGS import * import os import glob import matplotlib.pyplot as plt from tqdm import tqdm import random import copy import pandas as pd from sympy.printing imp"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "kan/LBFGS.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/MultKAN.py",
+    "span": "import torch import torch.nn as nn import numpy as np from .KANLayer import KANLayer from .Symbolic_KANLayer import Symbolic_KANLayer from .LBFGS import * import os import glob import matplotlib.pyplot as plt from tqdm import tqdm import random import copy import pandas as pd from sympy.printing imp"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "kan/spline.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/MultKAN.py",
+    "span": "rom tqdm import tqdm import random import copy import pandas as pd from sympy.printing import latex from sympy import * import sympy import yaml from .spline import curve2coef from .utils import SYMBOLIC_LIB from .hypothesis import plot_tree KAN = MultKAN"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "kan/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/MultKAN.py",
+    "span": "dom import copy import pandas as pd from sympy.printing import latex from sympy import * import sympy import yaml from .spline import curve2coef from .utils import SYMBOLIC_LIB from .hypothesis import plot_tree KAN = MultKAN"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "kan/hypothesis.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/MultKAN.py",
+    "span": "pd from sympy.printing import latex from sympy import * import sympy import yaml from .spline import curve2coef from .utils import SYMBOLIC_LIB from .hypothesis import plot_tree KAN = MultKAN"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/Symbolic_KANLayer.py",
+   "b": "kan/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/Symbolic_KANLayer.py",
+    "span": "import torch import torch.nn as nn import numpy as np import sympy from .utils import *"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/__init__.py",
+   "b": "kan/MultKAN.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/__init__.py",
+    "span": "from .MultKAN import * from .utils import *"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/__init__.py",
+   "b": "kan/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/__init__.py",
+    "span": "from .MultKAN import * from .utils import *"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/compiler.py",
+   "b": "kan/MultKAN.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/compiler.py",
+    "span": "from sympy import * import sympy import numpy as np from kan.MultKAN import MultKAN import torch sf2kan = kanpiler = expr2kan"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/experiment.py",
+   "b": "kan/MultKAN.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/experiment.py",
+    "span": "import torch from .MultKAN import *"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "kan/hypothesis.py",
+   "b": "kan/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "kan/hypothesis.py",
+    "span": "m sklearn.linear_model import LinearRegression from sympy.utilities.lambdify import lambdify from sklearn.cluster import AgglomerativeClustering from .utils import batch_jacobian, batch_hessian from functools import reduce from kan.utils import batch_jacobian, batch_hessian import copy import matpl"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/API_demo/API_1_indexing.ipynb",
+   "b": "kan/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/API_demo/API_1_indexing.ipynb",
+    "span": "from kan import * device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') print(device) model = KAN(width=[2,3,2,1], noise_scale=0.3, device=device) x = torch.normal(0,1,size=(100,2)).to(device) model(x); beta = 100 model.plot(beta=beta) # [2,3,2,1] means 2 input nodes # 3 neurons in"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/API_demo/API_7_pruning.ipynb",
+   "b": "kan/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/API_demo/API_7_pruning.ipynb",
+    "span": "from kan import * device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') print(device) # create a KAN: 2D inputs, 1D output, and 5 hidden neurons. cubic spline (k=3), 5 grid intervals (grid=5). model = KAN(width=[2,5,1], grid=5, k=3, seed=1, device=device) # create dataset f(x,y) ="
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "b": "kan/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Example/Example_1_function_fitting.ipynb",
+    "span": "from kan import * device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') print(device) # initialize KAN with G=3 model = KAN(width=[2,1,1], grid=3, k=3, seed=1, device=device) # create dataset f = lambda x: torch.exp(torch.sin(torch.pi*x[:,[0]]) + x[:,[1]]**2) dataset = create_data"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_4_classfication.ipynb",
+   "b": "kan/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Example/Example_4_classfication.ipynb",
+    "span": "from kan import * import matplotlib.pyplot as plt from sklearn.datasets import make_moons import numpy as np device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') print(device) dataset = {} train_input, train_label = make_moons(n_samples=1000, shuffle=True, noise=0.1, random_state="
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "b": "kan/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+    "span": "from kan import * import matplotlib.pyplot as plt from torch import autograd from tqdm import tqdm device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') print(device) dim = 2 np_i = 21 # number of interior points (along each dimension) np_b = 21 # number of boundary points (along e"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_8_continual_learning.ipynb",
+   "b": "kan/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Example/Example_8_continual_learning.ipynb",
+    "span": "from kan import * import numpy as np import torch import matplotlib.pyplot as plt datasets = [] n_peak = 5 n_num_per_peak = 100 n_sample = n_peak * n_num_per_peak x_grid = torch.linspace(-1,1,steps=n_sample) x_centers = 2/n_peak * (np.arange(n_peak) - n_peak/2+0.5) x_sample = torch.stack([torch"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "b": "kan/compiler.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+    "span": "from kan.compiler import kanpiler from sympy import * from kan.utils import create_dataset import torch device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') print(device) input_variables = x,y = symbols('x y') expr = exp(sin(pi*x)+y**2) model = kanpiler(input_variables, expr).to("
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "b": "kan/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+    "span": "from kan.compiler import kanpiler from sympy import * from kan.utils import create_dataset import torch device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') print(device) input_variables = x,y = symbols('x y') expr = exp(sin(pi*x)+y**2) model = kanpiler(input_variables, expr).to("
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "b": "kan/feynman.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+    "span": "from kan.feynman import get_feynman_dataset import matplotlib.pyplot as plt problem_id = 36 # problem_id in 1-120 input_variables, expr, f, ranges = get_feynman_dataset(problem_id) n_var = len(input_variables) model = kanpiler(input_variables, expr) dataset = create_dataset(f, n_var=n_var, ranges="
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+   "b": "kan/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+    "span": "from kan import * from sympy import * device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') print(device) # let's construct a dataset f = lambda x: x[:,0]**2 + 0.3*x[:,1] + 0.1*x[:,2]**3 + 0.0*x[:,3] dataset = create_dataset(f, n_var=4, device=device) input_vars = [r'$x_'+str(i)+'"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+   "b": "kan/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+    "span": "from kan import * from kan.utils import batch_jacobian, batch_hessian torch.use_deterministic_algorithms(True) torch.set_default_dtype(torch.float64) seed = 0 torch.manual_seed(seed) #example = 'harmonic_oscillator' #example = 'single_pendulum' example = 'relativistic_mass' # three examples: har"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+   "b": "kan/utils.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+    "span": "from kan import * from kan.utils import batch_jacobian, batch_hessian torch.use_deterministic_algorithms(True) torch.set_default_dtype(torch.float64) seed = 0 torch.manual_seed(seed) #example = 'harmonic_oscillator' #example = 'single_pendulum' example = 'relativistic_mass' # three examples: har"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+   "b": "kan/compiler.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+    "span": "from kan.compiler import kanpiler from sympy import * input_variables = symbol_x, symbol_vx = symbols('x v_x') expr = symbol_vx ** 2 model = kanpiler(input_variables, expr, grid=20)"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "requirements.txt",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": ".0.1 seaborn pyyaml ``` After activating the virtual environment, you can install specific package requirements as follows: ```python pip install -r requirements.txt ``` **Optional: Conda Environment Setup** For those who prefer using Conda: ``` conda create --name pykan-env python=3.9.7 conda act"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "setup.py",
+   "b": "README.md",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "setup.py",
+    "span": "import setuptools with open(\"README.md\", \"r\", encoding=\"utf8\") as fh: long_description = fh.read() setuptools.setup( name=\"pykan\", version=\"0.2.8\", author=\"Ziming Liu\", author_email=\"zmliu@mit.edu\", description=\"Kolmogorov Arnold Networks\", long_description=long_descripti"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/index.rst",
+   "b": "requirements.txt",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/index.rst",
+    "span": "~~~~~~~~~~~~~~~~~ .. code-block:: python git clone https://github.com/KindXiaoming/pykan.git cd pykan pip install -e . # pip install -r requirements.txt # install requirements Installation via PyPI ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ .. code-block:: python pip install pykan Requirement"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/index.rst",
+   "b": "docs/intro.rst",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/index.rst",
+    "span": "`hello-kan` * KANs in Action: :ref:`api-demo`, :ref:`examples` * API (advanced): :ref:`api`. .. toctree:: :maxdepth: 1 :caption: Contents: intro.rst modules.rst demos.rst examples.rst interp.rst physics.rst community.rst Indices and tables ================== * :ref:`ge"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/index.rst",
+   "b": "docs/examples.rst",
+   "relation": "describes",
+   "also": [
+    "extends",
+    "same_topic",
+    "uses",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/index.rst",
+    "span": "emo`, :ref:`examples` * API (advanced): :ref:`api`. .. toctree:: :maxdepth: 1 :caption: Contents: intro.rst modules.rst demos.rst examples.rst interp.rst physics.rst community.rst Indices and tables ================== * :ref:`genindex` * :ref:`modindex` * :ref:`search`"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/index.rst",
+   "b": "docs/interp.rst",
+   "relation": "other",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "uses",
+    "supports"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/index.rst",
+    "span": "ples` * API (advanced): :ref:`api`. .. toctree:: :maxdepth: 1 :caption: Contents: intro.rst modules.rst demos.rst examples.rst interp.rst physics.rst community.rst Indices and tables ================== * :ref:`genindex` * :ref:`modindex` * :ref:`search`"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/index.rst",
+   "b": "docs/physics.rst",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/index.rst",
+    "span": "dvanced): :ref:`api`. .. toctree:: :maxdepth: 1 :caption: Contents: intro.rst modules.rst demos.rst examples.rst interp.rst physics.rst community.rst Indices and tables ================== * :ref:`genindex` * :ref:`modindex` * :ref:`search`"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/kan.rst",
+   "b": "kan/Symbolic_KANLayer.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/experiment.py",
+   "b": "tutorials/API_demo/API_7_pruning.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/LBFGS.py",
+   "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/kan.rst",
+   "b": "kan/LBFGS.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/KANLayer.py",
+   "b": "kan/MLP.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/spline.py",
+   "b": "kan/utils.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/KANLayer.py",
+   "b": "kan/Symbolic_KANLayer.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/hypothesis.py",
+   "b": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MLP.py",
+   "b": "kan/MultKAN.py",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "related_work/kan2_meets_science.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "kan/Symbolic_KANLayer.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/intro.rst",
+   "b": "paper/kan.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/__init__.py",
+   "b": "requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "tutorials/Example/Example_4_classfication.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "b": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "related_work/kan_or_mlp_fairer_comparison.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "tutorials/API_demo/API_1_indexing.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "b": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/utils.py",
+   "b": "requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "tutorials/Example/Example_4_classfication.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "paper/kan.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/compiler.py",
+   "b": "kan/utils.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/index.rst",
+   "b": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/examples.rst",
+   "b": "docs/interp.rst",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/KANLayer.py",
+   "b": "requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/API_demo/API_7_pruning.ipynb",
+   "b": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "tutorials/API_demo/API_1_indexing.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/__init__.py",
+   "b": "kan/compiler.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/examples.rst",
+   "b": "tutorials/Example/Example_8_continual_learning.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/__init__.py",
+   "b": "paper/kan.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/index.rst",
+   "b": "docs/kan.rst",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "docs/intro.rst",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "requirements.txt",
+   "b": "setup.py",
+   "relation": "supports",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/examples.rst",
+   "b": "tutorials/Example/Example_4_classfication.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/compiler.py",
+   "b": "related_work/kan2_meets_science.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/KANLayer.py",
+   "b": "paper/kan.pdf",
+   "relation": "implements",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/physics.rst",
+   "b": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/index.rst",
+   "b": "paper/kan.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "related_work/kan2_meets_science.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/index.rst",
+   "b": "setup.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/kan.pdf",
+   "b": "related_work/kan_or_mlp_fairer_comparison.pdf",
+   "relation": "compares",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/kan.rst",
+   "b": "kan/KANLayer.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MLP.py",
+   "b": "related_work/kan_or_mlp_fairer_comparison.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "tutorials/Example/Example_8_continual_learning.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/intro.rst",
+   "b": "docs/kan.rst",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/kan.rst",
+   "b": "kan/compiler.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "paper/kan.pdf",
+   "b": "related_work/kan2_meets_science.pdf",
+   "relation": "extends",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/API_demo/API_7_pruning.ipynb",
+   "b": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/Symbolic_KANLayer.py",
+   "b": "kan/spline.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/index.rst",
+   "b": "hellokan.ipynb",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/intro.rst",
+   "b": "kan/utils.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/KANLayer.py",
+   "b": "kan/experiment.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/kan.rst",
+   "b": "kan/MultKAN.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "paper/kan.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "b": "tutorials/Example/Example_8_continual_learning.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "tutorials/API_demo/API_7_pruning.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "tutorials/Example/Example_8_continual_learning.ipynb",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "b": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/kan.rst",
+   "b": "kan/hypothesis.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "related_work/kan2_meets_science.pdf",
+   "b": "related_work/kan_or_mlp_fairer_comparison.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/interp.rst",
+   "b": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "kan/MultKAN.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "b": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/kan.rst",
+   "b": "kan/spline.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "related_work/kan2_meets_science.pdf",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/kan.rst",
+   "b": "kan/utils.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/examples.rst",
+   "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "kan/KANLayer.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/examples.rst",
+   "b": "docs/physics.rst",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/examples.rst",
+   "b": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MLP.py",
+   "b": "requirements.txt",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "b": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "related_work/kan2_meets_science.pdf",
+   "b": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/intro.rst",
+   "b": "related_work/kan2_meets_science.pdf",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/intro.rst",
+   "b": "hellokan.ipynb",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/MultKAN.py",
+   "b": "tutorials/API_demo/API_7_pruning.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_4_classfication.ipynb",
+   "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/interp.rst",
+   "b": "docs/physics.rst",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "docs/index.rst",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/API_demo/API_1_indexing.ipynb",
+   "b": "tutorials/API_demo/API_7_pruning.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/interp.rst",
+   "b": "docs/intro.rst",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "kan/__init__.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "b": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "tutorials/Example/Example_4_classfication.ipynb",
+   "b": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/compiler.py",
+   "b": "kan/feynman.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "docs/interp.rst",
+   "b": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "kan/Symbolic_KANLayer.py",
+   "b": "kan/compiler.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "tutorials/API_demo/API_1_indexing.ipynb",
+   "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tutorials/API_demo/API_1_indexing.ipynb",
+   "b": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/feynman.py",
+   "b": "kan/utils.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/experiment.py",
+   "b": "kan/hypothesis.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tutorials/API_demo/API_1_indexing.ipynb",
+   "b": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/interp.rst",
+   "b": "kan/KANLayer.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/kan.rst",
+   "b": "related_work/kan_or_mlp_fairer_comparison.pdf",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tutorials/Example/Example_4_classfication.ipynb",
+   "b": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/hypothesis.py",
+   "b": "tutorials/Example/Example_4_classfication.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "kan/experiment.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/LBFGS.py",
+   "b": "kan/experiment.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tutorials/Example/Example_4_classfication.ipynb",
+   "b": "tutorials/Example/Example_8_continual_learning.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/compiler.py",
+   "b": "kan/spline.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/Symbolic_KANLayer.py",
+   "b": "setup.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/MLP.py",
+   "b": "kan/utils.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/experiment.py",
+   "b": "kan/utils.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/compiler.py",
+   "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tutorials/API_demo/API_1_indexing.ipynb",
+   "b": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/kan.rst",
+   "b": "kan/experiment.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tutorials/API_demo/API_7_pruning.ipynb",
+   "b": "tutorials/Example/Example_8_continual_learning.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/feynman.py",
+   "b": "tutorials/Example/Example_4_classfication.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tutorials/API_demo/API_1_indexing.ipynb",
+   "b": "tutorials/Example/Example_4_classfication.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/physics.rst",
+   "b": "kan/spline.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/MLP.py",
+   "b": "kan/__init__.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/MLP.py",
+   "b": "kan/experiment.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/KANLayer.py",
+   "b": "kan/LBFGS.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/Symbolic_KANLayer.py",
+   "b": "tutorials/Example/Example_4_classfication.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/physics.rst",
+   "b": "hellokan.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "hellokan.ipynb",
+   "b": "kan/MLP.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/feynman.py",
+   "b": "kan/hypothesis.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/LBFGS.py",
+   "b": "kan/utils.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/compiler.py",
+   "b": "kan/hypothesis.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/MLP.py",
+   "b": "kan/hypothesis.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tutorials/Example/Example_8_continual_learning.ipynb",
+   "b": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "b": "tutorials/Example/Example_8_continual_learning.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/Symbolic_KANLayer.py",
+   "b": "kan/feynman.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "b": "tutorials/Example/Example_4_classfication.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/experiment.py",
+   "b": "kan/spline.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "docs/examples.rst",
+   "b": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "kan/hypothesis.py",
+   "b": "setup.py",
+   "source": "review",
+   "note": "A hypothesis-testing module has no real relationship to packaging setup."
+  },
+  {
+   "a": "setup.py",
+   "b": "tutorials/Example/Example_1_function_fitting.ipynb",
+   "source": "review",
+   "note": "setup.py only ships images and does not use tutorial notebooks."
+  },
+  {
+   "a": "setup.py",
+   "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "source": "review",
+   "note": "setup.py does not reference this notebook."
+  },
+  {
+   "a": "kan/LBFGS.py",
+   "b": "tutorials/API_demo/API_7_pruning.ipynb",
+   "source": "review",
+   "note": "The pruning demo has no specific tie to the LBFGS optimizer."
+  },
+  {
+   "a": "README.md",
+   "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+   "source": "review",
+   "note": "The README has no particular tie to the PDE example, which is arbitrary among the tutorials."
+  },
+  {
+   "a": "kan/__init__.py",
+   "b": "setup.py",
+   "source": "review",
+   "note": "__init__ does not describe setup.py, and the link is weak."
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "repo": "KindXiaoming/pykan",
+  "commit": "ecde4ec3274d3bef1ad737479cf126aed38ab530",
+  "code_license": "MIT",
+  "papers": [
+   {
+    "arxiv": "2404.19756",
+    "version": 5,
+    "license": "CC-BY-4.0",
+    "file": "paper/kan.pdf",
+    "role": "main",
+    "title": "KAN: Kolmogorov-Arnold Networks (Liu et al., 2024)"
+   },
+   {
+    "arxiv": "2408.10205",
+    "version": 1,
+    "license": "CC-BY-4.0",
+    "file": "related_work/kan2_meets_science.pdf",
+    "role": "related",
+    "title": "KAN 2.0 (Liu et al., 2024)"
+   },
+   {
+    "arxiv": "2407.16674",
+    "version": 2,
+    "license": "CC-BY-4.0",
+    "file": "related_work/kan_or_mlp_fairer_comparison.pdf",
+    "role": "related",
+    "title": "KAN or MLP: A Fairer Comparison (Yu et al., 2024)"
+   }
+  ],
+  "pool_size": 150,
+  "reviewed": 0,
+  "review_agreement_related_vs_not": null,
+  "labeler": "claude-sonnet-5-5 first pass, human review",
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    3,
+    3,
+    3
+   ],
+   "summaries": [
+    "The graph captures the main structure well: docs toctrees to tutorials, kan.rst to modules, MultKAN to its dependencies, and notebooks to kan/__init__. It also has noisy or wrongly directed links, such as MultKAN \"using\" notebooks, LBFGS linked to notebooks, hypothesis linked to setup.py, and setup.py linked to individual tutorials.",
+    "The graph captures the main structure well: docs toctrees to tutorials, kan.rst to modules, and tutorials importing kan. It has some questionable links, such as MultKAN \"using\" notebooks, setup.py linking to specific tutorials, and several noisy same_topic edges.",
+    "The graph captures the core structure well: docs toctrees to tutorials, kan.rst to modules, MultKAN to its submodules, and tutorials to kan/__init__.py. It has some noisy links, such as direction and relation errors where MultKAN \"uses\" tutorials, spurious setup.py links, and weak same_topic edges. It also misses a few obvious links, such as the Interp_3 to kanpiler/MultKAN pairing and the kan/__init__.py to MultKAN docs."
+   ],
+   "proposed": 38,
+   "applied": [
+    {
+     "op": "remove",
+     "a": "kan/hypothesis.py",
+     "b": "setup.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "A hypothesis-testing module has no real relationship to packaging setup.",
+      "hypothesis.py has no relation to setup.py.",
+      "hypothesis.py has no relation to the packaging script."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "setup.py",
+     "b": "tutorials/Example/Example_1_function_fitting.ipynb",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "setup.py only ships images and does not use tutorial notebooks.",
+      "setup.py does not reference tutorial notebooks.",
+      "setup.py does not use tutorial notebooks."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "setup.py",
+     "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "setup.py does not reference this notebook.",
+      "setup.py does not reference tutorial notebooks.",
+      "setup.py does not use this notebook."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "kan/LBFGS.py",
+     "b": "tutorials/API_demo/API_7_pruning.ipynb",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "The pruning demo has no specific tie to the LBFGS optimizer.",
+      "The pruning tutorial is unrelated to the LBFGS optimizer.",
+      "The pruning demo has no relation to the LBFGS optimizer specifically."
+     ]
+    },
+    {
+     "op": "relabel",
+     "a": "kan/MultKAN.py",
+     "b": "tutorials/Example/Example_4_classfication.ipynb",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "The notebook uses MultKAN, not the reverse; as a tutorial it documents the model, so 'describes' is consistent with E80-E82.",
+      "The tutorial uses MultKAN, not the reverse; relation should be a describes/demonstrates link rather than uses."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "README.md",
+     "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+     "relation": "same_topic",
+     "votes": 3,
+     "reasons": [
+      "The README has no particular tie to the PDE example, which is arbitrary among the tutorials.",
+      "The README has no particular link to the PDE example.",
+      "README has no specific tie to the PDE example."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "kan/__init__.py",
+     "b": "setup.py",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "__init__ does not describe setup.py, and the link is weak.",
+      "__init__.py does not describe setup.py; weak and wrong direction."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "docs/intro.rst",
+     "b": "hellokan.ipynb",
+     "relation": "duplicate",
+     "votes": 2,
+     "reasons": [
+      "The two have strongly overlapping content but are not literal duplicates.",
+      "Both are near-duplicate intro tutorials, but 'duplicate' is a strong label; keep as a weaker link."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 4,
+   "key_links": 23,
+   "required_before": 75,
+   "notes": [
+    "pykan 프로젝트는 kan/ 패키지의 핵심 모델 코드를 중심으로, 설치·패키징 파일, Sphinx 문서, KAN 논문과 관련 연구, 그리고 이 패키지를 사용하는 튜토리얼 노트북들로 구성되어 있습니다.",
+    "pykan 프로젝트는 kan 패키지(레이어·MultKAN·심볼릭·컴파일러)를 중심으로, 이를 설명하는 Sphinx 문서와 README, 사용법을 보여주는 튜토리얼 노트북, 패키징 파일, 그리고 KAN 논문들로 구성되어 있습니다.",
+    "pykan 프로젝트는 kan/ 패키지(MultKAN을 중심으로 레이어·스플라인·심볼릭·컴파일러 모듈)를 핵심으로 두고, 이를 설명하는 Sphinx 문서와 README, 이를 사용하는 튜토리얼 노트북, 그리고 기반 논문·관련 연구 PDF, 설치 설정 파일로 구성됩니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "KAN 핵심 모델 코드",
+   "members": [
+    "kan/KANLayer.py",
+    "kan/LBFGS.py",
+    "kan/MLP.py",
+    "kan/MultKAN.py",
+    "kan/Symbolic_KANLayer.py",
+    "kan/__init__.py",
+    "kan/compiler.py",
+    "kan/experiment.py",
+    "kan/feynman.py",
+    "kan/hypothesis.py",
+    "kan/spline.py",
+    "kan/utils.py"
+   ]
+  },
+  {
+   "name": "튜토리얼 노트북",
+   "members": [
+    "hellokan.ipynb",
+    "tutorials/API_demo/API_1_indexing.ipynb",
+    "tutorials/API_demo/API_7_pruning.ipynb",
+    "tutorials/Example/Example_1_function_fitting.ipynb",
+    "tutorials/Example/Example_4_classfication.ipynb",
+    "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+    "tutorials/Example/Example_8_continual_learning.ipynb",
+    "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+    "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+    "tutorials/Physics/Physics_1_Lagrangian.ipynb"
+   ]
+  },
+  {
+   "name": "문서 (Sphinx)",
+   "members": [
+    "README.md",
+    "docs/examples.rst",
+    "docs/index.rst",
+    "docs/interp.rst",
+    "docs/intro.rst",
+    "docs/kan.rst",
+    "docs/physics.rst"
+   ]
+  },
+  {
+   "name": "논문과 관련 연구",
+   "members": [
+    "paper/kan.pdf",
+    "related_work/kan2_meets_science.pdf",
+    "related_work/kan_or_mlp_fairer_comparison.pdf"
+   ]
+  },
+  {
+   "name": "설치와 패키징",
+   "members": [
+    "requirements.txt",
+    "setup.py"
+   ]
+  }
+ ]
+}

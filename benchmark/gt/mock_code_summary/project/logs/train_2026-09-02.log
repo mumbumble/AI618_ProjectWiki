@@ -1,0 +1,27 @@
+config: configs/intra_repo_java.yaml
+2026-09-02 10:12:49 seed set to 13
+2026-09-02 10:12:49 device: cuda:0 (1x A100 40GB)
+2026-09-02 10:12:55 split: intra_repo (per-repo chronological 80/10/10)
+2026-09-02 10:12:55 test functions: 31120
+2026-09-02 10:12:58 model: transformer encoder-decoder, 6+6 layers, hidden 512, 8 heads, bpe vocab 32000
+2026-09-02 10:12:58 retrieval: repo-scoped index, k=4, tau=0.07, lambda_ret=0.3
+2026-09-02 10:12:59 optimizer: AdamW lr=3e-4 wd=0.01 warmup=1000 batch=32 epochs=20 dropout=0.1
+2026-09-02 10:13:02 building sibling index (self-exclusion and commit-time filter on)
+2026-09-02 10:14:01 sibling index ready
+2026-09-02 10:14:07 step 200 loss 4.912 ce 4.871 ret 0.137
+2026-09-02 10:16:40 step 1000 loss 4.105 ce 4.040 ret 0.217
+2026-09-02 10:20:12 step 2000 loss 3.204 ce 3.150 ret 0.180
+2026-09-02 10:27:05 step 4000 loss 2.764 ce 2.700 ret 0.213
+2026-09-02 10:47:31 step 10000 loss 2.311 ce 2.260 ret 0.170
+2026-09-02 11:16:32 step 20000 loss 2.118 ce 2.080 ret 0.127
+2026-09-02 11:45:08 step 30000 loss 2.019 ce 1.981 ret 0.127
+2026-09-02 11:57:10 epoch 5 done step 34000 dev BLEU-4 22.9
+2026-09-02 12:43:30 step 50000 loss 1.902 ce 1.866 ret 0.120
+2026-09-02 13:36:05 epoch 10 done step 68000 dev BLEU-4 25.0
+2026-09-02 14:11:20 step 80000 loss 1.811 ce 1.775 ret 0.120
+2026-09-02 15:09:41 step 100000 loss 1.744 ce 1.710 ret 0.113
+2026-09-02 15:55:12 epoch 17 done step 115600 dev BLEU-4 25.8 (new best, checkpoint saved)
+2026-09-02 16:37:26 step 130000 loss 1.688 ce 1.657 ret 0.103
+2026-09-02 16:52:58 epoch 20 done step 136000 dev BLEU-4 25.7
+2026-09-02 16:53:21 training finished, best dev BLEU-4 25.8 at epoch 17
+2026-09-02 16:53:49 total run time 6h 41m

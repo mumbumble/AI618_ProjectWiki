@@ -45,6 +45,7 @@ flowchart LR
 - [x] 실험 구간 회의안: 군집화 `pref`, 교정 `drift`(4안)·`align`(1안), 대조군 `baseline`
 - [x] Claude 연결: 구독 계정(Claude Code CLI)과 API 키 둘 다
 - [x] 단계별 확인 리포트 (`projectwiki report`)
+- [x] 정량 평가 벤치마크: 프로젝트 20개의 정답 그래프와 평가 코드 ([benchmark/](benchmark/README.md))
 - [ ] 정렬도 측정: 사용자 관계도 ↔ AI 지도의 Gromov–Wasserstein 거리 (4안)
 - [ ] 뷰어 이미지 썸네일 (1안 ⑥)
 - [ ] 그룹·프로젝트 위키 페이지 생성
@@ -220,6 +221,7 @@ AI618_ProjectWiki/
 │   ├── cli.py                build / correct / view / report / obsidian / doctor
 │   ├── config.py             모든 설정값
 │   └── schema.py             단계 사이 데이터 형식
+├── benchmark/                정량 평가: 정답 그래프(gt/), 평가 코드(eval/), 정답 지도, 설명 문서
 ├── examples/                 예제 프로젝트 폴더, prefs·feedback 예시
 ├── scripts/                  setup.sh · setup.ps1 · download_models.py · make_sample_assets.py
 ├── tests/                    pytest (GPU·API 키 없이 실행)

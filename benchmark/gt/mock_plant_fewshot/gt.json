@@ -1,0 +1,2951 @@
+{
+ "project": "mock_plant_fewshot",
+ "edges": [
+  {
+   "a": "src/train.py",
+   "b": "src/leafproto_model.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "on src/train.py --config configs/base.yaml \"\"\" import argparse import time from pathlib import Path import torch import torch.nn.functional as F from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler from utils import set_seed, get_logger, save_checkpoint, load_config VA"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "src/data.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "l \"\"\" import argparse import time from pathlib import Path import torch import torch.nn.functional as F from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler from utils import set_seed, get_logger, save_checkpoint, load_config VAL_EPISODES = 200 LOG_EVERY = 100 if __nam"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "src/utils.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "lib import Path import torch import torch.nn.functional as F from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler from utils import set_seed, get_logger, save_checkpoint, load_config VAL_EPISODES = 200 LOG_EVERY = 100 if __name__ == \"__main__\": main()"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/leafproto_model.py",
+   "b": "src/freq_mix.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/leafproto_model.py",
+    "span": "in docs/method.md. Episodes arrive already sampled and resized to 84x84. \"\"\" import torch import torch.nn as nn import torch.nn.functional as F from freq_mix import FreqMix"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/leafproto_model.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/evaluate.py",
+    "span": "rds the row in the main results table. \"\"\" import argparse import math import os import numpy as np import pandas as pd import torch import yaml from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler RESULTS_CSV = \"results/main_results.csv\" N_TEST_EPISODES = 600 RESULT_C"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/data.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/evaluate.py",
+    "span": "\" import argparse import math import os import numpy as np import pandas as pd import torch import yaml from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler RESULTS_CSV = \"results/main_results.csv\" N_TEST_EPISODES = 600 RESULT_COLS = [\"method\", \"shots\", \"accuracy\", \"ci"
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "configs/base.yaml",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/train.py",
+    "span": "\"\"\"Train LeafProto on the base classes of leafdoc_fs with episodic sampling. Usage: python src/train.py --config configs/base.yaml \"\"\" import argparse import time from pathlib import Path import torch import torch.nn.functional as F from leafproto_model import LeafProtoNet from data import get_"
+   },
+   "source": "designed",
+   "note": "explicit: the default value of --config is the base config path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "configs/base.yaml",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "configs/fewshot_5way.yaml",
+    "span": "inherits: base.yaml # Main experiment: 5-way, 5-shot episodes on leafdoc_fs. # Every key not listed here comes from base.yaml. # Run with: # python src/train.py --config configs/fewshot_5way.yaml n_way: 5 # same as base, listed so the episode setup is readable here k_shot: 5"
+   },
+   "source": "designed",
+   "note": "explicit: first line: `inherits: base.yaml`",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "results/main_results.csv",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/evaluate.py",
+    "span": "as np import pandas as pd import torch import yaml from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler RESULTS_CSV = \"results/main_results.csv\" N_TEST_EPISODES = 600 RESULT_COLS = [\"method\", \"shots\", \"accuracy\", \"ci95\"] if __name__ == \"__main__\": main()"
+   },
+   "source": "designed",
+   "note": "explicit: writes the main results CSV at its path",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "results/main_results.csv",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/plot_results.py",
+    "span": "\"\"\"Plot few-shot accuracy versus number of shots for the LeafProto paper. Reads results/main_results.csv (columns: method, shots, accuracy, ci95) and writes figures/accuracy_vs_shots.png. Usage: python src/plot_results.py python src/plot_results.py --csv results/main_results.csv --out figu"
+   },
+   "source": "designed",
+   "note": "explicit: reads the main results CSV at its path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "figures/accuracy_vs_shots.png",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/plot_results.py",
+    "span": "few-shot accuracy versus number of shots for the LeafProto paper. Reads results/main_results.csv (columns: method, shots, accuracy, ci95) and writes figures/accuracy_vs_shots.png. Usage: python src/plot_results.py python src/plot_results.py --csv results/main_results.csv --out figures/accu"
+   },
+   "source": "designed",
+   "note": "explicit: saves the main figure at its path",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "src/train.py",
+   "b": "logs/train_2026-10-08.log",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: writes logs/train_<date>.log built from a date pattern; the literal log file name never appears",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "configs/fewshot_5way.yaml",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "logs/train_2026-10-08.log",
+    "span": "[2026-10-08 09:12:03] config: configs/fewshot_5way.yaml [2026-10-08 09:12:03] inherited base settings applied; overrides: k_shot=5, episodes=40000, log_dir=logs, results_csv=results/main_results.csv [2026-10-08 09:12:03] seed 42 set (torch, numpy, random) [2026-10-08 09:12:04] device cuda:0 NVIDIA G"
+   },
+   "source": "designed",
+   "note": "explicit: the first log line prints the experiment config path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "src/freq_mix.py",
+   "b": "docs/method.md",
+   "relation": "implements",
+   "also": [
+    "describes"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: implements the key module exactly as the method doc describes it (same name, same equation, same hyperparameter values)",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "src/leafproto_model.py",
+   "b": "docs/method.md",
+   "relation": "implements",
+   "also": [
+    "describes"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "src/leafproto_model.py",
+    "span": "Proto network: ResNet-12 encoder, cosine prototype head and the episodic training loss with the FreqMix consistency term. The method is described in docs/method.md. Episodes arrive already sampled and resized to 84x84. \"\"\" import torch import torch.nn as nn import torch.nn.functional as F from freq"
+   },
+   "source": "designed",
+   "note": "explicit: module docstring says the design is in docs/method.md",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "src/train.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Training Run the 5-way training with: ```bash python src/train.py --config configs/<5-way-config>.yaml ``` Without `--config`, `src/train.py` uses the base config. Each run writes a log to `logs/train_{YYYY-MM-DD}.log`. The first line records the config, for example: ``` [2026-10-08 09:12:03"
+   },
+   "source": "designed",
+   "note": "explicit: shows the training command with the script path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "docs/method.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Method in brief Full details are in `docs/method.md`. In short: - **FreqMix**: take the 2D FFT of each leaf image per channel and split it into amplitude and phase. For two images in the same episode, the low-frequency amplitude band is interpolated. The mask is a centered square covering 10% o"
+   },
+   "source": "designed",
+   "note": "explicit: Markdown link to docs/method.md",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "src/evaluate.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "t episodes, 5-way, 15 queries per class, with seed 42. The output is mean accuracy in % with a 95% confidence interval over episodes. ```bash python src/evaluate.py --config configs/<5-way-config>.yaml --ckpt checkpoints/best.pt ```"
+   },
+   "source": "designed",
+   "note": "explicit: shows the evaluation command",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "nbit University. Paper: *LeafProto: Few-Shot Plant Disease Classification with Frequency-Domain Mixing and a Cosine Prototype Head* (current draft: `paper/leafproto_draft_v2.pdf`)."
+   },
+   "source": "designed",
+   "note": "explicit: points to the current draft",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "docs/method.md",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the paper's method section presents the same components and equations",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "relation": "duplicate",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: same title and story; v1 is the earlier version",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the paper's main table repeats exactly the CSV's numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the paper's ablation table repeats exactly these numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "figures/accuracy_vs_shots.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: Figure 2's caption describes this chart (same axes and trend)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "figures/overview.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: Figure 1's caption describes this pipeline diagram (same boxes)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "paper/talk_outline.md",
+    "span": "# LeafProto 랩 세미나 발표 아웃라인 - 발표자: 박현우 (Park Hyunwoo, 1저자) - 일시: 2026-11-26, 12분 발표 + 질의응답 - 기반 자료: paper/leafproto_draft_v2.pdf (내부 검토 마감 2026-11-30) - 발표 자료: 약 10장, 그림 2종 사용 (파이프라인 개요 Figure 1, accuracy_vs_shots 그림 Figure 2 = figures/accuracy_vs_shots.png) - 연구팀: Plant Vision Lab, Hanbit University"
+   },
+   "source": "designed",
+   "note": "explicit: says the talk is based on the current draft (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "figures/accuracy_vs_shots.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "paper/talk_outline.md",
+    "span": "2분 발표 + 질의응답 - 기반 자료: paper/leafproto_draft_v2.pdf (내부 검토 마감 2026-11-30) - 발표 자료: 약 10장, 그림 2종 사용 (파이프라인 개요 Figure 1, accuracy_vs_shots 그림 Figure 2 = figures/accuracy_vs_shots.png) - 연구팀: Plant Vision Lab, Hanbit University (지도교수 정민준 교수) - 역할 분담 참고: 데이터/분할 및 FreqMix 실험 (김서연), 베이스라인 및 그래프 (이두윤), 작성 및"
+   },
+   "source": "designed",
+   "note": "explicit: plans to show the main figure (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "papers/notes_protoclass2019.md",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/related_work.md",
+    "span": "dic training loop, and change three things: the similarity function, the training augmentation, and the training objective. Notes on the paper are in papers/notes_protoclass2019.md."
+   },
+   "source": "designed",
+   "note": "explicit: cites the reading-notes file of protoclass2019 by path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "papers/notes_fastadapt2022.md",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "docs/related_work.md",
+    "span": "er episode than LeafProto. The method also uses no image-level augmentation, so it does not address the limited variety of field photos. Notes are in papers/notes_fastadapt2022.md."
+   },
+   "source": "designed",
+   "note": "explicit: cites the reading-notes file of fastadapt2022 by path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "docs/method.md",
+   "b": "papers/notes_protoclass2019.md",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: says the method builds on the prior work (by its name, not the notes file) and what it changes",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "papers/notes_fastadapt2022.md",
+   "relation": "compares",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the competing approach is a baseline row in the paper's table",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "results/main_results.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the chart plots the CSV's numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "src/freq_mix.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the meeting decides to add the key module (described in words)",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "src/leafproto_model.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting_2026-03-05.md",
+    "span": "## 3. 결정 사항 1. 베이스 방법은 ProtoClass로 한다. 2. 주 베이스라인은 FastAdapt, 보조 베이스라인은 Finetune으로 한다. 3. 주파수 영역 혼합 모듈(저주파 진폭 교환, 위상 유지)을 추가한다. 4. 모듈 연결 작업은 src/leafproto_model.py를 수정해서 진행한다. 5. 데이터 분할은 김서연 연구원이 담당한다."
+   },
+   "source": "designed",
+   "note": "explicit: assigns someone to change the model file (its path)",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "results/main_results.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting_2026-09-17.md",
+    "span": "## 1. 메인 결과 리뷰 results/main_results.csv (열: method, shots, accuracy, ci95)를 함께 확인했다. 5-way, 테스트 에피소드 600개, 정확도 %(평균 ± ci95) 기준이다. | 방법 | 1-shot | 2-shot | 5-shot | 10-shot | |---|---|---|---|---| | Finetune | 52.3 ± 0.9 | 61.8 ± 0.8 | 72.5 ± 0.7 | 79.1 ± 0.6 | | ProtoClass | 60.4 ± 0.9 | 70.2 ± 0."
+   },
+   "source": "designed",
+   "note": "explicit: reviews the main results CSV (its path) and its key number",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "results/ablation.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: plans exactly the ablations that the ablation file reports",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting_2026-09-17.md",
+    "span": "## 4. 논문 일정 - 원고: paper/leafproto_draft_v2.pdf (2026-11-10 기준) - 내부 리뷰 마감: 2026-11-30 - 투고 대상: AgriVision Workshop 2027, 제출 마감 2026-12-15 - 구성: abstract, introduction, method, experiments (Table 1 메인 결과, Table 2 ablation), Figure 1-2, related work, limitations - limitations 항목: 데이터셋 1개뿐임, 84x84 해상도"
+   },
+   "source": "designed",
+   "note": "explicit: sets the deadline for the current draft (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "docs/method.md",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: proposes extensions of the method's named components",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "site/index.html",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "site/index.html",
+    "span": "<div class=\"links\"> <a href=\"../paper/leafproto_draft_v2.pdf\">Paper (PDF)</a> <a href=\"https://github.com/plant-vision-lab/leafproto\">Code</a> </div> <h2>Abstract</h2> <p>Diagnosing plant disease from field photos usually has only a handful of labeled examples per disease. We present LeafProto,"
+   },
+   "source": "designed",
+   "note": "explicit: links to the current draft PDF by its relative path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "site/index.html",
+   "b": "figures/overview.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "site/index.html",
+    "span": "FastAdapt and 6.5 points above ProtoClass. In our ablation, removing FreqMix causes the largest drop.</p> <h2>Overview</h2> <figure> <img src=\"../figures/overview.png\" alt=\"LeafProto pipeline overview\"> <figcaption class=\"caption\">Overview of the LeafProto pipeline. A leaf photo is transformed"
+   },
+   "source": "designed",
+   "note": "explicit: shows the overview figure with an <img> tag whose src is its relative path",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "site/index.html",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the page's results table repeats the main numbers",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "site/index.html",
+   "b": "docs/method.md",
+   "relation": "same_method",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the page's method summary names the same components",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "src/train.py",
+   "relation": "other",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "uses",
+    "supports"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "configs/fewshot_5way.yaml",
+    "span": "nherits: base.yaml # Main experiment: 5-way, 5-shot episodes on leafdoc_fs. # Every key not listed here comes from base.yaml. # Run with: # python src/train.py --config configs/fewshot_5way.yaml n_way: 5 # same as base, listed so the episode setup is readable here k_shot: 5"
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "src/evaluate.py",
+   "relation": "other",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "uses",
+    "supports"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "configs/fewshot_5way.yaml",
+    "span": "cy table is written into the results folder checkpoint_dir: checkpoints # best checkpoint is saved here (best.pt) # Evaluation protocol (used by src/evaluate.py) eval: test_episodes: 600 # 5-way test episodes queries_per_class: 15 metric: accuracy_percent # reported with 95% confi"
+   },
+   "source": "static-analysis",
+   "note": "incidental mentions",
+   "personas": []
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/utils.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "Evaluation script loads checkpoints/config via the shared helpers, as train.py does.",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "README.md",
+   "b": "admin/travel_reimbursement_form.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "configs/base.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "configs/fewshot_5way.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "figures/accuracy_vs_shots.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "logs/train_2026-10-08.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/meeting_2026-03-05.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "configs/base.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "configs/fewshot_5way.yaml",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "docs/method.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "figures/accuracy_vs_shots.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "logs/train_2026-10-08.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "notes/meeting_2026-03-05.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/travel_reimbursement_form.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "docs/method.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "figures/accuracy_vs_shots.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "logs/train_2026-10-08.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "notes/meeting_2026-03-05.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/base.yaml",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "docs/method.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "figures/accuracy_vs_shots.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "notes/meeting_2026-03-05.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "configs/fewshot_5way.yaml",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "docs/related_work.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "figures/accuracy_vs_shots.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "logs/train_2026-10-08.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "notes/meeting_2026-03-05.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/method.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "figures/accuracy_vs_shots.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "logs/train_2026-10-08.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "notes/meeting_2026-03-05.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "docs/related_work.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "figures/overview.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "logs/train_2026-10-08.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "notes/meeting_2026-03-05.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/accuracy_vs_shots.png",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "logs/train_2026-10-08.log",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "notes/meeting_2026-03-05.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "figures/overview.png",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "notes/ideas.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "notes/meeting_2026-03-05.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "notes/meeting_2026-03-05.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/ideas.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "notes/meeting_2026-09-17.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "paper/leafproto_draft_v2.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-03-05.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "paper/leafproto_draft_v1.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting_2026-09-17.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "paper/talk_outline.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v1.pdf",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/leafproto_draft_v2.pdf",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "papers/notes_fastadapt2022.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "paper/talk_outline.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "papers/notes_protoclass2019.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_fastadapt2022.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "reading/protein_folding_reading_list.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_protoclass2019.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/protein_folding_reading_list.md",
+   "b": "results/ablation.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/protein_folding_reading_list.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/protein_folding_reading_list.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/protein_folding_reading_list.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/protein_folding_reading_list.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/protein_folding_reading_list.md",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/protein_folding_reading_list.md",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/protein_folding_reading_list.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/protein_folding_reading_list.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/protein_folding_reading_list.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "results/main_results.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "site/index.html",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/ablation.md",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/main_results.csv",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/data.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/evaluate.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "site/index.html",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/leafproto_model.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/data.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/freq_mix.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/evaluate.py",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/freq_mix.py",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/freq_mix.py",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/freq_mix.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/leafproto_model.py",
+   "b": "src/plot_results.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/leafproto_model.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "src/train.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "src/plot_results.py",
+   "b": "src/utils.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "logs/train_2026-10-08.log",
+   "b": "results/main_results.csv",
+   "source": "review",
+   "note": "Training log does not feed the results CSV directly; the evaluation script produces it."
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "family": "ml_paper",
+  "topic": "Few-shot plant disease classification from leaf photos with a frequency-domain augmentation and a cosine prototype head.",
+  "generator": "benchmark/mock/make_mock.py (claude-sonnet-5-5)",
+  "closed_world": true,
+  "hard_negatives": [
+   "admin/travel_reimbursement_form.md|notes/meeting_2026-09-17.md",
+   "docs/related_work.md|reading/protein_folding_reading_list.md",
+   "papers/notes_protoclass2019.md|reading/protein_folding_reading_list.md",
+   "src/plot_results.py|src/utils.py"
+  ],
+  "check": {
+   "planted": 42,
+   "cue_ok": 26,
+   "cue_lost": [],
+   "cue_gained": [],
+   "incidental": [
+    "configs/fewshot_5way.yaml -> src/train.py",
+    "configs/fewshot_5way.yaml -> src/evaluate.py",
+    "logs/train_2026-10-08.log -> results/main_results.csv"
+   ]
+  },
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    4,
+    4,
+    4
+   ],
+   "summaries": [
+    "The graph captures the main structure well: code→config→log, results→paper/site, and method doc↔implementation. A few missing links (evaluate.py using utils/config, README to other docs, ablation to method) and one or two questionable weak links remain.",
+    "The graph captures the main code, config, results, paper and docs relationships well, and it correctly leaves the admin and protein-reading distractor files unlinked. The gaps are that the scripts' dependence on the main config is only a weak \"other\" link, and src/evaluate.py's use of src/utils.py is missing.",
+    "The graph captures the main code, config, results, paper and figure relationships well, and the unrelated admin and protein-folding files are correctly left out. A few gaps remain: evaluate.py's use of utils.py, ablation and method links from the talk outline and website, and one weak log-to-results link that is questionable."
+   ],
+   "proposed": 17,
+   "applied": [
+    {
+     "op": "add",
+     "a": "src/evaluate.py",
+     "b": "src/utils.py",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "Evaluation script loads checkpoints/config via the shared helpers, as train.py does.",
+      "evaluate.py uses the shared helpers for seeding, logging, config loading and checkpoint loading, just as train.py does.",
+      "The evaluation script loads configs and checkpoints and sets seeds through the shared helpers in utils.py, like train.py does."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "logs/train_2026-10-08.log",
+     "b": "results/main_results.csv",
+     "relation": "other",
+     "votes": 2,
+     "reasons": [
+      "Training log does not feed the results CSV directly; the evaluation script produces it.",
+      "The training log only records validation accuracy. Test results in the CSV come from evaluate.py, so a reader would not link the two directly."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 5,
+   "key_links": 20,
+   "required_before": 36,
+   "notes": [
+    "LeafProto 프로젝트는 src의 모델·학습·평가 코드가 configs 설정으로 실행되어 results와 figures를 만들고, 이것이 방법 문서와 함께 논문 초안·발표·웹페이지로 이어지며 회의 노트와 관련 연구 노트가 이를 뒷받침하는 구조입니다.",
+    "LeafProto 프로젝트는 src의 학습·평가 코드가 configs 설정으로 돌아가 로그와 results를 만들고, 이를 figures와 논문·발표·웹페이지가 인용하며, docs·papers 노트와 회의록이 방법과 배경을 설명하는 구조입니다.",
+    "LeafProto 프로젝트는 src의 모델·학습 코드가 configs 설정으로 학습·평가되어 results와 figures를 만들고, 이것이 docs의 방법 설명, 논문 초안, 웹페이지, 발표 자료로 이어지며 회의 노트와 읽기 노트가 이를 뒷받침하는 구조입니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "모델·학습 코드",
+   "members": [
+    "src/data.py",
+    "src/evaluate.py",
+    "src/freq_mix.py",
+    "src/leafproto_model.py",
+    "src/plot_results.py",
+    "src/train.py",
+    "src/utils.py"
+   ]
+  },
+  {
+   "name": "방법 문서·관련 연구",
+   "members": [
+    "README.md",
+    "docs/method.md",
+    "docs/related_work.md",
+    "papers/notes_fastadapt2022.md",
+    "papers/notes_protoclass2019.md"
+   ]
+  },
+  {
+   "name": "결과와 그림",
+   "members": [
+    "figures/accuracy_vs_shots.png",
+    "figures/overview.png",
+    "results/ablation.md",
+    "results/main_results.csv"
+   ]
+  },
+  {
+   "name": "논문·발표·웹페이지",
+   "members": [
+    "paper/leafproto_draft_v1.pdf",
+    "paper/leafproto_draft_v2.pdf",
+    "paper/talk_outline.md",
+    "site/index.html"
+   ]
+  },
+  {
+   "name": "설정 및 로그",
+   "members": [
+    "configs/base.yaml",
+    "configs/fewshot_5way.yaml",
+    "logs/train_2026-10-08.log"
+   ]
+  },
+  {
+   "name": "회의·아이디어 노트",
+   "members": [
+    "notes/ideas.md",
+    "notes/meeting_2026-03-05.md",
+    "notes/meeting_2026-09-17.md"
+   ]
+  },
+  {
+   "name": "관련 없음",
+   "members": [
+    "admin/travel_reimbursement_form.md",
+    "reading/protein_folding_reading_list.md"
+   ]
+  }
+ ]
+}

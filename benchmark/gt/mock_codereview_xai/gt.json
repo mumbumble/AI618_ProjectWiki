@@ -1,0 +1,1739 @@
+{
+ "project": "mock_codereview_xai",
+ "edges": [
+  {
+   "a": "prototype/app.py",
+   "b": "prototype/logger.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "prototype/app.py",
+    "span": "er (v0.4); the condition is never shown to participants.\"\"\" import json import os import time from flask import Flask, jsonify, request, session from logger import InteractionLogger PROTOTYPE_VERSION = \"v0.4\" TIME_LIMIT_S = 480 # 8 minutes per task TASKS = [\"T1\", \"T2\", \"T3\", \"T4\"] VARIANTS = [\"A\","
+   },
+   "source": "designed",
+   "note": "import",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "prototype/logger.py",
+   "b": "data/task_logs.csv",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "prototype/logger.py",
+    "span": "LOG_PATH = \"data/task_logs.csv\" HEADER = \"participant,condition,task_id,seconds,errors\" CONDITIONS = (\"terse\", \"rationale\", \"trace\") TASK_IDS = (\"T1\", \"T2\", \"T3\", \"T4\") TIME_LIMIT_S = 480 # 8 minutes per task SEEDED_DEFECTS = 3 # each PR variant has 3 seeded defects if __name__ == \"__main_"
+   },
+   "source": "designed",
+   "note": "explicit: writes the task-log CSV at its path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "prototype/ui_spec.md",
+   "b": "prototype/app.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "prototype/ui_spec.md",
+    "span": "ewLens (AI code-review assistant) **Version:** v0.4 (v0.3 was used during the pilot; v0.4 is the build used for data collection) **Implementation:** `prototype/app.py` **Prototype developer:** Yoon Min-seok"
+   },
+   "source": "designed",
+   "note": "explicit: names the app file it specifies",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "data/survey_responses.csv",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "analysis/analyze_survey.py",
+    "span": "import matplotlib matplotlib.use(\"Agg\") import matplotlib.pyplot as plt ROOT = Path(__file__).resolve().parent.parent SURVEY_PATH = ROOT / \"data\" / \"survey_responses.csv\" FIG_PATH = ROOT / \"results\" / \"figures\" / \"trust_composite_by_condition.png\" CONDITIONS = [\"terse\", \"rationale\", \"trace\"] ITEMS"
+   },
+   "source": "designed",
+   "note": "explicit: reads the survey CSV at its path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "relation": "produces",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "analysis/analyze_survey.py",
+    "span": "as plt ROOT = Path(__file__).resolve().parent.parent SURVEY_PATH = ROOT / \"data\" / \"survey_responses.csv\" FIG_PATH = ROOT / \"results\" / \"figures\" / \"trust_composite_by_condition.png\" CONDITIONS = [\"terse\", \"rationale\", \"trace\"] ITEMS = [f\"Q{i}\" for i in range(1, 9)] TRUST_ITEMS = [\"Q1\", \"Q2\", \"Q3\"]"
+   },
+   "source": "designed",
+   "note": "explicit: saves the figure at its path",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "data/task_logs.csv",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "analysis/analyze_logs.py",
+    "span": "\"\"\"Analysis of ReviewLens task logs (seconds and errors per task). Usage: python analysis/analyze_logs.py --input data/task_logs.csv \"\"\" import csv import sys CONDITIONS = [\"terse\", \"rationale\", \"trace\"] PAIRS = [(\"trace\", \"terse\"), (\"trace\", \"rationale\"), (\"rationale\", \"terse\")] E = 2.718281828459"
+   },
+   "source": "designed",
+   "note": "explicit: reads the task-log CSV at its path",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "results/findings.md",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "results/findings.md",
+    "span": "endall W = 0.65 (n = 10). The composite increases from terse to rationale to trace, which supports H1. The trust composite by condition is shown in `results/figures/trust_composite_by_condition.png`. It is a bar chart with condition on the x-axis and the trust composite (1-7) on the y-axis. Bars ar"
+   },
+   "source": "designed",
+   "note": "explicit: Markdown image link to the figure",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/findings.md",
+   "b": "analysis/analyze_logs.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: reports exactly the statistics the log analysis computes (same test and values)",
+   "personas": [
+    "docs",
+    "code"
+   ]
+  },
+  {
+   "a": "study/survey_questions.md",
+   "b": "data/survey_responses.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the CSV columns are the questionnaire item IDs",
+   "personas": [
+    "code",
+    "docs"
+   ]
+  },
+  {
+   "a": "study/tasks.md",
+   "b": "data/task_logs.csv",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the task IDs in the log match the task list",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "irb/consent_form.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "irb/protocol.md",
+    "span": "is held in person in the lab, with one participant and one facilitator present. 1. **Consent (10 min).** The facilitator reviews the consent form in irb/consent_form.md, answers questions, and collects a signed copy. 2. **Training (10 min).** The participant is shown the ReviewLens interface and pr"
+   },
+   "source": "designed",
+   "note": "explicit: refers to the consent form (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "study/tasks.md",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "irb/protocol.md",
+    "span": "condition uses a different pull-request variant (set A, B, or C) for every task, so no task is seen twice in identical form. Tasks are described in study/tasks.md. They cover four common defect types: an off-by-one error in pagination (T1), SQL injection in a query builder (T2), a race condition i"
+   },
+   "source": "designed",
+   "note": "explicit: refers to the task list (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "proposal/study_proposal.pdf",
+   "b": "study/tasks.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the design section lists the same tasks",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "proposal/study_proposal.pdf",
+   "b": "study/survey_questions.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the measures section lists the same questionnaire constructs",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "results/findings.md",
+   "b": "proposal/study_proposal.pdf",
+   "relation": "supports",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the findings answer the proposal's hypotheses H1 and H2",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "proposal/study_proposal.pdf",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "relation": "extends",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: builds on the prior study (by its authors and year)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "study/tasks.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: the pilot found a problem with one specific task, which was then changed",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "prototype/app.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: notes a prototype bug seen in the pilot",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "results/findings.md",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting.md",
+    "span": "## 1. 안건 1. 결과 초안 검토 (results/findings.md) 2. 제안서 대비 변경 사항 확인 (proposal/study_proposal.pdf) 3. 통계 보고 방식 점검 4. 2027년 N=20 재현 연구 검토"
+   },
+   "source": "designed",
+   "note": "explicit: discusses the findings file (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "proposal/study_proposal.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "notes/meeting.md",
+    "span": "## 1. 안건 1. 결과 초안 검토 (results/findings.md) 2. 제안서 대비 변경 사항 확인 (proposal/study_proposal.pdf) 3. 통계 보고 방식 점검 4. 2027년 N=20 재현 연구 검토"
+   },
+   "source": "designed",
+   "note": "explicit: refers to the proposal PDF (its path)",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "study/interview_guide.md",
+   "b": "study/survey_questions.md",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "implicit: asks about the same constructs as the questionnaire",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "proposal/study_proposal.pdf",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "designed",
+   "note": "explicit: points to the proposal",
+   "personas": [
+    "docs"
+   ]
+  },
+  {
+   "a": "README.md",
+   "b": "analysis/analyze_logs.py",
+   "relation": "describes",
+   "also": [
+    "implements"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "## Running the analysis Install Python 3 with `numpy`, `pandas`, `scipy` and `matplotlib`. Then run: ``` python analysis/analyze_logs.py --input <path to the task-log CSV in data/> ``` The script prints the Friedman and Wilcoxon results for seconds and errors. The survey analysis script in `analy"
+   },
+   "source": "designed",
+   "note": "explicit: shows how to run the log analysis",
+   "personas": [
+    "code"
+   ]
+  },
+  {
+   "a": "results/findings.md",
+   "b": "analysis/analyze_survey.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "Findings report the Q1-Q3 trust composite means that analyze_survey.py computes.",
+   "personas": []
+  },
+  {
+   "a": "prototype/ui_spec.md",
+   "b": "prototype/logger.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "UI spec has a recorded-data section matching the logger's output.",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "results/findings.md",
+   "relation": "describes",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "README summarizes the main results (H1/H2 supported) and the folder structure that points to findings.",
+   "personas": []
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "study/survey_questions.md",
+   "relation": "uses",
+   "also": [],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "review",
+   "note": "The script computes the Q1-Q3 composite defined in the survey questionnaire.",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "README.md",
+   "b": "admin/lab_snack_budget.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "analysis/analyze_survey.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "data/survey_responses.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "data/task_logs.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "irb/consent_form.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "irb/protocol.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "notes/pilot_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "README.md",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "analysis/analyze_logs.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "analysis/analyze_survey.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "data/survey_responses.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "data/task_logs.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "irb/consent_form.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "irb/protocol.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "notes/meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "notes/pilot_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "proposal/study_proposal.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "admin/lab_snack_budget.md",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "analysis/analyze_survey.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "data/survey_responses.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "irb/consent_form.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "irb/protocol.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "notes/meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "notes/pilot_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "proposal/study_proposal.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_logs.py",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "data/task_logs.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "irb/consent_form.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "irb/protocol.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "notes/meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "notes/pilot_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "proposal/study_proposal.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "analysis/analyze_survey.py",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "data/task_logs.csv",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "irb/consent_form.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "irb/protocol.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "notes/meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "notes/pilot_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "proposal/study_proposal.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/survey_responses.csv",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "irb/consent_form.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "irb/protocol.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "notes/meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "notes/pilot_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "proposal/study_proposal.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "data/task_logs.csv",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "notes/meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "notes/pilot_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "proposal/study_proposal.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/consent_form.md",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "notes/meeting.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "notes/pilot_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "proposal/study_proposal.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "irb/protocol.md",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "notes/pilot_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/meeting.md",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "papers/notes_cho2024_explain_reliance.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "proposal/study_proposal.pdf",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "notes/pilot_notes.md",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_cho2024_explain_reliance.md",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_cho2024_explain_reliance.md",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_cho2024_explain_reliance.md",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_cho2024_explain_reliance.md",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_cho2024_explain_reliance.md",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_cho2024_explain_reliance.md",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_cho2024_explain_reliance.md",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_cho2024_explain_reliance.md",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "papers/notes_cho2024_explain_reliance.md",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "proposal/study_proposal.pdf",
+   "b": "prototype/app.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "proposal/study_proposal.pdf",
+   "b": "prototype/logger.py",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "proposal/study_proposal.pdf",
+   "b": "prototype/ui_spec.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "proposal/study_proposal.pdf",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "proposal/study_proposal.pdf",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "proposal/study_proposal.pdf",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/app.py",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/app.py",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/app.py",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/app.py",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/app.py",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/app.py",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/logger.py",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/logger.py",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/logger.py",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/logger.py",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/logger.py",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/logger.py",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/ui_spec.md",
+   "b": "reading/coral_reef_bleaching_notes.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/ui_spec.md",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/ui_spec.md",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/ui_spec.md",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/ui_spec.md",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "prototype/ui_spec.md",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_bleaching_notes.md",
+   "b": "results/figures/trust_composite_by_condition.png",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_bleaching_notes.md",
+   "b": "results/findings.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_bleaching_notes.md",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_bleaching_notes.md",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "reading/coral_reef_bleaching_notes.md",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/figures/trust_composite_by_condition.png",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/figures/trust_composite_by_condition.png",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/figures/trust_composite_by_condition.png",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/findings.md",
+   "b": "study/interview_guide.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/findings.md",
+   "b": "study/survey_questions.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "results/findings.md",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "study/interview_guide.md",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  },
+  {
+   "a": "study/survey_questions.md",
+   "b": "study/tasks.md",
+   "source": "designed",
+   "note": ""
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "family": "user_study",
+  "topic": "An HCI study comparing three explanation styles of an AI code-review assistant on developers' trust and review accuracy.",
+  "generator": "benchmark/mock/make_mock.py (claude-sonnet-5-5)",
+  "closed_world": true,
+  "hard_negatives": [
+   "admin/lab_snack_budget.md|notes/meeting.md",
+   "papers/notes_cho2024_explain_reliance.md|reading/coral_reef_bleaching_notes.md"
+  ],
+  "check": {
+   "planted": 23,
+   "cue_ok": 12,
+   "cue_lost": [
+    "README.md -> proposal/study_proposal.pdf"
+   ],
+   "cue_gained": [],
+   "incidental": []
+  },
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    4,
+    4,
+    4
+   ],
+   "summaries": [
+    "The graph captures the main pipeline (prototype -> logs -> analysis -> findings -> figure) and the study design documents well, and correctly leaves the off-topic admin and coral files isolated. It misses a few obvious links, such as findings to the survey analysis script and README to findings, and a few edges are slightly off in strength.",
+    "The graph captures the main pipeline (logger -> task_logs -> analysis -> findings/figure) and the study documents well, and it correctly leaves the unrelated snack budget and coral notes isolated. A few obvious links are missing (findings to the survey analysis, README to the results and the prototype), and one or two links are overstated or have the wrong relation.",
+    "The graph captures the main pipeline (prototype -> logs -> analysis -> findings -> figure) and the study documents well, and it correctly isolates the unrelated snack and coral files. A few obvious links are missing, such as findings to analyze_survey.py and survey data, and findings to the survey questions, and a couple of links are somewhat loose."
+   ],
+   "proposed": 19,
+   "applied": [
+    {
+     "op": "add",
+     "a": "analysis/analyze_survey.py",
+     "b": "results/findings.md",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "Findings report the Q1-Q3 trust composite means that analyze_survey.py computes.",
+      "The trust composite results (Q1-Q3 means) reported in findings come from this script.",
+      "Findings report trust composite (Q1-Q3 means) computed by analyze_survey.py."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "prototype/logger.py",
+     "b": "prototype/ui_spec.md",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "UI spec has a recorded-data section matching the logger's output.",
+      "The UI spec lists the recorded data fields, which logger.py implements.",
+      "UI spec defines the logged data fields that logger.py records."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "results/findings.md",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "README summarizes the main results (H1/H2 supported) and the folder structure that points to findings.",
+      "The README summarizes the main results (H1 and H2 supported), which are reported in findings."
+     ]
+    },
+    {
+     "op": "add",
+     "a": "analysis/analyze_survey.py",
+     "b": "study/survey_questions.md",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "The script computes the Q1-Q3 composite defined in the survey questionnaire.",
+      "The script computes the trust composite from Q1-Q3 as defined in the survey instrument.",
+      "Script computes the Q1-Q3 trust composite defined in the survey instrument."
+     ]
+    },
+    {
+     "op": "strengthen",
+     "a": "README.md",
+     "b": "analysis/analyze_logs.py",
+     "relation": "describes",
+     "votes": 2,
+     "reasons": [
+      "README explains how to run the analysis, so a reader would want to see the script.",
+      "The README explicitly covers how to run the analysis."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 5,
+   "key_links": 13,
+   "required_before": 21,
+   "notes": [
+    "연구 제안서와 과제·설문 설계를 바탕으로 프로토타입이 로그를 기록하고, 분석 스크립트가 원자료를 처리해 결과 문서와 그림을 만들며 README와 회의·파일럿 노트가 이를 설명하는 구조입니다.",
+    "연구 제안서와 설계 문서(과제·설문·IRB)를 바탕으로 ReviewLens 프로토타입이 과제 로그를 남기고, 분석 스크립트가 설문·로그 데이터를 처리해 결과 문서와 그림을 만들며, README와 회의 노트가 이를 묶는 구조입니다.",
+    "이 프로젝트는 연구 설계·IRB 문서를 바탕으로 프로토타입이 과제 로그를 만들고, 분석 스크립트가 원자료를 처리해 결과 문서와 그림으로 정리하며, README와 회의·파일럿 노트가 전체를 묶는 구조입니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "연구 설계·IRB",
+   "members": [
+    "irb/consent_form.md",
+    "irb/protocol.md",
+    "proposal/study_proposal.pdf",
+    "study/interview_guide.md",
+    "study/survey_questions.md",
+    "study/tasks.md"
+   ]
+  },
+  {
+   "name": "개요·노트·관련 연구",
+   "members": [
+    "README.md",
+    "notes/meeting.md",
+    "notes/pilot_notes.md",
+    "papers/notes_cho2024_explain_reliance.md"
+   ]
+  },
+  {
+   "name": "프로토타입 (ReviewLens)",
+   "members": [
+    "prototype/app.py",
+    "prototype/logger.py",
+    "prototype/ui_spec.md"
+   ]
+  },
+  {
+   "name": "결과와 그림",
+   "members": [
+    "results/figures/trust_composite_by_condition.png",
+    "results/findings.md"
+   ]
+  },
+  {
+   "name": "분석 스크립트",
+   "members": [
+    "analysis/analyze_logs.py",
+    "analysis/analyze_survey.py"
+   ]
+  },
+  {
+   "name": "원자료 데이터",
+   "members": [
+    "data/survey_responses.csv",
+    "data/task_logs.csv"
+   ]
+  },
+  {
+   "name": "관련 없음",
+   "members": [
+    "admin/lab_snack_budget.md",
+    "reading/coral_reef_bleaching_notes.md"
+   ]
+  }
+ ]
+}

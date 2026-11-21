@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GraspDR: Structured Domain Randomization and Contact-Aware Rewards for Sim-to-Real Grasping</title>
+<style>
+  body { font-family: -apple-system, Helvetica, Arial, sans-serif; max-width: 880px; margin: 40px auto; padding: 0 20px; color: #222; line-height: 1.55; }
+  h1 { font-size: 1.9em; margin-bottom: 0.2em; }
+  .authors { font-size: 1.05em; margin: 0.3em 0 0.8em; }
+  .links a { margin-right: 14px; font-weight: 600; }
+  table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: 0.95em; }
+  th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: center; }
+  th { background: #f3f3f3; }
+  td:first-child, th:first-child { text-align: left; }
+  .hl td { font-weight: 600; }
+  figure { margin: 1.5em 0; text-align: center; }
+  figure img { max-width: 100%; }
+  figcaption { font-size: 0.9em; color: #555; }
+  pre { background: #f6f6f6; padding: 12px; overflow-x: auto; font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<h1>GraspDR: Structured Domain Randomization and Contact-Aware Rewards for Sim-to-Real Grasping</h1>
+<p class="authors">Dohyeon Lee, Hayun Jeong, Jiwoo Choi, Taemin Kim, Seoyeon Park</p>
+
+<p class="links">
+  <a href="paper/graspdr_draft_v2.pdf">Paper (PDF)</a>
+  <a href="#code">Code</a>
+  <a href="#bibtex">BibTeX</a>
+</p>
+
+<h2>Abstract</h2>
+<p>
+Grasping policies trained in simulation often fail on a real robot because the physics and visuals differ from the lab. GraspDR addresses this gap with two parts. The Structured Randomization Sampler (SRS) groups physics and visual parameters and samples them with within-group correlation, instead of widening each range independently. The Contact-Aware Reward (CAR) replaces a sparse lift reward with fingertip normal-force feedback and a penalty for excessive force. A Range Curriculum grows the randomization range during training. On a 7-DoF arm with a parallel gripper and RGB-D wrist camera, GraspDR reaches 87.4% grasp success at the 1.5x training range, outperforming the strongest baseline by 4.8 points.
+</p>
+
+<h2>Method</h2>
+<p>GraspDR builds on ADR-Grasp. It keeps the automatic widening idea but changes how parameters are sampled and what the policy is rewarded for.</p>
+<ul>
+  <li><b>Structured Randomization Sampler (SRS).</b> Parameters are split into visual, dynamics, and geometry groups. Each group draws a latent z_g ~ N(0, I) and maps it through the Cholesky factor of a group correlation matrix (within-group correlation 0.6), scaled by a range factor s.</li>
+  <li><b>Contact-Aware Reward (CAR).</b> The reward combines reach, lift, a fingertip contact term, and a force penalty above 25 N. Contact counts only for normal forces between 0.8 N and 25 N. The contact weight is 0.5 and the force-penalty weight is 0.1.</li>
+  <li><b>Range Curriculum.</b> The range scale s ramps linearly from 0.5 to 1.0 over the first 2M environment steps, then stays at the training range.</li>
+  <li><b>Policy.</b> A ResNet-18 style encoder (width 32) processes RGB-D, a 2-layer MLP (hidden 128) processes proprioception, and the fused 256-d feature feeds an actor head that outputs a 6-D delta pose plus gripper command. The critic is asymmetric and also sees the privileged physics parameters.</li>
+  <li><b>Losses.</b> PPO clipped surrogate, plus 0.5 times the value loss, minus 0.01 times entropy, plus 0.2 times an auxiliary binary cross-entropy loss that predicts per-pad contact.</li>
+  <li><b>Training.</b> PPO with learning rate 3e-4, gamma 0.99, GAE lambda 0.95, clip 0.2, 1024 parallel environments, 32-step rollouts, minibatch 4096, 20M environment steps, 5 seeds.</li>
+</ul>
+
+<h2>Results</h2>
+<p>Grasp success rate (%) under shifted physics, with 95% confidence intervals, over 2000 episodes per cell. Columns give the randomization range scale at evaluation.</p>
+<table>
+  <thead>
+    <tr><th>Method</th><th>0.5</th><th>1.0</th><th>1.5</th><th>2.0</th><th>2.5</th></tr>
+  </thead>
+  <tbody>
+    <tr class="hl"><td>GraspDR</td><td>91.2 ± 1.3</td><td>90.1 ± 1.3</td><td>87.4 ± 1.4</td><td>83.0 ± 1.6</td><td>76.5 ± 1.9</td></tr>
+    <tr><td>ADR-Grasp</td><td>88.0 ± 1.4</td><td>85.3 ± 1.6</td><td>80.1 ± 1.8</td><td>72.4 ± 2.0</td><td>63.8 ± 2.1</td></tr>
+    <tr><td>SimBridge</td><td>89.5 ± 1.4</td><td>86.8 ± 1.5</td><td>82.6 ± 1.7</td><td>76.0 ± 1.9</td><td>67.2 ± 2.1</td></tr>
+    <tr><td>Uniform DR</td><td>86.1 ± 1.5</td><td>82.7 ± 1.7</td><td>76.9 ± 1.9</td><td>68.5 ± 2.0</td><td>58.3 ± 2.1</td></tr>
+    <tr><td>No DR</td><td>90.3 ± 1.3</td><td>71.2 ± 1.9</td><td>52.6 ± 2.2</td><td>38.4 ± 2.1</td><td>27.9 ± 2.0</td></tr>
+  </tbody>
+</table>
+<p>At the 1.5x range, GraspDR is 4.8 points above SimBridge and 7.3 points above ADR-Grasp. In the ablation at 1.5x, removing SRS costs 5.5 points and removing CAR costs 4.7 points.</p>
+
+<figure>
+  <img src="figures/overview.png" alt="GraspDR pipeline overview">
+  <figcaption>Figure 1. GraspDR pipeline: object meshes, the Structured Randomizer (SRS), the PhysBox simulator, the GraspPolicy, the Contact-Aware Reward (CAR), and the PPO update, with the Range Curriculum feeding SRS and deployment to a real robot.</figcaption>
+</figure>
+
+<h2 id="code">Code</h2>
+<p>The code repository link will be added here. Install with <code>pip install -r requirements.txt</code> on Python 3.10 with torch 2.2. Training and evaluation are run with the provided training and evaluation scripts and the sdr_contact_panda configuration.</p>
+
+<h2 id="bibtex">BibTeX</h2>
+<pre>@misc{lee2026graspdr,
+  title        = {GraspDR: Structured Domain Randomization and Contact-Aware Rewards for Sim-to-Real Grasping},
+  author       = {Lee, Dohyeon and Jeong, Hayun and Choi, Jiwoo and Kim, Taemin and Park, Seoyeon},
+  year         = {2026},
+  howpublished = {Submitted to RoboSim Workshop 2026},
+  note         = {Project page: site/index.html}
+}</pre>
+
+</body>
+</html>

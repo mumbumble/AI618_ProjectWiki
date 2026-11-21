@@ -1,0 +1,693 @@
+{
+ "project": "micrograd",
+ "edges": [
+  {
+   "a": "README.md",
+   "b": "puppy.jpg",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "supports",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "# micrograd ![awww](puppy.jpg) A tiny Autograd engine (with a bite! :)). Implements backpropagation (reverse-mode autodiff) over a dynamically built DAG and a small neural networks library on top of it with a PyTorch-like API. Both are tiny, with about 100 and 50 lines of code respectively. The DA"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "moon_mlp.png",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "supports",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "the notebook, using a 2-layer neural net with two 16-node hidden layers we achieve the following decision boundary on the moon dataset: ![2d neuron](moon_mlp.png)"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "gout.svg",
+   "relation": "same_topic",
+   "also": [
+    "describes",
+    "supports",
+    "other",
+    "uses"
+   ],
+   "direction": "unknown",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "number in each node). ```python from micrograd import nn n = nn.Neuron(2) x = [Value(1.0), Value(-2.0)] y = n(x) dot = draw_dot(y) ``` ![2d neuron](gout.svg)"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "micrograd/engine.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "demo.ipynb",
+    "span": "from micrograd.engine import Value from micrograd.nn import Neuron, Layer, MLP"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "micrograd/nn.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "demo.ipynb",
+    "span": "from micrograd.engine import Value from micrograd.nn import Neuron, Layer, MLP"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "trace_graph.ipynb",
+   "b": "micrograd/engine.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "trace_graph.ipynb",
+    "span": "from micrograd.engine import Value"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "trace_graph.ipynb",
+   "b": "micrograd/__init__.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "trace_graph.ipynb",
+    "span": "# a simple 2D neuron import random from micrograd import nn random.seed(1337) n = nn.Neuron(2) x = [Value(1.0), Value(-2.0)] y = n(x) y.backward() dot = draw_dot(y) dot"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "micrograd/nn.py",
+   "b": "micrograd/engine.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "micrograd/nn.py",
+    "span": "import random from micrograd.engine import Value"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "test/test_engine.py",
+   "b": "micrograd/engine.py",
+   "relation": "uses",
+   "also": [
+    "implements",
+    "extends"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "test/test_engine.py",
+    "span": "import torch from micrograd.engine import Value"
+   },
+   "source": "static-analysis",
+   "note": "imports",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "demo.ipynb",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "### Training a neural net The notebook `demo.ipynb` provides a full demo of training an 2-layer neural network (MLP) binary classifier. This is achieved by initializing a neural net from `micrograd.nn` module, implementing a simple svm \"max-margin\" binary classification loss and using SGD for optim"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "trace_graph.ipynb",
+   "relation": "describes",
+   "also": [
+    "uses",
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
+   "layer": "explicit",
+   "evidence": {
+    "file": "README.md",
+    "span": "### Tracing / visualization For added convenience, the notebook `trace_graph.ipynb` produces graphviz visualizations. E.g. this one below is of a simple 2D neuron, arrived at by calling `draw_dot` on the code below, and it shows both the data (left number in each node) and the gradient (right numbe"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "setup.py",
+   "b": "README.md",
+   "relation": "uses",
+   "also": [
+    "describes",
+    "extends",
+    "same_topic",
+    "supports",
+    "other"
+   ],
+   "direction": "unknown",
+   "required": true,
+   "layer": "explicit",
+   "evidence": {
+    "file": "setup.py",
+    "span": "import setuptools with open(\"README.md\", \"r\") as fh: long_description = fh.read() setuptools.setup( name=\"micrograd\", version=\"0.1.0\", author=\"Andrej Karpathy\", author_email=\"andrej.karpathy@gmail.com\", description=\"A tiny scalar-valued autograd engine with a small PyTorch-li"
+   },
+   "source": "static-analysis+manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "moon_mlp.png",
+   "relation": "produces",
+   "also": [],
+   "direction": "unknown",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "trace_graph.ipynb",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "micrograd/__init__.py",
+   "b": "micrograd/engine.py",
+   "relation": "other",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "gout.svg",
+   "b": "micrograd/engine.py",
+   "relation": "uses",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "gout.svg",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "micrograd/__init__.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "gout.svg",
+   "b": "trace_graph.ipynb",
+   "relation": "produces",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "test/test_engine.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "micrograd/engine.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "micrograd/nn.py",
+   "b": "test/test_engine.py",
+   "relation": "same_topic",
+   "also": [],
+   "direction": "both",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "README.md",
+   "b": "micrograd/nn.py",
+   "relation": "describes",
+   "also": [],
+   "direction": "unknown",
+   "required": false,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  },
+  {
+   "a": "micrograd/__init__.py",
+   "b": "micrograd/nn.py",
+   "relation": "other",
+   "also": [],
+   "direction": "both",
+   "required": true,
+   "layer": "semantic",
+   "evidence": {},
+   "source": "manual",
+   "note": "claude",
+   "personas": []
+  }
+ ],
+ "negatives": [
+  {
+   "a": "puppy.jpg",
+   "b": "setup.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "moon_mlp.png",
+   "b": "test/test_engine.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "puppy.jpg",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "moon_mlp.png",
+   "b": "puppy.jpg",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "micrograd/nn.py",
+   "b": "puppy.jpg",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "moon_mlp.png",
+   "b": "trace_graph.ipynb",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "moon_mlp.png",
+   "b": "setup.py",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "gout.svg",
+   "b": "puppy.jpg",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "micrograd/__init__.py",
+   "b": "puppy.jpg",
+   "source": "manual",
+   "note": "claude"
+  },
+  {
+   "a": "micrograd/nn.py",
+   "b": "trace_graph.ipynb",
+   "source": "review",
+   "note": "nn.py does not use the notebook; the dependency is reversed and weak at best."
+  },
+  {
+   "a": "micrograd/engine.py",
+   "b": "setup.py",
+   "source": "review",
+   "note": "engine.py does not describe setup.py; the link is incidental."
+  },
+  {
+   "a": "micrograd/nn.py",
+   "b": "setup.py",
+   "source": "review",
+   "note": "nn.py does not describe setup.py; the link is incidental."
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "setup.py",
+   "source": "review",
+   "note": "The demo notebook has no real connection to the packaging script."
+  },
+  {
+   "a": "micrograd/__init__.py",
+   "b": "setup.py",
+   "source": "review",
+   "note": "This link is only a generic package-membership association."
+  },
+  {
+   "a": "demo.ipynb",
+   "b": "test/test_engine.py",
+   "source": "review",
+   "note": "The demo and the tests are only generically related."
+  },
+  {
+   "a": "test/test_engine.py",
+   "b": "trace_graph.ipynb",
+   "source": "review",
+   "note": "The tests and the trace notebook are only generically related."
+  },
+  {
+   "a": "micrograd/nn.py",
+   "b": "moon_mlp.png",
+   "source": "review",
+   "note": "The plot is reached through demo.ipynb; nn.py has no direct link to it."
+  }
+ ],
+ "unsure": [],
+ "meta": {
+  "repo": "karpathy/micrograd",
+  "commit": "7bc720e951fe422b8f8814aa5aa1b64121d26b4c",
+  "code_license": "MIT",
+  "papers": [],
+  "pool_size": 35,
+  "reviewed": 0,
+  "review_agreement_related_vs_not": null,
+  "labeler": "claude-sonnet-5-5 first pass, human review",
+  "created": "2026-11-21",
+  "cognitive_review": {
+   "passes": 3,
+   "viewpoints": [
+    "a newcomer who opens this folder for the first time and wants to understand what the project is and how its parts fit together",
+    "a maintainer who will run and change the code and needs to know which files depend on, configure, document or produce which",
+    "a reader of the paper or documents who wants to trace each claim, method and result to the files that implement or support it"
+   ],
+   "rule": "a change is applied when at least two passes propose it",
+   "alignment_before": [
+    3,
+    3,
+    3
+   ],
+   "summaries": [
+    "The core links (README to modules, demo to engine/nn, tests to engine, setup to README) are sensible. Several weak or odd links are wrong, such as engine/nn \"describing\" setup.py, nn \"using\" a notebook, gout.svg \"producing\" a notebook, and the puppy.jpg link from the README.",
+    "The core links (README to docs, notebooks and nn/engine to Value, setup to README, tests to engine) are sound. The graph also has many spurious weak links to setup.py and some wrong directions or relations, such as nn.py using trace_graph.ipynb and gout.svg producing the notebook.",
+    "The core structure is sound: README to its documented files, demo to engine/nn/moon_mlp, and trace_graph to engine and gout. Several links are spurious or mislabeled, such as README using puppy.jpg, demo describing setup.py, nn using trace_graph, and gout producing trace_graph."
+   ],
+   "proposed": 32,
+   "applied": [
+    {
+     "op": "remove",
+     "a": "micrograd/nn.py",
+     "b": "trace_graph.ipynb",
+     "relation": "uses",
+     "votes": 3,
+     "reasons": [
+      "nn.py does not use the notebook; the dependency is reversed and weak at best.",
+      "nn.py does not use the notebook; the notebook uses the library, not the other way around.",
+      "nn.py does not use the notebook; the dependency runs the other way."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "micrograd/engine.py",
+     "b": "setup.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "engine.py does not describe setup.py; the link is incidental.",
+      "engine.py does not describe setup.py.",
+      "engine.py does not describe setup.py."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "micrograd/nn.py",
+     "b": "setup.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "nn.py does not describe setup.py; the link is incidental.",
+      "nn.py does not describe setup.py.",
+      "nn.py has no meaningful link to setup.py."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "demo.ipynb",
+     "b": "setup.py",
+     "relation": "describes",
+     "votes": 3,
+     "reasons": [
+      "The demo notebook has no real connection to the packaging script.",
+      "The demo notebook has no real relation to the packaging script.",
+      "A demo notebook does not describe the packaging script."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "micrograd/__init__.py",
+     "b": "setup.py",
+     "relation": "other",
+     "votes": 3,
+     "reasons": [
+      "This link is only a generic package-membership association.",
+      "The empty __init__.py has no meaningful link to setup.py beyond find_packages.",
+      "A weak, generic link; setup.py only finds the package."
+     ]
+    },
+    {
+     "op": "weaken",
+     "a": "README.md",
+     "b": "puppy.jpg",
+     "relation": "uses",
+     "votes": 2,
+     "reasons": [
+      "puppy.jpg is an unrelated photo with no clear role in the project; at most a weak link.",
+      "The puppy image is incidental to the project's content and is not a strong link."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "demo.ipynb",
+     "b": "test/test_engine.py",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "The demo and the tests are only generically related.",
+      "Only generic topical overlap."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "test/test_engine.py",
+     "b": "trace_graph.ipynb",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "The tests and the trace notebook are only generically related.",
+      "Only generic topical overlap."
+     ]
+    },
+    {
+     "op": "remove",
+     "a": "micrograd/nn.py",
+     "b": "moon_mlp.png",
+     "relation": "same_topic",
+     "votes": 2,
+     "reasons": [
+      "The plot is reached through demo.ipynb; nn.py has no direct link to it.",
+      "This link is indirect; the image is produced by the demo."
+     ]
+    }
+   ]
+  },
+  "simplified": {
+   "passes": 3,
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "key_links_between_groups": 4,
+   "key_links": 8,
+   "required_before": 16,
+   "notes": [
+    "micrograd는 engine.py의 Value 자동미분 엔진 위에 nn.py의 신경망을 쌓고, 이를 테스트와 데모/시각화 노트북으로 검증·시연하며 README와 setup.py로 소개·배포하는 구조입니다.",
+    "micrograd는 engine.py의 Value 자동미분 엔진 위에 nn.py의 신경망을 쌓고, 이를 테스트와 데모/시각화 노트북으로 검증·시연하며 README와 setup.py가 문서화·설치를 담당하는 구조입니다.",
+    "micrograd는 engine.py의 Value 자동미분 엔진 위에 nn.py의 신경망을 쌓은 핵심 라이브러리이고, 테스트·데모 노트북·그림·README/setup.py가 이를 둘러싸는 구조입니다."
+   ]
+  }
+ },
+ "groups": [
+  {
+   "name": "핵심 라이브러리 코드",
+   "members": [
+    "micrograd/__init__.py",
+    "micrograd/engine.py",
+    "micrograd/nn.py"
+   ]
+  },
+  {
+   "name": "결과 및 그림",
+   "members": [
+    "gout.svg",
+    "moon_mlp.png"
+   ]
+  },
+  {
+   "name": "데모와 시각화 노트북",
+   "members": [
+    "demo.ipynb",
+    "trace_graph.ipynb"
+   ]
+  },
+  {
+   "name": "문서와 패키징",
+   "members": [
+    "README.md",
+    "setup.py"
+   ]
+  },
+  {
+   "name": "테스트",
+   "members": [
+    "test/test_engine.py"
+   ]
+  },
+  {
+   "name": "관련 없음",
+   "members": [
+    "puppy.jpg"
+   ]
+  }
+ ]
+}
