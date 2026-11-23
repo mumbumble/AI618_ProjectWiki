@@ -33,9 +33,10 @@ RUNS = ROOT / "runs"
 SYSTEMS = {"pipeline": ("bench", "final_graph.json"), "no-LLM": ("bench_nollm", "final_graph.json"),
            "LLM-only": ("bench", "llm_only_graph.json")}
 COLS = [("precision", "P"), ("recall", "R"), ("f1", "F1"), ("precision_strict", "P strict"), ("f1_strict", "F1 strict"),
-        ("recall_explicit", "R explicit"),
+        ("precision_strict_hideable", "P strict (hideable)"), ("recall_grouped", "R grouped"), ("f1_grouped", "F1 grouped"),
+        ("edges_per_file", "lines/file"), ("between_per_slot", "between-group lines/slot"), ("recall_explicit", "R explicit"),
         ("recall_semantic", "R semantic"), ("relation_accuracy", "Rel acc"), ("relation_accuracy_coarse", "Rel acc (4)"),
-        ("typed_f1", "Typed F1"), ("evidence_grounded", "Grounded"), ("group_ari", "Group ARI"),
+        ("typed_f1", "Typed F1"), ("direction_accuracy", "Dir acc"), ("direction_coverage", "Dir coverage"), ("evidence_grounded", "Grounded"), ("group_ari", "Group ARI"),
         ("predicted", "#pred"), ("unjudged_predicted", "#unjudged")]
 
 
@@ -59,9 +60,9 @@ def main() -> None:
     if not names:
         raise SystemExit("nothing to evaluate")
     scores = {sys_: {} for sys_ in SYSTEMS}
-    sims = {}
+    sims, gts = {}, {}
     for name in names:
-        gt = GroundTruth.load(HERE / "gt" / name / "gt.json")
+        gt = gts[name] = GroundTruth.load(HERE / "gt" / name / "gt.json")
         record = Record.load(RUNS / "bench" / name)
         for sys_, (run, file) in SYSTEMS.items():
             g = load_graph(RUNS / run / name / file)
@@ -92,6 +93,11 @@ def main() -> None:
                "\nMicro (summed counts): " + ", ".join(
                    f"{s} P {100 * a['micro_precision']:.1f} / R {100 * a['micro_recall']:.1f} / F1 {100 * a['micro_f1']:.1f}"
                    for s, a in agg.items() if a["micro_f1"] is not None) + "\n"]
+        per_file = [sum(e.required for e in gts[n].edges) / sum(len(g["members"]) for g in gts[n].groups)
+                    for n in ns if gts[n].groups]
+        if per_file:
+            md.append(f"For comparison, drawing only the ground truth's key links gives {sum(per_file) / len(per_file):.2f} "
+                      "lines per file and 1.00 between-group line per linked pair of groups.\n")
     md += ["## F1 per project\n",
            "| project | " + " | ".join(SYSTEMS) + " |\n|---|" + "---:|" * len(SYSTEMS) + "\n" + "".join(
                f"| {n} | " + " | ".join(f"{100 * scores[s][n]['f1']:.1f}" if n in scores[s] and scores[s][n]["f1"] is not None

@@ -126,7 +126,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -134,7 +134,7 @@
     "span": "gle.com/assets/colab-badge.svg)](https://colab.research.google.com/github/karpathy/llama2.c/blob/master/run.ipynb) More details can be found in the [README.md](README.md) ."
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -717,7 +717,7 @@
     "other",
     "uses"
    ],
-   "direction": "unknown",
+   "direction": "both",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -725,7 +725,7 @@
     "span": "def test_python(): \"\"\" Forwards a model against a known-good desired outcome in sample.py for 200 steps\"\"\" attempt_download_files() device = \"cpu\" # stories260K is small enough to just breeze through it on CPU checkpoint = os.path.join(test_ckpt_dir, \"stories260K.pt\") checkpoint"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -737,7 +737,7 @@
     "other",
     "uses"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -745,7 +745,7 @@
     "span": "#include \"win.h\" #include <errno.h> #include <io.h> #ifndef FILE_MAP_EXECUTE #define FILE_MAP_EXECUTE 0x0020 #endif /* FILE_MAP_EXECUTE */ static int __map_mman_error(const uint32_t err, const int deferr) { if (err == 0) return 0; //TODO: implement return err; }"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -756,7 +756,7 @@
     "other",
     "describes"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -764,7 +764,7 @@
     "span": "ggginface link](https://huggingface.co/karpathy/tinyllamas) The 260K model is a tiny model used for testing, and was trained as follows: ``` python train.py \\ --out_dir=\"outmini\" \\ --batch_size=128 \\ --max_seq_len=512 \\ --gradient_accumulation_steps=1 \\ --vocab_source=\"custom\""
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -916,16 +916,18 @@
    "personas": []
   },
   {
-   "a": "export.py",
-   "b": "runq.c",
-   "relation": "produces",
-   "also": [],
-   "direction": "unknown",
+   "a": "runq.c",
+   "b": "export.py",
+   "relation": "uses",
+   "also": [
+    "produces"
+   ],
+   "direction": "a_to_b",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: human: runq.c reads the int8 .bin (version 2) that export.py writes; export.py does not produce runq.c",
    "personas": []
   },
   {
@@ -1100,14 +1102,16 @@
   {
    "a": "run.c",
    "b": "win.c",
-   "relation": "implements",
-   "also": [],
-   "direction": "unknown",
-   "required": true,
+   "relation": "uses",
+   "also": [
+    "other"
+   ],
+   "direction": "a_to_b",
+   "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: human: Windows-only mmap shim used via win.h; run.c-win.h is already required",
    "personas": []
   },
   {
@@ -1163,16 +1167,18 @@
    "personas": []
   },
   {
-   "a": "run.c",
-   "b": "runq.c",
+   "a": "runq.c",
+   "b": "run.c",
    "relation": "extends",
-   "also": [],
-   "direction": "unknown",
+   "also": [
+    "same_method"
+   ],
+   "direction": "a_to_b",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: human: runq.c is the int8-quantized version of run.c",
    "personas": []
   },
   {
@@ -1524,16 +1530,53 @@
   },
   "simplified": {
    "passes": 3,
-   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional; review: code-implements-paper links represent their pair of groups first",
    "key_links_between_groups": 4,
-   "key_links": 19,
+   "key_links": 18,
    "required_before": 55,
    "notes": [
     "PyTorch로 모델을 학습(train.py, model.py)하고 export.py로 변환해 순수 C(run.c, runq.c)로 추론하며, Makefile과 테스트, README·문서가 이를 뒷받침하는 구조입니다.",
     "PyTorch로 TinyStories 데이터를 준비·학습(train.py, model.py)하고 export.py로 변환한 가중치를 순수 C 추론 코드(run.c, runq.c)가 실행하며, Makefile과 테스트, README·문서가 이를 빌드하고 설명하는 구조입니다.",
     "순수 C 추론 코드(run.c, runq.c)를 중심으로, PyTorch 학습·내보내기 스크립트가 .bin 가중치를 만들어 주고, Makefile과 Windows 지원 파일이 빌드를, 테스트와 README·문서가 이를 뒷받침하는 구조입니다."
    ]
-  }
+  },
+  "review_log": [
+   {
+    "tag": "review-r1",
+    "pair": [
+     "runq.c",
+     "export.py"
+    ],
+    "before": "export.py --produces/unknown/REQ--> runq.c",
+    "after": "runq.c --uses/a_to_b/REQ--> export.py",
+    "why": "human: runq.c reads the int8 .bin (version 2) that export.py writes; export.py does not produce runq.c"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "run.c",
+     "win.c"
+    ],
+    "before": "run.c --implements/unknown/REQ--> win.c",
+    "after": "run.c --uses/a_to_b--> win.c",
+    "why": "human: Windows-only mmap shim used via win.h; run.c-win.h is already required"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "runq.c",
+     "run.c"
+    ],
+    "before": "run.c --extends/unknown/REQ--> runq.c",
+    "after": "runq.c --extends/a_to_b/REQ--> run.c",
+    "why": "human: runq.c is the int8-quantized version of run.c"
+   },
+   {
+    "tag": "review-r1",
+    "rule": "explicit direction",
+    "filled": 4
+   }
+  ]
  },
  "groups": [
   {

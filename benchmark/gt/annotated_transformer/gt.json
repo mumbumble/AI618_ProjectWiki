@@ -9,7 +9,7 @@
     "other",
     "produces"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -17,7 +17,7 @@
     "span": "![](images/ModalNet-21.png)"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -28,7 +28,7 @@
     "other",
     "produces"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -36,7 +36,7 @@
     "span": "pute the dot products of the query with all keys, divide each by $\\sqrt{d_k}$, and apply a softmax function to obtain the weights on the values. ![](images/ModalNet-19.png)"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -47,7 +47,7 @@
     "other",
     "produces"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -55,7 +55,7 @@
     "span": "![](images/ModalNet-20.png)"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -85,7 +85,7 @@
     "other",
     "produces"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -93,7 +93,7 @@
     "span": "Annotated Transformer</h1> </center> <center> <p><a href=\"https://arxiv.org/abs/1706.03762\">Attention is All You Need </a></p> </center> <img src=\"images/aiayn.png\" width=\"70%\"/> * *v2022: Austin Huang, Suraj Subramanian, Jonathan Sum, Khalid Almubarak, and Stella Biderman.* * *[Original](htt"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -183,7 +183,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -191,7 +191,7 @@
     "span": "# see README.md - IWSLT needs to be downloaded manually to obtain 2016-01.tgz move-dataset: mkdir -p ~/.torchtext/cache/IWSLT2016 cp 2016-01.tgz ~/.torchtext/cache/IWSLT2016/. setup: move-dataset pip install -r requirements.txt"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -281,7 +281,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -289,7 +289,7 @@
     "span": "Lu % 2017: modified to support DOI links in bibliography. Now uses % natbib package rather than defining citation commands in this file. % Use with acl_natbib.bst bib style. -- Dan Gildea % This is the LaTeX style for ACL 2016. It contains Margaret Mitchell's % line number adaptations (ported by"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -384,16 +384,18 @@
    "personas": []
   },
   {
-   "a": "images/ModalNet-20.png",
-   "b": "images/ModalNet-21.png",
+   "a": "images/ModalNet-21.png",
+   "b": "images/ModalNet-20.png",
    "relation": "extends",
-   "also": [],
-   "direction": "unknown",
+   "also": [
+    "same_topic"
+   ],
+   "direction": "a_to_b",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: human: the full Transformer figure builds on the multi-head attention figure",
    "personas": []
   },
   {
@@ -410,16 +412,18 @@
    "personas": []
   },
   {
-   "a": "images/ModalNet-19.png",
-   "b": "images/ModalNet-20.png",
+   "a": "images/ModalNet-20.png",
+   "b": "images/ModalNet-19.png",
    "relation": "extends",
-   "also": [],
-   "direction": "unknown",
+   "also": [
+    "same_topic"
+   ],
+   "direction": "a_to_b",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: human: multi-head attention figure builds on the scaled dot-product figure",
    "personas": []
   }
  ],
@@ -621,7 +625,7 @@
   },
   "simplified": {
    "passes": 3,
-   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional; review: code-implements-paper links represent their pair of groups first",
    "key_links_between_groups": 3,
    "key_links": 9,
    "required_before": 16,
@@ -630,7 +634,34 @@
     "핵심은 the_annotated_transformer.py 스크립트이며, 이를 Makefile이 노트북·HTML로 변환하고 README가 설명하며, 노트북은 구조 다이어그램 이미지를 사용하고 writeup 폴더에는 ACL 논문 양식 파일이 따로 있다.",
     "핵심 소스 the_annotated_transformer.py를 Makefile이 노트북과 HTML로 변환하고, README와 구조도 이미지들이 이를 설명하며, writeup 폴더는 ACL 논문 양식 파일입니다."
    ]
-  }
+  },
+  "review_log": [
+   {
+    "tag": "review-r1",
+    "pair": [
+     "images/ModalNet-21.png",
+     "images/ModalNet-20.png"
+    ],
+    "before": "images/ModalNet-20.png --extends/unknown/REQ--> images/ModalNet-21.png",
+    "after": "images/ModalNet-21.png --extends/a_to_b/REQ--> images/ModalNet-20.png",
+    "why": "human: the full Transformer figure builds on the multi-head attention figure"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "images/ModalNet-20.png",
+     "images/ModalNet-19.png"
+    ],
+    "before": "images/ModalNet-19.png --extends/unknown/REQ--> images/ModalNet-20.png",
+    "after": "images/ModalNet-20.png --extends/a_to_b/REQ--> images/ModalNet-19.png",
+    "why": "human: multi-head attention figure builds on the scaled dot-product figure"
+   },
+   {
+    "tag": "review-r1",
+    "rule": "explicit direction",
+    "filled": 6
+   }
+  ]
  },
  "groups": [
   {

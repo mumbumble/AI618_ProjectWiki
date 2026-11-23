@@ -620,7 +620,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -628,7 +628,7 @@
     "span": "import setuptools with open(\"README.md\", \"r\", encoding=\"utf8\") as fh: long_description = fh.read() setuptools.setup( name=\"pykan\", version=\"0.2.8\", author=\"Ziming Liu\", author_email=\"zmliu@mit.edu\", description=\"Kolmogorov Arnold Networks\", long_description=long_descripti"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -661,7 +661,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -669,7 +669,7 @@
     "span": "`hello-kan` * KANs in Action: :ref:`api-demo`, :ref:`examples` * API (advanced): :ref:`api`. .. toctree:: :maxdepth: 1 :caption: Contents: intro.rst modules.rst demos.rst examples.rst interp.rst physics.rst community.rst Indices and tables ================== * :ref:`ge"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -683,7 +683,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -691,7 +691,7 @@
     "span": "emo`, :ref:`examples` * API (advanced): :ref:`api`. .. toctree:: :maxdepth: 1 :caption: Contents: intro.rst modules.rst demos.rst examples.rst interp.rst physics.rst community.rst Indices and tables ================== * :ref:`genindex` * :ref:`modindex` * :ref:`search`"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -727,7 +727,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -735,7 +735,7 @@
     "span": "dvanced): :ref:`api`. .. toctree:: :maxdepth: 1 :caption: Contents: intro.rst modules.rst demos.rst examples.rst interp.rst physics.rst community.rst Indices and tables ================== * :ref:`genindex` * :ref:`modindex` * :ref:`search`"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -1237,12 +1237,12 @@
    "b": "paper/kan.pdf",
    "relation": "implements",
    "also": [],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: direction filled: code implements paper",
    "personas": []
   },
   {
@@ -1389,16 +1389,16 @@
    "personas": []
   },
   {
-   "a": "paper/kan.pdf",
-   "b": "related_work/kan2_meets_science.pdf",
+   "a": "related_work/kan2_meets_science.pdf",
+   "b": "paper/kan.pdf",
    "relation": "extends",
    "also": [],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: KAN 2.0 extends KAN, not the reverse",
    "personas": []
   },
   {
@@ -2425,7 +2425,7 @@
   },
   "simplified": {
    "passes": 3,
-   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional; review: code-implements-paper links represent their pair of groups first",
    "key_links_between_groups": 4,
    "key_links": 23,
    "required_before": 75,
@@ -2434,7 +2434,34 @@
     "pykan 프로젝트는 kan 패키지(레이어·MultKAN·심볼릭·컴파일러)를 중심으로, 이를 설명하는 Sphinx 문서와 README, 사용법을 보여주는 튜토리얼 노트북, 패키징 파일, 그리고 KAN 논문들로 구성되어 있습니다.",
     "pykan 프로젝트는 kan/ 패키지(MultKAN을 중심으로 레이어·스플라인·심볼릭·컴파일러 모듈)를 핵심으로 두고, 이를 설명하는 Sphinx 문서와 README, 이를 사용하는 튜토리얼 노트북, 그리고 기반 논문·관련 연구 PDF, 설치 설정 파일로 구성됩니다."
    ]
-  }
+  },
+  "review_log": [
+   {
+    "tag": "review-r1",
+    "pair": [
+     "kan/KANLayer.py",
+     "paper/kan.pdf"
+    ],
+    "before": "kan/KANLayer.py --implements/unknown/REQ--> paper/kan.pdf",
+    "after": "kan/KANLayer.py --implements/a_to_b/REQ--> paper/kan.pdf",
+    "why": "direction filled: code implements paper"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "related_work/kan2_meets_science.pdf",
+     "paper/kan.pdf"
+    ],
+    "before": "paper/kan.pdf --extends/unknown/REQ--> related_work/kan2_meets_science.pdf",
+    "after": "related_work/kan2_meets_science.pdf --extends/a_to_b/REQ--> paper/kan.pdf",
+    "why": "KAN 2.0 extends KAN, not the reverse"
+   },
+   {
+    "tag": "review-r1",
+    "rule": "explicit direction",
+    "filled": 4
+   }
+  ]
  },
  "groups": [
   {
