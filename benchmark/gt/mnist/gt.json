@@ -12,7 +12,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -20,7 +20,7 @@
     "span": "## Available models - [Image classification (MNIST) using Convnets](./mnist/README.md) - [Word-level Language Modeling using RNN and Transformer](./word_language_model/README.md) - [Training Imagenet Classifiers with Popular Networks](./imagenet/README.md) - [Generative Adversarial Networks (DCGAN)"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -34,7 +34,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -42,7 +42,7 @@
     "span": "ed/ddp/README.md) and [RPC](./distributed/rpc) - [Several examples illustrating the C++ Frontend](cpp) - [Image Classification Using Forward-Forward](./mnist_forward_forward/README.md) - [Language Translation using Transformers](./language_translation/README.md)"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -135,11 +135,11 @@
    "relation": "uses",
    "also": [],
    "direction": "unknown",
-   "required": true,
+   "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: the document and the requirements file are both key-linked to the same code file",
    "personas": []
   },
   {
@@ -174,11 +174,11 @@
    "relation": "describes",
    "also": [],
    "direction": "unknown",
-   "required": true,
+   "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: the document and the requirements file are both key-linked to the same code file",
    "personas": []
   },
   {
@@ -278,11 +278,11 @@
    "relation": "describes",
    "also": [],
    "direction": "unknown",
-   "required": true,
+   "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: the document and the requirements file are both key-linked to the same code file",
    "personas": []
   },
   {
@@ -382,11 +382,11 @@
    "relation": "describes",
    "also": [],
    "direction": "unknown",
-   "required": true,
+   "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: the document and the requirements file are both key-linked to the same code file",
    "personas": []
   },
   {
@@ -756,16 +756,63 @@
   },
   "simplified": {
    "passes": 3,
-   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional; review: code-implements-paper links represent their pair of groups first",
    "key_links_between_groups": 4,
-   "key_links": 18,
+   "key_links": 14,
    "required_before": 15,
    "notes": [
     "루트 README가 네 개의 MNIST 예제 폴더(기본 CNN, Forward-Forward, Hogwild, RNN)를 소개하고, 각 폴더는 README·main.py·requirements.txt(Hogwild는 train.py 추가)로 독립적으로 구성됩니다.",
     "루트 README가 네 개의 MNIST 예제 폴더(기본 CNN, Forward-Forward, Hogwild, RNN)를 소개하고, 각 폴더는 README·main.py·requirements.txt(Hogwild는 train.py 추가)로 독립적으로 구성됩니다.",
     "PyTorch 예제 저장소의 루트 README가 MNIST 변형 네 가지(기본 CNN, Forward-Forward, Hogwild, RNN) 하위 폴더를 소개하며, 각 폴더는 README, main.py, requirements.txt(Hogwild는 train.py 포함)로 독립적으로 구성됩니다."
    ]
-  }
+  },
+  "review_log": [
+   {
+    "tag": "review-r1",
+    "rule": "explicit direction",
+    "filled": 2
+   },
+   {
+    "tag": "review-r1-tidy",
+    "pair": [
+     "mnist/README.md",
+     "mnist/requirements.txt"
+    ],
+    "before": "mnist/README.md --uses/unknown/REQ--> mnist/requirements.txt",
+    "after": "mnist/README.md --uses/unknown--> mnist/requirements.txt",
+    "why": "the document and the requirements file are both key-linked to the same code file"
+   },
+   {
+    "tag": "review-r1-tidy",
+    "pair": [
+     "mnist_rnn/README.md",
+     "mnist_rnn/requirements.txt"
+    ],
+    "before": "mnist_rnn/README.md --describes/unknown/REQ--> mnist_rnn/requirements.txt",
+    "after": "mnist_rnn/README.md --describes/unknown--> mnist_rnn/requirements.txt",
+    "why": "the document and the requirements file are both key-linked to the same code file"
+   },
+   {
+    "tag": "review-r1-tidy",
+    "pair": [
+     "mnist_forward_forward/README.md",
+     "mnist_forward_forward/requirements.txt"
+    ],
+    "before": "mnist_forward_forward/README.md --describes/unknown/REQ--> mnist_forward_forward/requirements.txt",
+    "after": "mnist_forward_forward/README.md --describes/unknown--> mnist_forward_forward/requirements.txt",
+    "why": "the document and the requirements file are both key-linked to the same code file"
+   },
+   {
+    "tag": "review-r1-tidy",
+    "pair": [
+     "mnist_hogwild/README.md",
+     "mnist_hogwild/requirements.txt"
+    ],
+    "before": "mnist_hogwild/README.md --describes/unknown/REQ--> mnist_hogwild/requirements.txt",
+    "after": "mnist_hogwild/README.md --describes/unknown--> mnist_hogwild/requirements.txt",
+    "why": "the document and the requirements file are both key-linked to the same code file"
+   }
+  ]
  },
  "groups": [
   {

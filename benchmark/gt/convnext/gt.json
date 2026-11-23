@@ -12,7 +12,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -20,7 +20,7 @@
     "span": "## Installation Please check [INSTALL.md](INSTALL.md) for installation instructions."
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -34,7 +34,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -42,7 +42,7 @@
     "span": "th` is not strictly required in evaluation, as the `DropPath` module in timm behaves the same during evaluation; but it is required in training. See [TRAINING.md](TRAINING.md) or our paper for the values used for different models."
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -56,7 +56,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -64,7 +64,7 @@
     "span": "# Training We provide ImageNet-1K training, ImageNet-22K pre-training, and ImageNet-1K fine-tuning commands here. Please check [INSTALL.md](INSTALL.md) for installation instructions first."
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -306,7 +306,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -314,7 +314,7 @@
     "span": "er/Swin-Transformer-Object-Detection/tree/6a979e2164e3fb0de0ca2546545013a4d71b2f7d). Our code has been tested with commit `6a979e2`. Please refer to [README.md](https://github.com/SwinTransformer/Swin-Transformer-Object-Detection/blob/6a979e2164e3fb0de0ca2546545013a4d71b2f7d/README.md) for installat"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -347,7 +347,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "both",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -355,7 +355,7 @@
     "span": "oft/unilm/tree/f8f3df80c65eb5e5fc6d6d3c9bd3137621795d1e/beit/semantic_segmentation). Our code has been tested with commit `8b57ed1`. Please refer to [README.md](https://github.com/microsoft/unilm/tree/f8f3df80c65eb5e5fc6d6d3c9bd3137621795d1e/beit/semantic_segmentation/README.md) for installation and"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -386,7 +386,7 @@
     "other",
     "uses"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -394,7 +394,7 @@
     "span": "_base_ = [ '../_base_/models/upernet_convnext.py', '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py' ] crop_size = (512, 512) model = dict( backbone=dict( type='ConvNeXt', in_chans=3, depths=[3, 3, 9, 3],"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -504,14 +504,16 @@
   {
    "a": "models/convnext.py",
    "b": "object_detection/mmdet/models/backbones/convnext.py",
-   "relation": "duplicate",
-   "also": [],
+   "relation": "same_method",
+   "also": [
+    "duplicate"
+   ],
    "direction": "both",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: human: same blocks; the detection copy drops the classifier head and returns multi-scale features",
    "personas": []
   },
   {
@@ -530,14 +532,14 @@
   {
    "a": "README.md",
    "b": "paper/convnext.pdf",
-   "relation": "implements",
+   "relation": "describes",
    "also": [],
-   "direction": "unknown",
-   "required": true,
+   "direction": "a_to_b",
+   "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: README describes the paper; it does not implement it; review: between groups only a tree of key links (at most groups-1); a code-implements-paper link takes this place",
    "personas": []
   },
   {
@@ -580,16 +582,16 @@
    "personas": []
   },
   {
-   "a": "paper/convnext.pdf",
-   "b": "semantic_segmentation/backbone/convnext.py",
+   "a": "semantic_segmentation/backbone/convnext.py",
+   "b": "paper/convnext.pdf",
    "relation": "implements",
    "also": [],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: order fixed: code implements paper",
    "personas": []
   },
   {
@@ -636,12 +638,12 @@
    "b": "paper/convnext.pdf",
    "relation": "implements",
    "also": [],
-   "direction": "unknown",
-   "required": false,
+   "direction": "a_to_b",
+   "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: main model code implements the paper",
    "personas": []
   },
   {
@@ -1204,7 +1206,7 @@
   },
   "simplified": {
    "passes": 3,
-   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional; review: code-implements-paper links represent their pair of groups first",
    "key_links_between_groups": 5,
    "key_links": 25,
    "required_before": 31,
@@ -1213,7 +1215,64 @@
     "루트의 README가 설치·학습 문서와 논문을 잇고, main.py가 데이터·엔진·모델을 조합하는 ImageNet 학습 코드가 중심이며, 같은 ConvNeXt 백본을 객체 탐지와 시맨틱 분할 하위 프로젝트가 각자 복제해 설정 파일로 활용하는 구조입니다.",
     "ConvNeXt 저장소는 main.py가 데이터·엔진·모델을 묶는 ImageNet 분류 코드를 중심으로, 같은 백본을 쓰는 객체 탐지·의미 분할 하위 프로젝트와 논문/관련 연구, 문서로 구성됩니다."
    ]
-  }
+  },
+  "review_log": [
+   {
+    "tag": "review-r1",
+    "pair": [
+     "models/convnext.py",
+     "paper/convnext.pdf"
+    ],
+    "before": "models/convnext.py --implements/unknown--> paper/convnext.pdf",
+    "after": "models/convnext.py --implements/a_to_b/REQ--> paper/convnext.pdf",
+    "why": "main model code implements the paper"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "README.md",
+     "paper/convnext.pdf"
+    ],
+    "before": "README.md --implements/unknown/REQ--> paper/convnext.pdf",
+    "after": "README.md --describes/a_to_b/REQ--> paper/convnext.pdf",
+    "why": "README describes the paper; it does not implement it"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "semantic_segmentation/backbone/convnext.py",
+     "paper/convnext.pdf"
+    ],
+    "before": "paper/convnext.pdf --implements/unknown--> semantic_segmentation/backbone/convnext.py",
+    "after": "semantic_segmentation/backbone/convnext.py --implements/a_to_b--> paper/convnext.pdf",
+    "why": "order fixed: code implements paper"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "models/convnext.py",
+     "object_detection/mmdet/models/backbones/convnext.py"
+    ],
+    "before": "models/convnext.py --duplicate/both/REQ--> object_detection/mmdet/models/backbones/convnext.py",
+    "after": "models/convnext.py --same_method/both/REQ--> object_detection/mmdet/models/backbones/convnext.py",
+    "why": "human: same blocks; the detection copy drops the classifier head and returns multi-scale features"
+   },
+   {
+    "tag": "review-r1",
+    "rule": "explicit direction",
+    "filled": 6
+   },
+   {
+    "tag": "review-r1-tidy",
+    "pair": [
+     "README.md",
+     "paper/convnext.pdf"
+    ],
+    "before": "README.md --describes/a_to_b/REQ--> paper/convnext.pdf",
+    "after": "README.md --describes/a_to_b--> paper/convnext.pdf",
+    "why": "between groups only a tree of key links (at most groups-1); a code-implements-paper link takes this place"
+   }
+  ]
  },
  "groups": [
   {

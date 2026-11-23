@@ -72,6 +72,34 @@ def test_evaluate_counts():
     assert agg["micro_precision"] == 2 / 3 and agg["macro_f1"] == r["f1"]
 
 
+def test_grouped_recall_and_hideable_precision():
+    # groups: lib = {lib.py, util.py}, tut = {t1.ipynb, t2.ipynb}; one required representative pair lib-tut
+    paths = ["lib.py", "util.py", "t1.ipynb", "t2.ipynb"]
+    imp = edge("t2.ipynb", "util.py", "uses")
+    imp.reason = "imports"                                   # a fact the system cannot hide
+    g = Graph(nodes=[node(p) for p in paths], groups=[], edges=[
+        edge("lib.py", "util.py", "uses"),                   # within-group required: found
+        imp,                                                 # a different real pair between lib and tut
+    ])
+    gt = GroundTruth(project="t", edges=[
+        GTEdge("lib.py", "util.py", "uses"),
+        GTEdge("t1.ipynb", "lib.py", "uses"),                # the representative cross-group pair: missed
+        GTEdge("t2.ipynb", "util.py", "uses", required=False, layer="explicit"),
+        GTEdge("t1.ipynb", "t2.ipynb", "same_topic"),         # within-group required: missed
+    ], groups=[{"name": "lib", "members": ["lib.py", "util.py"]},
+               {"name": "tut", "members": ["t1.ipynb", "t2.ipynb"]}])
+    r = evaluate(g, gt)
+    assert r["recall"] == 1 / 3                              # only lib-util among 3 required pairs
+    assert (r["grouped_found"], r["grouped_units"]) == (2, 3)  # lib-util + the lib-tut slot, of 2 within + 1 slot
+    assert r["precision_strict"] == 1 / 2                    # the optional import counts against strict precision
+    assert r["precision_strict_hideable"] == 1.0             # but not when only hideable edges count
+    assert r["direction_judged"] == 2 and r["direction_coverage"] == 1.0  # both matched pairs have a direction
+    assert r["edges_per_file"] == 2 / 4                      # 2 lines shown over 4 files
+    assert (r["between_predicted"], r["between_slots"], r["between_per_slot"]) == (1, 1, 1.0)  # one line per linked pair
+    agg = aggregate({"t": r})
+    assert agg["micro_recall_grouped"] == 2 / 3
+
+
 def test_group_scores():
     g = Graph(nodes=[Node(id=p, path=p, type="text", title=p, group=grp) for p, grp in
                      (("a.py", "g1"), ("b.py", "g1"), ("c.md", "g2"), ("d.md", None))], groups=[], edges=[])

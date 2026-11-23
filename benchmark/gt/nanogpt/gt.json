@@ -10,7 +10,7 @@
     "other",
     "uses"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -18,7 +18,7 @@
     "span": "# nanoGPT ![nanoGPT](assets/nanogpt.jpg) --- **Update Nov 2025** nanoGPT has a new and improved cousin called [nanochat](https://github.com/karpathy/nanochat). It is very likely you meant to use/find nanochat instead. nanoGPT (this repo) is now very old and deprecated but I will leave it up for p"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -30,7 +30,7 @@
     "other",
     "uses"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -38,7 +38,7 @@
     "span": "late training loop and `model.py` a ~300-line GPT model definition, which can optionally load the GPT-2 weights from OpenAI. That's it. ![repro124m](assets/gpt2_124M_loss.png) Because the code is so simple, it is very easy to hack to your needs, train new models from scratch, or finetune pretraine"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -354,7 +354,7 @@
     "other",
     "uses"
    ],
-   "direction": "unknown",
+   "direction": "both",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -362,7 +362,7 @@
     "span": "\"\"\" A much shorter version of train.py for benchmarking \"\"\" import os from contextlib import nullcontext import numpy as np import time import torch from model import GPTConfig, GPT batch_size = 12 block_size = 1024 bias = False real_data = True seed = 1337 device = 'cuda' # examples: 'cpu', 'cuda',"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -566,16 +566,18 @@
    "personas": []
   },
   {
-   "a": "model.py",
-   "b": "transformer_sizing.ipynb",
+   "a": "transformer_sizing.ipynb",
+   "b": "model.py",
    "relation": "describes",
-   "also": [],
-   "direction": "unknown",
+   "also": [
+    "same_topic"
+   ],
+   "direction": "a_to_b",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: human: the notebook estimates params/FLOPs of the GPT-2 architecture model.py defines",
    "personas": []
   },
   {
@@ -1457,7 +1459,7 @@
   },
   "simplified": {
    "passes": 3,
-   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional; review: code-implements-paper links represent their pair of groups first",
    "key_links_between_groups": 5,
    "key_links": 16,
    "required_before": 41,
@@ -1466,7 +1468,24 @@
     "nanoGPT는 model.py와 train.py(+configurator, sample, bench)를 중심으로, config 파일이 학습·평가 설정을 덮어쓰고 data/*/prepare.py가 만든 bin 데이터를 학습에 공급하며, README와 노트북이 이를 설명·분석하는 구조입니다.",
     "nanoGPT는 model.py·train.py·sample.py 핵심 코드를 중심으로, config 파일이 train.py의 설정을 덮어쓰고 data/*/prepare.py가 학습 데이터를 만들며, README와 노트북이 이를 설명하는 구조입니다."
    ]
-  }
+  },
+  "review_log": [
+   {
+    "tag": "review-r1",
+    "pair": [
+     "transformer_sizing.ipynb",
+     "model.py"
+    ],
+    "before": "model.py --describes/unknown/REQ--> transformer_sizing.ipynb",
+    "after": "transformer_sizing.ipynb --describes/a_to_b/REQ--> model.py",
+    "why": "human: the notebook estimates params/FLOPs of the GPT-2 architecture model.py defines"
+   },
+   {
+    "tag": "review-r1",
+    "rule": "explicit direction",
+    "filled": 3
+   }
+  ]
  },
  "groups": [
   {

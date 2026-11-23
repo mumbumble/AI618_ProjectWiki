@@ -51,7 +51,7 @@
     "other",
     "uses"
    ],
-   "direction": "unknown",
+   "direction": "both",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -59,7 +59,7 @@
     "span": "number in each node). ```python from micrograd import nn n = nn.Neuron(2) x = [Value(1.0), Value(-2.0)] y = n(x) dot = draw_dot(y) ``` ![2d neuron](gout.svg)"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -225,7 +225,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -233,7 +233,7 @@
     "span": "import setuptools with open(\"README.md\", \"r\") as fh: long_description = fh.read() setuptools.setup( name=\"micrograd\", version=\"0.1.0\", author=\"Andrej Karpathy\", author_email=\"andrej.karpathy@gmail.com\", description=\"A tiny scalar-valued autograd engine with a small PyTorch-li"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -256,19 +256,6 @@
    "also": [],
    "direction": "both",
    "required": false,
-   "layer": "semantic",
-   "evidence": {},
-   "source": "manual",
-   "note": "claude",
-   "personas": []
-  },
-  {
-   "a": "micrograd/__init__.py",
-   "b": "micrograd/engine.py",
-   "relation": "other",
-   "also": [],
-   "direction": "both",
-   "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
@@ -373,19 +360,6 @@
    "also": [],
    "direction": "unknown",
    "required": false,
-   "layer": "semantic",
-   "evidence": {},
-   "source": "manual",
-   "note": "claude",
-   "personas": []
-  },
-  {
-   "a": "micrograd/__init__.py",
-   "b": "micrograd/nn.py",
-   "relation": "other",
-   "also": [],
-   "direction": "both",
-   "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
@@ -636,16 +610,43 @@
   },
   "simplified": {
    "passes": 3,
-   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional; review: code-implements-paper links represent their pair of groups first",
    "key_links_between_groups": 4,
-   "key_links": 8,
+   "key_links": 6,
    "required_before": 16,
    "notes": [
     "micrograd는 engine.py의 Value 자동미분 엔진 위에 nn.py의 신경망을 쌓고, 이를 테스트와 데모/시각화 노트북으로 검증·시연하며 README와 setup.py로 소개·배포하는 구조입니다.",
     "micrograd는 engine.py의 Value 자동미분 엔진 위에 nn.py의 신경망을 쌓고, 이를 테스트와 데모/시각화 노트북으로 검증·시연하며 README와 setup.py가 문서화·설치를 담당하는 구조입니다.",
     "micrograd는 engine.py의 Value 자동미분 엔진 위에 nn.py의 신경망을 쌓은 핵심 라이브러리이고, 테스트·데모 노트북·그림·README/setup.py가 이를 둘러싸는 구조입니다."
    ]
-  }
+  },
+  "review_log": [
+   {
+    "tag": "review-r1",
+    "pair": [
+     "micrograd/__init__.py",
+     "micrograd/engine.py"
+    ],
+    "before": "micrograd/__init__.py --other/both/REQ--> micrograd/engine.py",
+    "after": "(deleted)",
+    "why": "__init__.py is an empty file (0 bytes); no content to relate"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "micrograd/__init__.py",
+     "micrograd/nn.py"
+    ],
+    "before": "micrograd/__init__.py --other/both/REQ--> micrograd/nn.py",
+    "after": "(deleted)",
+    "why": "__init__.py is an empty file (0 bytes); no content to relate"
+   },
+   {
+    "tag": "review-r1",
+    "rule": "explicit direction",
+    "filled": 2
+   }
+  ]
  },
  "groups": [
   {
