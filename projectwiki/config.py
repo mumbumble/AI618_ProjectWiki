@@ -53,6 +53,8 @@ class Config:
     drift_tau: float = 0.1  # kernel width on edge-pair similarity
     drift_margin: float = 0.2  # kernel value at which a similar judged edge changes this one
     drift_gain: float = 1.0  # weight of attraction minus repulsion added to the edge score
+    best_of_n_scales: list[float] = field(default_factory=lambda: [0.5, 1.0, 2.0])
+    best_of_n_prior_weight: float = 2.0  # weight given to each original edge score during selection
     align_l2: float = 1.0  # L2 weight of the Bradley–Terry preference model
     min_score: float = float("-inf")  # inferred edges scoring below this are dropped
 

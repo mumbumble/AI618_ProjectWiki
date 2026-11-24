@@ -126,9 +126,11 @@ def correct(out: Path, cfg: Config, record: Record | None = None, graph: Graph |
     return {"view": view, "graph": final, "feedback": len(feedback)}
 
 
-def render(out: Path, cfg: Config, final: Graph, record: Record, n_feedback: int) -> Path:
+def render(out: Path, cfg: Config, final: Graph, record: Record, n_feedback: int,
+           view_path: Path | None = None) -> Path:
     meta = {"root": record.root, "created": time.strftime("%Y-%m-%d %H:%M:%S"), "encoder": record.encoder_id,
             "clusterer": cfg.clusterer, "corrector": cfg.corrector, "feedback": n_feedback,
+            "revision": final.revision(),
             "llm": f"{cfg.llm_model} / {cfg.llm_small_model}" if cfg.llm else "off"}
     prefs_path = out / "prefs.json"
     if prefs_path.is_file():
@@ -137,7 +139,10 @@ def render(out: Path, cfg: Config, final: Graph, record: Record, n_feedback: int
             request = prefs.guide["priority_materials"]
             meta["setup"] = {"purpose": prefs.purpose, "priority": request,
                              "files": priority_nodes(final.nodes, request)}
-    return write_view(final, record, out / "view.html", meta)
+    comparison = out / "correction.json"
+    if cfg.corrector == "best-of-n" and comparison.is_file():
+        meta["selection"] = json.loads(comparison.read_text(encoding="utf-8")).get("selection")
+    return write_view(final, record, view_path or out / "view.html", meta)
 
 
 def view(out: Path) -> Path:

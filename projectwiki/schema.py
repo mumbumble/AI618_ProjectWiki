@@ -1,6 +1,8 @@
 """Data contracts shared by every pipeline stage."""
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import asdict, dataclass, field
 
 # Relation types the structure-generation judge (models/structure.py) may assign.
@@ -119,6 +121,10 @@ class Graph:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+    def revision(self) -> str:
+        data = json.dumps(self.to_dict(), sort_keys=True, ensure_ascii=False)
+        return hashlib.sha256(data.encode("utf-8")).hexdigest()
 
     @classmethod
     def from_dict(cls, d: dict) -> Graph:
