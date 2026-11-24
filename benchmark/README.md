@@ -191,6 +191,39 @@ benchmark/
 - **Δ vs baseline**: 같은 피드백을 받은 baseline(직접 고친 연결만 반영하는 방법)과의 held-out F1 차이입니다. 교정 방법이 정말 일반화하는지는 이 값으로 판단합니다. 가상 사용자는 주로 틀린 쌍을 고치고 고친 쌍은 held-out에서 빠지므로, 아무것도 일반화하지 않아도 held-out F1은 오르기 때문입니다.
 - **부작용**: 맞는 연결을 지워 버린 비율과, 틀린 연결을 알아서 지운 비율입니다.
 
+### 목적별 정답 (`purposes.json`, 선택)
+
+같은 폴더라도 사용자의 목적에 따라 필요한 연결이 다릅니다. 목적을 정한 프로젝트는 `gt.json` 옆에 `purposes.json`을 둡니다. `gt.json`은 그대로 두고, 목적마다 정답 연결 중 무엇이 필요한지만 따로 적습니다.
+
+```json
+{"project": "mock_plant_fewshot",
+ "purposes": [{"id": "talk", "base": "docs",
+               "text": "다음 주 랩미팅 발표 준비 중. 방법 슬라이드는 다 만들었고, 결과 슬라이드에 넣을 표랑 그림이 어디서 나왔는지 확인하고 싶음",
+               "needed": [["src/evaluate.py", "results/main_results.csv"]],
+               "optional": [["paper/leafproto_draft_v2.pdf", "paper/leafproto_draft_v1.pdf"]],
+               "notes": {"...": "판단 이유"}}],
+ "review_log": [{"date": "...", "by": "human", "what": "..."}]}
+```
+
+- `text`: 사용자가 쓴 목적 문장입니다. `projectwiki build --purpose`에 그대로 넣는 문장입니다.
+- `needed`: 이 목적에 꼭 보여야 하는 연결입니다. 숨기면 감점됩니다.
+- `optional`: 보여도 숨겨도 되는 연결입니다. 도움은 되지만 자잘하거나 사람마다 판단이 갈리는 연결입니다.
+- 그 밖의 쌍은 이 목적에 불필요합니다. 다른 정답 연결도 여기에 들어갑니다.
+- `base`: 태그를 시작한 관점(`docs` 또는 `code`)입니다.
+
+`gt_format.purpose_view`가 목적 하나를 기준으로 정답을 바꿉니다. needed는 핵심 연결, optional은 약한 연결, 나머지는 관계 없음이 됩니다. 그래서 모든 지표를 그대로 쓸 수 있습니다. `run_eval.py`는 `purposes.json`이 있는 프로젝트에서 목적마다 가상 사용자(`purpose:<id>`)를 하나씩 더 돌려 `RESULTS.md`의 "purposes" 절에 보고합니다. 그래프는 다시 만들지 않습니다. 같은 그래프에서 시작해도 목적에 따라 교정 방법이 무엇을 숨기는지 비교할 수 있습니다.
+
+현재 목적이 있는 프로젝트는 2개, 목적은 4개입니다.
+
+| 프로젝트 | 목적 | 필요 | 선택 |
+|---|---|---:|---:|
+| mock_plant_fewshot | talk (발표 준비, docs) | 10 | 4 |
+| mock_plant_fewshot | handover (코드 인수인계, code) | 19 | 3 |
+| mock_vr_text_entry | advisor (지도교수 중간보고, docs) | 6 | 7 |
+| mock_vr_text_entry | rerun (앱·로거 수정 영향, code) | 6 | 3 |
+
+만든 방법: Claude가 관점 태그와 목적 문장으로 초안을 만들고, 팀원 한 명이 애매한 쌍 24개를 Claude와 함께 하나씩 보고 필요·선택·불필요를 정했습니다. 사용자 스터디도 같은 파일로 채점합니다.
+
 ## 6. 실행
 
 ```bash
