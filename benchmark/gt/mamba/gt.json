@@ -10,7 +10,7 @@
     "other",
     "uses"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -18,7 +18,7 @@
     "span": "# Mamba ![Mamba](assets/selection.png \"Selective State Space\") > **Mamba: Linear-Time Sequence Modeling with Selective State Spaces**\\ > Albert Gu*, Tri Dao*\\ > Paper: https://arxiv.org/abs/2312.00752 ![Mamba-2](assets/ssd_algorithm.png \"State Space Dual Model\") > **Transformers are SSMs: Generali"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -30,7 +30,7 @@
     "other",
     "uses"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -38,7 +38,7 @@
     "span": "> **Mamba: Linear-Time Sequence Modeling with Selective State Spaces**\\ > Albert Gu*, Tri Dao*\\ > Paper: https://arxiv.org/abs/2312.00752 ![Mamba-2](assets/ssd_algorithm.png \"State Space Dual Model\") > **Transformers are SSMs: Generalized Models and Efficient Algorithms**\\ > **Through Structure"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -487,14 +487,14 @@
     "extends"
    ],
    "direction": "a_to_b",
-   "required": true,
+   "required": false,
    "layer": "explicit",
    "evidence": {
     "file": "mamba_ssm/modules/mamba2.py",
     "span": "ed.tensor_parallel import ColumnParallelLinear, RowParallelLinear from mamba_ssm.distributed.distributed_utils import all_reduce, reduce_scatter from mamba_ssm.ops.triton.ssd_combined import mamba_chunk_scan_combined from mamba_ssm.ops.triton.ssd_combined import mamba_split_conv1d_scan_combined from"
    },
    "source": "static-analysis",
-   "note": "imports",
+   "note": "imports; review: between groups only a tree of key links (at most groups-1); a code-implements-paper link takes this place",
    "personas": []
   },
   {
@@ -755,7 +755,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -763,7 +763,7 @@
     "span": "as _bdist_wheel import torch from torch.utils.cpp_extension import ( BuildExtension, CUDAExtension, CUDA_HOME, HIP_HOME ) with open(\"README.md\", \"r\", encoding=\"utf-8\") as fh: long_description = fh.read() this_dir = os.path.dirname(os.path.abspath(__file__)) PACKAGE_NAME = \"mamba"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -827,14 +827,17 @@
   {
    "a": "assets/ssd_algorithm.png",
    "b": "related_work/mamba2_transformers_are_ssms.pdf",
-   "relation": "duplicate",
-   "also": [],
-   "direction": "both",
+   "relation": "supports",
+   "also": [
+    "describes",
+    "same_topic"
+   ],
+   "direction": "a_to_b",
    "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: a figure from the paper, not a duplicate of the paper",
    "personas": []
   },
   {
@@ -921,11 +924,11 @@
    "relation": "implements",
    "also": [],
    "direction": "unknown",
-   "required": true,
+   "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: between groups only a tree of key links (at most groups-1); a code-implements-paper link takes this place",
    "personas": []
   },
   {
@@ -1049,13 +1052,15 @@
    "a": "README.md",
    "b": "mamba_ssm/__init__.py",
    "relation": "describes",
-   "also": [],
-   "direction": "unknown",
+   "also": [
+    "uses"
+   ],
+   "direction": "a_to_b",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: human: README shows 'from mamba_ssm import Mamba', the API __init__.py exports",
    "personas": []
   },
   {
@@ -1063,12 +1068,12 @@
    "b": "paper/mamba.pdf",
    "relation": "implements",
    "also": [],
-   "direction": "unknown",
-   "required": false,
+   "direction": "a_to_b",
+   "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: selective scan is the paper's core op",
    "personas": []
   },
   {
@@ -1124,16 +1129,18 @@
    "personas": []
   },
   {
-   "a": "paper/mamba.pdf",
-   "b": "tests/ops/test_selective_scan.py",
-   "relation": "describes",
-   "also": [],
-   "direction": "unknown",
+   "a": "tests/ops/test_selective_scan.py",
+   "b": "paper/mamba.pdf",
+   "relation": "supports",
+   "also": [
+    "same_topic"
+   ],
+   "direction": "a_to_b",
    "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: a test of the paper's op; the paper does not describe the test",
    "personas": []
   },
   {
@@ -1141,12 +1148,12 @@
    "b": "paper/mamba.pdf",
    "relation": "implements",
    "also": [],
-   "direction": "unknown",
-   "required": false,
+   "direction": "a_to_b",
+   "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: Mamba block implements the paper",
    "personas": []
   },
   {
@@ -1321,14 +1328,17 @@
   {
    "a": "assets/selection.png",
    "b": "paper/mamba.pdf",
-   "relation": "duplicate",
-   "also": [],
-   "direction": "both",
+   "relation": "supports",
+   "also": [
+    "describes",
+    "same_topic"
+   ],
+   "direction": "a_to_b",
    "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: a figure from the paper, not a duplicate of the paper",
    "personas": []
   },
   {
@@ -1451,14 +1461,16 @@
   {
    "a": "mamba_ssm/modules/mamba2.py",
    "b": "mamba_ssm/modules/ssd_minimal.py",
-   "relation": "implements",
-   "also": [],
-   "direction": "unknown",
+   "relation": "same_method",
+   "also": [
+    "implements"
+   ],
+   "direction": "both",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: human: ssd_minimal is the paper's Listing 1 reference of SSD; mamba2.py does not import it",
    "personas": []
   },
   {
@@ -1540,16 +1552,16 @@
    "personas": []
   },
   {
-   "a": "paper/mamba.pdf",
-   "b": "related_work/mamba2_transformers_are_ssms.pdf",
+   "a": "related_work/mamba2_transformers_are_ssms.pdf",
+   "b": "paper/mamba.pdf",
    "relation": "extends",
    "also": [],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: Mamba-2 extends Mamba, not the reverse",
    "personas": []
   },
   {
@@ -2006,7 +2018,7 @@
   },
   "simplified": {
    "passes": 3,
-   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional; review: code-implements-paper links represent their pair of groups first",
    "key_links_between_groups": 5,
    "key_links": 19,
    "required_before": 58,
@@ -2015,7 +2027,114 @@
     "README가 소개하는 mamba_ssm 패키지는 모델/블록 → Mamba·Mamba-2 믹서 → selective scan·Triton·CUDA 커널로 이어지는 계층 구조이며, 벤치마크·평가·테스트가 이를 사용하고 논문 PDF들이 각 구현의 근거가 됩니다.",
     "Mamba 프로젝트는 mamba_ssm 패키지가 모델 조립(mixer_seq_simple, Block) → Mamba/Mamba-2 믹서 → CUDA/Triton 연산 커널 순으로 쌓여 있고, 생성·평가·테스트 코드와 논문, README 문서가 이를 둘러싸는 구조입니다."
    ]
-  }
+  },
+  "review_log": [
+   {
+    "tag": "review-r1",
+    "pair": [
+     "mamba_ssm/modules/mamba_simple.py",
+     "paper/mamba.pdf"
+    ],
+    "before": "mamba_ssm/modules/mamba_simple.py --implements/unknown--> paper/mamba.pdf",
+    "after": "mamba_ssm/modules/mamba_simple.py --implements/a_to_b/REQ--> paper/mamba.pdf",
+    "why": "Mamba block implements the paper"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "mamba_ssm/ops/selective_scan_interface.py",
+     "paper/mamba.pdf"
+    ],
+    "before": "mamba_ssm/ops/selective_scan_interface.py --implements/unknown--> paper/mamba.pdf",
+    "after": "mamba_ssm/ops/selective_scan_interface.py --implements/a_to_b/REQ--> paper/mamba.pdf",
+    "why": "selective scan is the paper's core op"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "related_work/mamba2_transformers_are_ssms.pdf",
+     "paper/mamba.pdf"
+    ],
+    "before": "paper/mamba.pdf --extends/unknown/REQ--> related_work/mamba2_transformers_are_ssms.pdf",
+    "after": "related_work/mamba2_transformers_are_ssms.pdf --extends/a_to_b/REQ--> paper/mamba.pdf",
+    "why": "Mamba-2 extends Mamba, not the reverse"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "assets/selection.png",
+     "paper/mamba.pdf"
+    ],
+    "before": "assets/selection.png --duplicate/both--> paper/mamba.pdf",
+    "after": "assets/selection.png --supports/a_to_b--> paper/mamba.pdf",
+    "why": "a figure from the paper, not a duplicate of the paper"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "assets/ssd_algorithm.png",
+     "related_work/mamba2_transformers_are_ssms.pdf"
+    ],
+    "before": "assets/ssd_algorithm.png --duplicate/both--> related_work/mamba2_transformers_are_ssms.pdf",
+    "after": "assets/ssd_algorithm.png --supports/a_to_b--> related_work/mamba2_transformers_are_ssms.pdf",
+    "why": "a figure from the paper, not a duplicate of the paper"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "tests/ops/test_selective_scan.py",
+     "paper/mamba.pdf"
+    ],
+    "before": "paper/mamba.pdf --describes/unknown--> tests/ops/test_selective_scan.py",
+    "after": "tests/ops/test_selective_scan.py --supports/a_to_b--> paper/mamba.pdf",
+    "why": "a test of the paper's op; the paper does not describe the test"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "README.md",
+     "mamba_ssm/__init__.py"
+    ],
+    "before": "README.md --describes/unknown/REQ--> mamba_ssm/__init__.py",
+    "after": "README.md --describes/a_to_b/REQ--> mamba_ssm/__init__.py",
+    "why": "human: README shows 'from mamba_ssm import Mamba', the API __init__.py exports"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "mamba_ssm/modules/mamba2.py",
+     "mamba_ssm/modules/ssd_minimal.py"
+    ],
+    "before": "mamba_ssm/modules/mamba2.py --implements/unknown/REQ--> mamba_ssm/modules/ssd_minimal.py",
+    "after": "mamba_ssm/modules/mamba2.py --same_method/both/REQ--> mamba_ssm/modules/ssd_minimal.py",
+    "why": "human: ssd_minimal is the paper's Listing 1 reference of SSD; mamba2.py does not import it"
+   },
+   {
+    "tag": "review-r1",
+    "rule": "explicit direction",
+    "filled": 3
+   },
+   {
+    "tag": "review-r1-tidy",
+    "pair": [
+     "mamba_ssm/modules/mamba2.py",
+     "related_work/mamba2_transformers_are_ssms.pdf"
+    ],
+    "before": "mamba_ssm/modules/mamba2.py --implements/unknown/REQ--> related_work/mamba2_transformers_are_ssms.pdf",
+    "after": "mamba_ssm/modules/mamba2.py --implements/unknown--> related_work/mamba2_transformers_are_ssms.pdf",
+    "why": "between groups only a tree of key links (at most groups-1); a code-implements-paper link takes this place"
+   },
+   {
+    "tag": "review-r1-tidy",
+    "pair": [
+     "mamba_ssm/modules/mamba2.py",
+     "mamba_ssm/ops/triton/ssd_combined.py"
+    ],
+    "before": "mamba_ssm/modules/mamba2.py --uses/a_to_b/REQ--> mamba_ssm/ops/triton/ssd_combined.py",
+    "after": "mamba_ssm/modules/mamba2.py --uses/a_to_b--> mamba_ssm/ops/triton/ssd_combined.py",
+    "why": "between groups only a tree of key links (at most groups-1); a code-implements-paper link takes this place"
+   }
+  ]
  },
  "groups": [
   {

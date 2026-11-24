@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT / "tests"))
 from projectwiki import pipeline  # noqa: E402
 from projectwiki.schema import Edge, Evidence, Graph, Node, Preferences  # noqa: E402
 from graph_metrics import aggregate, evaluate, group_scores  # noqa: E402
-from gt_format import GroundTruth, GTEdge, category, pair_key  # noqa: E402
+from gt_format import GroundTruth, GTEdge, category, check_purposes, load_purposes, pair_key, purpose_view  # noqa: E402
 from projectwiki.srcs.record import Record  # noqa: E402
 from feedback_sim import persona_view, simulate  # noqa: E402
 from test_pipeline import make_cfg, project  # noqa: E402,F401  (pytest fixture)
@@ -72,6 +72,34 @@ def test_evaluate_counts():
     assert agg["micro_precision"] == 2 / 3 and agg["macro_f1"] == r["f1"]
 
 
+def test_grouped_recall_and_hideable_precision():
+    # groups: lib = {lib.py, util.py}, tut = {t1.ipynb, t2.ipynb}; one required representative pair lib-tut
+    paths = ["lib.py", "util.py", "t1.ipynb", "t2.ipynb"]
+    imp = edge("t2.ipynb", "util.py", "uses")
+    imp.reason = "imports"                                   # a fact the system cannot hide
+    g = Graph(nodes=[node(p) for p in paths], groups=[], edges=[
+        edge("lib.py", "util.py", "uses"),                   # within-group required: found
+        imp,                                                 # a different real pair between lib and tut
+    ])
+    gt = GroundTruth(project="t", edges=[
+        GTEdge("lib.py", "util.py", "uses"),
+        GTEdge("t1.ipynb", "lib.py", "uses"),                # the representative cross-group pair: missed
+        GTEdge("t2.ipynb", "util.py", "uses", required=False, layer="explicit"),
+        GTEdge("t1.ipynb", "t2.ipynb", "same_topic"),         # within-group required: missed
+    ], groups=[{"name": "lib", "members": ["lib.py", "util.py"]},
+               {"name": "tut", "members": ["t1.ipynb", "t2.ipynb"]}])
+    r = evaluate(g, gt)
+    assert r["recall"] == 1 / 3                              # only lib-util among 3 required pairs
+    assert (r["grouped_found"], r["grouped_units"]) == (2, 3)  # lib-util + the lib-tut slot, of 2 within + 1 slot
+    assert r["precision_strict"] == 1 / 2                    # the optional import counts against strict precision
+    assert r["precision_strict_hideable"] == 1.0             # but not when only hideable edges count
+    assert r["direction_judged"] == 2 and r["direction_coverage"] == 1.0  # both matched pairs have a direction
+    assert r["edges_per_file"] == 2 / 4                      # 2 lines shown over 4 files
+    assert (r["between_predicted"], r["between_slots"], r["between_per_slot"]) == (1, 1, 1.0)  # one line per linked pair
+    agg = aggregate({"t": r})
+    assert agg["micro_recall_grouped"] == 2 / 3
+
+
 def test_group_scores():
     g = Graph(nodes=[Node(id=p, path=p, type="text", title=p, group=grp) for p, grp in
                      (("a.py", "g1"), ("b.py", "g1"), ("c.md", "g2"), ("d.md", None))], groups=[], edges=[])
@@ -99,3 +127,29 @@ def test_simulate_keeps_edits_and_scores_held_out(project, tmp_path):
                     assert v is None or v == 1.0  # explicit edits, relation fixes included, are always replayed
     code_view = persona_view(gt, "code")
     assert all(category(e.a) in {"code", "notebook", "config"} for e in code_view.edges)
+
+
+def test_purpose_view():
+    gt = GroundTruth(project="t", edges=[GTEdge("a.py", "b.py", "uses"), GTEdge("a.py", "r.md", "describes"),
+                                         GTEdge("p.pdf", "r.md", "supports", required=False)],
+                     negatives=[{"a": "a.py", "b": "x.md"}])
+    purpose = {"id": "talk", "text": "results for a talk", "needed": [["r.md", "p.pdf"]], "optional": [["a.py", "r.md"]]}
+    assert check_purposes(gt, [purpose]) == []
+    view = purpose_view(gt, purpose)
+    edges = view.edge_by_key
+    assert edges[pair_key("p.pdf", "r.md")].required  # needed: required even if the edge was optional
+    assert not edges[pair_key("a.py", "r.md")].required  # optional: never penalized
+    assert pair_key("a.py", "b.py") not in edges and pair_key("a.py", "b.py") in view.negative_keys
+    assert pair_key("a.py", "x.md") in view.negative_keys and len(gt.edges) == 3  # the input is left unchanged
+    bad = dict(purpose, needed=[["a.py", "zzz.py"]], optional=[["a.py", "zzz.py"]])
+    assert len(check_purposes(gt, [bad, bad])) == 5  # per copy: unknown pair, needed and optional; plus repeated id
+
+
+def test_purpose_files_match_ground_truth():
+    gt_root = EVAL.parent / "gt"
+    found = 0
+    for gt_file in sorted(gt_root.glob("*/gt.json")):
+        purposes = load_purposes(gt_file.parent)
+        found += len(purposes)
+        assert check_purposes(GroundTruth.load(gt_file), purposes) == [], gt_file.parent.name
+    assert found >= 4

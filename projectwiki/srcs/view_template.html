@@ -7,59 +7,120 @@
 <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
 <style>
 :root {
-  --bg: #ffffff; --panel: #f6f7f9; --text: #1f2328; --muted: #656d76; --line: #d8dee4;
-  --accent: #2e7dd1; --ok: #2e9d4a; --bad: #d9534f; --chip: #eaeef2;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0f1115; --panel: #171a21; --text: #e6e8eb; --muted: #9aa3ad; --line: #2b313b;
-    --accent: #5aa2f0; --ok: #4cc26a; --bad: #f06a66; --chip: #232833;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0f1115; --panel: #171a21; --text: #e6e8eb; --muted: #9aa3ad; --line: #2b313b;
-  --accent: #5aa2f0; --ok: #4cc26a; --bad: #f06a66; --chip: #232833;
+  color-scheme: dark;
+  --bg: #1e1e1e; --panel: #262626; --text: #dedede; --muted: #a3a3a3; --line: #363636;
+  --accent: #b49af4; --ok: #7cbb9c; --bad: #e98b90; --chip: #333136; --rail: #202020;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
-  font: 14px/1.5 -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; }
-header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 8px 16px;
-  border-bottom: 1px solid var(--line); background: var(--panel); }
-header h1 { font-size: 16px; margin: 0; }
-header .meta { color: var(--muted); font-size: 12px; }
-header label { font-size: 13px; color: var(--muted); display: inline-flex; gap: 4px; align-items: center; }
-header input[type=search] { padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px;
-  background: var(--bg); color: var(--text); width: 200px; }
-main { display: flex; height: calc(100% - 50px); }
-#graphwrap { flex: 1; min-width: 0; position: relative; }
+  font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif; }
+body { display: flex; flex-direction: column; overflow: hidden; }
+button, input, select { font: inherit; color: inherit; }
+button, select { border: 1px solid var(--line); background: var(--chip); border-radius: 5px; padding: 5px 10px; cursor: pointer; }
+button:hover { background: #403b49; }
+button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.primary { background: #7658b9; color: #fff; border-color: #8768ca; }
+button.active { background: #493b65; color: #e1d3ff; border-color: #8062ba; }
+input[type=checkbox] { accent-color: #a88be5; }
+header { display: flex; flex: none; align-items: center; height: 43px; padding: 0 16px; background: var(--rail); border-bottom: 1px solid var(--line); gap: 10px; }
+header h1 { font-size: 14px; font-weight: 600; margin: 0; letter-spacing: .2px; }
+.brand { color: var(--accent); font-size: 22px; }
+.header-note { margin-left: auto; color: var(--muted); font-size: 12px; }
+.workspace { flex: 1; min-height: 0; display: flex; }
+.ribbon { width: 46px; flex: none; background: var(--rail); border-right: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; padding: 10px 0; gap: 10px; }
+.icon-button { border: 0; background: transparent; width: 32px; height: 32px; padding: 6px; color: var(--muted); display: inline-flex; align-items: center; justify-content: center; }
+.icon-button svg, .tab svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.ribbon .active { color: var(--accent); background: #38303f; }
+.ribbon .bottom { margin-top: auto; }
+.explorer { width: 255px; flex: none; background: var(--panel); border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+.pane-title { height: 43px; padding: 10px 16px; border-bottom: 1px solid var(--line); font-weight: 500; display: flex; align-items: center; gap: 8px; flex: none; }
+.pane-title .hint { margin-left: auto; }
+.search-box { margin: 16px 12px 8px; }
+#search { width: 100%; padding: 7px 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 5px; }
+#search::placeholder { color: var(--muted); }
+.explorer-scroll { overflow: auto; padding: 4px 10px 16px; }
+.section-title { font-size: 12px; letter-spacing: .6px; color: var(--muted); margin: 20px 8px 8px; font-weight: 600; }
+.vault-name { padding: 8px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-tree details { margin-left: 10px; }
+.file-tree > details { margin-left: 0; }
+.file-tree summary { cursor: pointer; color: #bdbdbd; padding: 4px; overflow-wrap: anywhere; }
+.file { border: 0; background: transparent; display: flex; align-items: center; gap: 7px; width: 100%; text-align: left; padding: 5px 8px; color: #bcbcbc; }
+.file span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file .file-icon { font-size: 12px; color: #888; flex: none; width: 16px; }
+.file.selected { background: #3a3248; color: #d4bfff; }
+.file-row, .group-row { display: flex; align-items: center; gap: 5px; }
+.file-row .file { flex: 1; min-width: 0; }
+.file-row.is-hidden .file { opacity: .55; }
+.visibility-switch { position: relative; flex: none; width: 30px; height: 18px; padding: 0; border: 1px solid #65616b; border-radius: 12px; background: #4a474f; vertical-align: middle; }
+.visibility-switch::after { content: ""; position: absolute; width: 12px; height: 12px; left: 2px; top: 2px; border-radius: 50%; background: #e6e3eb; }
+.visibility-switch[aria-checked="true"] { background: #8060bd; border-color: #a88be5; }
+.visibility-switch[aria-checked="true"]::after { left: 14px; background: #fff; }
+.visibility-switch[data-partial="true"] { background: #5e4b7b; border-style: dashed; }
+.visibility-switch[data-partial="true"]::after { left: 8px; }
+.visibility-switch:hover { border-color: var(--accent); }
+.group-row .visibility-switch { margin-right: 4px; }
+.group-row .item { min-width: 0; flex: 1; }
+.graph-empty { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; color: var(--muted); pointer-events: none; }
+.graph-empty[hidden] { display: none; }
+#legend .item { display: flex; width: 100%; gap: 8px; align-items: center; text-align: left; padding: 6px 8px; border: 0; background: transparent; }
+#legend .item:hover, .file:hover { background: var(--chip); }
+#legend .item .hint { margin-left: auto; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.tabbar { height: 43px; background: var(--rail); display: flex; padding: 5px 8px 0; gap: 4px; border-bottom: 1px solid var(--line); flex: none; }
+.tab { display: flex; align-items: center; gap: 9px; padding: 6px 16px; min-width: 165px; border: 1px solid var(--line); border-bottom: 0; background: var(--bg); border-radius: 7px 7px 0 0; color: var(--text); }
+.tab svg { color: var(--accent); }
+.tab-close { margin-left: auto; color: var(--muted); }
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 8px 20px; border-bottom: 1px solid #2b2b2b; flex-wrap: wrap; }
+.breadcrumb { color: var(--muted); font-size: 13px; }
+.breadcrumb strong { color: var(--text); font-weight: 500; }
+.tools { display: flex; align-items: center; gap: 8px; }
+.graph-options { position: relative; }
+.graph-options summary { cursor: pointer; padding: 5px 10px; color: var(--muted); }
+.options-panel { position: absolute; right: 0; top: 36px; width: 195px; background: var(--panel); padding: 12px; border: 1px solid var(--line); border-radius: 7px; z-index: 5; box-shadow: 0 8px 24px #0006; }
+.options-panel label { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+#graphwrap { flex: 1; min-height: 200px; position: relative; }
 #graph { position: absolute; inset: 0; }
-#legend { position: absolute; left: 12px; top: 12px; max-width: 280px; max-height: 60%; overflow: auto;
-  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px; font-size: 12px; z-index: 2; }
-#legend .item { display: flex; gap: 6px; align-items: center; cursor: pointer; padding: 2px 4px; border-radius: 4px; }
-#legend .item:hover { background: var(--chip); }
-.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
-aside { width: 380px; max-width: 45vw; border-left: 1px solid var(--line); background: var(--panel);
-  overflow: auto; padding: 12px 16px; }
-aside h2 { font-size: 15px; margin: 4px 0 8px; word-break: break-all; }
-aside h3 { font-size: 13px; margin: 16px 0 6px; color: var(--muted); }
+#graph3d { position: absolute; inset: 0; overflow: hidden; }
+#graph[hidden], #graph3d[hidden] { display: none; }
+.view-mode { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; padding: 2px; background: var(--rail); }
+.view-mode button { border: 0; background: transparent; padding: 3px 9px; color: var(--muted); }
+.view-mode button[aria-pressed="true"] { background: #493b65; color: #e1d3ff; }
+.graph-help { position: absolute; left: 20px; bottom: 18px; font-size: 12px; color: var(--muted); pointer-events: none; max-width: calc(100% - 185px); }
+.orientation-cue { position: absolute; right: 20px; top: 18px; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; pointer-events: none; }
+.orientation-cue[hidden], #reset3d[hidden] { display: none; }
+.orientation-cue svg { width: 18px; height: 28px; stroke: var(--accent); fill: none; stroke-width: 1.5; }
+.graph-controls #reset3d { font-size: 13px; border-left: 1px solid var(--line); }
+.graph-error { color: #ffb6bd; max-width: 430px; padding: 16px; pointer-events: auto; }
+.graph-caption { position: absolute; left: 22px; top: 18px; pointer-events: none; color: var(--muted); font-size: 12px; }
+.graph-caption strong { display: block; font-size: 16px; color: #cecece; font-weight: 500; margin-bottom: 2px; }
+.graph-controls { position: absolute; right: 18px; bottom: 18px; display: flex; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 3px; }
+.graph-controls button { background: transparent; border: 0; font-size: 18px; min-width: 32px; }
+.graph-controls button:last-child { font-size: 13px; border-left: 1px solid var(--line); }
+.inspector { width: 330px; flex: none; background: var(--panel); border-left: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+.inspector-scroll { overflow: auto; padding: 20px; }
+.inspector h2 { font-size: 18px; font-weight: 600; margin: 0 0 8px; overflow-wrap: anywhere; }
+.inspector h3 { font-size: 13px; font-weight: 600; margin: 24px 0 10px; color: #bdbdbd; }
+.empty-state { padding: 24px 0 30px; }
+.empty-symbol { color: var(--accent); font-size: 30px; margin-bottom: 18px; }
+.empty-state p { color: var(--muted); }
+.path { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.badge { display: inline-block; font-size: 12px; padding: 2px 7px; border-radius: 4px; background: var(--chip); }
+.badge.direct { background: #483c62; color: #d9c6ff; }
+.badge.user { background: #304b3c; color: #a4ddbe; }
+.badge.removed { background: #573439; color: #ffb6bd; }
+blockquote { margin: 8px 0 16px; padding: 8px 12px; border-left: 2px solid #77629d; background: #222; font-size: 13px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.preview { font: 13px/1.7 ui-monospace, Consolas, monospace; white-space: pre-wrap; background: #202020; padding: 12px; border-radius: 5px; max-height: 280px; overflow: auto; border: 1px solid var(--line); }
+.row { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.row select { max-width: 100%; }
+.edge-link { cursor: pointer; display: block; width: 100%; text-align: left; border: 0; background: transparent; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 13px; overflow-wrap: anywhere; }
+.edge-link:hover { color: var(--accent); background: transparent; }
+.feedback-section { border-top: 1px solid var(--line); margin-top: 24px; }
+.fb { font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 #priorityFiles { display: grid; gap: 4px; max-height: 180px; overflow: auto; margin-bottom: 12px; }
 #priorityFiles button { text-align: left; overflow-wrap: anywhere; }
 #setupSummary p { margin: 6px 0; overflow-wrap: anywhere; white-space: pre-wrap; }
-.path { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--muted); word-break: break-all; }
-.badge { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 10px; background: var(--chip); margin-right: 4px; }
-.badge.direct { background: var(--accent); color: #fff; }
-.badge.user { background: var(--ok); color: #fff; }
-.badge.removed { background: var(--bad); color: #fff; }
-blockquote { margin: 6px 0; padding: 6px 10px; border-left: 3px solid var(--line); background: var(--bg);
-  font-size: 12px; white-space: pre-wrap; word-break: break-word; }
-.preview { font-size: 12px; white-space: pre-wrap; background: var(--bg); padding: 8px; border-radius: 6px;
-  max-height: 220px; overflow: auto; border: 1px solid var(--line); }
-button, select { font: inherit; font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--line);
-  background: var(--bg); color: var(--text); cursor: pointer; }
-button:hover { border-color: var(--accent); }
-button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
 button:disabled { opacity: .6; cursor: default; }
-button.active { background: var(--ok); color: #fff; border-color: var(--ok); }
 #feedbackText { width: 100%; margin: 4px 0; resize: vertical; padding: 8px; border-radius: 6px;
   border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; }
 #feedbackStatus { white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -70,61 +131,105 @@ body[data-approved] .edit-control, body:not([data-approved]) #approvalNotice { d
 #feedbackChanges summary { cursor: pointer; font-weight: 600; }
 .changeList { padding-left: 20px; max-height: 250px; overflow: auto; }
 .changeList li { margin-bottom: 8px; overflow-wrap: anywhere; }
-.row { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
-.edge-link { cursor: pointer; padding: 3px 0; border-bottom: 1px dashed var(--line); font-size: 12px; }
-.edge-link:hover { color: var(--accent); }
-.fb { font-size: 12px; padding: 3px 0; border-bottom: 1px solid var(--line); }
 .hint { color: var(--muted); font-size: 12px; }
+code { color: #bba6db; overflow-wrap: anywhere; }
+footer { height: 27px; flex: none; display: flex; align-items: center; gap: 16px; padding: 0 14px; border-top: 1px solid var(--line); background: var(--rail); color: var(--muted); font-size: 12px; }
+#meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#sessionStatus { margin-left: auto; white-space: nowrap; }
+body.hide-explorer .explorer, body.hide-inspector .inspector { display: none; }
+@media (max-width: 1100px) { .explorer { width: 220px; } .inspector { width: 290px; } .toolbar { padding: 8px 12px; } }
+@media (max-width: 850px) {
+  .explorer { width: 210px; } .inspector { display: none; }
+  body.mobile-inspector .inspector { display: flex; position: absolute; right: 0; top: 43px; bottom: 27px; width: min(360px, calc(100vw - 46px)); z-index: 6; box-shadow: -10px 0 30px #0005; }
+  .header-note { display: none; }
+}
+@media (max-width: 580px) {
+  .explorer { display: none; }
+  body.mobile-explorer .explorer { display: flex; position: absolute; left: 46px; top: 43px; bottom: 27px; width: min(280px, calc(100vw - 46px)); z-index: 6; box-shadow: 10px 0 30px #0005; }
+  .breadcrumb { display: none; } .toolbar { justify-content: flex-end; } .graph-caption { left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
 </style>
 </head>
 <body>
-<header>
-  <h1>ProjectWiki</h1>
-  <span class="meta" id="meta"></span>
-  <input type="search" id="search" placeholder="파일 검색">
-  <label><input type="checkbox" id="showInferred" checked> 추론 연결</label>
-  <label><input type="checkbox" id="showLabels" checked> 관계 이름</label>
-  <label><input type="checkbox" id="showHidden"> 숨긴 연결</label>
-  <label><input type="checkbox" id="physics" checked> 배치 움직임</label>
-  <button id="addMode" class="edit-control">연결 추가</button>
-</header>
-<main>
-  <div id="graphwrap"><div id="graph"></div><div id="legend"></div></div>
-  <aside>
-    <section id="approvalNotice">
-      <h2>위키가 최종 승인됐습니다.</h2>
-      <p class="hint">확정된 위키 문서는 출력 폴더의 <code>approved_wiki/wiki/</code>에 저장됐습니다.</p>
-    </section>
-    <section id="setupSummary" hidden></section>
-    <div id="detail"><p class="hint">노드나 연결을 누르면 내용과 근거가 여기 나옵니다.</p></div>
-    <div class="edit-control">
-    <section id="textFeedback" hidden>
-      <h3><label for="feedbackText">어떤 부분을 수정할까요?</label></h3>
-      <textarea id="feedbackText" rows="3" maxlength="1000"
-        placeholder="예: 회의록과 파이프라인 그림은 발표에 필요 없으니 연결을 빼 주세요."></textarea>
-      <p class="hint" id="textFeedbackHint" hidden>자유 텍스트를 사용하려면 Claude를 켜고 실행해 주세요.</p>
-    </section>
-    <h3>반영 대기 중인 피드백 <span id="fbCount"></span></h3>
-    <div id="fbList"></div>
-    <div class="row">
-      <button id="undo">되돌리기</button>
-      <button class="primary" id="applyFeedback" hidden>피드백 반영하기</button>
-      <button class="primary" id="export">피드백 파일 저장</button>
+<header><span class="brand" aria-hidden="true">◈</span><h1>ProjectWiki</h1><span class="header-note">연결을 따라, 프로젝트를 더 깊이.</span></header>
+<div class="workspace">
+  <nav class="ribbon" aria-label="작업 공간 도구">
+    <button class="icon-button" id="toggleExplorer" title="파일 탐색기 접기 / 펼치기" aria-label="파일 탐색기 접기 / 펼치기" aria-expanded="true"><svg viewBox="0 0 24 24"><path d="M3 5h7l2 3h9v12H3z"/></svg></button>
+    <button class="icon-button active" id="graphHome" title="전체 그래프" aria-label="전체 그래프"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="9" r="3"/><circle cx="9" cy="19" r="3"/><path d="m9 7 6 1M7 9l1 7m4 1 4-5"/></svg></button>
+    <button class="icon-button" id="focusSearch" title="파일 검색 (Ctrl+K)" aria-label="파일 검색"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></button>
+    <button class="icon-button bottom" id="toggleInspector" title="상세 패널 접기 / 펼치기" aria-label="상세 패널 접기 / 펼치기" aria-expanded="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg></button>
+  </nav>
+  <section class="explorer" aria-label="파일 탐색기">
+    <div class="pane-title">파일 탐색기 <span class="hint" id="fileCount"></span></div>
+    <div class="search-box"><input type="search" id="search" placeholder="파일 검색…" aria-label="파일 검색"></div>
+    <div class="explorer-scroll">
+      <div class="vault-name" id="vaultName"></div>
+      <div id="fileTree" class="file-tree"></div>
+      <div class="section-title">그룹</div><div id="legend"></div>
     </div>
-    <p class="hint" id="offlineHint">저장한 파일은 <code>projectwiki correct &lt;출력폴더&gt; --feedback feedback.jsonl</code>로 반영합니다.</p>
+  </section>
+  <main>
+    <div class="tabbar"><div class="tab"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="9" r="3"/><circle cx="9" cy="19" r="3"/><path d="m9 7 6 1M7 9l1 7m4 1 4-5"/></svg>그래프 뷰</div></div>
+    <div class="toolbar"><div class="breadcrumb"><span id="projectName"></span> / <strong>전체 그래프</strong></div><div class="tools">
+      <div class="view-mode" role="group" aria-label="그래프 차원"><button id="view2d" aria-pressed="true">2D</button><button id="view3d" aria-pressed="false">3D</button></div>
+      <button id="addMode" class="edit-control">연결 추가</button>
+      <details class="graph-options"><summary>표시 설정</summary><div class="options-panel">
+        <label><input type="checkbox" id="showInferred" checked> 추론 연결</label>
+        <label><input type="checkbox" id="showLabels"> 관계 이름</label>
+        <label><input type="checkbox" id="showHidden"> 숨긴 연결</label>
+        <label><input type="checkbox" id="physics" checked> 배치 움직임</label>
+      </div></details>
+    </div></div>
+    <div id="graphwrap"><div id="graph" aria-label="프로젝트 파일 관계 그래프"></div>
+      <div id="graph3d" aria-label="프로젝트 파일 관계 3D 그래프" hidden></div>
+      <div id="graphError" class="graph-empty" role="status" hidden></div>
+      <div id="graphEmpty" class="graph-empty" hidden>표시 중인 파일이 없습니다.<br>아래 그룹 목록에서 표시할 그룹을 켜세요.</div>
+      <div class="graph-caption"><strong>프로젝트의 연결 지도</strong><span id="graphStats"></span></div>
+      <div id="orientationCue" class="orientation-cue" hidden><svg viewBox="0 0 18 28" aria-hidden="true"><path d="M9 23V4M3 10l6-6 6 6M2 24h14"/></svg><span>위<br>수평 유지</span></div>
+      <div id="graphHelp" class="graph-help" hidden>드래그: 회전 · 휠: 확대/축소 · 우클릭 드래그: 바닥을 따라 이동</div>
+      <div class="graph-controls"><button id="zoomOut" aria-label="축소" title="축소">−</button><button id="zoomIn" aria-label="확대" title="확대">+</button><button id="reset3d" hidden title="수평을 유지한 기본 시점으로 돌아가기">기본 시점</button><button id="fitGraph">전체 보기</button></div>
     </div>
-    <section id="feedbackChanges" aria-label="최근 피드백 반영 결과" hidden></section>
-    <details id="candidateComparison" hidden>
-      <summary></summary>
-      <p class="hint" id="candidateReason"></p>
-      <ul id="candidateScores"></ul>
-    </details>
-    <div id="approvalActions" hidden>
-      <button id="approveWiki">최종 승인</button>
+  </main>
+  <aside class="inspector" aria-label="파일과 연결 상세">
+    <div class="pane-title">내용과 근거 <span class="hint">INSPECTOR</span></div>
+    <div class="inspector-scroll">
+      <section id="approvalNotice">
+        <h2>위키가 최종 승인됐습니다.</h2>
+        <p class="hint">확정된 위키 문서는 출력 폴더의 <code>approved_wiki/wiki/</code>에 저장됐습니다.</p>
+      </section>
+      <section id="setupSummary" hidden></section>
+      <div id="detail"><div class="empty-state"><div class="empty-symbol" aria-hidden="true">⌘</div><h2>연결을 탐색해 보세요</h2><p>파일이나 그래프의 노드를 선택하면 요약과 내용을 볼 수 있습니다.</p><p class="hint">연결을 선택하면 관계의 근거를 확인하고 교정할 수 있습니다.</p></div></div>
+      <div class="edit-control feedback-section">
+      <section id="textFeedback" hidden>
+        <h3><label for="feedbackText">어떤 부분을 수정할까요?</label></h3>
+        <textarea id="feedbackText" rows="3" maxlength="1000"
+          placeholder="예: 회의록과 파이프라인 그림은 발표에 필요 없으니 연결을 빼 주세요."></textarea>
+        <p class="hint" id="textFeedbackHint" hidden>자유 텍스트를 사용하려면 Claude를 켜고 실행해 주세요.</p>
+      </section>
+      <h3>반영 대기 중인 피드백 <span id="fbCount"></span></h3>
+      <div id="fbList"></div>
+      <div class="row">
+        <button id="undo">되돌리기</button>
+        <button class="primary" id="applyFeedback" hidden>피드백 반영하기</button>
+        <button class="primary" id="export">피드백 파일 저장</button>
+      </div>
+      <p class="hint" id="offlineHint">저장한 파일은 <code>projectwiki correct &lt;출력폴더&gt; --feedback feedback.jsonl</code>로 반영합니다.</p>
+      </div>
+      <section id="feedbackChanges" aria-label="최근 피드백 반영 결과" hidden></section>
+      <details id="candidateComparison" hidden>
+        <summary></summary>
+        <p class="hint" id="candidateReason"></p>
+        <ul id="candidateScores"></ul>
+      </details>
+      <div id="approvalActions" hidden>
+        <button id="approveWiki">최종 승인</button>
+      </div>
+      <p id="feedbackStatus" role="status"></p>
     </div>
-    <p id="feedbackStatus" role="status"></p>
   </aside>
-</main>
+</div>
+<footer><span id="meta"></span><span id="sessionStatus" role="status" aria-live="polite">탐색 준비 완료</span></footer>
 <script>
 const LAST_FEEDBACK = /*__FEEDBACK_RESULT__*/null;
 const DATA = /*__DATA__*/null;
@@ -132,8 +237,8 @@ const REL = DATA.relations, FB = DATA.feedback_types;
 const LIVE_FEEDBACK = document.body.hasAttribute("data-live-feedback");
 const APPROVED = document.body.hasAttribute("data-approved");
 const VISIBLE = new Set(["proposed", "confirmed"]);
-const PALETTE = ["#4e79a7", "#f28e2b", "#59a14f", "#e15759", "#76b7b2", "#edc948", "#b07aa1", "#ff9da7",
-  "#9c755f", "#86bcb6", "#d37295", "#8cd17d", "#a0cbe8", "#ffbe7d", "#f1ce63", "#bab0ac"];
+const PALETTE = ["#b49af4", "#83b6c9", "#c7ad77", "#8bbb9a", "#ce92aa", "#8b9cd1", "#c18e70", "#a4ba77",
+  "#9c96b9", "#80b8af", "#bc8fbf", "#c6ba8b", "#94b4d5", "#d6a1a1", "#a2b9a0", "#aaa7b3"];
 const SHAPE = {pdf: "square", markdown: "dot", python: "diamond", notebook: "triangle", text: "dot",
   image: "star", media: "triangleDown", other: "dot"};
 const DIRECTED = new Set(["imports", "links_to", "mentions", "implements", "describes", "uses", "produces",
@@ -151,10 +256,347 @@ if (!APPROVED) {
   try { events = JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); } catch (e) { events = []; }
 }
 const save = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(events)); } catch (e) {} };
+const FILTER_KEY = "projectwiki-visibility:" + DATA.meta.run_id;
+const hiddenFiles = new Set();
+try {
+  const saved = JSON.parse(localStorage.getItem(FILTER_KEY) || "[]");
+  if (Array.isArray(saved)) saved.forEach(id => { if (DATA.nodes.some(n => n.id === id)) hiddenFiles.add(id); });
+} catch (e) {}
+const fileVisible = id => !hiddenFiles.has(id);
+function setFileVisibility(ids, visible) {
+  ids.forEach(id => { if (visible) hiddenFiles.delete(id); else hiddenFiles.add(id); });
+  try { localStorage.setItem(FILTER_KEY, JSON.stringify([...hiddenFiles])); } catch (e) {}
+  if (addFrom && !fileVisible(addFrom)) $("addMode").click();
+  network.unselectAll();
+  render();
+}
+function updateVisibilitySwitch(input, ids) {
+  const count = ids.filter(fileVisible).length;
+  input.setAttribute("aria-checked", String(count > 0));
+  input.dataset.partial = String(count > 0 && count < ids.length);
+  input.title = `${count} / ${ids.length}개 표시${count > 0 && count < ids.length ? " · 일부 표시 중" : ""}`;
+  input.setAttribute("aria-description", input.title);
+  input.disabled = !ids.length;
+}
 
 const groupColor = {};
 DATA.groups.forEach((g, i) => groupColor[g.id] = PALETTE[i % PALETTE.length]);
 let state, selected = null, addFrom = null;
+let graph3D = null, graphMode = "2d", loading3D = false;
+let highlighted3D = new Set();
+let floor3D = null;
+
+function graphBounds3D() {
+  const nodes = graph3D.graphData().nodes.filter(n => [n.x, n.y, n.z].every(Number.isFinite));
+  if (!nodes.length) return null;
+  const box = new THREE.Box3();
+  nodes.forEach(n => box.expandByPoint(new THREE.Vector3(n.x, n.y, n.z)));
+  const center = box.getCenter(new THREE.Vector3());
+  const radius = Math.max(35, ...nodes.map(n => center.distanceTo(new THREE.Vector3(n.x, n.y, n.z)) + 18));
+  return {box, center, radius};
+}
+
+function update3DFloor() {
+  if (!floor3D || !graph3D) return;
+  const bounds = graphBounds3D();
+  floor3D.root.visible = !!bounds;
+  if (!bounds) return;
+  const {box, center, radius} = bounds;
+  const size = Math.max(180, radius * 2.6), bottom = box.min.y - Math.max(25, radius * .18);
+  floor3D.root.position.set(center.x, bottom, center.z);
+  floor3D.grid.scale.set(size, 1, size);
+  floor3D.plane.scale.set(size, size, 1);
+  const corner = size * -.45, height = Math.max(40, radius * .45);
+  floor3D.up.position.set(corner, 0, corner);
+  floor3D.up.setLength(height, height * .13, height * .07);
+  floor3D.upLabel.position.set(corner, height + 10, corner);
+  floor3D.floorLabel.position.set(0, 2, size * .42);
+}
+
+function setup3DOrientation() {
+  const camera = graph3D.camera(), controls = graph3D.controls();
+  camera.up.set(0, 1, 0);
+  controls.minPolarAngle = Math.PI / 18;
+  controls.maxPolarAngle = Math.PI / 2 - .08;
+  controls.screenSpacePanning = false;
+  controls.minDistance = 20;
+  controls.update();
+  const root = new THREE.Group();
+  const grid = new THREE.GridHelper(1, 16, 0x78678f, 0x45404e);
+  grid.material.transparent = true; grid.material.opacity = .55; grid.material.depthWrite = false;
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({
+    color: 0x8c7aa8, transparent: true, opacity: .045, side: THREE.DoubleSide, depthWrite: false,
+  }));
+  plane.rotation.x = -Math.PI / 2;
+  const up = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(), 60, 0xb49af4);
+  const upLabel = new SpriteText("위", 7, css("--accent"));
+  const floorLabel = new SpriteText("바닥 기준면", 6, css("--muted"));
+  root.add(plane, grid, up, upLabel, floorLabel);
+  graph3D.scene().add(root);
+  floor3D = {root, grid, plane, up, upLabel, floorLabel};
+  graph3D.onEngineStop(update3DFloor);
+}
+
+function reset3DView() {
+  if (!graph3D || graphMode !== "3d") return;
+  update3DFloor();
+  const bounds = graphBounds3D();
+  if (!bounds) return;
+  const camera = graph3D.camera(), {center, radius} = bounds;
+  const vertical = camera.fov * Math.PI / 360;
+  const horizontal = Math.atan(Math.tan(vertical) * camera.aspect);
+  const distance = radius / Math.sin(Math.min(vertical, horizontal)) * 1.12;
+  const direction = new THREE.Vector3(.8, .65, 1).normalize().multiplyScalar(distance);
+  camera.up.set(0, 1, 0);
+  graph3D.cameraPosition({x: center.x + direction.x, y: center.y + direction.y, z: center.z + direction.z},
+    center, reducedMotion ? 0 : 500);
+}
+
+// Load WebGL dependencies only when 3D is requested; 2D remains usable on failure.
+function loadGraphScript(src, globalName) {
+  if (window[globalName]) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    const timer = setTimeout(() => { script.remove(); reject(new Error("load timeout")); }, 20000);
+    script.src = src;
+    script.onload = () => { clearTimeout(timer); window[globalName] ? resolve() : reject(new Error("missing library")); };
+    script.onerror = () => { clearTimeout(timer); script.remove(); reject(new Error("load failed")); };
+    document.head.append(script);
+  });
+}
+
+function refresh3DHighlight() {
+  if (!graph3D) return;
+  graph3D.nodeColor(n => highlighted3D.has(n.id) ? css("--accent") : groupColor[state.nodes.get(n.id)?.group] || "#9aa0a6")
+    .nodeVal(n => highlighted3D.has(n.id) ? 6 : 3)
+    .linkColor(e => selected?.kind === "edge" && selected.id === e.id ? css("--accent")
+      : !VISIBLE.has(e.status) ? css("--bad") : e.origin === "user" ? css("--ok") : e.direct ? "#a29aaa" : "#736b80")
+    .linkWidth(e => selected?.kind === "edge" && selected.id === e.id ? 1.8 : .7);
+}
+
+function leafHeights3D(nodes, edges) {
+  // Collapse directed cycles, then rank components by distance from their leaves.
+  // Undirected similarity relations should not invent parent/child relationships.
+  const ids = nodes.map(n => n.id), outgoing = new Map(ids.map(id => [id, []]));
+  const incoming = new Map(ids.map(id => [id, []]));
+  for (const e of edges) {
+    if (!DIRECTED.has(e.relation) || !outgoing.has(e.source) || !outgoing.has(e.target)) continue;
+    outgoing.get(e.source).push(e.target); incoming.get(e.target).push(e.source);
+  }
+  const visited = new Set(), order = [];
+  for (const id of ids) {
+    if (visited.has(id)) continue;
+    visited.add(id);
+    const stack = [{id, next: 0}];
+    while (stack.length) {
+      const frame = stack[stack.length - 1], children = outgoing.get(frame.id);
+      if (frame.next < children.length) {
+        const child = children[frame.next++];
+        if (!visited.has(child)) { visited.add(child); stack.push({id: child, next: 0}); }
+      } else { order.push(frame.id); stack.pop(); }
+    }
+  }
+  const component = new Map();
+  let count = 0;
+  for (const id of order.reverse()) {
+    if (component.has(id)) continue;
+    const stack = [id]; component.set(id, count);
+    while (stack.length) {
+      for (const parent of incoming.get(stack.pop())) {
+        if (!component.has(parent)) { component.set(parent, count); stack.push(parent); }
+      }
+    }
+    count++;
+  }
+  const children = Array.from({length: count}, () => new Set());
+  const parents = Array.from({length: count}, () => new Set());
+  for (const [id, targets] of outgoing) {
+    for (const target of targets) {
+      const a = component.get(id), b = component.get(target);
+      if (a !== b) { children[a].add(b); parents[b].add(a); }
+    }
+  }
+  const remaining = children.map(c => c.size), levels = Array(count).fill(0);
+  const queue = remaining.map((degree, i) => degree === 0 ? i : -1).filter(i => i >= 0);
+  for (let i = 0; i < queue.length; i++) {
+    const child = queue[i];
+    for (const parent of parents[child]) {
+      levels[parent] = Math.max(levels[parent], levels[child] + 1);
+      if (--remaining[parent] === 0) queue.push(parent);
+    }
+  }
+  const middle = (Math.max(0, ...levels)) / 2;
+  return new Map(ids.map(id => [id, (levels[component.get(id)] - middle) * 65]));
+}
+
+function sync3D() {
+  if (!graph3D) return;
+  const previous = new Map(graph3D.graphData().nodes.map(n => [n.id, n]));
+  const nodes = [...state.nodes.values()].filter(n => fileVisible(n.id)).map((n, i, visible) => {
+    const existing = previous.get(n.id);
+    if (existing) return Object.assign(existing, {path: n.path, group: n.group});
+    // A sphere gives a stable 3D layout even when reduced motion disables simulation.
+    const y = 1 - 2 * (i + .5) / visible.length, angle = i * Math.PI * (3 - Math.sqrt(5));
+    const radius = Math.max(80, Math.cbrt(visible.length) * 45), ring = Math.sqrt(1 - y * y);
+    return {id: n.id, path: n.path, group: n.group, x: radius * ring * Math.cos(angle), y: radius * y, z: radius * ring * Math.sin(angle)};
+  });
+  const edges = visibleEdges(), moving = $("physics").checked;
+  const heights = moving ? leafHeights3D(nodes, edges) : null;
+  for (const n of nodes) {
+    if (moving) { n.fy = heights.get(n.id); n.y = n.fy; n.vy = 0; }
+    else delete n.fy;
+  }
+  graph3D.graphData({nodes, links: edges.map(e => ({...e}))});
+  const height = endpoint => heights?.get(typeof endpoint === "object" ? endpoint.id : endpoint) || 0;
+  // Account for vertical separation so links still leave room in the X/Z plane.
+  graph3D.d3Force("link").distance(e => moving ? Math.hypot(85, height(e.source) - height(e.target)) : 65);
+  graph3D.cooldownTicks(moving ? 160 : 0);
+  update3DFloor();
+  refresh3DHighlight();
+}
+
+function resize3D() {
+  if (graphMode === "3d" && graph3D) graph3D.width($("graphwrap").clientWidth).height($("graphwrap").clientHeight);
+}
+
+function fitGraph(ids) {
+  const visible = ids?.filter(fileVisible);
+  if (graphMode === "3d" && graph3D) {
+    const filter = visible ? new Set(visible) : null;
+    if (graph3D.graphData().nodes.length && (!filter || filter.size)) {
+      graph3D.zoomToFit(reducedMotion ? 0 : 500, 55, filter ? n => filter.has(n.id) : undefined);
+    }
+  } else if (!visible || visible.length) network.fit({nodes: visible, animation: !reducedMotion, maxZoomLevel: 1.6});
+}
+
+function focusGraphNodes(ids, focus = false) {
+  const visible = ids.filter(fileVisible);
+  highlighted3D = new Set(visible);
+  refresh3DHighlight();
+  if (graphMode === "3d" && graph3D) {
+    if (focus && visible.length === 1) {
+      const n = graph3D.graphData().nodes.find(n => n.id === visible[0]);
+      if (n) graph3D.cameraPosition({x: n.x + 90, y: n.y + 55, z: n.z + 130}, n, reducedMotion ? 0 : 500);
+    } else fitGraph(visible);
+  } else {
+    network.selectNodes(visible);
+    if (focus && visible.length === 1) network.focus(visible[0], {scale: 1.2, animation: !reducedMotion});
+    else fitGraph(visible);
+  }
+}
+
+function zoomGraph(factor) {
+  if (graphMode === "3d" && graph3D) {
+    const camera = graph3D.camera(), target = graph3D.controls().target;
+    graph3D.cameraPosition({x: target.x + (camera.position.x - target.x) / factor,
+      y: target.y + (camera.position.y - target.y) / factor, z: target.z + (camera.position.z - target.z) / factor},
+      target, reducedMotion ? 0 : 200);
+  } else network.moveTo({scale: Math.max(.05, Math.min(4, network.getScale() * factor)), animation: !reducedMotion});
+}
+
+function bind3DSelection() {
+  // Pick on pointer-up so a click is distinct from an orbit/pan gesture.
+  // Projection also avoids the renderer's hover-frame delay on quick clicks.
+  const canvas = graph3D.renderer().domElement;
+  let press = null;
+  canvas.addEventListener("pointerdown", ev => {
+    press = ev.button === 0 ? {id: ev.pointerId, x: ev.clientX, y: ev.clientY, moved: false} : null;
+  }, true);
+  canvas.addEventListener("pointermove", ev => {
+    if (press && Math.hypot(ev.clientX - press.x, ev.clientY - press.y) > 5) press.moved = true;
+  }, true);
+  canvas.addEventListener("pointercancel", () => { press = null; }, true);
+  canvas.addEventListener("pointerup", ev => {
+    const start = press; press = null;
+    if (!start || start.id !== ev.pointerId || start.moved || ev.button !== 0) return;
+    const rect = canvas.getBoundingClientRect(), x = ev.clientX - rect.left, y = ev.clientY - rect.top;
+    const project = n => {
+      const p = new THREE.Vector3(n.x, n.y, n.z).project(graph3D.camera());
+      return {x: (p.x + 1) * rect.width / 2, y: (1 - p.y) * rect.height / 2, z: p.z};
+    };
+    const data = graph3D.graphData();
+    const hits = data.nodes.map(n => {
+      const p = project(n), radius = 4 * Math.cbrt(highlighted3D.has(n.id) ? 6 : 3);
+      const offsets = [[radius, 0, 0], [0, radius, 0], [0, 0, radius]].map(([dx, dy, dz]) =>
+        project({x: n.x + dx, y: n.y + dy, z: n.z + dz}));
+      const size = Math.max(7, ...offsets.map(o => Math.hypot(o.x - p.x, o.y - p.y)));
+      return {id: n.id, p, distance: Math.hypot(p.x - x, p.y - y), size};
+    }).filter(h => h.p.z >= -1 && h.p.z <= 1 && h.distance <= h.size + 2)
+      .sort((a, b) => a.p.z - b.p.z || a.distance - b.distance);
+    if (hits.length) { handleGraphClick({nodes: [hits[0].id], edges: []}); return; }
+    let closest = null, minDistance = 6;
+    for (const edge of data.links) {
+      const a = project(edge.source), b = project(edge.target);
+      if (a.z < -1 || a.z > 1 || b.z < -1 || b.z > 1) continue;
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (y - a.y) * dy) / (dx * dx + dy * dy || 1)));
+      const distance = Math.hypot(x - a.x - t * dx, y - a.y - t * dy);
+      if (distance < minDistance) { closest = edge; minDistance = distance; }
+    }
+    if (closest) handleGraphClick({nodes: [], edges: [closest.id]});
+  }, true);
+}
+
+async function setGraphMode(mode) {
+  if (loading3D) return;
+  $("graphError").hidden = true;
+  if (mode === "3d" && !graph3D) {
+    loading3D = true;
+    $("view3d").disabled = true; $("view3d").textContent = "로딩…";
+    $("graphwrap").setAttribute("aria-busy", "true");
+    try {
+      await loadGraphScript("https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js", "THREE");
+      await loadGraphScript("https://cdn.jsdelivr.net/npm/3d-force-graph@1.78.4/dist/3d-force-graph.min.js", "ForceGraph3D");
+      await loadGraphScript("https://cdn.jsdelivr.net/npm/three-spritetext@1.10.0/dist/three-spritetext.min.js", "SpriteText");
+      $("graph3d").hidden = false;
+      graph3D = ForceGraph3D({controlType: "orbit"})($("graph3d"))
+        .backgroundColor(css("--bg")).showNavInfo(false).enableNodeDrag(false)
+        .nodeLabel(n => esc(n.path)).nodeVal(3).nodeOpacity(.95)
+        .nodeThreeObjectExtend(true).nodeThreeObject(n => {
+          const label = new SpriteText(base(n.path), 6, css("--text"));
+          label.position.y = -9; label.material.depthWrite = false; return label;
+        })
+        .linkLabel(e => esc(REL[e.relation] || e.relation)).linkOpacity(.8)
+        .linkWidth(e => selected?.kind === "edge" && selected.id === e.id ? 1.8 : .5)
+        .linkDirectionalArrowLength(e => DIRECTED.has(e.relation) ? 4 : 0)
+        .linkThreeObjectExtend(true).linkThreeObject(e => {
+          const label = new SpriteText(REL[e.relation] || e.relation, 3, css("--muted"));
+          label.visible = $("showLabels").checked; label.material.depthWrite = false; return label;
+        }).linkPositionUpdate((label, {start, end}) => {
+          label.position.set((start.x + end.x) / 2, (start.y + end.y) / 2, (start.z + end.z) / 2);
+        });
+      graph3D.d3Force("charge").strength(-100);
+      graph3D.d3Force("link").distance(65);
+      setup3DOrientation();
+      bind3DSelection();
+    } catch (e) {
+      console.error("ProjectWiki 3D initialization failed:", e);
+      if (graph3D) graph3D.pauseAnimation();
+      graph3D = null; floor3D = null; $("graph3d").replaceChildren(); $("graph3d").hidden = true;
+      $("graphError").innerHTML = `<p class="graph-error">3D 보기를 시작하지 못했습니다. 인터넷 연결과 브라우저의 WebGL 지원을 확인한 뒤 다시 시도해 주세요. 2D 보기는 계속 사용할 수 있습니다.<br><span class="hint">${esc(e.message)}</span></p>`;
+      $("graphError").hidden = false;
+      return;
+    } finally {
+      loading3D = false; $("view3d").disabled = false; $("view3d").textContent = "3D";
+      $("graphwrap").removeAttribute("aria-busy");
+    }
+  }
+  graphMode = mode;
+  $("graph").hidden = mode === "3d"; $("graph3d").hidden = mode !== "3d";
+  $("graphHelp").hidden = mode !== "3d";
+  $("orientationCue").hidden = mode !== "3d";
+  $("reset3d").hidden = mode !== "3d";
+  $("view2d").setAttribute("aria-pressed", String(mode === "2d"));
+  $("view3d").setAttribute("aria-pressed", String(mode === "3d"));
+  if (mode === "3d") {
+    network.setOptions({physics: {enabled: false}}); resize3D(); sync3D(); graph3D.resumeAnimation();
+    // The renderer computes its bounds on the next frame after graphData changes.
+    requestAnimationFrame(() => requestAnimationFrame(() => { if (graphMode === "3d") reset3DView(); }));
+  } else {
+    graph3D?.pauseAnimation(); network.setOptions({physics: {enabled: $("physics").checked}});
+    network.redraw();
+  }
+}
 
 function applyEvents() {
   state = {
@@ -193,21 +635,29 @@ function applyEvents() {
 
 function visibleEdges() {
   const hidden = $("showHidden").checked, inferred = $("showInferred").checked;
-  return [...state.edges.values()].filter(e => (VISIBLE.has(e.status) || hidden) && (e.direct || inferred || e.origin === "user"));
+  return [...state.edges.values()].filter(e => fileVisible(e.source) && fileVisible(e.target)
+    && (VISIBLE.has(e.status) || hidden) && (e.direct || inferred || e.origin === "user"));
 }
 
 const nodesDS = new vis.DataSet(), edgesDS = new vis.DataSet();
 function nodeView(n, degree) {
   const c = groupColor[n.group] || "#9aa0a6";
+  // Reduced-motion users skip physics, so give their nodes a readable initial layout.
+  const index = DATA.nodes.findIndex(item => item.id === n.id);
+  const angle = 2 * Math.PI * index / Math.max(1, DATA.nodes.length) - Math.PI / 2;
+  const radius = Math.max(180, DATA.nodes.length * 18);
+  const position = reducedMotion && !nodesDS.get(n.id) ? {x: radius * Math.cos(angle), y: radius * Math.sin(angle)} : {};
   return {id: n.id, label: base(n.path), title: n.path, shape: SHAPE[n.type] || "dot",
-    size: 9 + Math.min(16, 1.5 * (degree[n.id] || 0)),
+    ...position,
+    hidden: !fileVisible(n.id), physics: fileVisible(n.id),
+    size: 6 + Math.min(10, (degree[n.id] || 0)),
     color: {background: c, border: c, highlight: {background: c, border: css("--text")}},
     font: {color: css("--text"), size: 12, strokeWidth: 3, strokeColor: css("--bg")}};
 }
 function edgeView(e) {
   const removed = !VISIBLE.has(e.status), user = e.origin === "user";
   const color = removed ? css("--bad") : user ? css("--ok") : e.status === "confirmed" ? css("--accent")
-    : e.direct ? "#7d8590" : "#b3b9c2";
+    : e.direct ? "#66616e" : "#45424b";
   return {id: e.id, from: e.source, to: e.target,
     label: $("showLabels").checked ? (REL[e.relation] || e.relation) : undefined,
     dashes: !e.direct || removed, width: (e.status === "confirmed" || user) ? 3 : 1 + 1.5 * Math.max(0, Math.min(1, e.score)),
@@ -221,27 +671,110 @@ function render() {
   edges.forEach(e => { degree[e.source] = (degree[e.source] || 0) + 1; degree[e.target] = (degree[e.target] || 0) + 1; });
   nodesDS.update([...state.nodes.values()].map(n => nodeView(n, degree)));
   edgesDS.clear(); edgesDS.add(edges.map(edgeView));
-  renderLegend(); renderFeedback();
+  if (graphMode === "3d") sync3D();
+  renderLegend(); renderFeedback(); renderFiles();
+  const count = [...state.nodes.keys()].filter(fileVisible).length;
+  $("graphStats").textContent = `표시 파일 ${count} / ${state.nodes.size}개 · 표시된 연결 ${edges.length}개`;
+  $("graphEmpty").hidden = count > 0;
   if (selected) (selected.kind === "node" ? showNode : showEdge)(selected.id);
 }
 
 function renderLegend() {
   const groups = [...state.groups.values()].filter(g => g.members.length);
   const ungrouped = [...state.nodes.values()].filter(n => !n.group).length;
-  $("legend").innerHTML = "<b>그룹</b>" + groups.map(g =>
-    `<div class="item" data-g="${esc(g.id)}" title="${esc(g.description)}"><span class="dot" style="background:${groupColor[g.id]}"></span>${esc(g.name)} <span class="hint">${g.members.length}</span></div>`).join("")
-    + (ungrouped ? `<div class="item" data-g=""><span class="dot" style="background:#9aa0a6"></span>그룹 없음 <span class="hint">${ungrouped}</span></div>` : "");
+  $("legend").innerHTML = groups.map(g =>
+    `<div class="group-row"><button class="item" data-g="${esc(g.id)}" title="${esc(g.description)}"><span class="dot" style="background:${groupColor[g.id]}"></span>${esc(g.name)} <span class="hint">${g.members.length}</span></button><button class="visibility-switch" role="switch" aria-checked="true" data-group="${esc(g.id)}" aria-label="${esc(g.name)} 그룹 표시"></button></div>`).join("")
+    + (ungrouped ? `<div class="group-row"><button class="item" data-g=""><span class="dot" style="background:#9aa0a6"></span>그룹 없음 <span class="hint">${ungrouped}</span></button><button class="visibility-switch" role="switch" aria-checked="true" data-group="" aria-label="그룹 없는 파일 표시"></button></div>` : "");
+  $("legend").querySelectorAll("button[data-group]").forEach(input => {
+    const ids = [...state.nodes.values()].filter(n => (n.group || "") === input.dataset.group).map(n => n.id);
+    updateVisibilitySwitch(input, ids);
+    input.onclick = () => setFileVisibility(ids, input.getAttribute("aria-checked") !== "true");
+  });
   $("legend").querySelectorAll(".item").forEach(el => el.onclick = () => {
-    const ids = [...state.nodes.values()].filter(n => (n.group || "") === el.dataset.g).map(n => n.id);
-    network.selectNodes(ids); network.fit({nodes: ids, animation: true, maxZoomLevel: 1.6});
+    const ids = [...state.nodes.values()].filter(n => (n.group || "") === el.dataset.g && fileVisible(n.id)).map(n => n.id);
+    focusGraphNodes(ids);
+  });
+}
+
+const closedFolders = new Set();
+function selectedFolders() {
+  const folders = new Set();
+  const path = selected?.kind === "node" ? state.nodes.get(selected.id)?.path : null;
+  if (path) {
+    const parts = path.split("/"); parts.pop();
+    let prefix = "";
+    for (const part of parts) { prefix += part + "/"; folders.add(prefix); }
+  }
+  return folders;
+}
+function renderFiles() {
+  const q = $("search").value.trim().toLowerCase();
+  const revealed = selectedFolders();
+  const matches = [...state.nodes.values()].filter(n => n.path.toLowerCase().includes(q));
+  const tree = {folders: new Map(), files: []};
+  for (const n of matches) {
+    const parts = n.path.split("/"); parts.pop();
+    let branch = tree;
+    for (const part of parts) {
+      if (!branch.folders.has(part)) branch.folders.set(part, {folders: new Map(), files: []});
+      branch = branch.folders.get(part);
+    }
+    branch.files.push(n);
+  }
+  const branchHTML = (branch, prefix = "") => [...branch.folders.entries()]
+    .sort(([a], [b]) => a.localeCompare(b)).map(([name, child]) => {
+      const key = prefix + name + "/";
+      return `<details data-folder="${esc(key)}"${q || revealed.has(key) || !closedFolders.has(key) ? " open" : ""}><summary>${esc(name)}</summary>${branchHTML(child, key)}</details>`;
+    }).join("") + branch.files.sort((a, b) => a.path.localeCompare(b.path)).map(n =>
+      `<div class="file-row${fileVisible(n.id) ? "" : " is-hidden"}"><button class="file${selected?.kind === "node" && selected.id === n.id ? " selected" : ""}" data-node="${esc(n.id)}" title="${esc(n.path)}"><span class="file-icon" aria-hidden="true">${n.type === "python" ? "{}" : n.type === "markdown" ? "≡" : "▤"}</span><span>${esc(base(n.path))}</span></button></div>`).join("");
+  $("fileTree").innerHTML = branchHTML(tree) || '<p class="hint">일치하는 파일이 없습니다.</p>';
+  $("fileCount").textContent = q ? `${matches.length} / ${state.nodes.size}` : state.nodes.size;
+  $("fileTree").querySelectorAll("details").forEach(el => el.querySelector("summary").onclick = ev => {
+    // Only explicit folder clicks change the user's saved expansion state.
+    // Automatic reveals and initial <details> toggle events must not change it.
+    ev.preventDefault();
+    el.open = !el.open;
+    if (!q) {
+      if (el.open) closedFolders.delete(el.dataset.folder); else closedFolders.add(el.dataset.folder);
+    }
+  });
+  $("fileTree").querySelectorAll(".file").forEach(el => el.onclick = () => {
+    const id = el.dataset.node;
+    if (fileVisible(id)) focusGraphNodes([id], true);
+    showNode(id);
+  });
+}
+
+function revealSelection(scrollToFile = false) {
+  if (window.matchMedia("(max-width: 850px)").matches) {
+    document.body.classList.add("mobile-inspector");
+    $("toggleInspector").setAttribute("aria-expanded", "true");
+  }
+  document.body.classList.remove("hide-inspector");
+  $("toggleInspector").setAttribute("aria-expanded", "true");
+  const revealed = selectedFolders();
+  const searching = $("search").value.trim();
+  $("fileTree").querySelectorAll("details").forEach(el => {
+    el.open = !!searching || revealed.has(el.dataset.folder) || !closedFolders.has(el.dataset.folder);
+  });
+  document.querySelectorAll(".file").forEach(el => {
+    const active = selected?.kind === "node" && el.dataset.node === selected.id;
+    el.classList.toggle("selected", active);
+    if (active && scrollToFile) el.scrollIntoView({block: "nearest", inline: "nearest", behavior: "instant"});
   });
 }
 
 function groupName(gid) { return gid ? (state.groups.get(gid)?.name || gid) : "그룹 없음"; }
 
-function showNode(id) {
+function showNode(id, revealFile = false) {
   const n = state.nodes.get(id); if (!n) return;
   selected = {kind: "node", id};
+  highlighted3D = new Set([id]); refresh3DHighlight();
+  if (revealFile && !n.path.toLowerCase().includes($("search").value.trim().toLowerCase())) {
+    $("search").value = "";
+    renderFiles();
+  }
+  revealSelection(revealFile);
   const edges = visibleEdges().filter(e => e.source === id || e.target === id);
   const opts = [...state.groups.values()].map(g => `<option value="${esc(g.id)}"${g.id === n.group ? " selected" : ""}>${esc(g.name)}</option>`).join("");
   $("detail").innerHTML = `
@@ -257,7 +790,7 @@ function showNode(id) {
     </div>
     <h3>연결 ${edges.length}개</h3>
     ${edges.map(e => { const other = e.source === id ? e.target : e.source;
-      return `<div class="edge-link" data-e="${esc(e.id)}">${e.source === id ? "→" : "←"} ${esc(base(state.nodes.get(other).path))} · ${esc(REL[e.relation] || e.relation)}${e.direct ? "" : " (추론)"}</div>`; }).join("")}`;
+      return `<button class="edge-link" data-e="${esc(e.id)}">${e.source === id ? "→" : "←"} ${esc(base(state.nodes.get(other).path))} · ${esc(REL[e.relation] || e.relation)}${e.direct ? "" : " (추론)"}</button>`; }).join("")}`;
   $("detail").querySelectorAll(".edge-link").forEach(el => el.onclick = () => { network.selectEdges([el.dataset.e]); showEdge(el.dataset.e); });
   $("moveBtn").onclick = () => {
     let g = $("moveTo").value;
@@ -270,6 +803,8 @@ function showNode(id) {
 function showEdge(id) {
   const e = state.edges.get(id); if (!e) return;
   selected = {kind: "edge", id};
+  highlighted3D = new Set(); refresh3DHighlight();
+  revealSelection();
   const a = state.nodes.get(e.source), b = state.nodes.get(e.target);
   const status = VISIBLE.has(e.status) ? "" : `<span class="badge removed">${esc(e.status)}</span>`;
   $("detail").innerHTML = `
@@ -309,16 +844,33 @@ function describe(ev) {
 function renderFeedback() {
   $("fbCount").textContent = events.length ? `(${events.length})` : "";
   $("fbList").innerHTML = events.map(ev => `<div class="fb">${describe(ev)}</div>`).join("") || '<p class="hint">아직 없음</p>';
+  $("undo").disabled = !events.length;
+  $("export").disabled = !events.length;
+  $("sessionStatus").textContent = events.length ? `피드백 ${events.length}개 · 브라우저에 보관됨` : "탐색 준비 완료";
 }
 
-$("meta").textContent = `${DATA.meta.root.split("/").pop()} · 파일 ${DATA.nodes.length} · 연결 ${DATA.edges.filter(e => VISIBLE.has(e.status)).length} · `
+const projectName = String(DATA.meta.root || "ProjectWiki").replace(/\\/g, "/").replace(/\/$/, "").split("/").pop();
+$("vaultName").textContent = projectName;
+$("projectName").textContent = projectName;
+$("meta").textContent = `${projectName} · 파일 ${DATA.nodes.length} · 연결 ${DATA.edges.filter(e => VISIBLE.has(e.status)).length} · `
   + `${DATA.meta.encoder} · 군집 ${DATA.meta.clusterer} · 교정 ${DATA.meta.corrector}`;
 ["showInferred", "showLabels", "showHidden"].forEach(id => $(id).onchange = render);
-$("physics").onchange = () => network.setOptions({physics: {enabled: $("physics").checked}});
+$("physics").onchange = () => {
+  const enabled = $("physics").checked;
+  network.setOptions({physics: {enabled: enabled && graphMode === "2d"}});
+  if (graph3D && graphMode === "3d") {
+    sync3D();
+    if (enabled) {
+      graph3D.d3ReheatSimulation();
+      requestAnimationFrame(() => requestAnimationFrame(() => { if (graphMode === "3d") fitGraph(); }));
+    }
+  }
+};
 $("undo").onclick = () => { if (!applying) { events.pop(); save(); render(); } };
 $("export").onclick = () => {
   const blob = new Blob([events.map(e => JSON.stringify(e)).join("\n") + "\n"], {type: "application/jsonl"});
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "feedback.jsonl"; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 };
 function showFeedbackChanges(report) {
   const target = $("feedbackChanges");
@@ -430,15 +982,47 @@ if (LIVE_FEEDBACK && !APPROVED) {
 $("addMode").onclick = () => { addFrom = addFrom === null ? "" : null; $("addMode").classList.toggle("active", addFrom !== null);
   $("addMode").textContent = addFrom !== null ? "시작 노드 선택…" : "연결 추가"; };
 $("search").oninput = ev => {
-  const q = ev.target.value.trim().toLowerCase(); if (!q) return;
-  const ids = DATA.nodes.filter(n => n.path.toLowerCase().includes(q)).map(n => n.id);
-  network.selectNodes(ids); if (ids.length) network.fit({nodes: ids, animation: true, maxZoomLevel: 1.6});
+  const q = ev.target.value.trim().toLowerCase(); renderFiles();
+  if (!q) { network.unselectAll(); highlighted3D.clear(); refresh3DHighlight(); return; }
+  const ids = DATA.nodes.filter(n => fileVisible(n.id) && n.path.toLowerCase().includes(q)).map(n => n.id);
+  focusGraphNodes(ids);
 };
+
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+$("physics").checked = !reducedMotion;
+$("view2d").onclick = () => setGraphMode("2d");
+$("view3d").onclick = () => setGraphMode("3d");
+$("reset3d").onclick = reset3DView;
+$("fitGraph").onclick = $("graphHome").onclick = () => { network.unselectAll(); highlighted3D.clear(); refresh3DHighlight(); fitGraph(); };
+$("zoomIn").onclick = () => zoomGraph(1.25);
+$("zoomOut").onclick = () => zoomGraph(1 / 1.25);
+new ResizeObserver(resize3D).observe($("graphwrap"));
+function togglePane(name, mobileQuery) {
+  const mobile = window.matchMedia(mobileQuery).matches;
+  document.body.classList.toggle((mobile ? "mobile-" : "hide-") + name);
+  const open = mobile ? document.body.classList.contains("mobile-" + name) : !document.body.classList.contains("hide-" + name);
+  $(name === "explorer" ? "toggleExplorer" : "toggleInspector").setAttribute("aria-expanded", String(open));
+}
+$("toggleExplorer").onclick = () => togglePane("explorer", "(max-width: 580px)");
+$("toggleInspector").onclick = () => togglePane("inspector", "(max-width: 850px)");
+$("focusSearch").onclick = () => {
+  document.body.classList.remove("hide-explorer"); document.body.classList.add("mobile-explorer");
+  $("toggleExplorer").setAttribute("aria-expanded", "true"); $("search").focus();
+};
+document.addEventListener("keydown", ev => {
+  if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === "k") { ev.preventDefault(); $("focusSearch").click(); }
+  if (ev.key === "Escape") {
+    document.body.classList.remove("mobile-explorer", "mobile-inspector");
+    document.querySelector(".graph-options").open = false;
+    if (addFrom !== null) $("addMode").click();
+  }
+});
 
 applyEvents();
 const network = new vis.Network($("graph"), {nodes: nodesDS, edges: edgesDS}, {
   interaction: {hover: true, tooltipDelay: 150},
-  physics: {solver: "forceAtlas2Based", forceAtlas2Based: {gravitationalConstant: -60, springLength: 110},
+  physics: {enabled: !reducedMotion, solver: "barnesHut",
+    barnesHut: {gravitationalConstant: -6000, centralGravity: 0.15, springLength: 170, springConstant: 0.04, avoidOverlap: 0.7},
     stabilization: {iterations: 400}},
   edges: {smooth: {type: "continuous"}},
 });
@@ -455,13 +1039,13 @@ if (setup && (setup.purpose || setup.priority)) {
   $("setupSummary").querySelectorAll("button[data-file]").forEach(button => {
     button.onclick = () => {
       const id = button.dataset.file;
-      network.selectNodes([id]);
-      network.fit({nodes: [id], animation: true, maxZoomLevel: 1.6});
-      showNode(id);
+      if (!fileVisible(id)) setFileVisibility([id], true);
+      focusGraphNodes([id], true);
+      showNode(id, true);
     };
   });
 }
-network.on("click", p => {
+function handleGraphClick(p) {
   if (addFrom !== null && p.nodes.length) {
     if (!addFrom) { addFrom = p.nodes[0]; $("addMode").textContent = "끝 노드 선택…"; return; }
     const target = p.nodes[0];
@@ -472,9 +1056,10 @@ network.on("click", p => {
     addFrom = null; $("addMode").classList.remove("active"); $("addMode").textContent = "연결 추가";
     return;
   }
-  if (p.nodes.length) showNode(p.nodes[0]);
+  if (p.nodes.length) showNode(p.nodes[0], true);
   else if (p.edges.length) showEdge(p.edges[0]);
-});
+}
+network.on("click", handleGraphClick);
 render();
 network.once("stabilized", () => network.fit({maxZoomLevel: 1.6}));
 setTimeout(() => network.fit({maxZoomLevel: 1.6}), 1500);

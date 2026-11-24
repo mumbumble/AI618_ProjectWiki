@@ -260,14 +260,14 @@
     "describes"
    ],
    "direction": "a_to_b",
-   "required": false,
+   "required": true,
    "layer": "explicit",
    "evidence": {
     "file": "src/leafproto_model.py",
     "span": "Proto network: ResNet-12 encoder, cosine prototype head and the episodic training loss with the FreqMix consistency term. The method is described in docs/method.md. Episodes arrive already sampled and resized to 84x84. \"\"\" import torch import torch.nn as nn import torch.nn.functional as F from freq"
    },
    "source": "designed",
-   "note": "explicit: module docstring says the design is in docs/method.md",
+   "note": "explicit: module docstring says the design is in docs/method.md; review: main model code implements the method, as in the other mock paper projects",
    "personas": [
     "code",
     "docs"
@@ -322,14 +322,14 @@
     "implements"
    ],
    "direction": "a_to_b",
-   "required": true,
+   "required": false,
    "layer": "explicit",
    "evidence": {
     "file": "README.md",
     "span": "t episodes, 5-way, 15 queries per class, with seed 42. The output is mean accuracy in % with a 95% confidence interval over episodes. ```bash python src/evaluate.py --config configs/<5-way-config>.yaml --ckpt checkpoints/best.pt ```"
    },
    "source": "designed",
-   "note": "explicit: shows the evaluation command",
+   "note": "explicit: shows the evaluation command; review: between groups only a tree of key links (at most groups-1); a code-implements-paper link takes this place",
    "personas": [
     "code"
    ]
@@ -2872,7 +2872,7 @@
   },
   "simplified": {
    "passes": 3,
-   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional; review: code-implements-paper links represent their pair of groups first",
    "key_links_between_groups": 5,
    "key_links": 20,
    "required_before": 36,
@@ -2881,7 +2881,29 @@
     "LeafProto 프로젝트는 src의 학습·평가 코드가 configs 설정으로 돌아가 로그와 results를 만들고, 이를 figures와 논문·발표·웹페이지가 인용하며, docs·papers 노트와 회의록이 방법과 배경을 설명하는 구조입니다.",
     "LeafProto 프로젝트는 src의 모델·학습 코드가 configs 설정으로 학습·평가되어 results와 figures를 만들고, 이것이 docs의 방법 설명, 논문 초안, 웹페이지, 발표 자료로 이어지며 회의 노트와 읽기 노트가 이를 뒷받침하는 구조입니다."
    ]
-  }
+  },
+  "review_log": [
+   {
+    "tag": "review-r1-tidy",
+    "pair": [
+     "src/leafproto_model.py",
+     "docs/method.md"
+    ],
+    "before": "src/leafproto_model.py --implements/a_to_b--> docs/method.md",
+    "after": "src/leafproto_model.py --implements/a_to_b/REQ--> docs/method.md",
+    "why": "main model code implements the method, as in the other mock paper projects"
+   },
+   {
+    "tag": "review-r1-tidy",
+    "pair": [
+     "README.md",
+     "src/evaluate.py"
+    ],
+    "before": "README.md --describes/a_to_b/REQ--> src/evaluate.py",
+    "after": "README.md --describes/a_to_b--> src/evaluate.py",
+    "why": "between groups only a tree of key links (at most groups-1); a code-implements-paper link takes this place"
+   }
+  ]
  },
  "groups": [
   {

@@ -1,0 +1,78 @@
+{
+ "project": "mock_vr_text_entry",
+ "purposes": [
+  {
+   "id": "advisor",
+   "base": "docs",
+   "text": "교수님께 중간보고 예정. 연구 계획부터 결과 그림까지 흐름을 보여드리고 싶음",
+   "needed": [
+    ["results/findings.md", "results/figures/likert_means_by_item.png"],
+    ["proposal/study_proposal.pdf", "study/tasks.md"],
+    ["proposal/study_proposal.pdf", "study/survey_questions.md"],
+    ["results/findings.md", "proposal/study_proposal.pdf"],
+    ["notes/meeting.md", "results/findings.md"],
+    ["notes/meeting.md", "proposal/study_proposal.pdf"]
+   ],
+   "optional": [
+    ["analysis/analyze_survey.py", "results/figures/likert_means_by_item.png"],
+    ["results/findings.md", "analysis/analyze_logs.py"],
+    ["proposal/study_proposal.pdf", "papers/notes_han2023_midair_typing.md"],
+    ["notes/pilot_notes.md", "study/tasks.md"],
+    ["README.md", "proposal/study_proposal.pdf"],
+    ["README.md", "results/findings.md"],
+    ["results/findings.md", "analysis/analyze_survey.py"]
+   ],
+   "notes": {
+    "analysis/analyze_survey.py|results/figures/likert_means_by_item.png": "그림 출처는 선택",
+    "results/figures/likert_means_by_item.png|results/findings.md": "결과 문서의 그림",
+    "analysis/analyze_logs.py|results/findings.md": "결정7 / rerun: 분석 바뀌면 결과 바뀜",
+    "proposal/study_proposal.pdf|study/tasks.md": "계획 → 과제",
+    "proposal/study_proposal.pdf|study/survey_questions.md": "계획 → 설문",
+    "proposal/study_proposal.pdf|results/findings.md": "결과가 계획의 가설에 답함",
+    "papers/notes_han2023_midair_typing.md|proposal/study_proposal.pdf": "선행 연구",
+    "notes/pilot_notes.md|study/tasks.md": "파일럿 후 T3 변경 (중간보고 거리)",
+    "notes/meeting.md|results/findings.md": "지도교수 미팅에서 결과 검토",
+    "notes/meeting.md|proposal/study_proposal.pdf": "미팅에서 계획 항목 확인",
+    "README.md|proposal/study_proposal.pdf": "README가 계획서 소개",
+    "README.md|results/findings.md": "README가 결과 문서 소개",
+    "analysis/analyze_survey.py|results/findings.md": "결정7"
+   }
+  },
+  {
+   "id": "rerun",
+   "base": "code",
+   "text": "파일럿 보고 앱이랑 로거 고칠 예정. 고치면 어떤 데이터랑 분석이 영향받는지 알고 싶음",
+   "needed": [
+    ["prototype/app.py", "prototype/logger.py"],
+    ["prototype/logger.py", "data/task_logs.csv"],
+    ["prototype/ui_spec.md", "prototype/app.py"],
+    ["analysis/analyze_logs.py", "data/task_logs.csv"],
+    ["notes/pilot_notes.md", "prototype/app.py"],
+    ["prototype/ui_spec.md", "prototype/logger.py"]
+   ],
+   "optional": [
+    ["results/findings.md", "analysis/analyze_logs.py"],
+    ["study/tasks.md", "data/task_logs.csv"],
+    ["README.md", "analysis/analyze_logs.py"]
+   ],
+   "notes": {
+    "prototype/app.py|prototype/logger.py": "앱이 로거 사용",
+    "data/task_logs.csv|prototype/logger.py": "로거가 로그 생성 → 수정 영향",
+    "prototype/app.py|prototype/ui_spec.md": "앱 명세",
+    "analysis/analyze_logs.py|data/task_logs.csv": "결정7 / 로그 형식 바뀌면 분석 영향",
+    "analysis/analyze_logs.py|results/findings.md": "결정7 / rerun: 분석 바뀌면 결과 바뀜",
+    "data/task_logs.csv|study/tasks.md": "로그의 과제 ID 정의",
+    "notes/pilot_notes.md|prototype/app.py": "파일럿에서 나온 앱 버그 → 수정 대상",
+    "README.md|analysis/analyze_logs.py": "README의 분석 실행 방법",
+    "prototype/logger.py|prototype/ui_spec.md": "로그 형식 명세 → 로거"
+   }
+  }
+ ],
+ "review_log": [
+  {
+   "date": "2026-11-24",
+   "by": "human",
+   "what": "Claude drafted the tags from the persona tags and the purpose text; a team member (user study) went through every ambiguous pair (24) with Claude and decided needed / optional / not needed."
+  }
+ ]
+}

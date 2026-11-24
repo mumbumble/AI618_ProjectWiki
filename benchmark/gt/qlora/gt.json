@@ -69,7 +69,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "a_to_b",
    "required": true,
    "layer": "explicit",
    "evidence": {
@@ -77,7 +77,7 @@
     "span": "we release GPT-4 and human ratings of our systems. These are found under `eval/ratings-human` and `eval/ratings-gpt4`. More details can be found at `eval/EVAL_README.md`."
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -110,7 +110,7 @@
     "supports",
     "other"
    ],
-   "direction": "unknown",
+   "direction": "both",
    "required": false,
    "layer": "explicit",
    "evidence": {
@@ -118,7 +118,7 @@
     "span": "n. Our 8-bit optimizers save up to 8.5 GB of GPU memory for our largest 1.5B pa- 2https://github.com/pytorch/fairseq/tiny/master/examples/scaling_nmt/README.md 3https://github.com/pytorch/fairseq/blob/master/examples/roberta/README.glue.md 4https://github.com/NVIDIA/DeepLearningExamples/tree/master/"
    },
    "source": "static-analysis+manual",
-   "note": "claude",
+   "note": "claude; review: direction from the file that states the link",
    "personas": []
   },
   {
@@ -424,16 +424,18 @@
    "personas": []
   },
   {
-   "a": "paper/qlora.pdf",
-   "b": "scripts/finetune_guanaco_65b.sh",
-   "relation": "implements",
-   "also": [],
-   "direction": "unknown",
+   "a": "scripts/finetune_guanaco_65b.sh",
+   "b": "paper/qlora.pdf",
+   "relation": "supports",
+   "also": [
+    "uses"
+   ],
+   "direction": "a_to_b",
    "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: a training script for the paper's experiment; the paper does not implement it",
    "personas": []
   },
   {
@@ -905,16 +907,16 @@
    "personas": []
   },
   {
-   "a": "paper/qlora.pdf",
-   "b": "qlora.py",
+   "a": "qlora.py",
+   "b": "paper/qlora.pdf",
    "relation": "implements",
    "also": [],
-   "direction": "unknown",
-   "required": false,
+   "direction": "a_to_b",
+   "required": true,
    "layer": "semantic",
    "evidence": {},
    "source": "manual",
-   "note": "claude",
+   "note": "claude; review: qlora.py implements the paper",
    "personas": []
   },
   {
@@ -1001,11 +1003,11 @@
    "relation": "describes",
    "also": [],
    "direction": "a_to_b",
-   "required": true,
+   "required": false,
    "layer": "semantic",
    "evidence": {},
    "source": "review",
-   "note": "README mentions the Guanaco training scripts for reproducing models.",
+   "note": "README mentions the Guanaco training scripts for reproducing models.; review: between groups only a tree of key links (at most groups-1); a code-implements-paper link takes this place",
    "personas": []
   }
  ],
@@ -1325,7 +1327,7 @@
   },
   "simplified": {
    "passes": 3,
-   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional",
+   "rule": "files grouped together in at least two passes share a group; key links are a skeleton of links picked in at least two passes inside each group plus a tree of representative links between groups (at most groups-1); other links optional; review: code-implements-paper links represent their pair of groups first",
    "key_links_between_groups": 5,
    "key_links": 14,
    "required_before": 27,
@@ -1334,7 +1336,44 @@
     "README가 전체를 안내하며, 논문을 구현한 qlora.py를 여러 실행 스크립트가 호출해 모델을 학습·생성하고, eval 폴더가 GPT-4·사람 평가를, examples가 Guanaco 데모를, related_work가 배경 논문을 담고 있습니다.",
     "QLoRA 프로젝트는 핵심 학습 스크립트 qlora.py를 중심으로, 이를 호출하는 모델별 실행 스크립트, Guanaco 예제, GPT-4·사람 평가 파이프라인, README와 논문 및 관련 연구 PDF로 구성됩니다."
    ]
-  }
+  },
+  "review_log": [
+   {
+    "tag": "review-r1",
+    "pair": [
+     "qlora.py",
+     "paper/qlora.pdf"
+    ],
+    "before": "paper/qlora.pdf --implements/unknown--> qlora.py",
+    "after": "qlora.py --implements/a_to_b/REQ--> paper/qlora.pdf",
+    "why": "qlora.py implements the paper"
+   },
+   {
+    "tag": "review-r1",
+    "pair": [
+     "scripts/finetune_guanaco_65b.sh",
+     "paper/qlora.pdf"
+    ],
+    "before": "paper/qlora.pdf --implements/unknown--> scripts/finetune_guanaco_65b.sh",
+    "after": "scripts/finetune_guanaco_65b.sh --supports/a_to_b--> paper/qlora.pdf",
+    "why": "a training script for the paper's experiment; the paper does not implement it"
+   },
+   {
+    "tag": "review-r1",
+    "rule": "explicit direction",
+    "filled": 2
+   },
+   {
+    "tag": "review-r1-tidy",
+    "pair": [
+     "README.md",
+     "scripts/finetune_guanaco_65b.sh"
+    ],
+    "before": "README.md --describes/a_to_b/REQ--> scripts/finetune_guanaco_65b.sh",
+    "after": "README.md --describes/a_to_b--> scripts/finetune_guanaco_65b.sh",
+    "why": "between groups only a tree of key links (at most groups-1); a code-implements-paper link takes this place"
+   }
+  ]
  },
  "groups": [
   {

@@ -1,0 +1,106 @@
+{
+ "project": "mock_plant_fewshot",
+ "purposes": [
+  {
+   "id": "talk",
+   "base": "docs",
+   "text": "다음 주 랩미팅 발표 준비 중. 방법 슬라이드는 다 만들었고, 결과 슬라이드에 넣을 표랑 그림이 어디서 나왔는지 확인하고 싶음",
+   "needed": [
+    ["src/evaluate.py", "results/main_results.csv"],
+    ["src/plot_results.py", "figures/accuracy_vs_shots.png"],
+    ["results/main_results.csv", "paper/leafproto_draft_v2.pdf"],
+    ["results/ablation.md", "paper/leafproto_draft_v2.pdf"],
+    ["paper/leafproto_draft_v2.pdf", "figures/accuracy_vs_shots.png"],
+    ["paper/talk_outline.md", "paper/leafproto_draft_v2.pdf"],
+    ["paper/talk_outline.md", "figures/accuracy_vs_shots.png"],
+    ["figures/accuracy_vs_shots.png", "results/main_results.csv"],
+    ["notes/meeting_2026-09-17.md", "results/main_results.csv"],
+    ["notes/meeting_2026-09-17.md", "paper/leafproto_draft_v2.pdf"]
+   ],
+   "optional": [
+    ["src/plot_results.py", "results/main_results.csv"],
+    ["paper/leafproto_draft_v2.pdf", "paper/leafproto_draft_v1.pdf"],
+    ["paper/leafproto_draft_v2.pdf", "figures/overview.png"],
+    ["notes/meeting_2026-09-17.md", "results/ablation.md"]
+   ],
+   "notes": {
+    "results/main_results.csv|src/evaluate.py": "결과 표가 나온 곳 (두 목적 공통)",
+    "results/main_results.csv|src/plot_results.py": "그림 ← csv (발표 그림 출처 사슬)",
+    "figures/accuracy_vs_shots.png|src/plot_results.py": "발표 Figure 2가 나온 곳 (공통)",
+    "paper/leafproto_draft_v1.pdf|paper/leafproto_draft_v2.pdf": "v1 수치 폐기, 옛 수치 방지",
+    "paper/leafproto_draft_v2.pdf|results/main_results.csv": "논문 수치 출처",
+    "paper/leafproto_draft_v2.pdf|results/ablation.md": "Ablation 슬라이드 출처",
+    "figures/accuracy_vs_shots.png|paper/leafproto_draft_v2.pdf": "논문 Figure 2",
+    "figures/overview.png|paper/leafproto_draft_v2.pdf": "논문 Figure 1 (발표 슬라이드 3)",
+    "paper/leafproto_draft_v2.pdf|paper/talk_outline.md": "발표 자료의 기반",
+    "figures/accuracy_vs_shots.png|paper/talk_outline.md": "발표에 쓰는 그림",
+    "figures/accuracy_vs_shots.png|results/main_results.csv": "그림↔표 직접 연결 유지",
+    "notes/meeting_2026-09-17.md|results/main_results.csv": "결과 리뷰 회의: v2 수치로 통일 결정",
+    "notes/meeting_2026-09-17.md|results/ablation.md": "ablation 해석이 정해진 회의",
+    "notes/meeting_2026-09-17.md|paper/leafproto_draft_v2.pdf": "Figure 2 캡션 수정 결정"
+   }
+  },
+  {
+   "id": "handover",
+   "base": "code",
+   "text": "후배한테 실험 코드 넘겨줘야 함. 학습·평가 다시 돌리려면 뭐가 필요한지 정리",
+   "needed": [
+    ["src/train.py", "src/leafproto_model.py"],
+    ["src/train.py", "src/data.py"],
+    ["src/train.py", "src/utils.py"],
+    ["src/leafproto_model.py", "src/freq_mix.py"],
+    ["src/evaluate.py", "src/leafproto_model.py"],
+    ["src/evaluate.py", "src/data.py"],
+    ["src/train.py", "configs/base.yaml"],
+    ["configs/fewshot_5way.yaml", "configs/base.yaml"],
+    ["src/evaluate.py", "results/main_results.csv"],
+    ["src/plot_results.py", "results/main_results.csv"],
+    ["src/plot_results.py", "figures/accuracy_vs_shots.png"],
+    ["src/train.py", "logs/train_2026-10-08.log"],
+    ["logs/train_2026-10-08.log", "configs/fewshot_5way.yaml"],
+    ["README.md", "src/train.py"],
+    ["README.md", "src/evaluate.py"],
+    ["figures/accuracy_vs_shots.png", "results/main_results.csv"],
+    ["configs/fewshot_5way.yaml", "src/train.py"],
+    ["configs/fewshot_5way.yaml", "src/evaluate.py"],
+    ["src/evaluate.py", "src/utils.py"]
+   ],
+   "optional": [
+    ["src/freq_mix.py", "docs/method.md"],
+    ["src/leafproto_model.py", "docs/method.md"],
+    ["README.md", "docs/method.md"]
+   ],
+   "notes": {
+    "src/leafproto_model.py|src/train.py": "학습 코드 의존",
+    "src/data.py|src/train.py": "학습 코드 의존",
+    "src/train.py|src/utils.py": "학습 코드 의존",
+    "src/freq_mix.py|src/leafproto_model.py": "모델이 FreqMix 사용. 발표엔 코드 구조 불필요",
+    "src/evaluate.py|src/leafproto_model.py": "평가 코드 의존",
+    "src/data.py|src/evaluate.py": "평가 코드 의존",
+    "configs/base.yaml|src/train.py": "학습 설정",
+    "configs/base.yaml|configs/fewshot_5way.yaml": "설정 상속",
+    "results/main_results.csv|src/evaluate.py": "결과 표가 나온 곳 (두 목적 공통)",
+    "results/main_results.csv|src/plot_results.py": "그림 ← csv (발표 그림 출처 사슬)",
+    "figures/accuracy_vs_shots.png|src/plot_results.py": "발표 Figure 2가 나온 곳 (공통)",
+    "logs/train_2026-10-08.log|src/train.py": "학습 로그",
+    "configs/fewshot_5way.yaml|logs/train_2026-10-08.log": "로그가 어떤 설정으로 돌았는지",
+    "docs/method.md|src/freq_mix.py": "talk는 결과·그림만",
+    "docs/method.md|src/leafproto_model.py": "결정1",
+    "README.md|src/train.py": "README의 실행 방법",
+    "README.md|docs/method.md": "결정1. 인수인계 입구",
+    "README.md|src/evaluate.py": "README의 실행 방법",
+    "figures/accuracy_vs_shots.png|results/main_results.csv": "그림↔표 직접 연결 유지",
+    "configs/fewshot_5way.yaml|src/train.py": "설정 주석의 실행 명령",
+    "configs/fewshot_5way.yaml|src/evaluate.py": "평가 설정",
+    "src/evaluate.py|src/utils.py": "공용 함수"
+   }
+  }
+ ],
+ "review_log": [
+  {
+   "date": "2026-11-24",
+   "by": "human",
+   "what": "Claude drafted the tags from the persona tags and the purpose text; a team member (user study) went through every ambiguous pair (24) with Claude and decided needed / optional / not needed."
+  }
+ ]
+}
