@@ -25,7 +25,7 @@ from projectwiki.config import Config  # noqa: E402
 from projectwiki.models.preference import CORRECTORS  # noqa: E402
 from projectwiki.schema import Graph  # noqa: E402
 from graph_metrics import aggregate, evaluate, markdown_table  # noqa: E402
-from gt_format import GroundTruth  # noqa: E402
+from gt_format import GroundTruth, check_purposes, load_purposes, purpose_view  # noqa: E402
 from projectwiki.srcs.record import Record  # noqa: E402
 from feedback_sim import PERSONAS, curve_svg, simulate  # noqa: E402
 
@@ -60,7 +60,7 @@ def main() -> None:
     if not names:
         raise SystemExit("nothing to evaluate")
     scores = {sys_: {} for sys_ in SYSTEMS}
-    sims, gts = {}, {}
+    sims, gts, purposes = {}, {}, {}
     for name in names:
         gt = gts[name] = GroundTruth.load(HERE / "gt" / name / "gt.json")
         record = Record.load(RUNS / "bench" / name)
@@ -70,7 +70,12 @@ def main() -> None:
                 scores[sys_][name] = evaluate(g, gt, record)
         graph = load_graph(RUNS / "bench" / name / "graph.json")
         cfg = Config.load(RUNS / "bench" / name / "config.json")
-        sims[name] = simulate(graph, record, gt, cfg, list(CORRECTORS), args.budgets, args.seeds)
+        purposes[name] = load_purposes(HERE / "gt" / name)
+        problems = check_purposes(gt, purposes[name])
+        if problems:
+            raise SystemExit(f"{name}/purposes.json: " + "; ".join(problems))
+        sims[name] = simulate(graph, record, gt, cfg, list(CORRECTORS), args.budgets, args.seeds,
+                              extra_views={f"purpose:{p['id']}": purpose_view(gt, p) for p in purposes[name]})
         print(f"{name}: " + "  ".join(f"{s} F1={scores[s][name]['f1']:.3f}" for s in SYSTEMS
                                        if name in scores[s] and scores[s][name]["f1"] is not None))
 
@@ -103,29 +108,44 @@ def main() -> None:
                f"| {n} | " + " | ".join(f"{100 * scores[s][n]['f1']:.1f}" if n in scores[s] and scores[s][n]["f1"] is not None
                                          else "–" for s in SYSTEMS) + " |\n" for n in names)]
     last = args.budgets[-1]
+
+    def feedback_section(ns: list[str], persona: str, title: str, file_tag: str) -> str:
+        series, rows = {}, {}
+        for c in CORRECTORS:
+            def mean_of(metric, k):
+                v = [sims[n][persona][c][k][metric]["mean"] for n in ns
+                     if sims[n][persona][c][k][metric]["mean"] is not None]
+                return sum(v) / len(v) if v else None
+            series[c] = [(k, mean_of("f1", k)) for k in args.budgets]
+            rows[c] = {"f1_0": series[c][0][1], "f1_k": series[c][-1][1], "typed_k": mean_of("typed_f1", last),
+                       "compliance": mean_of("compliance", last), "relabel": mean_of("adherence_relabel", last),
+                       "collateral": mean_of("collateral", last), "fixed": mean_of("fixed", last)}
+        base_k = rows.get("baseline", {}).get("f1_k")
+        for c in rows:  # same events and held-out pairs as baseline, so the gap is the generalization
+            rows[c]["delta"] = rows[c]["f1_k"] - base_k if None not in (rows[c]["f1_k"], base_k) else None
+        svg = curve_svg(series, title)
+        (out_dir / f"feedback_{file_tag}.svg").write_text(svg, encoding="utf-8")
+        return f"![](feedback_{file_tag}.svg)\n\n" + markdown_table(rows, [
+            ("f1_0", "F1 (k=0)"), ("f1_k", f"F1 (k={last})"), ("delta", f"Δ vs baseline (k={last})"),
+            ("typed_k", f"typed F1 (k={last})"), ("compliance", "edits kept"), ("relabel", "relation fixes kept"),
+            ("collateral", "correct edges lost"), ("fixed", "wrong edges removed")]) + "\n"
+
     for group, ns in groups.items():
         md.append(f"\n## Virtual-user feedback, {group} (held-out F1, mean over projects and seeds)\n")
         tag = "real" if group.startswith("real") else "mock"
         for persona in PERSONAS:
-            series, rows = {}, {}
-            for c in CORRECTORS:
-                def mean_of(metric, k):
-                    v = [sims[n][persona][c][k][metric]["mean"] for n in ns
-                         if sims[n][persona][c][k][metric]["mean"] is not None]
-                    return sum(v) / len(v) if v else None
-                series[c] = [(k, mean_of("f1", k)) for k in args.budgets]
-                rows[c] = {"f1_0": series[c][0][1], "f1_k": series[c][-1][1], "typed_k": mean_of("typed_f1", last),
-                           "compliance": mean_of("compliance", last), "relabel": mean_of("adherence_relabel", last),
-                           "collateral": mean_of("collateral", last), "fixed": mean_of("fixed", last)}
-            base_k = rows.get("baseline", {}).get("f1_k")
-            for c in rows:  # same events and held-out pairs as baseline, so the gap is the generalization
-                rows[c]["delta"] = rows[c]["f1_k"] - base_k if None not in (rows[c]["f1_k"], base_k) else None
-            svg = curve_svg(series, f"{group}, persona: {persona}")
-            (out_dir / f"feedback_{tag}_{persona}.svg").write_text(svg, encoding="utf-8")
-            md.append(f"### persona: {persona}\n\n![](feedback_{tag}_{persona}.svg)\n\n" + markdown_table(rows, [
-                ("f1_0", "F1 (k=0)"), ("f1_k", f"F1 (k={last})"), ("delta", f"Δ vs baseline (k={last})"),
-                ("typed_k", f"typed F1 (k={last})"), ("compliance", "edits kept"), ("relabel", "relation fixes kept"),
-                ("collateral", "correct edges lost"), ("fixed", "wrong edges removed")]) + "\n")
+            md.append(f"### persona: {persona}\n\n"
+                      + feedback_section(ns, persona, f"{group}, persona: {persona}", f"{tag}_{persona}"))
+    with_purposes = [n for n in names if purposes[n]]
+    if with_purposes:
+        md.append("\n## Virtual-user feedback, purposes (held-out F1, mean over seeds)\n\n"
+                  "The simulated user wants the graph one purpose needs (`purposes.json`, `gt_format.purpose_view`): "
+                  "same graph, same methods, a different goal per purpose.\n")
+        for n in with_purposes:
+            for p in purposes[n]:
+                md.append(f"### {n}, purpose: {p['id']}\n\n> {p['text']}\n\n"
+                          + feedback_section([n], f"purpose:{p['id']}", f"{n}, purpose: {p['id']}",
+                                             f"purpose_{n}_{p['id']}"))
     md.append("\nHeld-out F1 rises for every method, baseline included, because the simulated user corrects "
               "mistakes and those pairs leave the held-out set. Only the gap to baseline at the same k measures "
               "how far a method generalizes the feedback.\n")
