@@ -17,6 +17,7 @@ from sklearn.cluster import AgglomerativeClustering
 
 from ..config import Config
 from ..schema import Group, Preferences
+from ..srcs.initial_preferences import material_kind
 from ..srcs.plugins import load_component
 from ..srcs.record import Record
 
@@ -89,6 +90,8 @@ class BaselineClusterer:
 # ---- pref ----------------------------------------------------------------------------------------
 GUIDE_ALPHA = {"folder": 0.2, "content": 0.9}
 ANCHOR_PCT = 25.0  # a file joins its nearest anchor if closer than this percentile of distances
+WORKFLOW_GROUPS = {"notes": "계획·회의", "code": "구현·설정",
+                   "results": "결과·시각화", "docs": "문서·보고"}
 
 
 class PreferenceClusterer:
@@ -99,9 +102,20 @@ class PreferenceClusterer:
 
     def cluster(self, record: Record, prefs: Preferences) -> list[Group]:
         files = record.files
+        group_by = prefs.guide.get("group_by", "")
+        if group_by in {"directory", "workflow"}:
+            partitions: dict[str, list[str]] = {}
+            for file in files:
+                if group_by == "directory":
+                    name = file.path.rpartition("/")[0] or "(root)"
+                else:
+                    name = WORKFLOW_GROUPS.get(material_kind(file.path, file.type), "기타 자료")
+                partitions.setdefault(name, []).append(file.id)
+            return [Group(id=f"g{i + 1}", name=name, members=members)
+                    for i, (name, members) in enumerate(partitions.items())]
         if len(files) < 3:
             return [Group(id="g1", name="", members=[f.id for f in files])]
-        dist = mixed_distance(record, GUIDE_ALPHA.get(prefs.guide.get("group_by", ""), self.alpha))
+        dist = mixed_distance(record, GUIDE_ALPHA.get(group_by, self.alpha))
         for p in prefs.pairs:
             a, b = record.resolve(p.get("a")), record.resolve(p.get("b"))
             if a and b and a != b:

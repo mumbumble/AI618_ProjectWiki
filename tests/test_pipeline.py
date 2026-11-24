@@ -11,6 +11,7 @@ from projectwiki.models.visualization import export_obsidian
 from projectwiki.schema import FeedbackEvent, Graph, Preferences
 from projectwiki.srcs.candidates import reference_candidates
 from projectwiki.srcs.ingest import ingest
+from projectwiki.srcs.initial_preferences import preferences_from_answers
 from projectwiki.srcs.record import Record
 
 
@@ -106,6 +107,25 @@ def test_build_with_llm(project, tmp_path):
     calls = fake.calls
     pipeline.build(project, out, make_cfg(), Preferences(purpose="발표 준비"), llm_client=fake)
     assert fake.calls == calls  # second run is fully cached
+
+
+def test_initial_preferences_shape_the_first_view(project, tmp_path):
+    out = tmp_path / "guided"
+    prefs = preferences_from_answers(Preferences(), "발표 준비", "실험 결과·그림, paper.pdf", "기존 폴더대로")
+    result = pipeline.build(project, out, make_cfg(llm=False), prefs)
+    graph = result["graph"]
+    nodes = {n.path: n for n in graph.nodes}
+    assert nodes["src/model.py"].group == nodes["src/train.py"].group != nodes["paper.pdf"].group
+    assert json.loads((out / "prefs.json").read_text(encoding="utf-8"))["purpose"] == "발표 준비"
+
+    first_view = result["view"].read_text(encoding="utf-8")
+    reopened_view = pipeline.view(out).read_text(encoding="utf-8")
+    for html in (first_view, reopened_view):
+        embedded = html.split("const DATA = ", 1)[1].split(";\n", 1)[0]
+        priority = json.loads(embedded)["meta"]["setup"]["files"]
+        assert priority[0] == nodes["paper.pdf"].id
+        assert {nodes["results.csv"].id, nodes["fig.png"].id} <= set(priority)
+        assert nodes["src/train.py"].id not in priority
 
 
 def test_feedback_and_drift(project, tmp_path):

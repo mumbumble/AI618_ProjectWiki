@@ -65,6 +65,7 @@ def main(argv=None) -> None:
     b.add_argument("-o", "--out", help="output folder (default: <root>/.projectwiki)")
     b.add_argument("--purpose", help="the user's purpose for this project")
     b.add_argument("--prefs", help="preferences JSON for the clustering stage (see examples/prefs.example.json)")
+    b.add_argument("--setup", action="store_true", help="ask for initial preferences in a browser before building")
     b.add_argument("--config", help="JSON file with Config fields")
     b.add_argument("--encoder", choices=["bge-m3", "tfidf"])
     b.add_argument("--clusterer", help="registered name or package.module:Class")
@@ -108,8 +109,16 @@ def main(argv=None) -> None:
     if args.cmd == "build":
         root = Path(args.root).resolve()
         out = Path(args.out).resolve() if args.out else root / ".projectwiki"
-        result = pipeline.build(root, out, load_config(args), load_prefs(args))
-        show(result["view"], args.open)
+        cfg, prefs = load_config(args), load_prefs(args)
+        if args.setup:
+            from .srcs.setup_server import run_setup
+            if not root.is_dir():
+                p.error(f"project folder does not exist: {root}")
+            viewer = run_setup(prefs, lambda answers: pipeline.build(root, out, cfg, answers)["view"])
+            show(viewer, False)
+        else:
+            result = pipeline.build(root, out, cfg, prefs)
+            show(result["view"], args.open)
     elif args.cmd == "correct":
         out = Path(args.out).resolve()
         cfg = Config.load(out / "config.json")

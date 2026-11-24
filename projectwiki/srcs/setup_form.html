@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>위키 설정 · ProjectWiki</title>
+<style>
+  :root { color-scheme: light dark; font: 16px/1.55 system-ui, "Malgun Gothic", sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: Canvas; color: CanvasText; }
+  main { width: min(780px, 100% - 32px); margin: 44px auto; }
+  h1 { margin: 0 0 24px; font-size: clamp(25px, 5vw, 34px); }
+  .question { display: grid; grid-template-columns: 1fr 245px; gap: 8px 24px;
+    border-top: 1px solid GrayText; padding: 20px 0; }
+  label { display: block; margin-bottom: 8px; font-weight: 650; }
+  textarea { display: block; width: 100%; min-height: 85px; resize: vertical; font: inherit;
+    padding: 8px 10px; border: 1px solid GrayText; border-radius: 6px; }
+  .examples { display: flex; flex-wrap: wrap; align-content: start; gap: 6px; }
+  .examples span { flex-basis: 100%; color: GrayText; font-size: 14px; }
+  button { font: inherit; cursor: pointer; }
+  .examples button { border: 1px solid GrayText; border-radius: 6px; background: Canvas;
+    color: CanvasText; padding: 3px 9px; font-size: 14px; }
+  button:hover { outline: 1px solid Highlight; }
+  button[type=submit] { background: #245bb6; color: white; padding: 8px 15px;
+    border: 0; border-radius: 6px; }
+  button:disabled { opacity: .65; cursor: wait; }
+  @media (max-width: 620px) { .question { grid-template-columns: 1fr; } main { margin: 24px auto; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>어떤 위키를 만들까요?</h1>
+  <form method="post" accept-charset="UTF-8">
+    <div class="question">
+      <div>
+        <label for="purpose">1. 이 위키를 어디에 쓰나요?</label>
+        <textarea id="purpose" name="purpose" rows="2" maxlength="1000">__PURPOSE__</textarea>
+      </div>
+      <div class="examples" data-for="purpose">
+        <span>예시</span>
+        <button type="button">발표 준비</button>
+        <button type="button">팀원에게 인수인계</button>
+        <button type="button">프로젝트 빠르게 이해하기</button>
+      </div>
+    </div>
+    <div class="question">
+      <div>
+        <label for="priority">2. 어떤 자료를 먼저 보고 싶나요?</label>
+        <textarea id="priority" name="priority" rows="2" maxlength="1000">__PRIORITY__</textarea>
+      </div>
+      <div class="examples" data-for="priority">
+        <span>예시</span>
+        <button type="button">실험 결과·그림</button>
+        <button type="button">코드·설정</button>
+        <button type="button">문서·논문</button>
+        <button type="button">회의록·메모</button>
+      </div>
+    </div>
+    <div class="question">
+      <div>
+        <label for="grouping">3. 파일을 어떤 기준으로 묶고 싶나요?</label>
+        <textarea id="grouping" name="grouping" rows="2" maxlength="1000">__GROUPING__</textarea>
+      </div>
+      <div class="examples" data-for="grouping">
+        <span>예시</span>
+        <button type="button">같은 주제끼리</button>
+        <button type="button">실험이나 작업 단계별</button>
+        <button type="button">기존 폴더대로</button>
+        <button type="button">시스템에 맡기기</button>
+      </div>
+    </div>
+    <button type="submit">첫 그래프 만들기</button>
+    <p role="status" id="status"></p>
+  </form>
+</main>
+<script>
+  for (const button of document.querySelectorAll(".examples button")) {
+    button.onclick = () => {
+      const input = document.getElementById(button.parentElement.dataset.for);
+      const example = button.textContent.trim();
+      const choices = [...button.parentElement.querySelectorAll("button")].map(item => item.textContent.trim());
+      const current = input.value.trim();
+      if (!current || (input.id !== "priority" && choices.includes(current))) {
+        input.value = example;
+      } else if (!current.split("\n").includes(example)) {
+        input.value = (current + "\n" + example).slice(0, input.maxLength);
+      }
+      input.focus();
+    };
+  }
+  const form = document.querySelector("form");
+  form.onsubmit = () => {
+    form.querySelector("button[type=submit]").disabled = true;
+    document.getElementById("status").textContent = "첫 그래프를 만드는 중입니다.";
+  };
+</script>
+</body>
+</html>
