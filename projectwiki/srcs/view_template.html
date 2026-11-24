@@ -81,6 +81,17 @@ main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .options-panel label { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
 #graphwrap { flex: 1; min-height: 200px; position: relative; }
 #graph { position: absolute; inset: 0; }
+#graph3d { position: absolute; inset: 0; overflow: hidden; }
+#graph[hidden], #graph3d[hidden] { display: none; }
+.view-mode { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; padding: 2px; background: var(--rail); }
+.view-mode button { border: 0; background: transparent; padding: 3px 9px; color: var(--muted); }
+.view-mode button[aria-pressed="true"] { background: #493b65; color: #e1d3ff; }
+.graph-help { position: absolute; left: 20px; bottom: 18px; font-size: 12px; color: var(--muted); pointer-events: none; max-width: calc(100% - 185px); }
+.orientation-cue { position: absolute; right: 20px; top: 18px; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; pointer-events: none; }
+.orientation-cue[hidden], #reset3d[hidden] { display: none; }
+.orientation-cue svg { width: 18px; height: 28px; stroke: var(--accent); fill: none; stroke-width: 1.5; }
+.graph-controls #reset3d { font-size: 13px; border-left: 1px solid var(--line); }
+.graph-error { color: #ffb6bd; max-width: 430px; padding: 16px; pointer-events: auto; }
 .graph-caption { position: absolute; left: 22px; top: 18px; pointer-events: none; color: var(--muted); font-size: 12px; }
 .graph-caption strong { display: block; font-size: 16px; color: #cecece; font-weight: 500; margin-bottom: 2px; }
 .graph-controls { position: absolute; right: 18px; bottom: 18px; display: flex; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 3px; }
@@ -147,6 +158,7 @@ body.hide-explorer .explorer, body.hide-inspector .inspector { display: none; }
   <main>
     <div class="tabbar"><div class="tab"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="9" r="3"/><circle cx="9" cy="19" r="3"/><path d="m9 7 6 1M7 9l1 7m4 1 4-5"/></svg>그래프 뷰</div></div>
     <div class="toolbar"><div class="breadcrumb"><span id="projectName"></span> / <strong>전체 그래프</strong></div><div class="tools">
+      <div class="view-mode" role="group" aria-label="그래프 차원"><button id="view2d" aria-pressed="true">2D</button><button id="view3d" aria-pressed="false">3D</button></div>
       <button id="addMode">연결 추가</button>
       <details class="graph-options"><summary>표시 설정</summary><div class="options-panel">
         <label><input type="checkbox" id="showInferred" checked> 추론 연결</label>
@@ -156,9 +168,13 @@ body.hide-explorer .explorer, body.hide-inspector .inspector { display: none; }
       </div></details>
     </div></div>
     <div id="graphwrap"><div id="graph" aria-label="프로젝트 파일 관계 그래프"></div>
+      <div id="graph3d" aria-label="프로젝트 파일 관계 3D 그래프" hidden></div>
+      <div id="graphError" class="graph-empty" role="status" hidden></div>
       <div id="graphEmpty" class="graph-empty" hidden>표시 중인 파일이 없습니다.<br>아래 그룹 목록에서 표시할 그룹을 켜세요.</div>
       <div class="graph-caption"><strong>프로젝트의 연결 지도</strong><span id="graphStats"></span></div>
-      <div class="graph-controls"><button id="zoomOut" aria-label="축소" title="축소">−</button><button id="zoomIn" aria-label="확대" title="확대">+</button><button id="fitGraph">전체 보기</button></div>
+      <div id="orientationCue" class="orientation-cue" hidden><svg viewBox="0 0 18 28" aria-hidden="true"><path d="M9 23V4M3 10l6-6 6 6M2 24h14"/></svg><span>위<br>수평 유지</span></div>
+      <div id="graphHelp" class="graph-help" hidden>드래그: 회전 · 휠: 확대/축소 · 우클릭 드래그: 바닥을 따라 이동</div>
+      <div class="graph-controls"><button id="zoomOut" aria-label="축소" title="축소">−</button><button id="zoomIn" aria-label="확대" title="확대">+</button><button id="reset3d" hidden title="수평을 유지한 기본 시점으로 돌아가기">기본 시점</button><button id="fitGraph">전체 보기</button></div>
     </div>
   </main>
   <aside class="inspector" aria-label="파일과 연결 상세">
@@ -219,6 +235,321 @@ function updateVisibilitySwitch(input, ids) {
 const groupColor = {};
 DATA.groups.forEach((g, i) => groupColor[g.id] = PALETTE[i % PALETTE.length]);
 let state, selected = null, addFrom = null;
+let graph3D = null, graphMode = "2d", loading3D = false;
+let highlighted3D = new Set();
+let floor3D = null;
+
+function graphBounds3D() {
+  const nodes = graph3D.graphData().nodes.filter(n => [n.x, n.y, n.z].every(Number.isFinite));
+  if (!nodes.length) return null;
+  const box = new THREE.Box3();
+  nodes.forEach(n => box.expandByPoint(new THREE.Vector3(n.x, n.y, n.z)));
+  const center = box.getCenter(new THREE.Vector3());
+  const radius = Math.max(35, ...nodes.map(n => center.distanceTo(new THREE.Vector3(n.x, n.y, n.z)) + 18));
+  return {box, center, radius};
+}
+
+function update3DFloor() {
+  if (!floor3D || !graph3D) return;
+  const bounds = graphBounds3D();
+  floor3D.root.visible = !!bounds;
+  if (!bounds) return;
+  const {box, center, radius} = bounds;
+  const size = Math.max(180, radius * 2.6), bottom = box.min.y - Math.max(25, radius * .18);
+  floor3D.root.position.set(center.x, bottom, center.z);
+  floor3D.grid.scale.set(size, 1, size);
+  floor3D.plane.scale.set(size, size, 1);
+  const corner = size * -.45, height = Math.max(40, radius * .45);
+  floor3D.up.position.set(corner, 0, corner);
+  floor3D.up.setLength(height, height * .13, height * .07);
+  floor3D.upLabel.position.set(corner, height + 10, corner);
+  floor3D.floorLabel.position.set(0, 2, size * .42);
+}
+
+function setup3DOrientation() {
+  const camera = graph3D.camera(), controls = graph3D.controls();
+  camera.up.set(0, 1, 0);
+  controls.minPolarAngle = Math.PI / 18;
+  controls.maxPolarAngle = Math.PI / 2 - .08;
+  controls.screenSpacePanning = false;
+  controls.minDistance = 20;
+  controls.update();
+  const root = new THREE.Group();
+  const grid = new THREE.GridHelper(1, 16, 0x78678f, 0x45404e);
+  grid.material.transparent = true; grid.material.opacity = .55; grid.material.depthWrite = false;
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({
+    color: 0x8c7aa8, transparent: true, opacity: .045, side: THREE.DoubleSide, depthWrite: false,
+  }));
+  plane.rotation.x = -Math.PI / 2;
+  const up = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(), 60, 0xb49af4);
+  const upLabel = new SpriteText("위", 7, css("--accent"));
+  const floorLabel = new SpriteText("바닥 기준면", 6, css("--muted"));
+  root.add(plane, grid, up, upLabel, floorLabel);
+  graph3D.scene().add(root);
+  floor3D = {root, grid, plane, up, upLabel, floorLabel};
+  graph3D.onEngineStop(update3DFloor);
+}
+
+function reset3DView() {
+  if (!graph3D || graphMode !== "3d") return;
+  update3DFloor();
+  const bounds = graphBounds3D();
+  if (!bounds) return;
+  const camera = graph3D.camera(), {center, radius} = bounds;
+  const vertical = camera.fov * Math.PI / 360;
+  const horizontal = Math.atan(Math.tan(vertical) * camera.aspect);
+  const distance = radius / Math.sin(Math.min(vertical, horizontal)) * 1.12;
+  const direction = new THREE.Vector3(.8, .65, 1).normalize().multiplyScalar(distance);
+  camera.up.set(0, 1, 0);
+  graph3D.cameraPosition({x: center.x + direction.x, y: center.y + direction.y, z: center.z + direction.z},
+    center, reducedMotion ? 0 : 500);
+}
+
+// Load WebGL dependencies only when 3D is requested; 2D remains usable on failure.
+function loadGraphScript(src, globalName) {
+  if (window[globalName]) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    const timer = setTimeout(() => { script.remove(); reject(new Error("load timeout")); }, 20000);
+    script.src = src;
+    script.onload = () => { clearTimeout(timer); window[globalName] ? resolve() : reject(new Error("missing library")); };
+    script.onerror = () => { clearTimeout(timer); script.remove(); reject(new Error("load failed")); };
+    document.head.append(script);
+  });
+}
+
+function refresh3DHighlight() {
+  if (!graph3D) return;
+  graph3D.nodeColor(n => highlighted3D.has(n.id) ? css("--accent") : groupColor[state.nodes.get(n.id)?.group] || "#9aa0a6")
+    .nodeVal(n => highlighted3D.has(n.id) ? 6 : 3)
+    .linkColor(e => selected?.kind === "edge" && selected.id === e.id ? css("--accent")
+      : !VISIBLE.has(e.status) ? css("--bad") : e.origin === "user" ? css("--ok") : e.direct ? "#a29aaa" : "#736b80")
+    .linkWidth(e => selected?.kind === "edge" && selected.id === e.id ? 1.8 : .7);
+}
+
+function leafHeights3D(nodes, edges) {
+  // Collapse directed cycles, then rank components by distance from their leaves.
+  // Undirected similarity relations should not invent parent/child relationships.
+  const ids = nodes.map(n => n.id), outgoing = new Map(ids.map(id => [id, []]));
+  const incoming = new Map(ids.map(id => [id, []]));
+  for (const e of edges) {
+    if (!DIRECTED.has(e.relation) || !outgoing.has(e.source) || !outgoing.has(e.target)) continue;
+    outgoing.get(e.source).push(e.target); incoming.get(e.target).push(e.source);
+  }
+  const visited = new Set(), order = [];
+  for (const id of ids) {
+    if (visited.has(id)) continue;
+    visited.add(id);
+    const stack = [{id, next: 0}];
+    while (stack.length) {
+      const frame = stack[stack.length - 1], children = outgoing.get(frame.id);
+      if (frame.next < children.length) {
+        const child = children[frame.next++];
+        if (!visited.has(child)) { visited.add(child); stack.push({id: child, next: 0}); }
+      } else { order.push(frame.id); stack.pop(); }
+    }
+  }
+  const component = new Map();
+  let count = 0;
+  for (const id of order.reverse()) {
+    if (component.has(id)) continue;
+    const stack = [id]; component.set(id, count);
+    while (stack.length) {
+      for (const parent of incoming.get(stack.pop())) {
+        if (!component.has(parent)) { component.set(parent, count); stack.push(parent); }
+      }
+    }
+    count++;
+  }
+  const children = Array.from({length: count}, () => new Set());
+  const parents = Array.from({length: count}, () => new Set());
+  for (const [id, targets] of outgoing) {
+    for (const target of targets) {
+      const a = component.get(id), b = component.get(target);
+      if (a !== b) { children[a].add(b); parents[b].add(a); }
+    }
+  }
+  const remaining = children.map(c => c.size), levels = Array(count).fill(0);
+  const queue = remaining.map((degree, i) => degree === 0 ? i : -1).filter(i => i >= 0);
+  for (let i = 0; i < queue.length; i++) {
+    const child = queue[i];
+    for (const parent of parents[child]) {
+      levels[parent] = Math.max(levels[parent], levels[child] + 1);
+      if (--remaining[parent] === 0) queue.push(parent);
+    }
+  }
+  const middle = (Math.max(0, ...levels)) / 2;
+  return new Map(ids.map(id => [id, (levels[component.get(id)] - middle) * 65]));
+}
+
+function sync3D() {
+  if (!graph3D) return;
+  const previous = new Map(graph3D.graphData().nodes.map(n => [n.id, n]));
+  const nodes = [...state.nodes.values()].filter(n => fileVisible(n.id)).map((n, i, visible) => {
+    const existing = previous.get(n.id);
+    if (existing) return Object.assign(existing, {path: n.path, group: n.group});
+    // A sphere gives a stable 3D layout even when reduced motion disables simulation.
+    const y = 1 - 2 * (i + .5) / visible.length, angle = i * Math.PI * (3 - Math.sqrt(5));
+    const radius = Math.max(80, Math.cbrt(visible.length) * 45), ring = Math.sqrt(1 - y * y);
+    return {id: n.id, path: n.path, group: n.group, x: radius * ring * Math.cos(angle), y: radius * y, z: radius * ring * Math.sin(angle)};
+  });
+  const edges = visibleEdges(), moving = $("physics").checked;
+  const heights = moving ? leafHeights3D(nodes, edges) : null;
+  for (const n of nodes) {
+    if (moving) { n.fy = heights.get(n.id); n.y = n.fy; n.vy = 0; }
+    else delete n.fy;
+  }
+  graph3D.graphData({nodes, links: edges.map(e => ({...e}))});
+  const height = endpoint => heights?.get(typeof endpoint === "object" ? endpoint.id : endpoint) || 0;
+  // Account for vertical separation so links still leave room in the X/Z plane.
+  graph3D.d3Force("link").distance(e => moving ? Math.hypot(85, height(e.source) - height(e.target)) : 65);
+  graph3D.cooldownTicks(moving ? 160 : 0);
+  update3DFloor();
+  refresh3DHighlight();
+}
+
+function resize3D() {
+  if (graphMode === "3d" && graph3D) graph3D.width($("graphwrap").clientWidth).height($("graphwrap").clientHeight);
+}
+
+function fitGraph(ids) {
+  const visible = ids?.filter(fileVisible);
+  if (graphMode === "3d" && graph3D) {
+    const filter = visible ? new Set(visible) : null;
+    if (graph3D.graphData().nodes.length && (!filter || filter.size)) {
+      graph3D.zoomToFit(reducedMotion ? 0 : 500, 55, filter ? n => filter.has(n.id) : undefined);
+    }
+  } else if (!visible || visible.length) network.fit({nodes: visible, animation: !reducedMotion, maxZoomLevel: 1.6});
+}
+
+function focusGraphNodes(ids, focus = false) {
+  const visible = ids.filter(fileVisible);
+  highlighted3D = new Set(visible);
+  refresh3DHighlight();
+  if (graphMode === "3d" && graph3D) {
+    if (focus && visible.length === 1) {
+      const n = graph3D.graphData().nodes.find(n => n.id === visible[0]);
+      if (n) graph3D.cameraPosition({x: n.x + 90, y: n.y + 55, z: n.z + 130}, n, reducedMotion ? 0 : 500);
+    } else fitGraph(visible);
+  } else {
+    network.selectNodes(visible);
+    if (focus && visible.length === 1) network.focus(visible[0], {scale: 1.2, animation: !reducedMotion});
+    else fitGraph(visible);
+  }
+}
+
+function zoomGraph(factor) {
+  if (graphMode === "3d" && graph3D) {
+    const camera = graph3D.camera(), target = graph3D.controls().target;
+    graph3D.cameraPosition({x: target.x + (camera.position.x - target.x) / factor,
+      y: target.y + (camera.position.y - target.y) / factor, z: target.z + (camera.position.z - target.z) / factor},
+      target, reducedMotion ? 0 : 200);
+  } else network.moveTo({scale: Math.max(.05, Math.min(4, network.getScale() * factor)), animation: !reducedMotion});
+}
+
+function bind3DSelection() {
+  // Pick on pointer-up so a click is distinct from an orbit/pan gesture.
+  // Projection also avoids the renderer's hover-frame delay on quick clicks.
+  const canvas = graph3D.renderer().domElement;
+  let press = null;
+  canvas.addEventListener("pointerdown", ev => {
+    press = ev.button === 0 ? {id: ev.pointerId, x: ev.clientX, y: ev.clientY, moved: false} : null;
+  }, true);
+  canvas.addEventListener("pointermove", ev => {
+    if (press && Math.hypot(ev.clientX - press.x, ev.clientY - press.y) > 5) press.moved = true;
+  }, true);
+  canvas.addEventListener("pointercancel", () => { press = null; }, true);
+  canvas.addEventListener("pointerup", ev => {
+    const start = press; press = null;
+    if (!start || start.id !== ev.pointerId || start.moved || ev.button !== 0) return;
+    const rect = canvas.getBoundingClientRect(), x = ev.clientX - rect.left, y = ev.clientY - rect.top;
+    const project = n => {
+      const p = new THREE.Vector3(n.x, n.y, n.z).project(graph3D.camera());
+      return {x: (p.x + 1) * rect.width / 2, y: (1 - p.y) * rect.height / 2, z: p.z};
+    };
+    const data = graph3D.graphData();
+    const hits = data.nodes.map(n => {
+      const p = project(n), radius = 4 * Math.cbrt(highlighted3D.has(n.id) ? 6 : 3);
+      const offsets = [[radius, 0, 0], [0, radius, 0], [0, 0, radius]].map(([dx, dy, dz]) =>
+        project({x: n.x + dx, y: n.y + dy, z: n.z + dz}));
+      const size = Math.max(7, ...offsets.map(o => Math.hypot(o.x - p.x, o.y - p.y)));
+      return {id: n.id, p, distance: Math.hypot(p.x - x, p.y - y), size};
+    }).filter(h => h.p.z >= -1 && h.p.z <= 1 && h.distance <= h.size + 2)
+      .sort((a, b) => a.p.z - b.p.z || a.distance - b.distance);
+    if (hits.length) { handleGraphClick({nodes: [hits[0].id], edges: []}); return; }
+    let closest = null, minDistance = 6;
+    for (const edge of data.links) {
+      const a = project(edge.source), b = project(edge.target);
+      if (a.z < -1 || a.z > 1 || b.z < -1 || b.z > 1) continue;
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (y - a.y) * dy) / (dx * dx + dy * dy || 1)));
+      const distance = Math.hypot(x - a.x - t * dx, y - a.y - t * dy);
+      if (distance < minDistance) { closest = edge; minDistance = distance; }
+    }
+    if (closest) handleGraphClick({nodes: [], edges: [closest.id]});
+  }, true);
+}
+
+async function setGraphMode(mode) {
+  if (loading3D) return;
+  $("graphError").hidden = true;
+  if (mode === "3d" && !graph3D) {
+    loading3D = true;
+    $("view3d").disabled = true; $("view3d").textContent = "로딩…";
+    $("graphwrap").setAttribute("aria-busy", "true");
+    try {
+      await loadGraphScript("https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js", "THREE");
+      await loadGraphScript("https://cdn.jsdelivr.net/npm/3d-force-graph@1.78.4/dist/3d-force-graph.min.js", "ForceGraph3D");
+      await loadGraphScript("https://cdn.jsdelivr.net/npm/three-spritetext@1.10.0/dist/three-spritetext.min.js", "SpriteText");
+      $("graph3d").hidden = false;
+      graph3D = ForceGraph3D({controlType: "orbit"})($("graph3d"))
+        .backgroundColor(css("--bg")).showNavInfo(false).enableNodeDrag(false)
+        .nodeLabel(n => esc(n.path)).nodeVal(3).nodeOpacity(.95)
+        .nodeThreeObjectExtend(true).nodeThreeObject(n => {
+          const label = new SpriteText(base(n.path), 6, css("--text"));
+          label.position.y = -9; label.material.depthWrite = false; return label;
+        })
+        .linkLabel(e => esc(REL[e.relation] || e.relation)).linkOpacity(.8)
+        .linkWidth(e => selected?.kind === "edge" && selected.id === e.id ? 1.8 : .5)
+        .linkDirectionalArrowLength(e => DIRECTED.has(e.relation) ? 4 : 0)
+        .linkThreeObjectExtend(true).linkThreeObject(e => {
+          const label = new SpriteText(REL[e.relation] || e.relation, 3, css("--muted"));
+          label.visible = $("showLabels").checked; label.material.depthWrite = false; return label;
+        }).linkPositionUpdate((label, {start, end}) => {
+          label.position.set((start.x + end.x) / 2, (start.y + end.y) / 2, (start.z + end.z) / 2);
+        });
+      graph3D.d3Force("charge").strength(-100);
+      graph3D.d3Force("link").distance(65);
+      setup3DOrientation();
+      bind3DSelection();
+    } catch (e) {
+      console.error("ProjectWiki 3D initialization failed:", e);
+      if (graph3D) graph3D.pauseAnimation();
+      graph3D = null; floor3D = null; $("graph3d").replaceChildren(); $("graph3d").hidden = true;
+      $("graphError").innerHTML = `<p class="graph-error">3D 보기를 시작하지 못했습니다. 인터넷 연결과 브라우저의 WebGL 지원을 확인한 뒤 다시 시도해 주세요. 2D 보기는 계속 사용할 수 있습니다.<br><span class="hint">${esc(e.message)}</span></p>`;
+      $("graphError").hidden = false;
+      return;
+    } finally {
+      loading3D = false; $("view3d").disabled = false; $("view3d").textContent = "3D";
+      $("graphwrap").removeAttribute("aria-busy");
+    }
+  }
+  graphMode = mode;
+  $("graph").hidden = mode === "3d"; $("graph3d").hidden = mode !== "3d";
+  $("graphHelp").hidden = mode !== "3d";
+  $("orientationCue").hidden = mode !== "3d";
+  $("reset3d").hidden = mode !== "3d";
+  $("view2d").setAttribute("aria-pressed", String(mode === "2d"));
+  $("view3d").setAttribute("aria-pressed", String(mode === "3d"));
+  if (mode === "3d") {
+    network.setOptions({physics: {enabled: false}}); resize3D(); sync3D(); graph3D.resumeAnimation();
+    // The renderer computes its bounds on the next frame after graphData changes.
+    requestAnimationFrame(() => requestAnimationFrame(() => { if (graphMode === "3d") reset3DView(); }));
+  } else {
+    graph3D?.pauseAnimation(); network.setOptions({physics: {enabled: $("physics").checked}});
+    network.redraw();
+  }
+}
 
 function applyEvents() {
   state = {
@@ -293,6 +624,7 @@ function render() {
   edges.forEach(e => { degree[e.source] = (degree[e.source] || 0) + 1; degree[e.target] = (degree[e.target] || 0) + 1; });
   nodesDS.update([...state.nodes.values()].map(n => nodeView(n, degree)));
   edgesDS.clear(); edgesDS.add(edges.map(edgeView));
+  if (graphMode === "3d") sync3D();
   renderLegend(); renderFeedback(); renderFiles();
   const count = [...state.nodes.keys()].filter(fileVisible).length;
   $("graphStats").textContent = `표시 파일 ${count} / ${state.nodes.size}개 · 표시된 연결 ${edges.length}개`;
@@ -313,7 +645,7 @@ function renderLegend() {
   });
   $("legend").querySelectorAll(".item").forEach(el => el.onclick = () => {
     const ids = [...state.nodes.values()].filter(n => (n.group || "") === el.dataset.g && fileVisible(n.id)).map(n => n.id);
-    network.selectNodes(ids); if (ids.length) network.fit({nodes: ids, animation: !reducedMotion, maxZoomLevel: 1.6});
+    focusGraphNodes(ids);
   });
 }
 
@@ -361,7 +693,7 @@ function renderFiles() {
   });
   $("fileTree").querySelectorAll(".file").forEach(el => el.onclick = () => {
     const id = el.dataset.node;
-    if (fileVisible(id)) { network.selectNodes([id]); network.focus(id, {scale: 1.2, animation: !reducedMotion}); }
+    if (fileVisible(id)) focusGraphNodes([id], true);
     showNode(id);
   });
 }
@@ -390,6 +722,7 @@ function groupName(gid) { return gid ? (state.groups.get(gid)?.name || gid) : "�
 function showNode(id, revealFile = false) {
   const n = state.nodes.get(id); if (!n) return;
   selected = {kind: "node", id};
+  highlighted3D = new Set([id]); refresh3DHighlight();
   if (revealFile && !n.path.toLowerCase().includes($("search").value.trim().toLowerCase())) {
     $("search").value = "";
     renderFiles();
@@ -422,6 +755,7 @@ function showNode(id, revealFile = false) {
 function showEdge(id) {
   const e = state.edges.get(id); if (!e) return;
   selected = {kind: "edge", id};
+  highlighted3D = new Set(); refresh3DHighlight();
   revealSelection();
   const a = state.nodes.get(e.source), b = state.nodes.get(e.target);
   const status = VISIBLE.has(e.status) ? "" : `<span class="badge removed">${esc(e.status)}</span>`;
@@ -469,7 +803,17 @@ $("projectName").textContent = projectName;
 $("meta").textContent = `${projectName} · 파일 ${DATA.nodes.length} · 연결 ${DATA.edges.filter(e => VISIBLE.has(e.status)).length} · `
   + `${DATA.meta.encoder} · 군집 ${DATA.meta.clusterer} · 교정 ${DATA.meta.corrector}`;
 ["showInferred", "showLabels", "showHidden"].forEach(id => $(id).onchange = render);
-$("physics").onchange = () => network.setOptions({physics: {enabled: $("physics").checked}});
+$("physics").onchange = () => {
+  const enabled = $("physics").checked;
+  network.setOptions({physics: {enabled: enabled && graphMode === "2d"}});
+  if (graph3D && graphMode === "3d") {
+    sync3D();
+    if (enabled) {
+      graph3D.d3ReheatSimulation();
+      requestAnimationFrame(() => requestAnimationFrame(() => { if (graphMode === "3d") fitGraph(); }));
+    }
+  }
+};
 $("undo").onclick = () => { events.pop(); save(); render(); };
 $("export").onclick = () => {
   const blob = new Blob([events.map(e => JSON.stringify(e)).join("\n") + "\n"], {type: "application/jsonl"});
@@ -480,16 +824,20 @@ $("addMode").onclick = () => { addFrom = addFrom === null ? "" : null; $("addMod
   $("addMode").textContent = addFrom !== null ? "시작 노드 선택…" : "연결 추가"; };
 $("search").oninput = ev => {
   const q = ev.target.value.trim().toLowerCase(); renderFiles();
-  if (!q) { network.unselectAll(); return; }
+  if (!q) { network.unselectAll(); highlighted3D.clear(); refresh3DHighlight(); return; }
   const ids = DATA.nodes.filter(n => fileVisible(n.id) && n.path.toLowerCase().includes(q)).map(n => n.id);
-  network.selectNodes(ids); if (ids.length) network.fit({nodes: ids, animation: true, maxZoomLevel: 1.6});
+  focusGraphNodes(ids);
 };
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 $("physics").checked = !reducedMotion;
-$("fitGraph").onclick = $("graphHome").onclick = () => { network.unselectAll(); network.fit({animation: !reducedMotion, maxZoomLevel: 1.6}); };
-$("zoomIn").onclick = () => network.moveTo({scale: Math.min(4, network.getScale() * 1.25), animation: !reducedMotion});
-$("zoomOut").onclick = () => network.moveTo({scale: Math.max(.05, network.getScale() / 1.25), animation: !reducedMotion});
+$("view2d").onclick = () => setGraphMode("2d");
+$("view3d").onclick = () => setGraphMode("3d");
+$("reset3d").onclick = reset3DView;
+$("fitGraph").onclick = $("graphHome").onclick = () => { network.unselectAll(); highlighted3D.clear(); refresh3DHighlight(); fitGraph(); };
+$("zoomIn").onclick = () => zoomGraph(1.25);
+$("zoomOut").onclick = () => zoomGraph(1 / 1.25);
+new ResizeObserver(resize3D).observe($("graphwrap"));
 function togglePane(name, mobileQuery) {
   const mobile = window.matchMedia(mobileQuery).matches;
   document.body.classList.toggle((mobile ? "mobile-" : "hide-") + name);
@@ -519,7 +867,7 @@ const network = new vis.Network($("graph"), {nodes: nodesDS, edges: edgesDS}, {
     stabilization: {iterations: 400}},
   edges: {smooth: {type: "continuous"}},
 });
-network.on("click", p => {
+function handleGraphClick(p) {
   if (addFrom !== null && p.nodes.length) {
     if (!addFrom) { addFrom = p.nodes[0]; $("addMode").textContent = "끝 노드 선택…"; return; }
     const target = p.nodes[0];
@@ -532,7 +880,8 @@ network.on("click", p => {
   }
   if (p.nodes.length) showNode(p.nodes[0], true);
   else if (p.edges.length) showEdge(p.edges[0]);
-});
+}
+network.on("click", handleGraphClick);
 render();
 network.once("stabilized", () => network.fit({maxZoomLevel: 1.6}));
 setTimeout(() => network.fit({maxZoomLevel: 1.6}), 1500);
