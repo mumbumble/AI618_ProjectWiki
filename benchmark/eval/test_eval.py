@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT / "tests"))
 from projectwiki import pipeline  # noqa: E402
 from projectwiki.schema import Edge, Evidence, Graph, Node, Preferences  # noqa: E402
 from graph_metrics import aggregate, evaluate, group_scores  # noqa: E402
-from gt_format import GroundTruth, GTEdge, category, pair_key  # noqa: E402
+from gt_format import GroundTruth, GTEdge, category, check_purposes, load_purposes, pair_key, purpose_view  # noqa: E402
 from projectwiki.srcs.record import Record  # noqa: E402
 from feedback_sim import persona_view, simulate  # noqa: E402
 from test_pipeline import make_cfg, project  # noqa: E402,F401  (pytest fixture)
@@ -127,3 +127,29 @@ def test_simulate_keeps_edits_and_scores_held_out(project, tmp_path):
                     assert v is None or v == 1.0  # explicit edits, relation fixes included, are always replayed
     code_view = persona_view(gt, "code")
     assert all(category(e.a) in {"code", "notebook", "config"} for e in code_view.edges)
+
+
+def test_purpose_view():
+    gt = GroundTruth(project="t", edges=[GTEdge("a.py", "b.py", "uses"), GTEdge("a.py", "r.md", "describes"),
+                                         GTEdge("p.pdf", "r.md", "supports", required=False)],
+                     negatives=[{"a": "a.py", "b": "x.md"}])
+    purpose = {"id": "talk", "text": "results for a talk", "needed": [["r.md", "p.pdf"]], "optional": [["a.py", "r.md"]]}
+    assert check_purposes(gt, [purpose]) == []
+    view = purpose_view(gt, purpose)
+    edges = view.edge_by_key
+    assert edges[pair_key("p.pdf", "r.md")].required  # needed: required even if the edge was optional
+    assert not edges[pair_key("a.py", "r.md")].required  # optional: never penalized
+    assert pair_key("a.py", "b.py") not in edges and pair_key("a.py", "b.py") in view.negative_keys
+    assert pair_key("a.py", "x.md") in view.negative_keys and len(gt.edges) == 3  # the input is left unchanged
+    bad = dict(purpose, needed=[["a.py", "zzz.py"]], optional=[["a.py", "zzz.py"]])
+    assert len(check_purposes(gt, [bad, bad])) == 5  # per copy: unknown pair, needed and optional; plus repeated id
+
+
+def test_purpose_files_match_ground_truth():
+    gt_root = EVAL.parent / "gt"
+    found = 0
+    for gt_file in sorted(gt_root.glob("*/gt.json")):
+        purposes = load_purposes(gt_file.parent)
+        found += len(purposes)
+        assert check_purposes(GroundTruth.load(gt_file), purposes) == [], gt_file.parent.name
+    assert found >= 4

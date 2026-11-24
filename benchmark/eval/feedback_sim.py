@@ -130,14 +130,18 @@ def run_one(graph: Graph, record: Record, gt: GroundTruth, view: GroundTruth, cf
 
 
 def simulate(graph: Graph, record: Record, gt: GroundTruth, cfg: Config, correctors: list[str],
-             budgets: list[int], seeds: int = 5, personas: tuple = PERSONAS) -> dict:
-    """result[persona][corrector][k] = mean and std of each score over seeds."""
+             budgets: list[int], seeds: int = 5, personas: tuple = PERSONAS,
+             extra_views: dict[str, GroundTruth] | None = None) -> dict:
+    """result[persona][corrector][k] = mean and std of each score over seeds.
+
+    extra_views adds more simulated users by name, each given as the ground truth it wants (for example
+    gt_format.purpose_view for a project's purposes, named "purpose:<id>")."""
     base = finalize(graph, Correction(), [], cfg)
     shown = predicted(base)
     before = set(shown)
+    views = {p: persona_view(gt, p) for p in personas} | dict(extra_views or {})
     out = {}
-    for persona in personas:
-        view = persona_view(gt, persona)
+    for persona, view in views.items():
         pool = feedback_pool(shown, gt, view)
         out[persona] = {"pool": len(pool)}
         for name in correctors:
