@@ -486,7 +486,7 @@ function loadGraphScript(src, globalName) {
 
 function refresh3DHighlight() {
   if (!graph3D) return;
-  graph3D.nodeColor(n => highlighted3D.has(n.id) ? css("--accent") : groupColor[state.nodes.get(n.id)?.group] || "#9aa0a6")
+  graph3D.nodeColor(n => groupColor[state.nodes.get(n.id)?.group] || "#9aa0a6")
     .nodeVal(n => highlighted3D.has(n.id) ? 6 : 3)
     .linkColor(e => selected?.kind === "edge" && selected.id === e.id ? css("--accent")
       : !VISIBLE.has(e.status) ? css("--bad") : e.origin === "user" ? css("--ok") : e.direct ? "#a29aaa" : "#736b80")
