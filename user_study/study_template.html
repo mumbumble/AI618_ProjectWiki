@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ProjectWiki 사용자 스터디 (목업)</title>
+<title>ProjectWiki 사용자 스터디</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.9/standalone/umd/vis-network.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
@@ -260,6 +260,17 @@ textarea{width:100%;min-height:64px;background:var(--bg);border:1px solid var(--
 .legend2{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:8px}
 .legend2 i{display:inline-block;width:18px;border-top:2px dashed var(--bad);vertical-align:middle;margin-right:5px}
 .minibox{height:340px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.fields label{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--sub)}
+.fields input{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:8px 10px}
+.nextbox{margin-top:12px;padding:14px 16px;background:var(--bg);border:1px solid var(--line);border-radius:8px}
+.nextbox ol{margin:0 0 10px;padding-left:20px;color:var(--sub)} .nextbox li{margin:4px 0}
+.q{border-top:1px solid var(--line);padding:16px 0} .q b{display:block;margin-bottom:8px;font-weight:500}
+.opts{display:flex;flex-wrap:wrap;gap:6px 18px} .opts label{display:flex;gap:6px;align-items:center;color:var(--sub);cursor:pointer} .opts input{accent-color:#a88be5}
+.scale-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.box .q:first-of-type{border-top:0}
+.sent{font-size:13px;color:var(--muted);margin:0 0 4px} .sent.ok{color:var(--good,#7fc99a)}
+details.box summary{cursor:pointer;color:var(--muted);font-size:12px}
 table.sum{width:100%;border-collapse:collapse;font-size:13px} .sum td,.sum th{border-bottom:1px solid var(--line);padding:7px 4px;text-align:left} .sum th{color:var(--muted);font-weight:600}
 
 /* question / task card floating over the graph */
@@ -307,10 +318,70 @@ button{white-space:nowrap}
 .qline{display:flex;align-items:flex-start;gap:12px}.qline .qtext{flex:1;min-width:0}
 .pickrow{display:flex;gap:10px;align-items:stretch}.pickrow .callout{flex:1;min-width:0}
 .pickrow .pickbtn{width:auto;margin-top:0;padding:0 20px;font-size:14px;max-width:45%;overflow:hidden;text-overflow:ellipsis}
+
+/* briefing: two pages (folder intro, task), question card hidden until the timer starts */
+body.briefing #bottom{visibility:hidden}
+.brief .card{max-height:calc(100vh - 40px);overflow:auto;position:relative}
+#fintro{z-index:60}
+.bridge{margin:0 0 18px;padding:12px 14px;background:var(--oksoft);border:1px solid #3f6a55;border-radius:8px}
+.brief .bridge .lead{margin:0 0 4px;padding:0;background:none;font-weight:600}
+.bridge p{margin:0 0 8px;color:var(--sub);font-size:13.5px}
+.road.mini{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:12px;color:var(--muted)}
+.road.mini span.done{color:var(--ok)} .road.mini span.now{color:#1e1e1e;background:var(--ok);padding:1px 8px;border-radius:10px;font-weight:600}
+.road.mini em{font-style:normal;color:var(--line2)}
+.road.full{list-style:none;margin:6px 0 4px;padding:12px 14px;background:var(--bg);border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column;gap:8px}
+.road.full li{display:flex;gap:10px;align-items:flex-start;color:var(--sub);font-size:13.5px}
+.road.full li b{font-weight:600;color:var(--text)}
+.road.full .n{flex:none;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:1px solid var(--line2);margin-top:1px}
+.road.full li.now .n{background:var(--accent);border-color:var(--accent);color:#1e1e1e}
+.road.full .hint{font-size:12.5px}
+.nowtag{font-size:11px;color:var(--accent);border:1px solid #5b4b7c;border-radius:8px;padding:0 6px;margin-left:4px}
+.howto{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px}
+.howto span{padding:4px 12px 4px 4px;border:1px solid var(--line);border-radius:16px;background:var(--bg);color:var(--sub)}
+.howto b{display:inline-flex;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center;background:var(--accsoft);color:#d4bfff;font-size:11px;margin-right:6px}
+.howto em{font-style:normal;color:var(--muted)}
+.brief .lead{font-size:13.5px;color:var(--ok);margin:0 0 14px;padding:8px 12px;background:var(--oksoft);border-radius:6px}
+.brief .x{position:absolute;right:14px;top:12px;font-size:18px;line-height:1;padding:4px 9px}
+.brief .pages{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.brief .pages i{width:7px;height:7px;border-radius:50%;background:var(--line2);display:inline-block} .brief .pages i.on{background:var(--accent)}
+.dirs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px;margin:6px 0 16px;padding:12px 14px;background:var(--bg);border:1px solid var(--line);border-radius:6px}
+.dirs div{display:flex;gap:8px;align-items:baseline;font-size:13px;color:var(--sub);min-width:0}
+.dirs b{font:600 12.5px ui-monospace,Consolas,monospace;color:var(--text);flex:none}
+.dirs .hint{flex:none}
+.dirs .off b,.dirs .off{color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0 14px;font-size:13px}
+.flow span{padding:3px 10px;border:1px solid #5b4b7c;background:#2b2635;border-radius:14px;color:#d4bfff}
+.flow em{font-style:normal;color:var(--muted)}
+.brief h4{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.4px;margin:16px 0 6px}
+.introbtn{flex:none;font-size:12px;padding:3px 10px}
+
+/* practice: one step at a time */
+.pstep{display:flex;gap:14px;align-items:flex-start}
+.pstep .n{flex:none;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:var(--warn);color:#1e1e1e;margin-top:1px}
+.pstep.done .n{background:var(--ok)}
+.pstep .b{flex:1;min-width:0}
+.pstep .do{font-size:14.5px;font-weight:500;line-height:1.5}
+.pstep .why{margin-top:6px;font-size:13.5px;color:var(--sub);line-height:1.6}
+.pstep .act{display:flex;align-items:center;gap:10px;margin-top:10px}
+.pdots{display:flex;gap:5px;margin-left:auto} .pdots i{width:7px;height:7px;border-radius:50%;background:var(--line2)} .pdots i.ok{background:var(--ok)} .pdots i.now{background:var(--warn)}
+.guide-cards #vcard,.guide-cards .view-mode{animation:glow 1.6s ease-in-out infinite;border-radius:6px}
+.guide-edge #detail .edge-link{animation:glow 1.6s ease-in-out infinite}
+.guide-file #fileTree,.guide-group #legend{border-radius:8px}
+.qfb{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13.5px;line-height:1.6}
+.qfb.ok{background:var(--oksoft);color:var(--ok);border:1px solid #3f6a55}
+.qfb.no{background:#3a2629;color:#f0b4b8;border:1px solid #6b3b40}
+.qfb .act{display:flex;gap:8px;margin-top:8px}
+.opt.right{border-color:var(--ok);background:var(--oksoft)} .opt.wrong{border-color:#8a4a50;background:#3a2629}
+.qdone{padding:16px 18px;display:flex;align-items:center;gap:12px}
+.qdone p{margin:0;flex:1;font-size:14px}
+.minihead{display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--sub)} .minihead b{font-weight:600;color:var(--text)}
+.hidlist{margin-top:12px;font-size:13px} .hidlist div{display:flex;gap:10px;padding:5px 0;border-top:1px solid var(--line)} .hidlist .src{flex:none;width:86px;color:var(--muted)}
+.legend2 i{border-top:3px dashed #ff5c6c}
+.shapes{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-top:8px;font-size:12.5px;color:var(--sub)} .shapes span:nth-child(even){margin-right:10px}
 </style>
 </head>
 <body>
-<header><span class="brand" aria-hidden="true">◈</span><h1>ProjectWiki</h1><span id="where"></span><span class="header-note">사용자 스터디 목업 · 화면은 팀 뷰어(main) 기준</span><div id="prog"></div></header>
+<header><span class="brand" aria-hidden="true">◈</span><h1>ProjectWiki</h1><span id="where"></span><span class="header-note">사용자 스터디</span><div id="prog"></div></header>
 <div id="app"></div>
 <script>
 /*DATA*/
@@ -341,13 +412,13 @@ const ICON={folder:'<svg viewBox="0 0 24 24"><path d="M3 5h7l2 3h9v12H3z"/></svg
  search:'<svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg>',insp:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg>'};
 
 const FLOW=[{id:"intro",name:"시작"},{id:"t1a",name:"과제 1 · 앞부분"},{id:"practice",name:"도구 연습"},{id:"t1b",name:"과제 1 · 뒷부분"},{id:"c1",name:"과제 1 소감"},
- {id:"t2",name:"과제 2"},{id:"c2",name:"과제 2 소감"},{id:"end",name:"끝"}];
+ {id:"t2",name:"과제 2"},{id:"c2",name:"과제 2 소감"},{id:"survey",name:"마지막 질문"},{id:"end",name:"끝"}];
 let step=0;
 const LOG={started:new Date().toISOString(),steps:{}};
 function log(k,v){const s=LOG.steps[FLOW[step].id]||(LOG.steps[FLOW[step].id]={t0:Date.now(),events:[]});if(k)s.events.push([Date.now()-s.t0,k,v])}
 function go(n){const s=LOG.steps[FLOW[step].id];if(s&&!s.sec)s.sec=Math.round((Date.now()-s.t0)/1000);step=n;LOG.steps[FLOW[step].id]={t0:Date.now(),events:[]};render()}
-function bar(){$("where").innerHTML=`· <b>${FLOW[step].name}</b> (${step+1}/${FLOW.length})`;$("prog").style.width=(100*step/(FLOW.length-1))+"%"}
-function render(){if(ro){ro.disconnect();ro=null}bar();const id=FLOW[step].id;if(id=="intro")intro();else if(id=="c1"||id=="c2")compare(id);else if(id=="end")end();else workspace(id)}
+function bar(){$("where").innerHTML=`· <b>${FLOW[step].name}</b>`;$("prog").style.width=(100*step/(FLOW.length-1))+"%"}
+function render(){if(ro){ro.disconnect();ro=null}bar();const id=FLOW[step].id;if(id=="intro")intro();else if(id=="c1"||id=="c2")compare(id);else if(id=="survey")survey();else if(id=="end")end();else workspace(id)}
 
 const LANG={py:"python",yaml:"yaml",yml:"yaml",json:"json",html:"xml",log:"plaintext",c:"c",h:"c",sh:"bash"};
 function hl(code,lang){try{return window.hljs?hljs.highlight(code,{language:lang||"plaintext",ignoreIllegals:true}).value:esc(code)}catch(e){return esc(code)}}
@@ -365,62 +436,157 @@ function contentHtml(c){
 function mountPdf(root,c){const f=root.querySelector("iframe[data-pdf]");if(!f)return;const b=atob(c.data),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
  f.src=URL.createObjectURL(new Blob([u],{type:"application/pdf"}))}
 
+/* questions: radio / check / scale (1-7) / text */
+const PROFILE=[
+ {k:"level",t:"radio",q:"과정",o:["학부","석사","박사","기타"]},
+ {k:"organize",t:"check",q:"연구 파일은 평소 어떻게 정리하시나요? (모두 선택)",o:["폴더 구조","파일 이름 규칙","노트 앱 (노션·옵시디언 등)","따로 정리하지 않음"]},
+ {k:"nfiles",t:"radio",q:"지금 하고 있는 프로젝트 폴더에는 파일이 대략 몇 개 있나요?",o:["50개 미만","50–200개","200–1000개","1000개 이상"]}];
+const SURVEY=[
+ {k:"reuse",t:"scale",q:"비슷한 도구가 있다면 내 프로젝트에 쓰겠다"},
+ {k:"trust",t:"scale",q:"도구가 보여 준 그룹과 연결이 믿을 만했다"},
+ {k:"good",t:"text",q:"가장 좋았던 점 (선택)",ph:"예: 연결마다 근거 문장이 있어서 믿고 따라갈 수 있었다"},
+ {k:"bad",t:"text",q:"가장 불편하거나 헷갈렸던 점 (선택)",ph:"예: 선이 겹쳐 있어서 원하는 연결을 누르기 어려웠다"}];
+function qHtml(x,n){
+ const body=x.t=="scale"?`<div class="scale">${[1,2,3,4,5,6,7].map(i=>`<label><input type="radio" name="${x.k}" value="${i}">${i}</label>`).join("")}</div>
+   <div class="scale-ends"><span>전혀 그렇지 않다</span><span>매우 그렇다</span></div>`
+  :x.t=="text"?`<textarea id="s_${x.k}" placeholder="${x.ph}"></textarea>`
+  :`<div class="opts">${x.o.map(o=>`<label><input type="${x.t=="check"?"checkbox":"radio"}" name="${x.k}" value="${o}">${o}</label>`).join("")}</div>`;
+ return `<div class="q"><b>${n}. ${x.q}</b>${body}</div>`;
+}
+function qRead(list,start){const A={};
+ for(const [i,x] of list.entries()){
+  if(x.t=="text"){A[x.k]=$("s_"+x.k).value.trim();continue}
+  const v=[...document.querySelectorAll(`input[name=${x.k}]:checked`)].map(e=>e.value);
+  if(!v.length)return {err:`${start+i}번 문항에 답해 주세요.`};
+  A[x.k]=x.t=="check"?v:x.t=="scale"?+v[0]:v[0]}
+ return {A};
+}
 function intro(){
- $("app").innerHTML=`<div class="page"><div class="paper"><h2>연구 폴더를 그래프로 정리하는 도구에 대한 사용자 스터디입니다</h2>
- <p>하나의 연구 폴더로 짧은 과제 두 개를 수행합니다. 약 20분이 소요됩니다.</p>
+ $("app").innerHTML=`<div class="page"><div class="paper"><h2>ProjectWiki 사용자 스터디</h2>
+ <p>연구 폴더를 그래프로 정리해 주는 도구를 써 보고 의견을 들려주시는 스터디입니다.<br>모든 과정이 이 화면 안에서 진행되며, 30분 정도 걸립니다.</p>
  <div class="box"><span class="lbl">진행 순서</span><ol>
-  <li>과제 1 앞부분: 파일 목록만 보고 질문 2개에 답하기</li><li>도구 연습: 그래프 도구 사용법 익히기 (점수 없음)</li>
-  <li>과제 1 뒷부분: 같은 폴더를 도구로 보며 질문 2개에 답하기</li><li>과제 2: 필요 없는 연결 2개를 숨기고, 시스템이 더 정리하자고 제안한 것이 맞는지 판단하기</li>
-  <li>결과 파일 저장 후 구글 폼에 올리기</li></ol></div>
- <div class="box"><label class="check"><input type="checkbox" id="c1">스터디 내용을 읽었으며 참여에 동의합니다.</label>
- <label class="check"><input type="checkbox" id="c2">화면 조작 기록과 소요 시간이 저장되는 것에 동의합니다.</label><div class="err" id="err"></div>
- <button class="primary" id="go">시작하기</button></div></div></div>`;
- $("c1").onchange=$("c2").onchange=()=>$("err").textContent="";
- $("go").onclick=()=>{if(!$("c1").checked||!$("c2").checked){$("err").textContent="두 항목에 모두 동의해야 시작할 수 있습니다.";return}go(1)};
+  <li>과제 1 앞부분: 연구 폴더를 파일 목록으로만 보고 질문 2개에 답합니다.</li><li>도구 연습: 다른 폴더로 그래프 도구를 하나씩 따라 해 봅니다. 점수는 없습니다.</li>
+  <li>과제 1 뒷부분: 같은 폴더를 이번에는 도구로 보고 질문 2개에 답합니다.</li><li>과제 2: 필요 없는 연결 2개를 숨긴 뒤, 시스템이 더 숨기자고 한 연결이 맞는지 판단합니다.</li>
+  <li>짧은 질문에 답하고 제출하면 끝납니다. 원하시면 본인 폴더로도 해 볼 수 있습니다(선택).</li></ol>
+  <p class="hint" style="margin-top:10px">노트북이나 PC에서 진행해 주세요. 인터넷 연결이 필요하고, 창을 닫거나 새로고침하면 기록이 사라지니 한 번에 진행해 주세요.</p></div>
+ <div class="box"><span class="lbl">참가자 정보</span><div class="fields">
+  <label>이름 또는 닉네임<input id="nm" autocomplete="nickname"></label>
+  <label>이메일<input id="em" type="email" autocomplete="email"></label></div>
+  <p class="hint" style="margin-top:6px">결과를 정리할 때와 본인 폴더 결과를 보내 드릴 때만 사용합니다.</p>
+  ${PROFILE.map((x,i)=>qHtml(x,i+1)).join("")}</div>
+ <div class="box"><span class="lbl">동의</span>
+  <label class="check"><input type="checkbox" id="c1">스터디 내용을 읽었으며 참여에 동의합니다.</label>
+  <label class="check"><input type="checkbox" id="c2">화면 조작 기록, 소요 시간, 위 정보가 연구진에게 전송되는 것에 동의합니다.</label>
+  <div class="err" id="err"></div><button class="primary" id="go">시작하기</button></div></div></div>`;
+ $("app").oninput=$("app").onchange=()=>$("err").textContent="";
+ $("go").onclick=()=>{const nm=$("nm").value.trim(),em=$("em").value.trim(),err=t=>$("err").textContent=t;
+  if(!nm)return err("이름 또는 닉네임을 입력해 주세요.");
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))return err("이메일 주소를 다시 확인해 주세요.");
+  const r=qRead(PROFILE,1);if(r.err)return err(r.err);
+  if(!$("c1").checked||!$("c2").checked)return err("두 항목에 모두 동의해야 시작할 수 있습니다.");
+  LOG.who={name:nm,email:em};LOG.profile=r.A;go(1)};
 }
 function compare(id){
  const p1=id=="c1",L=p1?["파일 목록만 (앞부분)","도구 (뒷부분)"]:["정리 전","정리 후"],lab=["훨씬","꽤","조금","비슷함","조금","꽤","훨씬"];
- const r=LOG.steps.t2&&LOG.steps.t2.review;
+ const r=LOG.steps.t2&&LOG.steps.t2.review,d=FD[ST.t2.proj];
+ const hid=r?[...r.seed.map(e=>[e,"직접 숨김"]),...r.items.filter(x=>x.accept).map(x=>[x.e,"제안에 동의"])]:[],nE=d.edges.length;
+ const nm=j=>`${base(d.files[d.edges[j].a])} – ${base(d.files[d.edges[j].b])}`;
  $("app").innerHTML=`<div class="page"><div class="paper" style="${p1?"":"max-width:1100px"}"><h2>${p1?"과제 1":"과제 2"} 소감</h2>
- ${!p1&&r?`<div class="box"><span class="lbl">정리 전과 후 · 직접 숨긴 ${r.seed.length}개 + 제안 중 받아들인 ${r.items.filter(x=>x.accept).length}개</span>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px"><div><div class="hint">정리 전</div><div id="gBefore" class="minibox"></div></div>
-  <div><div class="hint">정리 후</div><div id="gAfter" class="minibox"></div></div></div>
-  <div class="legend2"><span><i></i>정리 전 그래프의 빨간 점선이 이번에 숨긴 연결이며, 정리 후 그래프에서는 빠져 있습니다</span><span>휠로 확대할 수 있습니다</span></div></div>`:""}
- <div class="box" style="max-width:640px"><b>${p1?"어느 쪽이 질문의 답을 찾기 더 쉬웠습니까?":"인수인계에는 어느 쪽 그래프가 더 적합합니까?"}</b>
+ <p>${p1?"방금 같은 폴더를 두 가지 방법으로 살펴보셨습니다.":"정리하기 전과 후의 그래프입니다. 빨간 점선이 이번에 숨긴 연결입니다."}</p>
+ ${!p1&&r?`<div class="box">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><div class="minihead"><b>정리 전</b>연결 ${nE}개</div><div id="gBefore" class="minibox"></div></div>
+  <div><div class="minihead"><b>정리 후</b>연결 ${nE-hid.length}개</div><div id="gAfter" class="minibox"></div></div></div>
+  <div class="legend2"><span><i></i>숨긴 연결 ${hid.length}개 (정리 후 그래프에서는 빠짐)</span><span>연결이 하나도 남지 않은 파일은 흐리게 표시됩니다</span><span>휠로 확대할 수 있습니다</span></div>
+  <div class="hidlist">${hid.map(([e,src])=>`<div><span class="src">${src}</span><span>${esc(nm(e))}</span></div>`).join("")}</div></div>`:""}
+ <div class="box" style="max-width:640px"><b>${p1?"어느 쪽이 질문의 답을 찾기 더 쉬웠나요?":"후배에게 넘겨줄 때는 어느 쪽 그래프가 더 나은가요?"}</b>
  <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:12px;color:var(--sub)"><span>← ${L[0]}</span><span>${L[1]} →</span></div>
  <div class="scale">${lab.map((l,i)=>`<label><input type="radio" name="sc" value="${i-3}">${l}</label>`).join("")}</div>
- <span class="lbl" style="margin-top:14px">그렇게 고른 이유</span><textarea id="why" placeholder="${p1?"예: 그래프에서 관련 파일을 바로 찾을 수 있었다":"예: 학습·평가에 필요한 파일만 남아 파악하기 쉽다"}"></textarea>
+ <span class="lbl" style="margin-top:14px">그렇게 고른 이유</span><textarea id="why" placeholder="${p1?"예: 그래프에서 표를 누르니 만든 코드가 바로 보여서 빨랐다":"예: 학습과 평가에 필요한 파일만 남아서 한눈에 들어온다"}"></textarea>
  <div class="err" id="err"></div><button class="primary" id="next">다음</button></div></div></div>`;
  document.querySelectorAll("input[name=sc]").forEach(r=>r.onchange=()=>$("err").textContent="");$("why").oninput=()=>$("err").textContent="";
- $("next").onclick=()=>{const v=document.querySelector("input[name=sc]:checked");if(!v){$("err").textContent="한 칸을 선택해 주십시오.";return}
-  if($("why").value.trim().length<5){$("err").textContent="이유를 한 줄 이상 적어 주십시오.";return}
+ $("next").onclick=()=>{const v=document.querySelector("input[name=sc]:checked");if(!v){$("err").textContent="한 칸을 골라 주세요.";return}
+  if($("why").value.trim().length<5){$("err").textContent="이유를 한 줄 정도 적어 주세요.";return}
   LOG.steps[id].answer={scale:+v.value,why:$("why").value.trim()};go(step+1)};
- if(!p1&&r){mini($("gBefore"),new Set(),new Set([...r.seed,...r.items.filter(x=>x.accept).map(x=>x.e)]));mini($("gAfter"),new Set([...r.seed,...r.items.filter(x=>x.accept).map(x=>x.e)]))}
+ if(!p1&&r){const hs=new Set(hid.map(x=>x[0]));mini($("gBefore"),new Set(),hs);mini($("gAfter"),hs)}
+}
+/* Google Forms. FORMS.result: answers go to formResponse, one column per value (fields: key -> "entry.N").
+   FORMS.folder: opened in a new tab with name/email/step prefilled. Empty url: nothing is sent. */
+function resultValues(){
+ const S=LOG.steps,A={...(LOG.profile||{}),...((S.survey||{}).answer||{})},q=k=>(S[k]||{}).quiz||[],avg=(xs,f)=>xs.length?Math.round(xs.reduce((a,x)=>a+(f(x)||0),0)/xs.length):"";
+ const r=(S.t2||{}).review,acc=src=>r?r.items.filter(x=>x.src==src&&x.accept).length:"";
+ return {name:LOG.who.name,email:LOG.who.email,level:A.level||"",organize:(A.organize||[]).join(", "),nfiles:A.nfiles||"",
+  total_min:Math.round((Date.now()-Date.parse(LOG.started))/60000),
+  t1a_ok:q("t1a").filter(x=>x.ok).length,t1a_sec:avg(q("t1a"),x=>x.sec),t1a_opens:q("t1a").reduce((a,x)=>a+(x.opens||0),0),
+  t1b_ok:q("t1b").filter(x=>x.ok).length,t1b_sec:avg(q("t1b"),x=>x.sec),t1b_opens:q("t1b").reduce((a,x)=>a+(x.opens||0),0),
+  practice_sec:(S.practice||{}).sec??"",c1:(S.c1&&S.c1.answer||{}).scale??"",c1_why:(S.c1&&S.c1.answer||{}).why||"",
+  t2_sys:acc("drift"),t2_rnd:acc("base"),c2:(S.c2&&S.c2.answer||{}).scale??"",c2_why:(S.c2&&S.c2.answer||{}).why||"",
+  reuse:A.reuse??"",trust:A.trust??"",good:A.good||"",bad:A.bad||"",data:JSON.stringify(LOG)};
+}
+function formLink(f){const v={name:LOG.who.name,email:LOG.who.email,stage:f.stage||""},p=new URLSearchParams({usp:"pp_url"});
+ for(const [k,e] of Object.entries(f.fields))if(v[k])p.append(e,v[k]);return f.url+"?"+p}
+function sendResult(){
+ const f=FORMS.result;if(!f||!f.url)return Promise.resolve("off");
+ const v=resultValues(),body=new URLSearchParams();for(const [k,e] of Object.entries(f.fields))body.append(e,String(v[k]??""));
+ return fetch(f.url,{method:"POST",mode:"no-cors",body}).then(()=>"ok",()=>"fail");
+}
+function saveFile(){const b=new Blob([JSON.stringify(LOG,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="projectwiki_study_result.json";a.click()}
+function survey(){
+ $("app").innerHTML=`<div class="page"><div class="paper"><h2>마지막 질문 ${SURVEY.length}개입니다</h2><p>답하고 제출하면 과제 기록과 함께 전송됩니다.</p>
+ ${SURVEY.map((x,i)=>qHtml(x,i+1)).join("")}
+ <div class="box"><div class="err" id="err"></div><button class="primary" id="send">제출하기</button></div></div></div>`;
+ $("app").oninput=$("app").onchange=()=>$("err").textContent="";
+ $("send").onclick=()=>{const r=qRead(SURVEY,1);if(r.err){$("err").textContent=r.err;return}LOG.steps.survey.answer=r.A;go(step+1)};
 }
 function end(){
- const S=LOG.steps,qt=k=>{const q=(S[k]||{}).quiz||[];return q.length?`${q.filter(x=>x.ok).length}/${q.length} 정답 · 문항당 평균 ${Math.round(q.reduce((a,x)=>a+(x.sec||0),0)/q.length)}초 · 연 파일 ${q.reduce((a,x)=>a+(x.opens||0),0)}개`:"-"};
- const r=(S.t2||{}).review,src=s=>{if(!r)return"-";const xs=r.items.filter(x=>x.src==s);return `받아들임 ${xs.filter(x=>x.accept).length}/${xs.length} · 정답 기준으로 맞는 제안 ${xs.filter(x=>x.gtOk).length}/${xs.length}`};
- $("app").innerHTML=`<div class="page"><div class="paper"><h2>스터디가 끝났습니다. 참여해 주셔서 감사합니다</h2><p>아래 버튼으로 결과 파일을 저장한 뒤 안내받은 구글 폼에 제출해 주십시오.</p>
- <div class="box"><table class="sum"><tr><th style="width:38%">구간</th><th>기록되는 값</th></tr>
- <tr><td>과제 1 앞 · 파일 목록만</td><td>${qt("t1a")}</td></tr><tr><td>도구 연습</td><td>${(S.practice||{}).sec??"-"}초</td></tr><tr><td>과제 1 뒤 · 도구</td><td>${qt("t1b")}</td></tr>
- <tr><td>과제 2 · 시스템 제안</td><td>${src("drift")}</td></tr><tr><td>과제 2 · 비교용 무작위 제안</td><td>${src("base")}</td></tr>
- <tr><td>소감 (−3 ~ +3)</td><td>과제 1: ${S.c1&&S.c1.answer?S.c1.answer.scale:"-"} · 과제 2: ${S.c2&&S.c2.answer?S.c2.answer.scale:"-"}</td></tr></table>
- <p class="hint">참가자에게는 이 표가 표시되지 않습니다. 목업에서 기록 항목을 확인하기 위해 넣은 표입니다.</p>
- <button class="primary" id="save">결과 저장 (JSON)</button></div></div></div>`;
- $("save").onclick=()=>{const b=new Blob([JSON.stringify(LOG,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="projectwiki_study_result.json";a.click()};
+ $("app").innerHTML=`<div class="page"><div class="paper"><h2>참여해 주셔서 감사합니다</h2>
+ <p class="sent" id="sent">결과를 보내는 중입니다…</p>
+ <p class="hint" style="margin:0 0 20px">참고로, 과제 2에서 시스템이 제안한 연결 6개 중 일부는 비교를 위해 무작위로 고른 것이었습니다.</p>
+ <div class="box" id="optbox"><span class="lbl">선택</span><b>본인 연구 폴더로도 해 보시겠어요?</b>
+  <p class="hint" style="margin:4px 0 0">폴더를 보내 주시면 같은 도구로 그래프를 만들어 보통 하루 안에 이메일로 보내 드립니다. 따로 설치할 것은 없습니다.</p>
+  <div class="nextbox"><ol>
+   <li>파일 20~60개 정도인 폴더 하나를 zip으로 묶어 주세요. 논문, 코드, 노트가 섞여 있으면 좋습니다.</li>
+   <li>개인정보, 공개 전 데이터, 키나 비밀번호, 큰 데이터 파일은 빼 주세요.</li>
+   <li>아래 버튼으로 폼을 열고 zip 파일과 정리 목적 한 줄을 올려 주세요.</li></ol>
+   <p class="hint" style="margin:0 0 12px">파일은 분석을 위해 팀 서버와 Claude API(Anthropic)를 거치며, 스터디가 끝나면 모두 지웁니다.</p>
+   <div class="actions"><button class="primary" id="open">폴더 보내기 (구글 폼 열기)</button><button class="ghost" id="skip">하지 않고 마치기</button></div><div class="err" id="ferr"></div></div></div>
+ <div class="box" id="bye" hidden><b>모두 끝났습니다.</b><p class="hint" style="margin:4px 0 0">이제 이 창을 닫으셔도 됩니다. 시간 내 주셔서 감사합니다.</p></div></div></div>`;
+ const sent=$("sent"),send=()=>{sent.className="sent";sent.textContent="결과를 보내는 중입니다…";
+  sendResult().then(st=>{LOG.sent=st;
+   if(st=="ok"){sent.textContent="✓ 결과가 전송되었습니다.";sent.classList.add("ok");return}
+   sent.innerHTML=`결과를 보내지 못했습니다. 인터넷 연결을 확인하고 다시 보내 주세요. <button class="sm" id="retry">다시 보내기</button> <button class="sm ghost" id="save">파일로 저장</button>`;
+   $("retry").onclick=send;$("save").onclick=saveFile})};
+ send();
+ $("open").onclick=()=>{LOG.optIn=true;if(!FORMS.folder||!FORMS.folder.url){$("ferr").textContent="폼 주소가 설정되지 않았습니다. 연구진에게 알려 주세요.";return}window.open(formLink(FORMS.folder),"_blank")};
+ $("skip").onclick=()=>{$("optbox").hidden=true;$("bye").hidden=false};
 }
+/* leaving mid-study loses everything: ask first */
+addEventListener("beforeunload",e=>{if(step>0&&LOG.sent!="ok"){e.preventDefault();e.returnValue=""}});
 
 /* ---------------- workspace: same layout as the team viewer ---------------- */
 let W=null,net=null,nodes=null,edges=null,ro=null,POS=null;
 const UI={noExp:false,noInsp:false,bMin:false,closed:new Set()};
-const PRACTICE=[["group","‘그룹’ 목록에서 하나 선택"],["file","파일(점) 하나 열기"],["edge","연결선 하나 선택"],["hide","[목적상 불필요]로 숨기기"]];
-const GUIDE={group:"왼쪽 패널 맨 위 ‘그룹’ 목록에서 그룹 이름 하나를 누르십시오. 그래프에 그 그룹이 사각형으로 표시됩니다.",
- file:"그래프의 점 하나를 누르십시오. 왼쪽 ‘폴더’ 목록의 파일 이름을 눌러도 됩니다. 내용은 오른쪽 패널에 표시됩니다.",
- edge:"두 점을 잇는 선 하나를 누르십시오. 선이 겹쳐 있으면 마우스 휠로 확대하면 누르기 쉽습니다.",
- hide:"오른쪽 ‘연결 교정’ 상자에서 [목적상 불필요]를 누르십시오. 상자가 보이지 않으면 먼저 연결선을 선택하십시오."};
+/* practice: five steps, one at a time. After each action the card explains what just appeared. */
+const PSTEPS=[
+ {k:"group",do:"왼쪽 ‘그룹’ 목록에서 <b>데이터 및 코드북</b>을 눌러 보세요.",
+  why:"도구가 비슷한 파일끼리 묶은 것이 그룹입니다. 그래프에는 그룹이 사각형으로 표시되고, 오른쪽에는 그룹 설명과 안에 든 파일이 나옵니다. 점의 색이 같으면 같은 그룹입니다."},
+ {k:"file",do:"그래프에서 점 하나를 눌러 보세요. 예를 들면 <b>01_eda.ipynb</b>입니다. 왼쪽 ‘폴더’ 목록에서 파일 이름을 눌러도 됩니다.",
+  why:"오른쪽에 파일 요약, 이 파일과 이어진 파일 목록, 파일 내용이 차례로 나옵니다. 점의 모양은 파일 종류를 뜻합니다.",legend:true},
+ {k:"edge",do:"이번에는 선(연결)을 눌러 보세요. 그래프에서 누르기 어려우면 오른쪽 ‘연결’ 목록에서 하나를 눌러도 됩니다.",
+  why:"선은 두 파일이 어떻게 이어지는지 보여 줍니다. 오른쪽에 관계 설명과 근거 문장이 나옵니다. 실선은 파일 안에 상대 파일 이름이 직접 적힌 연결이고, 점선은 내용을 보고 추론한 연결입니다."},
+ {k:"cards",do:"그래프 위쪽의 <b>[그룹 카드]</b>를 눌러 보세요.",
+  why:"그룹별로 묶어 본 화면입니다. 카드 사이의 숫자는 두 그룹 사이의 연결 수입니다. <b>[2D]</b>를 누르면 그래프로 돌아갑니다."},
+ {k:"hide",do:"마지막으로 목적에 필요 없는 연결을 숨겨 봅니다. 지금 목적은 보고서 수치 확인이라서, 팀 회의록과 과제 명세를 잇는 연결은 필요 없습니다.<br>‘회의·피드백 노트’ 그룹의 <b>team_meeting.md</b>를 열고, 오른쪽 연결 목록에서 <b>project_spec.pdf</b>를 누른 다음 <b>[목적상 불필요]</b>를 눌러 주세요.",
+  why:"숨긴 연결은 그래프에서 빠집니다. 과제 2에서 이렇게 목적에 맞지 않는 연결을 숨기게 됩니다. 잘못 숨겼다면 오른쪽 ‘세션 피드백’의 [되돌리기]로 돌릴 수 있습니다."}];
+const SW=(s)=>`<svg width="26" height="18" viewBox="0 0 26 18">${s}</svg>`;
+const SHAPES=`<div class="shapes">
+ <span>${SW('<polygon points="13,2 20,9 13,16 6,9" fill="#b49af4"/>')}</span><span>마름모: 코드 (.py)</span>
+ <span>${SW('<circle cx="13" cy="9" r="6" fill="#83b6c9"/>')}</span><span>동그라미: 문서, 데이터</span>
+ <span>${SW('<rect x="7" y="3" width="12" height="12" fill="#8bbb9a"/>')}</span><span>네모: PDF</span>
+ <span>${SW('<polygon points="13,2 20,15 6,15" fill="#c7ad77"/>')}</span><span>세모: 노트북 (.ipynb)</span>
+ <span>${SW('<polygon points="13,1 15.5,7 22,7 17,11 19,17 13,13 7,17 9,11 4,7 10.5,7" fill="#ce92aa"/>')}</span><span>별: 그림</span></div>`;
 function workspace(id){
  const s=ST[id],d=FD[s.proj];
- W={id,s,d,sel:null,gsel:null,hidden:new Set(),conf:new Set(),fb:[],ghide:new Set(),opt:{inferred:true,labels:false,hidden:false},qi:0,ans:{},qt0:Date.now(),qopen:0,qlog:{},todo:{},view:s.view||"tool",mode:"2d",seed:[],props:null,pi:0,stick:null,q:"",ct:null};
+ W={id,s,d,sel:null,gsel:null,hidden:new Set(),conf:new Set(),fb:[],ghide:new Set(),opt:{inferred:true,labels:false,hidden:false},qi:0,ans:{},qt0:Date.now(),qopen:0,acc:{},todo:{},pstep:0,view:s.view||"tool",mode:"2d",seed:[],props:null,pi:0,stick:null,q:"",ct:null};
  log("start");layoutWork();
 }
 const gcol=g=>{const n=W.d.groups[g]?W.d.groups[g][0]:"";return n.includes("관련 없음")?"#9aa0a6":PALETTE[g%PALETTE.length]};
@@ -434,17 +600,17 @@ function layoutWork(){
    <button class="icon-button bottom ${UI.noInsp?"":"active"}" id="rInsp" title="상세 패널 접기 / 펼치기">${ICON.insp}</button>`:`<button class="icon-button" id="rSearch" title="파일 검색">${ICON.search}</button>`}</nav>
   <section class="explorer"><div class="pane-title">파일 탐색기 <span class="hint">${W.d.files.length}</span></div>
    <div class="search-box"><input type="search" id="search" placeholder="파일 검색…"></div>
-   <div class="explorer-scroll" id="exs">${tool?`<div class="section-title" style="margin-top:6px">그룹</div><div id="legend"></div><div class="section-title">폴더</div>`:""}<div class="vault-name">${esc(W.s.proj)}</div><div id="fileTree" class="file-tree"></div></div></section>
+   <div class="explorer-scroll" id="exs">${tool?`<div class="section-title" style="margin-top:6px">그룹</div><div id="legend"></div><div class="section-title">폴더</div>`:""}<div class="vault-name">${esc(W.d.name)}</div><div id="fileTree" class="file-tree"></div></div></section>
   <main><div class="tabbar"><div class="tab" id="tab">${tool?ICON.graph+"그래프 뷰":`<span class="hint">열린 파일 없음</span>`}</div></div>
-   ${tool?`<div class="toolbar"><div class="breadcrumb">${esc(W.s.proj)} / <strong>전체 그래프</strong></div><div class="tools">
+   ${tool?`<div class="toolbar"><div class="breadcrumb">${esc(W.d.name)} / <strong>전체 그래프</strong></div><div class="tools">
     <div class="view-mode" role="group" aria-label="그래프 보기"><button id="v2d" aria-pressed="true">2D</button><button id="vcard" aria-pressed="false">그룹 카드</button></div>
     <details class="graph-options" id="gopt"><summary>표시 설정</summary><div class="options-panel">
      <label><input type="checkbox" id="oInf" checked> 추론 연결</label><label><input type="checkbox" id="oLbl"> 관계 이름</label>
      <label><input type="checkbox" id="oHid"> 숨긴 연결 <span class="hint" id="hidN"></span></label></div></details></div></div>`:""}
-   <div id="graphwrap">${folder?`<div id="viewer"><div class="empty-state"><div class="empty-symbol">⌘</div><h2 style="font-size:18px">파일을 선택하십시오</h2><p>왼쪽 파일 탐색기에서 파일을 누르면 이곳에 내용이 표시됩니다.</p></div></div>`:
+   <div id="graphwrap">${folder?`<div id="viewer"><div class="empty-state"><div class="empty-symbol">⌘</div><h2 style="font-size:18px">파일을 골라 주세요</h2><p>왼쪽 파일 탐색기에서 파일을 누르면 이곳에 내용이 나옵니다.</p></div></div>`:
     `<div id="net"></div><div id="groupgraph" hidden><div id="groupScene"><svg id="groupLinks"></svg><div id="groupCards"></div></div></div>
     <div class="graph-caption"><strong>프로젝트의 연결 지도</strong><span id="graphStats"></span></div>
-    <div id="graphEmpty" class="graph-empty" hidden>표시 중인 파일이 없습니다.<br>왼쪽 그룹 목록에서 표시할 그룹을 켜 주십시오.</div>
+    <div id="graphEmpty" class="graph-empty" hidden>표시 중인 파일이 없습니다.<br>왼쪽 그룹 목록에서 볼 그룹을 켜 주세요.</div>
     <div class="graph-controls"><button id="zout" title="축소">−</button><button id="zin" title="확대">+</button><button id="zfit">전체 보기</button></div>`}
     </div>
    </main>
@@ -475,73 +641,120 @@ function layoutWork(){
  side();brief();
 }
 
+/* briefing before each task. The first task in a folder starts with a folder introduction page.
+   Questions stay hidden and the timer waits until [시작하기]. */
 const BRIEFS={
- t1a:{k:"과제 1 · 앞부분",t:"파일 목록만 보고 답 찾기",p:"다음 주 랩미팅의 발표자라고 가정해 주십시오. 결과 슬라이드에 넣을 표와 그림의 출처를 확인하기 위해 연구 폴더를 열었습니다.",
-  li:["왼쪽 파일 탐색기에 실제 폴더 구조가 있습니다. 파일을 누르면 가운데에 내용이 표시됩니다.","아래 질문 2개에 답해 주십시오. 보기를 누르면 바로 다음 질문으로 넘어갑니다.","정답 여부보다 평소처럼 찾아보는 것이 중요합니다. 걸린 시간과 연 파일 수가 기록됩니다."]},
- practice:{k:"도구 연습",t:"그래프 도구 사용법 익히기",p:"이제부터 사용할 도구입니다. 폴더 안 파일들의 연결 관계를 그래프로 보여 줍니다. 점수와 무관한 다른 폴더로 먼저 사용법을 익힙니다.",
-  legend:true,li:["그래프의 점이나 연결선, 왼쪽 ‘그룹’ 목록을 누르면 오른쪽 ‘내용과 근거’에 설명이 표시됩니다.","위쪽 [그룹 카드]를 누르면 그룹별로 묶어 볼 수 있습니다.","아래 ‘연습’ 카드의 네 가지를 해 보면 연습 문제 2개가 나타납니다."]},
- t1b:{k:"과제 1 · 뒷부분",t:"같은 폴더를 도구로 보며 답 찾기",p:"앞에서 본 발표 준비 폴더입니다. 이번에는 그래프 도구를 사용합니다.",
-  li:["왼쪽 ‘그룹’ 목록이나 [그룹 카드]부터 보면 폴더 구성을 파악하기 쉽습니다.","질문 2개 중 하나는 보기가 없습니다. 답이라고 생각하는 파일을 연 뒤 [‘파일’로 답하기]를 누르십시오."]},
- t2:{k:"과제 2",t:"시스템 제안이 맞는지 판단하기",p:"같은 폴더를 이번에는 다른 목적으로 정리합니다. 후배에게 실험 코드를 넘겨주는 상황이라고 가정해 주십시오. 인수인계에 필요 없는 연결을 숨기면 그래프가 간결해집니다.",
-  li:["1단계: 인수인계에 필요 없어 보이는 연결 2개를 골라 오른쪽 ‘연결 교정’의 [목적상 불필요]로 숨깁니다.","2단계: 시스템이 숨긴 연결과 비슷한 연결 6개를 추가로 제안합니다. 각 제안이 맞는지 판단해 주십시오.","마지막으로 정리 전과 후의 그래프를 비교합니다."]},
+ t1a:{k:"과제 1 · 앞부분",t:"파일 목록만 보고 답 찾기",p:"방금 본 폴더를 평소처럼 파일 탐색기로만 살펴봅니다. 다음 주 랩미팅 발표자라고 생각하고, 결과 슬라이드에 넣을 표와 그림의 출처를 찾아 주세요.",
+  li:["왼쪽 파일 탐색기에서 파일을 누르면 가운데에 내용이 나옵니다.","질문은 2개입니다. 보기를 누르면 다음 질문으로 넘어가고, [← 이전 질문]으로 돌아가 답을 바꿀 수 있습니다.","정답보다 평소에 찾는 방식 그대로가 중요합니다. 질문마다 걸린 시간과 연 파일 수를 기록합니다."]},
+ practice:{lead:"수고하셨습니다. 과제 1의 절반이 끝났습니다.",bridge:"이제 그래프 도구를 배워 볼 차례입니다. 과제와는 다른 작은 폴더로 연습합니다. 먼저 이 폴더를 소개하고, 이어서 따라 하는 방법을 안내해 드립니다.",k:"도구 연습",t:"그래프 도구 따라 해 보기",p:"이번에는 점수 없이 도구를 직접 만져 봅니다. 과제와 다른 작은 폴더로, 화면 아래 안내를 하나씩 따라 하시면 됩니다.",
+  li:["단계는 다섯 개입니다. 하나를 해 보면 지금 화면에 무엇이 나왔는지 설명이 이어집니다.","다섯 단계를 마치면 연습 문제 2개가 나옵니다. 틀려도 괜찮습니다. 정답과 찾는 방법을 알려 드립니다.","시간 제한은 없으니 천천히 익혀 주세요."],nostart:true},
+ t1b:{lead:"연습이 끝났습니다. 이제 도구를 쓸 수 있습니다.",bridge:"아까 파일 목록으로 살펴본 발표 준비 폴더로 돌아갑니다. 같은 상황에서, 이번에는 방금 익힌 도구로 질문 2개에 답합니다. 끝나면 앞부분과 비교해 어느 쪽이 편했는지 여쭤 봅니다.",k:"과제 1 · 뒷부분",t:"같은 폴더를 도구로 보며 답 찾기",p:"상황은 앞부분과 같습니다. 이번에는 방금 연습한 그래프 도구로 답을 찾아 주세요.",
+  li:["점과 선을 누르면 오른쪽에 요약, 연결, 근거가 나옵니다. 왼쪽 ‘그룹’ 목록이나 [그룹 카드]로 폴더 전체를 먼저 봐도 좋습니다.","두 번째 질문은 보기가 없습니다. 답이라고 생각하는 파일을 연 뒤 화면 아래 [‘파일’로 답하기]를 눌러 주세요.","앞부분처럼 [← 이전 질문]으로 돌아갈 수 있고, 걸린 시간을 기록합니다."]},
+ t2:{lead:"과제 1이 끝났습니다. 이제 마지막 과제입니다.",bridge:"같은 폴더를 이번에는 다른 목적으로 정리해 봅니다. 답을 찾는 대신, 목적에 필요 없는 연결을 숨기고 시스템이 더 숨기자고 한 연결이 맞는지 판단합니다.",k:"과제 2",t:"목적에 맞게 연결 정리하기",p:"같은 폴더를 이번에는 후배에게 실험 코드를 넘겨준다고 생각하고 정리합니다. 학습과 평가를 다시 돌리는 데 필요 없는 연결을 숨기면 그래프가 간결해집니다.",
+  li:["1단계: 필요 없어 보이는 연결 2개를 직접 골라 [목적상 불필요]로 숨깁니다.","2단계: 시스템이 연결 6개를 더 숨기자고 제안합니다. 하나씩 보고 동의할지 정해 주세요.","끝나면 정리 전과 후의 그래프를 나란히 비교합니다."]},
 };
-const SW=(s)=>`<svg width="26" height="18" viewBox="0 0 26 18">${s}</svg>`;
+const SEEN=new Set();
+const ROAD=[["t1a","과제 1 앞부분","파일 목록만 보고 질문 2개에 답합니다"],["practice","도구 연습","작은 폴더로 도구를 따라 해 봅니다. 점수는 없습니다"],
+ ["t1b","과제 1 뒷부분","같은 폴더를 도구로 보고 질문 2개에 답합니다"],["t2","과제 2","같은 폴더를 다른 목적에 맞게 정리합니다"],["survey","마지막 질문","소감 몇 가지를 묻고 끝납니다"]];
+function road(cur,full){const c=ROAD.findIndex(r=>r[0]==cur);
+ return full?`<ol class="road full">${ROAD.map((r,i)=>`<li class="${i<c?"done":i==c?"now":""}"><span class="n">${i<c?"✓":i+1}</span><div><b>${r[1]}</b>${i==c?` <span class="nowtag">지금</span>`:""}<div class="hint">${r[2]}</div></div></li>`).join("")}</ol>`
+  :`<div class="road mini">${ROAD.map((r,i)=>`<span class="${i<c?"done":i==c?"now":""}">${i<c?"✓ ":""}${r[1]}</span>`).join("<em>›</em>")}</div>`}
+function overviewHtml(){
+ return `<div class="k">시작하기 전에</div><h2>이 스터디에서 하는 일</h2>
+  <p>연구를 하다 보면 폴더에 코드, 실험 결과, 그림, 논문 초안, 회의 메모가 계속 쌓입니다. 시간이 지나면 어떤 그림이 어떤 코드에서 나왔는지, 어느 메모가 어느 실험 이야기인지 헷갈리기 쉽습니다.</p>
+  <p><b>ProjectWiki</b>는 폴더 안의 파일을 읽고, 파일끼리 어떻게 이어지는지를 그래프로 보여 주는 도구입니다. 이 스터디는 그 도구가 실제로 <b>필요한 파일을 찾고</b>, <b>목적에 맞게 정리하는</b> 데 도움이 되는지 알아보려는 것입니다.</p>
+  <h4>전체 순서</h4>${road("t1a",true)}
+  <h4>단계마다 이렇게 진행됩니다</h4>
+  <div class="howto"><span><b>1</b>폴더 소개</span><em>→</em><span><b>2</b>할 일 안내</span><em>→</em><span><b>3</b>[시작하기]를 누르고 진행</span></div>
+  <p class="hint" style="margin:10px 0 0">안내를 읽는 동안에는 시간을 재지 않으니 천천히 읽어 주세요. 정답을 맞히는 시험이 아니므로, 평소에 하시던 대로 하시면 됩니다.</p>`}
+function introHtml(d){
+ const n=dir=>dir.split(", ").reduce((a,x)=>a+d.files.filter(f=>f==x||f.startsWith(x+"/")).length,0);
+ return `<div class="k">폴더 소개</div><h2 class="mono" style="font-size:19px">${esc(d.name)}</h2><p>${esc(d.intro.who)}</p>
+  <h4>폴더 구성</h4><div class="dirs">${d.intro.dirs.map(([p,t])=>`<div class="${/상관없/.test(t)?"off":""}"><b>${esc(p.includes(".")?p:p.split(", ").map(x=>x+"/").join(" "))}</b><span>${esc(t)}</span>${p.includes(".")?"":`<span class="hint">${n(p)}</span>`}</div>`).join("")}</div>
+  <h4>대략 이런 순서로 이어집니다</h4><div class="flow">${d.intro.flow.map(x=>`<span>${esc(x)}</span>`).join("<em>→</em>")}</div>
+  <p class="hint" style="margin:0">과제 중에도 화면 위쪽 [폴더 소개] 버튼으로 다시 볼 수 있습니다.</p>`;
+}
+function openIntro(){
+ if($("fintro"))return;log("intro");
+ const el=document.createElement("div");el.className="brief";el.id="fintro";
+ el.innerHTML=`<div class="card"><button class="ghost x" id="fx" title="닫기">×</button>${introHtml(W.d)}<div class="foot"><span></span><button class="primary" id="fclose">닫기</button></div></div>`;
+ document.body.appendChild(el);const close=()=>el.remove();$("fx").onclick=$("fclose").onclick=close;el.onclick=ev=>{if(ev.target==el)close()};
+}
 function brief(){
  const b=BRIEFS[W.id];if(!b||W.briefed)return;
- const el=document.createElement("div");el.className="brief";el.id="brief";
- el.innerHTML=`<div class="card"><div class="k">${b.k}</div><h2>${b.t}</h2><p>${b.p}</p>
-  ${b.legend?`<div class="legend3">
-   <span>${SW('<polygon points="13,2 20,9 13,16 6,9" fill="#b49af4"/>')}</span><span>마름모 = 코드 (.py)</span>
-   <span>${SW('<circle cx="13" cy="9" r="6" fill="#83b6c9"/>')}</span><span>동그라미 = 문서·데이터</span>
-   <span>${SW('<rect x="7" y="3" width="12" height="12" fill="#8bbb9a"/>')}</span><span>네모 = PDF</span>
-   <span>${SW('<polygon points="13,2 20,15 6,15" fill="#c7ad77"/>')}</span><span>세모 = 노트북 (.ipynb)</span>
-   <span>${SW('<circle cx="5" cy="9" r="4" fill="#b49af4"/><circle cx="13" cy="9" r="4" fill="#83b6c9"/><circle cx="21" cy="9" r="4" fill="#c7ad77"/>')}</span><span>색 = 그룹</span>
-   <span>${SW('<line x1="0" y1="9" x2="26" y2="9" stroke="#8a8494" stroke-width="2"/>')}</span><span>실선 = 파일에 직접 적힌 연결</span>
-   <span></span><span></span>
-   <span>${SW('<line x1="0" y1="9" x2="26" y2="9" stroke="#6a6572" stroke-width="2" stroke-dasharray="5 4"/>')}</span><span>점선 = 내용으로 추론한 연결</span></div>`:""}
-  <ul>${b.li.map(x=>`<li>${x}</li>`).join("")}</ul>
-  <div class="foot"><span class="hint">‘시작하기’를 누르면 시간 기록이 시작됩니다.</span><button class="primary" id="bgo">시작하기</button></div></div>`;
- document.body.appendChild(el);
- $("bgo").onclick=()=>{W.briefed=true;el.remove();setTimeout(fitView,30);const st=LOG.steps[W.id];st.t0=Date.now();st.events=[];W.qt0=Date.now();log("start")};
+ const first=!SEEN.has(W.s.proj);SEEN.add(W.s.proj);
+ const pages=[...(W.id=="t1a"?["over"]:[]),...(first?["intro"]:[]),"task"];
+ const el=document.createElement("div");el.className="brief";el.id="brief";document.body.appendChild(el);document.body.classList.add("briefing");
+ const dots=k=>pages.length>1?`<span class="pages">${pages.map((_,i)=>`<i class="${i==k?"on":""}"></i>`).join("")}</span>`:"<span></span>";
+ const NEXT={intro:"다음: 할 일 보기",over:"다음: 폴더 소개",task:"시작하기"},BACK={over:"← 처음 안내",intro:"← 폴더 소개"};
+ const page=k=>{const pg=pages[k],top=k==0&&b.lead?`<div class="bridge"><p class="lead">${b.lead}</p>${b.bridge?`<p>${b.bridge}</p>`:""}${road(W.id,false)}</div>`:"";
+  const body=pg=="over"?overviewHtml():pg=="intro"?introHtml(W.d):`<div class="k">${b.k}</div><h2>${b.t}</h2><p>${b.p}</p><ul>${b.li.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  const back=k>0?`<button class="ghost" id="bback">${BACK[pages[k-1]]}</button>`:pg=="task"?`<button class="ghost" id="bintro">폴더 소개 다시 보기</button>`:"";
+  el.innerHTML=`<div class="card">${top}${body}<div class="foot">${dots(k)}<div class="actions">${back}<button class="primary" id="${pg=="task"?"bgo":"bnext"}">${pg=="task"?"시작하기":NEXT[pg]}</button></div></div>
+   ${pg=="task"&&!b.nostart?`<p class="hint" style="margin:10px 0 0;text-align:right">[시작하기]를 누르면 시간을 재기 시작합니다.</p>`:""}</div>`;
+  el.querySelector(".card").scrollTop=0;
+  const nx=$("bnext");if(nx)nx.onclick=()=>page(k+1);const bk=$("bback");if(bk)bk.onclick=()=>page(k-1);const bi=$("bintro");if(bi)bi.onclick=openIntro;
+  const go=$("bgo");if(go)go.onclick=()=>{W.briefed=true;el.remove();document.body.classList.remove("briefing");setTimeout(()=>{cardPad();fitView()},30);
+   const st=LOG.steps[W.id];st.t0=Date.now();st.events=[];W.qt0=Date.now();W.qopen=0;log("start")}};
+ page(0);
 }
 function task(){
  const {s,id}=W;
- const sub={practice:"도구 사용법을 익히는 연습입니다. 과제와 다른 폴더를 사용합니다.",t1a:"이 단계에서는 파일 탐색기만 사용할 수 있습니다.",t1b:"같은 폴더를 이번에는 그래프 도구로 살펴봅니다.",t2:"같은 폴더를 이번에는 인수인계 목적에 맞게 정리합니다."}[id]||"";
- $("task").innerHTML=`<span class="plbl">${id=="practice"?`<span class="tag">연습 · 점수 없음</span>`:""}<span class="pill">이번 목적</span></span><div class="purpose">${esc(s.purpose)}</div><div class="inst">${sub}</div>`;
+ const sub={practice:"연습입니다. 점수와 시간 제한이 없습니다.",t1a:"이 단계에서는 파일 탐색기만 쓸 수 있습니다.",t1b:"같은 폴더를 이번에는 그래프 도구로 봅니다.",t2:"같은 폴더를 인수인계 목적에 맞게 정리합니다."}[id]||"";
+ $("task").innerHTML=`<span class="plbl">${id=="practice"?`<span class="tag">연습 · 점수 없음</span>`:""}<span class="pill">상황</span></span><div class="purpose">${esc(s.purpose)}</div><div class="inst">${sub}</div><button class="sm introbtn" id="introbtn">폴더 소개</button>`;
+ $("introbtn").onclick=openIntro;
 }
 function side(){setTimeout(cardPad,0);
  const {id}=W;
- const q=W.s.qs&&W.s.qs[W.qi];$("btitle").textContent=id=="practice"?"연습":id=="t2"?(W.props?"2단계 · 제안 판단":"1단계 · 연결 숨기기"):`질문 ${W.qi+1} / ${W.s.qs.length}`;
- $("bmini").textContent=q&&(id!="practice"||PRACTICE.every(([k])=>W.todo[k]))?q.q:"";
- if(id=="practice"){const nx=PRACTICE.find(([k])=>!W.todo[k]),done=!nx;["group","file","edge","hide"].forEach(k=>$("work").classList.toggle("guide-"+k,!!nx&&nx[0]==k));
-  $("sidebody").innerHTML=(done?`<div class="sidebox" style="padding-bottom:0"><span class="donechip">✓ 연습 네 가지를 모두 마쳤습니다. 아래 연습 문제에 답해 주십시오.</span></div>`:`<div class="sidebox"><p>아래 네 가지를 한 번씩 해 보십시오. 모두 마치면 연습 문제가 나타납니다.</p>
-   <ul class="steps">${PRACTICE.map(([k,t],i)=>`<li class="${W.todo[k]?"ok":nx&&nx[0]==k?"now":""}"><span class="n">${W.todo[k]?"✓":i+1}</span>${t}</li>`).join("")}</ul><div class="guide-text">${nx?GUIDE[nx[0]]:""}</div></div>`)
-   +(done?`<div id="qbox"></div>`:"");
-  if(done)quiz();return}
+ if(id=="practice"){
+  const ps=PSTEPS[W.pstep];["group","file","edge","cards","hide"].forEach(k=>$("work").classList.toggle("guide-"+k,!!ps&&ps.k==k&&!W.todo[k]));
+  if(!ps){$("sidebody").innerHTML=`<div id="qbox"></div>`;quiz();return}
+  const done=!!W.todo[ps.k],last=W.pstep==PSTEPS.length-1;
+  $("btitle").textContent=`연습 ${W.pstep+1} / ${PSTEPS.length}`;$("bmini").textContent=done?"다음 단계로 넘어가 주세요":ps.do.replace(/<[^>]+>/g," ");
+  $("sidebody").innerHTML=`<div class="sidebox"><div class="pstep ${done?"done":""}"><span class="n">${done?"✓":W.pstep+1}</span><div class="b">
+   <div class="do">${ps.do}</div>${done?`<div class="why">${ps.why}</div>${ps.legend?SHAPES:""}`:""}
+   <div class="act">${W.pstep>0?`<button class="sm ghost" id="pprev">← 이전 단계</button>`:""}${done?`<button class="primary" id="pnext">${last?"연습 문제 풀기":"다음 단계"}</button>`:""}
+    <span class="pdots">${PSTEPS.map((x,k)=>`<i class="${k<W.pstep||(k==W.pstep&&done)?"ok":k==W.pstep?"now":""}"></i>`).join("")}</span></div></div></div></div>`;
+  const nx=$("pnext");if(nx)nx.onclick=()=>{W.pstep++;if(W.pstep>=PSTEPS.length){W.qt0=Date.now();W.qopen=0}side()};
+  const pv=$("pprev");if(pv)pv.onclick=()=>{W.pstep--;side()};
+  return}
  if(id=="t1a"||id=="t1b"){$("sidebody").innerHTML=`<div id="qbox"></div>`;quiz();return}
  if(id=="t2")side2();
 }
+/* questions. Going back to an earlier question is allowed; time and opened files add up per question. */
+function qleave(){const n=W.s.qs.length;if(W.qi<n){const a=W.acc[W.qi]||(W.acc[W.qi]={sec:0,opens:0});a.sec+=(Date.now()-W.qt0)/1000;a.opens+=W.qopen}W.qopen=0;W.qt0=Date.now()}
 function quiz(){
  const box=$("qbox");if(!box)return;setTimeout(cardPad,0);
- if(W.id!="practice"){$("btitle").textContent=`질문 ${W.qi+1} / ${W.s.qs.length}`;$("bmini").textContent=W.s.qs[W.qi].q}
- const qs=W.s.qs,i=W.qi,q=qs[i],a=W.ans[i],pr=W.id=="practice",f=W.sel&&W.sel.k=="f"?W.sel.i:null;
+ const qs=W.s.qs,i=W.qi,pr=W.id=="practice";
+ if(i>=qs.length){$("btitle").textContent=pr?"연습 문제":"질문 확인";$("bmini").textContent="";$("work").classList.remove("wantfile");
+  box.innerHTML=`<div class="qdone"><p>${pr?"연습을 모두 마쳤습니다. 다음은 과제 1 뒷부분입니다.":`질문 ${qs.length}개에 모두 답했습니다. 답을 바꾸려면 이전 질문으로 돌아가세요.`}</p>
+   <button class="sm ghost" id="qprev">← 이전 ${pr?"문제":"질문"}</button><button class="primary" id="qend">${pr?"연습 마치기":"다음 단계로"}</button></div>`;
+  $("qprev").onclick=()=>{W.qi=qs.length-1;W.qt0=Date.now();W.qopen=0;quiz()};$("qend").onclick=phaseDone;return}
+ const q=qs[i],a=W.ans[i],f=W.sel&&W.sel.k=="f"?W.sel.i:null,shown=pr&&a!=null;
+ $("btitle").textContent=pr?`연습 문제 ${i+1} / ${qs.length}`:`질문 ${i+1} / ${qs.length}`;$("bmini").textContent=q.q;
  $("work").classList.toggle("wantfile",q.t=="file"&&f==null&&a==null);
- let h=`<div class="qwrap">${pr?`<div class="hint" style="margin-bottom:4px">연습 문제 ${i+1} / ${qs.length}</div>`:""}<div class="qline"><div class="qtext">${esc(q.q)}</div>${i>0?`<button class="sm ghost" id="qprev">← 이전 질문</button>`:""}</div>`;
- if(q.t=="mc")h+=`<div class="opts ${q.o.every(o=>o.length<=24)?"four":""}">${q.o.map((o,j)=>`<button class="opt ${a===j?"on":""}" data-o="${j}"><span class="k">${"ABCD"[j]}</span><span class="ot" title="${esc(o)}">${esc(o)}</span></button>`).join("")}</div>`;
- else if(a!=null)h+=`<div class="pickrow"><div class="callout ready"><div class="big">답: ${esc(base(W.d.files[a]))}</div><div class="sm">다른 파일로 바꾸려면 해당 파일을 연 뒤 오른쪽 버튼을 누르십시오.</div></div>
+ let h=`<div class="qwrap"><div class="qline"><div class="qtext">${esc(q.q)}</div>${i>0?`<button class="sm ghost" id="qprev">← 이전 ${pr?"문제":"질문"}</button>`:""}</div>`;
+ if(q.t=="mc")h+=`<div class="opts ${q.o.every(o=>o.length<=24)?"four":""}">${q.o.map((o,j)=>`<button class="opt ${shown?(j===q.a?"right":j===a?"wrong":""):a===j?"on":""}" data-o="${j}" ${shown?"disabled":""}><span class="k">${"ABCD"[j]}</span><span class="ot" title="${esc(o)}">${esc(o)}</span></button>`).join("")}</div>`;
+ else if(shown)h+=`<div class="callout ${a===q.a?"ready":""}"><div class="big">고른 파일: ${esc(base(W.d.files[a]))}</div></div>`;
+ else if(a!=null)h+=`<div class="pickrow"><div class="callout ready"><div class="big">답: ${esc(base(W.d.files[a]))}</div><div class="sm">다른 파일로 바꾸려면 그 파일을 연 뒤 오른쪽 버튼을 누르세요.</div></div>
    ${f!=null&&f!==a?`<button class="primary pickbtn" id="pick">‘${esc(base(W.d.files[f]))}’로 바꾸기</button>`:""}</div>`;
- else if(f==null)h+=`<div class="callout"><div class="big">답이라고 생각하는 파일을 열어 주십시오</div><div class="sm">이 질문에는 보기가 없습니다. ${W.view=="folder"?"왼쪽 파일 탐색기":"그래프의 점이나 왼쪽 파일 탐색기"}에서 파일을 열면 이곳에 답하기 버튼이 나타납니다.</div></div>`;
- else h+=`<div class="pickrow"><div class="callout ready"><div class="big">지금 연 파일: ${esc(base(W.d.files[f]))}</div><div class="sm">이 파일이 답이면 오른쪽 버튼을 누르고, 아니면 다른 파일을 여십시오.</div></div>
+ else if(f==null)h+=`<div class="callout"><div class="big">답이라고 생각하는 파일을 열어 주세요</div><div class="sm">이 질문에는 보기가 없습니다. ${W.view=="folder"?"왼쪽 파일 탐색기":"그래프의 점이나 왼쪽 파일 탐색기"}에서 파일을 열면 이곳에 답하기 버튼이 생깁니다.</div></div>`;
+ else h+=`<div class="pickrow"><div class="callout ready"><div class="big">지금 연 파일: ${esc(base(W.d.files[f]))}</div><div class="sm">이 파일이 답이면 오른쪽 버튼을 누르고, 아니면 다른 파일을 열어 보세요.</div></div>
    <button class="primary pickbtn" id="pick">‘${esc(base(W.d.files[f]))}’로 답하기</button></div>`;
+ if(shown){const ok=a===q.a,right=q.t=="mc"?`${"ABCD"[q.a]} (${q.o[q.a]})`:base(W.d.files[q.a]);
+  h+=`<div class="qfb ${ok?"ok":"no"}"><b>${ok?"맞았습니다.":`정답은 ${esc(right)}입니다.`}</b> ${esc(q.hint||"")}
+   <div class="act">${ok?"":`<button class="sm" id="retry">다시 풀어 보기</button>`}<button class="sm primary" id="qnext">${i<qs.length-1?"다음 문제":"연습 마치기"}</button></div></div>`}
  box.innerHTML=h+`</div>`;
  const fo=box.querySelector(".opts.four");if(fo&&[...fo.querySelectorAll(".ot")].some(t=>t.scrollWidth>t.clientWidth))fo.classList.remove("four");
- const answer=v=>{W.ans[i]=v;log("answer",[i,v]);W.qlog[i]={sec:Math.round((Date.now()-W.qt0)/1000),opens:W.qopen};W.qt0=Date.now();W.qopen=0;
-  const nx=qs.findIndex((_,j)=>W.ans[j]==null);if(nx>=0){W.qi=nx;quiz()}else setTimeout(phaseDone,250)};
- box.querySelectorAll(".opt[data-o]").forEach(b=>b.onclick=()=>answer(+b.dataset.o));
+ const answer=v=>{W.ans[i]=v;log("answer",[i,v]);if(pr){(W.tries||(W.tries={}))[i]=(W.tries[i]||0)+1;quiz();return}qleave();
+  const nx=qs.findIndex((_,j)=>W.ans[j]==null);W.qi=nx>=0?nx:qs.length;quiz()};
+ box.querySelectorAll(".opt[data-o]:not([disabled])").forEach(b=>b.onclick=()=>answer(+b.dataset.o));
  const pk=$("pick");if(pk)pk.onclick=()=>answer(f);
- const pv=$("qprev");if(pv)pv.onclick=()=>{W.qi--;quiz()};
+ const pv=$("qprev");if(pv)pv.onclick=()=>{qleave();W.qi--;quiz()};
+ const rt=$("retry");if(rt)rt.onclick=()=>{delete W.ans[i];quiz()};
+ const qn=$("qnext");if(qn)qn.onclick=()=>{qleave();if(i<qs.length-1){W.qi++;quiz()}else phaseDone()};
 }
-function phaseDone(){LOG.steps[W.id].quiz=W.s.qs.map((q,j)=>Object.assign({q:q.q,answer:W.ans[j],ok:W.ans[j]===q.a},W.qlog[j]||{}));go(step+1)}
+function phaseDone(){LOG.steps[W.id].quiz=W.s.qs.map((q,j)=>{const a=W.acc[j]||{};return Object.assign({q:q.q,answer:W.ans[j],ok:W.ans[j]===q.a,sec:Math.round(a.sec||0),opens:a.opens||0},W.tries?{tries:W.tries[j]||0}:{})});go(step+1)}
 function cardPad(){const b=$("bottom"),w=$("work");if(!b||!w)return;w.style.setProperty("--cardh",(b.offsetHeight+36)+"px");
  const ex=w.querySelector(".explorer"),wr=w.getBoundingClientRect(),l=ex&&ex.offsetParent?ex.getBoundingClientRect().right-wr.left:46;w.style.setProperty("--cl",(l+16)+"px")}
 function refresh(){if(W.id=="practice"||W.id=="t2")side();else quiz()}
@@ -570,14 +783,15 @@ function revealPt(p){const c=net.canvasToDOM(p),el=$("net"),b=$("bottom"),r=el.g
 function reveal(i){if(!net||W.mode!="2d"||W.ghide.has(groupOf(i)))return;const p=net.getPosition(i),c=net.canvasToDOM(p),el=$("net"),b=$("bottom"),r=el.getBoundingClientRect();
  const lim=b?Math.min(el.clientHeight,b.getBoundingClientRect().top-r.top):el.clientHeight;
  if(c.x>40&&c.x<el.clientWidth-40&&c.y>70&&c.y<lim-30)return;net.moveTo({position:p,animation:{duration:350,easingFunction:"easeInOutQuad"}})}
-function meta(){const n=W.d.edges.length-(W.hidden?W.hidden.size:0);$("meta").textContent=`${W.s.proj} · 파일 ${W.d.files.length} · 연결 ${n}`}
+function meta(){const n=W.d.edges.length-(W.hidden?W.hidden.size:0);$("meta").textContent=`${W.d.name} · 파일 ${W.d.files.length} · 연결 ${n}`}
 
 /* graph: team-viewer node/edge style, fixed seed so every participant sees the same layout */
 function degree(){const dg={};W.d.edges.forEach((e,j)=>{if(W.hidden.has(j))return;dg[e.a]=(dg[e.a]||0)+1;dg[e.b]=(dg[e.b]||0)+1});return dg}
 function nodeView(i,hot,dg,soft){const c=gcol(groupOf(i)),dim=hot===false,cc=dim?mix(c,C.bg,soft?.5:.72):c,f=W.d.files[i];
+ const lbl=W.d.files.length<=20||hot===true||(dg[i]||0)>=3||W.zoomLbl;
  return {shape:SHAPE[ext(f)]||"dot",size:6+Math.min(10,dg[i]||0),
   color:{background:cc,border:hot?C.text:cc,highlight:{background:c,border:C.text},hover:{background:c,border:C.text}},borderWidth:hot?2:1,
-  font:{color:dim?(soft?"#8a8a8a":"#5c5c5c"):C.text,size:15,strokeWidth:4,strokeColor:C.bg}}}
+  font:lbl?{color:dim?(soft?"#8a8a8a":"#5c5c5c"):C.text,size:15,strokeWidth:4,strokeColor:C.bg}:{color:"rgba(0,0,0,0)",size:15,strokeWidth:0}}}
 function edgeView(j,hot,soft){const e=W.d.edges[j],cf=W.conf&&W.conf.has(j),col=hot?C.accent:hot===false?(soft?"#38363c":C.dim):cf?C.accent:(e.direct?C.direct:C.inferred);
  return {color:{color:col,highlight:C.accent,hover:C.accent},width:hot||cf?2.8:1.8,dashes:e.direct?false:[5,5],label:W.opt&&W.opt.labels?e.rel:"",
   font:{size:10,color:C.muted,strokeWidth:3,strokeColor:C.bg,align:"middle"},
@@ -586,6 +800,7 @@ function graph(){
  const d=W.d,dg=degree();
  nodes=new vis.DataSet(d.files.map((f,i)=>Object.assign({id:i,label:base(f),title:f+" · "+d.sum[i]},nodeView(i,undefined,dg),POS&&W.id=="t2"&&POS[i]?{x:POS[i].x,y:POS[i].y}:{})));
  edges=new vis.DataSet(d.edges.map((e,j)=>Object.assign({id:j,from:e.a,to:e.b,hidden:W.hidden.has(j)},edgeView(j))));
+ d.groups.forEach(([n,m],g)=>m.forEach((a,x)=>m.slice(x+1).forEach(b=>edges.add({id:`g${a}_${b}`,from:a,to:b,hidden:true,length:90}))));
  if(net)net.destroy();
  net=new vis.Network($("net"),{nodes,edges},{layout:{randomSeed:7},
   interaction:{hover:true,tooltipDelay:150,selectConnectedEdges:false,hoverConnectedEdges:false},
@@ -604,6 +819,7 @@ function graph(){
   ctx.save();ctx.fillStyle=`rgba(${rgb},${.07*a})`;ctx.strokeStyle=`rgba(${rgb},${.85*a})`;ctx.lineWidth=1.5/Math.max(.5,net.getScale());ctx.setLineDash(a<1?[6,5]:[]);
   ctx.beginPath();ctx.roundRect(x1,y1,x2-x1,y2-y1,12);ctx.fill();ctx.stroke();
   ctx.setLineDash([]);ctx.fillStyle=`rgba(${rgb},${a})`;ctx.font=`600 ${Math.round(13/Math.max(.5,net.getScale()))}px Segoe UI, Malgun Gothic, sans-serif`;ctx.fillText(W.d.groups[g][0],x1+10,y1-8);ctx.restore()})});
+ net.on("zoom",()=>{const z=net.getScale()>1.3;if(z!=!!W.zoomLbl){W.zoomLbl=z;restyle()}});
  net.on("hoverNode",p=>focus(p.node));net.on("blurNode",()=>restyle());
  net.on("hoverEdge",p=>focusE(p.edge));net.on("blurEdge",()=>restyle());
  /* clicks pick the link nearest to the pointer (vis would take whichever overlapping link it meets first) */
@@ -633,7 +849,7 @@ function controls(){
  const z=f=>{if(W.mode=="cards"){zoomCards(f);return}net.moveTo({scale:net.getScale()*f,position:net.getViewPosition()})};
  $("zin").onclick=()=>z(1.25);$("zout").onclick=()=>z(.8);$("zfit").onclick=fitView;
 }
-function setMode(m){if(W.mode==m)return;W.mode=m;log("view",m);$("v2d").setAttribute("aria-pressed",m=="2d");$("vcard").setAttribute("aria-pressed",m=="cards");
+function setMode(m){if(W.mode==m)return;W.mode=m;log("view",m);if(m=="cards"&&!W.todo.cards){W.todo.cards=true;if(W.id=="practice")setTimeout(side,0)}$("v2d").setAttribute("aria-pressed",m=="2d");$("vcard").setAttribute("aria-pressed",m=="cards");
  $("net").hidden=m!="2d";$("groupgraph").hidden=m!="cards";
  if(m=="cards"){renderCards();fitCards()}else{net.setSize("100%","100%");net.redraw();restyle()}}
 function stats(){if(!$("graphStats"))return;$("graphStats").textContent=`파일 ${W.d.files.length}개 · 표시된 연결 ${W.d.edges.length-W.hidden.size}개`}
@@ -655,7 +871,7 @@ function stick(s){W.stick=s;restyle()}
 function showInsp(){if(UI.noInsp&&$("rInsp")){UI.noInsp=false;$("work").classList.remove("noinsp");$("rInsp").classList.add("active")}}
 document.addEventListener("keydown",ev=>{if(!W||!$("search"))return;
  if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()=="k"){ev.preventDefault();$("rSearch").click()}
- if(ev.key=="Escape"){const o=$("gopt");if(o&&o.open){o.open=false;return}if(document.activeElement==$("search")&&W.q){$("search").value="";$("search").oninput();return}if($("detail")&&!inReview()&&!document.getElementById("brief"))overview()}});
+ if(ev.key=="Escape"){const fi=$("fintro");if(fi){fi.remove();return}const o=$("gopt");if(o&&o.open){o.open=false;return}if(document.activeElement==$("search")&&W.q){$("search").value="";$("search").oninput();return}if($("detail")&&!inReview()&&!document.getElementById("brief"))overview()}});
 const inReview=()=>!!(W.props&&W.props.some(p=>p.accept==null));
 
 /* group-card view (same idea as the team viewer's 그룹 카드) */
@@ -705,8 +921,8 @@ function fileLink(i,extra){return `<button class="edge-link" data-f="${i}">${fil
 function arrow(e,i){return e.d==0?"↔":(e.d==1)===(e.a==i)?"→":"←"}
 function overview(){
  W.gsel=null;W.link=null;stick(null);legend();if(net)net.redraw();if(W.mode=="cards")renderCards();if(net)net.unselectAll();
- $("detail").innerHTML=`<div class="empty-state"><div class="empty-symbol" aria-hidden="true">⌘</div><h2>연결을 탐색해 보십시오</h2>
-  <p>파일이나 그래프의 점을 선택하면 요약과 내용을 볼 수 있습니다.</p><p class="hint">연결선을 선택하면 두 파일의 관계와 근거를 볼 수 있습니다. 왼쪽 ‘그룹’ 목록을 누르면 그룹 설명이 표시됩니다.</p></div>`;
+ $("detail").innerHTML=`<div class="empty-state"><div class="empty-symbol" aria-hidden="true">⌘</div><h2>점이나 선을 눌러 보세요</h2>
+  <p>점(파일)을 누르면 요약과 내용이, 선(연결)을 누르면 두 파일의 관계와 근거가 이곳에 나옵니다.</p><p class="hint">왼쪽 ‘그룹’ 목록을 누르면 그룹 설명이 나옵니다.</p></div>`;
 }
 function openGroup(g){
  const d=W.d,[n,m]=d.groups[g];showInsp();W.ghov=null;setTimeout(()=>net&&net.redraw(),0);W.gsel=g;W.link=null;W.todo.group=true;log("group",g);stick(groupSet(g));legend();if(W.mode=="cards")renderCards();
@@ -753,9 +969,9 @@ function openEdge(j){
  const e=W.d.edges[j];showInsp();W.sel={k:"e",i:j};log("edge",j);W.todo.edge=true;W.gsel=null;W.link=null;stick({hn:new Set([e.a,e.b]),he:new Set([j])});legend();
  let act="";
  const canFix=W.id=="practice"||(W.id=="t2"&&!W.props);
- if(canFix)act=`<div class="fixbox"><div class="fixh">연결 교정</div>${W.hidden.has(j)?`<p class="hint" style="margin:0">숨긴 연결입니다. 아래 ‘세션 피드백’에서 되돌릴 수 있습니다.</p>`:`<div class="row" style="margin:6px 0">
+ if(canFix)act=`<div class="fixbox"><div class="fixh">연결 교정</div>${W.hidden.has(j)?`<p class="hint" style="margin:0">숨긴 연결입니다. 아래 ‘세션 피드백’의 [되돌리기]로 다시 보이게 할 수 있습니다.</p>`:`<div class="row" style="margin:6px 0">
    <button data-t="edge_confirm" ${W.conf.has(j)?"disabled":""}>맞는 연결</button><button data-t="edge_wrong">잘못된 연결</button><button data-t="edge_irrelevant" class="${W.id=="t2"?"primary":""}">목적상 불필요</button></div>
-   <p class="hint" style="margin:0">${W.id=="t2"?"이 과제에서는 인수인계에 필요 없는 연결을 [목적상 불필요]로 숨깁니다.":"[잘못된 연결]과 [목적상 불필요]는 연결을 숨기고, [맞는 연결]은 굵게 표시합니다."}</p>`}</div>`;
+   <p class="hint" style="margin:0">${W.id=="t2"?"인수인계에 필요 없는 연결이면 [목적상 불필요]로 숨겨 주세요.":"[잘못된 연결]과 [목적상 불필요]는 연결을 숨기고, [맞는 연결]은 선을 굵게 표시합니다."}</p>`}</div>`;
  W._act=act;$("detail").innerHTML=backHtml()+edgeHtml(j);W._act="";bind();
  $("detail").querySelectorAll("button[data-t]").forEach(b=>b.onclick=()=>fix(b.dataset.t,j));
  $("iscroll").scrollTop=0;if(net)net.selectEdges([j]);refresh();
@@ -792,14 +1008,14 @@ function side2(){
  const s=W.s,n=W.seed.length,need=s.seed_hides;
  $("btitle").textContent=W.props?"2단계 · 제안 판단":"1단계 · 연결 숨기기";
  if(!W.props){const e=W.sel&&W.sel.k=="e"?W.sel.i:null;
-  $("sidebody").innerHTML=`<div class="sidebox"><h3>연결 ${need}개 숨기기 (${Math.min(n,need)}/${need})</h3><p>필요 없어 보이는 연결을 선택하고 [목적상 불필요]로 숨기십시오. ${need}개를 숨기면 2단계로 넘어갑니다. 잘못 숨긴 연결은 ‘세션 피드백’에서 되돌릴 수 있습니다.</p>
+  $("sidebody").innerHTML=`<div class="sidebox"><h3>연결 ${need}개 숨기기 (${Math.min(n,need)}/${need})</h3><p>후배가 학습과 평가를 다시 돌리는 데 필요 없어 보이는 연결을 골라 [목적상 불필요]로 숨겨 주세요. ${need}개를 숨기면 2단계로 넘어갑니다. 잘못 숨겼다면 오른쪽 ‘세션 피드백’의 [되돌리기]를 누르면 됩니다.</p>
    ${e!=null&&!W.hidden.has(e)?`<div class="actions" style="margin-top:10px"><span style="flex:1;min-width:0">선택한 연결: <b style="font-weight:500">${esc(W.d.edges[e].s.split(":")[0])}</b></span><button class="primary" id="hideSide">목적상 불필요</button></div>`:""}</div>`;
   const b=$("hideSide");if(b)b.onclick=()=>hide(e);return}
  const all=W.props.every(p=>p.accept!=null);
  if(all){reviewDone();return}
  const d=W.d,p=W.props[W.pi],nm=j=>`${base(d.files[d.edges[j].a])} – ${base(d.files[d.edges[j].b])}`;
  $("sidebody").innerHTML=`<div class="suggest"><div class="h">시스템 제안 ${W.pi+1} / ${W.props.length}</div>
-   <div style="font-size:13px;margin-top:2px;color:var(--sub)">${W.pi==0&&W.props.every(q=>q.accept==null)?`숨긴 연결 ‘${esc(nm(W.seed[0]))}’${W.seed.length>1?` 외 ${W.seed.length-1}개`:""}와 비슷해서, 이 연결도 인수인계에 필요 없다고 제안했습니다. 그래프의 주황 점선이 제안한 연결이며, 설명은 오른쪽 패널에 있습니다.`:"숨긴 연결과 비슷해서 제안한 연결입니다. 그래프의 주황 점선을 확인하십시오."}</div>
+   <div style="font-size:13px;margin-top:2px;color:var(--sub)">시스템이 인수인계에 필요 없어 보인다고 고른 연결입니다. 그래프의 주황 점선이며, 설명은 오른쪽 패널에 있습니다.</div>
    <div class="q">${esc(d.edges[p.e].s.split(":")[0])}</div>
    <div class="actions" style="margin-top:10px"><button class="primary" id="acc">숨기기에 동의</button><button id="rej">그대로 두기</button>${W.pi>0?`<button class="sm ghost" id="prevP">← 이전</button>`:""}<span class="marks" style="margin-left:auto">${W.props.map(q=>q.accept==null?"○":q.accept?"✓":"✕").join("")}</span></div></div>`;
  const decide=v=>{p.accept=v;log("judge",[p.e,p.src,v]);if(v){W.hidden.add(p.e);W.fb.push({t:"prop_accept",j:p.e})}else W.hidden.delete(p.e);renderFb();
@@ -825,7 +1041,7 @@ function showReview(){
 }
 function reviewDone(){
  const acc=W.props.filter(p=>p.accept).length;stick(null);if($("detail")&&$("detail").querySelector(".propbar"))overview();
- $("sidebody").innerHTML=`<div class="sidebox"><h3>제안 판단 끝</h3><p>제안 ${W.props.length}개 중 ${acc}개를 숨겼습니다. 정리된 그래프를 확인한 뒤 다음으로 넘어가 주십시오. 아래 항목을 누르면 다시 판단할 수 있습니다.</p>
+ $("sidebody").innerHTML=`<div class="sidebox"><h3>제안을 모두 판단했습니다</h3><p>제안 ${W.props.length}개 중 ${acc}개를 숨겼습니다. 정리된 그래프를 한번 둘러본 뒤 [다음]을 눌러 주세요. 판단을 바꾸려면 아래 항목을 누르면 됩니다.</p>
   <div class="list" style="margin-top:8px">${W.props.map((p,k)=>`<div class="row2" data-k="${k}"><span style="color:${p.accept?"var(--bad)":"var(--ok)"};width:32px">${p.accept?"숨김":"남김"}</span><span>${esc(W.d.edges[p.e].s.split(":")[0])}</span></div>`).join("")}</div></div>
   <div class="sidefoot"><button class="primary" id="done">다음</button></div>`;
  $("sidebody").querySelectorAll("[data-k]").forEach(x=>x.onclick=()=>{W.pi=+x.dataset.k;const p=W.props[W.pi];p.accept=null;W.hidden.delete(p.e);W.fb=W.fb.filter(f=>!(f.t=="prop_accept"&&f.j==p.e));renderFb();applyHidden();showReview()});
@@ -833,8 +1049,10 @@ function reviewDone(){
 }
 function mini(el,hidden,mark){
  const d=W.d,dg={},pos=POS||{};d.edges.forEach((e,j)=>{if(hidden.has(j))return;dg[e.a]=(dg[e.a]||0)+1;dg[e.b]=(dg[e.b]||0)+1});
- const n=new vis.DataSet(d.files.map((f,i)=>Object.assign({id:i,label:base(f)},nodeView(i,undefined,dg),pos[i]?{x:pos[i].x,y:pos[i].y}:{})));
- const e=new vis.DataSet(d.edges.map((x,j)=>Object.assign({id:j,from:x.a,to:x.b},hidden.has(j)?{hidden:true}:mark&&mark.has(j)?{color:{color:C.bad},width:2.6,dashes:[4,4],arrows:{to:{enabled:false}}}:edgeView(j))));
+ const lone=i=>hidden.size&&!dg[i]&&d.edges.some(e=>e.a==i||e.b==i),dg0={},touch=new Set();
+ d.edges.forEach((e,j)=>{dg0[e.a]=(dg0[e.a]||0)+1;dg0[e.b]=(dg0[e.b]||0)+1;if(hidden.has(j)||mark&&mark.has(j)){touch.add(e.a);touch.add(e.b)}});
+ const n=new vis.DataSet(d.files.map((f,i)=>Object.assign({id:i,label:dg0[i]>=4||touch.has(i)?base(f):""},nodeView(i,lone(i)?false:undefined,dg),{font:{size:15,color:lone(i)?"#5c5c5c":C.text,strokeWidth:4,strokeColor:C.bg}},pos[i]?{x:pos[i].x,y:pos[i].y}:{})));
+ const e=new vis.DataSet(d.edges.map((x,j)=>Object.assign({id:j,from:x.a,to:x.b},hidden.has(j)?{hidden:true}:mark&&mark.has(j)?{color:{color:"#ff5c6c"},width:4.5,dashes:[8,5],arrows:{to:{enabled:false},from:{enabled:false}}}:Object.assign(edgeView(j),{color:{color:"#57525e"}}))));
  const nw=new vis.Network(el,{nodes:n,edges:e},{physics:false,interaction:{dragNodes:false,zoomView:true,hover:false},edges:{smooth:{type:"continuous"}}});
  nw.once("afterDrawing",()=>nw.fit({animation:false}));
 }
