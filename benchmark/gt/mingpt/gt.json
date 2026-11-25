@@ -987,5 +987,29 @@
     "tests/test_huggingface_import.py"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "mingpt/model.py",
+   "mingpt/trainer.py"
+  ],
+  "middle": [
+   "demo.ipynb",
+   "generate.ipynb",
+   "mingpt/bpe.py",
+   "mingpt/utils.py",
+   "projects/adder/adder.py",
+   "projects/chargpt/chargpt.py",
+   "tests/test_huggingface_import.py"
+  ],
+  "bottom": [
+   "mingpt.jpg",
+   "mingpt/__init__.py",
+   "projects/adder/readme.md",
+   "projects/chargpt/readme.md",
+   "projects/readme.md",
+   "setup.py"
+  ]
+ }
 }

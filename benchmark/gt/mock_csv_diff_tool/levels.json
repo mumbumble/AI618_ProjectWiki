@@ -1,0 +1,23 @@
+{
+ "project": "mock_csv_diff_tool",
+ "preferences": [
+  {
+   "id": "perf",
+   "text": "벤치마크 결과랑 성능 수치(results.csv, 변경 이력)를 맨 위에 올리고 코드랑 문서는 그 아래로 내려줘",
+   "levels": {
+    "top": ["CHANGELOG.md", "benchmarks/results.csv"],
+    "middle": ["README.md", "benchmarks/bench_speed.py", "csvdelta/__init__.py", "csvdelta/cli.py", "csvdelta/core.py", "csvdelta/io.py", "csvdelta/plugins/excel_reader.py", "docs/api.md", "docs/design.md", "examples/demo.ipynb", "notes/roadmap.md", "tests/test_core.py", "tests/test_io.py"],
+    "bottom": ["configs/default.toml", "issues/issue_42.md", "notes/conference_trip.md", "notes/dev_meeting.md", "scratch/old_prototype.py"]
+   }
+  },
+  {
+   "id": "api",
+   "text": "사용자가 직접 쓰는 README, API 문서, CLI를 위쪽에 두고 내부 구현 코드(core, io)랑 테스트는 아래로 내려줘",
+   "levels": {
+    "top": ["README.md", "csvdelta/cli.py", "docs/api.md", "docs/design.md"],
+    "middle": ["CHANGELOG.md", "benchmarks/bench_speed.py", "csvdelta/__init__.py", "csvdelta/core.py", "csvdelta/io.py", "csvdelta/plugins/excel_reader.py", "examples/demo.ipynb", "notes/roadmap.md"],
+    "bottom": ["benchmarks/results.csv", "configs/default.toml", "issues/issue_42.md", "notes/conference_trip.md", "notes/dev_meeting.md", "scratch/old_prototype.py", "tests/test_core.py", "tests/test_io.py"]
+   }
+  }
+ ]
+}

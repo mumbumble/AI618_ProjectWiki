@@ -1,0 +1,63 @@
+{
+ "project": "mock_code_summary",
+ "purposes": [
+  {
+   "id": "advisor",
+   "base": "docs",
+   "text": "다음 주에 교수님한테 RepoSum 논문 v2 진행상황 설명드려야 함. 방법(sibling 검색이랑 게이트 융합)이 어떻게 동작하는지랑 ablation에서 어떤 요소가 BLEU-4에 제일 크게 기여했는지 근거 파일 위주로 정리하고 싶음",
+   "needed": [
+    ["paper/reposum_draft_v2.pdf", "docs/method.md"],
+    ["src/reposum_model.py", "docs/method.md"],
+    ["notes/meeting_2026-08-19.md", "results/ablation.md"],
+    ["results/ablation.md", "paper/reposum_draft_v2.pdf"],
+    ["results/main_results.csv", "paper/reposum_draft_v2.pdf"],
+    ["src/reposum_model.py", "src/sibling_retriever.py"]
+   ],
+   "optional": [
+    ["README.md", "docs/method.md"],
+    ["docs/method.md", "papers/notes_retrosum2021.md"],
+    ["src/sibling_retriever.py", "docs/method.md"],
+    ["paper/reposum_draft_v2.pdf", "figures/bleu4_vs_num_retrieved.png"],
+    ["notes/meeting_2026-08-19.md", "paper/reposum_draft_v2.pdf"],
+    ["notes/meeting_2026-08-19.md", "results/main_results.csv"],
+    ["site/index.html", "paper/reposum_draft_v2.pdf"]
+   ],
+   "promote": [
+    ["results/ablation.md", "paper/reposum_draft_v2.pdf"],
+    ["results/main_results.csv", "paper/reposum_draft_v2.pdf"]
+   ]
+  },
+  {
+   "id": "rerun",
+   "base": "code",
+   "text": "intra_repo Java 설정으로 학습이랑 평가를 처음부터 다시 돌려서 main_results.csv 숫자를 재현해 보려고 함. 어떤 config랑 스크립트를 어떤 순서로 실행해야 하는지, 그리고 SiblingRetriever의 k나 tau를 바꾸면 어떤 코드랑 결과에 영향이 가는지 알고 싶음",
+   "needed": [
+    ["configs/intra_repo_java.yaml", "configs/base.yaml"],
+    ["src/train.py", "configs/base.yaml"],
+    ["configs/intra_repo_java.yaml", "src/evaluate.py"],
+    ["configs/intra_repo_java.yaml", "src/train.py"],
+    ["src/evaluate.py", "results/main_results.csv"],
+    ["src/evaluate.py", "src/data.py"],
+    ["src/train.py", "src/data.py"],
+    ["src/evaluate.py", "src/reposum_model.py"],
+    ["src/reposum_model.py", "src/sibling_retriever.py"],
+    ["src/train.py", "src/reposum_model.py"]
+   ],
+   "optional": [
+    ["README.md", "src/evaluate.py"],
+    ["README.md", "src/train.py"],
+    ["logs/train_2026-09-02.log", "configs/intra_repo_java.yaml"],
+    ["src/train.py", "logs/train_2026-09-02.log"],
+    ["src/evaluate.py", "src/utils.py"],
+    ["src/train.py", "src/utils.py"]
+   ],
+   "promote": [
+    ["configs/intra_repo_java.yaml", "src/train.py"],
+    ["src/evaluate.py", "results/main_results.csv"],
+    ["src/train.py", "src/data.py"],
+    ["src/evaluate.py", "src/reposum_model.py"],
+    ["src/train.py", "src/reposum_model.py"]
+   ]
+  }
+ ]
+}

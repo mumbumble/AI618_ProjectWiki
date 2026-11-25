@@ -1,0 +1,65 @@
+{
+ "project": "mock_sleep_grades",
+ "preferences": [
+  {
+   "id": "stage",
+   "text": "파일들을 작업 순서대로 묶어줘, 원본 데이터 → 정제 코드 → 정제된 데이터 → 분석 노트북 → 최종 보고서 이렇게 단계별로 보이게.",
+   "groups": [
+    {
+     "name": "5. 최종 보고서와 그림",
+     "members": ["README.md", "assignment/project_spec.pdf", "references/notes_han2024_sleep_parttime_grades.md", "report/figures/predicted_vs_actual_grade.png", "report/figures/sleep_vs_grade_scatter.png", "report/final_report.md"]
+    },
+    {
+     "name": "1. 원본 데이터",
+     "members": ["data/codebook.md", "data/raw_student_sleep_survey_2026.csv"]
+    },
+    {
+     "name": "2. 데이터 정제·피처 코드",
+     "members": ["src/clean_data.py", "src/features.py"]
+    },
+    {
+     "name": "4. 분석 노트북",
+     "members": ["notebooks/01_eda.ipynb", "notebooks/02_model.ipynb"]
+    },
+    {
+     "name": "회의·피드백 노트",
+     "members": ["notes/ta_feedback.md", "notes/team_meeting.md"]
+    },
+    {
+     "name": "3. 정제된 데이터",
+     "members": ["data/clean_student_sleep_survey_2026.csv"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["misc/hw1_solution.py", "notes/personal_schedule.md"]
+    }
+   ]
+  },
+  {
+   "id": "feedback",
+   "text": "TA 피드백이랑 팀 회의록은 그 내용이 반영된 최종 보고서랑 결과 그림 옆에 같이 묶어줘.",
+   "groups": [
+    {
+     "name": "보고서, 그림, 피드백",
+     "members": ["README.md", "assignment/project_spec.pdf", "notes/ta_feedback.md", "notes/team_meeting.md", "references/notes_han2024_sleep_parttime_grades.md", "report/figures/predicted_vs_actual_grade.png", "report/figures/sleep_vs_grade_scatter.png", "report/final_report.md"]
+    },
+    {
+     "name": "데이터 및 코드북",
+     "members": ["data/clean_student_sleep_survey_2026.csv", "data/codebook.md", "data/raw_student_sleep_survey_2026.csv"]
+    },
+    {
+     "name": "데이터 정제·피처 코드",
+     "members": ["src/clean_data.py", "src/features.py"]
+    },
+    {
+     "name": "분석 노트북",
+     "members": ["notebooks/01_eda.ipynb", "notebooks/02_model.ipynb"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["misc/hw1_solution.py", "notes/personal_schedule.md"]
+    }
+   ]
+  }
+ ]
+}

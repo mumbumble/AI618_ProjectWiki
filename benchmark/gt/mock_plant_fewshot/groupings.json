@@ -1,0 +1,89 @@
+{
+ "project": "mock_plant_fewshot",
+ "preferences": [
+  {
+   "id": "component",
+   "text": "FreqMix, 코사인 헤드, 일관성 손실 같은 방법 구성요소별로 묶어서, 각각 구현 코드(src)랑 설정, ablation 결과가 같이 있게 해줘",
+   "groups": [
+    {
+     "name": "방법 문서·관련 연구",
+     "members": ["README.md", "docs/method.md", "docs/related_work.md", "papers/notes_fastadapt2022.md", "papers/notes_protoclass2019.md"]
+    },
+    {
+     "name": "논문·발표·웹페이지",
+     "members": ["paper/leafproto_draft_v1.pdf", "paper/leafproto_draft_v2.pdf", "paper/talk_outline.md", "site/index.html"]
+    },
+    {
+     "name": "모델·학습 코드",
+     "members": ["src/data.py", "src/evaluate.py", "src/plot_results.py", "src/utils.py"]
+    },
+    {
+     "name": "FreqMix 증강",
+     "members": ["configs/base.yaml", "results/ablation.md", "src/freq_mix.py"]
+    },
+    {
+     "name": "결과와 그림",
+     "members": ["figures/accuracy_vs_shots.png", "figures/overview.png", "results/main_results.csv"]
+    },
+    {
+     "name": "회의·아이디어 노트",
+     "members": ["notes/ideas.md", "notes/meeting_2026-03-05.md", "notes/meeting_2026-09-17.md"]
+    },
+    {
+     "name": "코사인 프로토타입 헤드",
+     "members": ["configs/fewshot_5way.yaml", "src/leafproto_model.py"]
+    },
+    {
+     "name": "설정 및 로그",
+     "members": ["logs/train_2026-10-08.log"]
+    },
+    {
+     "name": "일관성 손실",
+     "members": ["src/train.py"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/travel_reimbursement_form.md", "reading/protein_folding_reading_list.md"]
+    }
+   ]
+  },
+  {
+   "id": "versions",
+   "text": "논문 초안 v1은 옛날 버전이니까 따로 빼고, 최신 초안 v2랑 발표 아웃라인, 웹페이지는 '현재 발표 자료'로 묶어줘",
+   "groups": [
+    {
+     "name": "모델·학습 코드",
+     "members": ["src/data.py", "src/evaluate.py", "src/freq_mix.py", "src/leafproto_model.py", "src/plot_results.py", "src/train.py", "src/utils.py"]
+    },
+    {
+     "name": "방법 문서·관련 연구",
+     "members": ["README.md", "docs/method.md", "docs/related_work.md", "papers/notes_fastadapt2022.md", "papers/notes_protoclass2019.md"]
+    },
+    {
+     "name": "결과와 그림",
+     "members": ["figures/accuracy_vs_shots.png", "figures/overview.png", "results/ablation.md", "results/main_results.csv"]
+    },
+    {
+     "name": "설정 및 로그",
+     "members": ["configs/base.yaml", "configs/fewshot_5way.yaml", "logs/train_2026-10-08.log"]
+    },
+    {
+     "name": "현재 발표 자료",
+     "members": ["paper/leafproto_draft_v2.pdf", "paper/talk_outline.md", "site/index.html"]
+    },
+    {
+     "name": "회의·아이디어 노트",
+     "members": ["notes/ideas.md", "notes/meeting_2026-03-05.md", "notes/meeting_2026-09-17.md"]
+    },
+    {
+     "name": "이전 초안",
+     "members": ["paper/leafproto_draft_v1.pdf"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/travel_reimbursement_form.md", "reading/protein_folding_reading_list.md"]
+    }
+   ]
+  }
+ ]
+}

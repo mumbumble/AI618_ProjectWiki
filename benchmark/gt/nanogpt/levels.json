@@ -1,0 +1,23 @@
+{
+ "project": "nanogpt",
+ "preferences": [
+  {
+   "id": "entry",
+   "text": "train.py랑 sample.py 같은 실행 스크립트를 맨 위에 두고, model.py는 그 밑, 데이터 준비랑 config는 맨 아래로 내려줘.",
+   "levels": {
+    "top": ["README.md", "sample.py", "train.py"],
+    "middle": ["assets/gpt2_124M_loss.png", "bench.py", "configurator.py", "model.py", "scaling_laws.ipynb", "transformer_sizing.ipynb"],
+    "bottom": ["assets/nanogpt.jpg", "config/eval_gpt2.py", "config/eval_gpt2_large.py", "config/eval_gpt2_medium.py", "config/eval_gpt2_xl.py", "config/finetune_shakespeare.py", "config/train_gpt2.py", "config/train_shakespeare_char.py", "data/openwebtext/prepare.py", "data/openwebtext/readme.md", "data/shakespeare/prepare.py", "data/shakespeare/readme.md", "data/shakespeare_char/prepare.py", "data/shakespeare_char/readme.md"]
+   }
+  },
+  {
+   "id": "analysis",
+   "text": "손실 그래프랑 분석 노트북처럼 결과나 분석 쪽을 위에 올리고, 코드랑 config는 아래로 내려줘.",
+   "levels": {
+    "top": ["README.md", "assets/gpt2_124M_loss.png", "scaling_laws.ipynb", "transformer_sizing.ipynb"],
+    "middle": ["bench.py", "model.py", "sample.py", "train.py"],
+    "bottom": ["assets/nanogpt.jpg", "config/eval_gpt2.py", "config/eval_gpt2_large.py", "config/eval_gpt2_medium.py", "config/eval_gpt2_xl.py", "config/finetune_shakespeare.py", "config/train_gpt2.py", "config/train_shakespeare_char.py", "configurator.py", "data/openwebtext/prepare.py", "data/openwebtext/readme.md", "data/shakespeare/prepare.py", "data/shakespeare/readme.md", "data/shakespeare_char/prepare.py", "data/shakespeare_char/readme.md"]
+   }
+  }
+ ]
+}

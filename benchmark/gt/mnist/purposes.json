@@ -1,0 +1,33 @@
+{
+ "project": "mnist",
+ "purposes": [
+  {
+   "id": "ffalgo",
+   "base": "docs",
+   "text": "Forward-Forward 알고리즘 공부하면서 스터디 팀에 설명해야 함. 양성/음성 샘플은 어떻게 만들고 각 층이 어떤 식으로 학습되는지 코드 기준으로 정리하고 싶음",
+   "needed": [
+    ["mnist_forward_forward/README.md", "mnist_forward_forward/main.py"],
+    ["mnist_forward_forward/main.py", "mnist_forward_forward/requirements.txt"]
+   ],
+   "optional": [
+    ["README.md", "mnist_forward_forward/README.md"]
+   ],
+   "promote": []
+  },
+  {
+   "id": "hogwild",
+   "base": "code",
+   "text": "Hogwild 예제를 내 서버에서 프로세스 수 바꿔가며 다시 돌려보려고 함. main.py랑 train.py가 어떻게 연결되는지, 어떤 인자를 바꾸면 되는지 알고 싶음",
+   "needed": [
+    ["mnist_hogwild/README.md", "mnist_hogwild/main.py"],
+    ["mnist_hogwild/README.md", "mnist_hogwild/train.py"],
+    ["mnist_hogwild/main.py", "mnist_hogwild/train.py"]
+   ],
+   "optional": [
+    ["mnist_hogwild/README.md", "mnist_hogwild/requirements.txt"],
+    ["mnist_hogwild/main.py", "mnist_hogwild/requirements.txt"]
+   ],
+   "promote": []
+  }
+ ]
+}

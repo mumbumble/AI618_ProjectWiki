@@ -1,0 +1,85 @@
+{
+ "project": "mock_csv_diff_tool",
+ "preferences": [
+  {
+   "id": "module",
+   "text": "core, io, cli, 엑셀 플러그인 같은 코드는 모듈별로 쪼개서 각각 그 모듈을 테스트하는 파일(test_core, test_io)이랑 같이 묶어줘",
+   "groups": [
+    {
+     "name": "문서와 예제",
+     "members": ["README.md", "docs/api.md", "docs/design.md", "examples/demo.ipynb"]
+    },
+    {
+     "name": "변경 이력·이슈·회의",
+     "members": ["CHANGELOG.md", "issues/issue_42.md", "notes/dev_meeting.md", "notes/roadmap.md"]
+    },
+    {
+     "name": "CLI 모듈과 설정",
+     "members": ["configs/default.toml", "csvdelta/cli.py"]
+    },
+    {
+     "name": "core 모듈과 테스트",
+     "members": ["csvdelta/core.py", "tests/test_core.py"]
+    },
+    {
+     "name": "io 모듈과 테스트",
+     "members": ["csvdelta/io.py", "tests/test_io.py"]
+    },
+    {
+     "name": "벤치마크와 결과",
+     "members": ["benchmarks/bench_speed.py", "benchmarks/results.csv"]
+    },
+    {
+     "name": "엑셀 플러그인",
+     "members": ["csvdelta/plugins/excel_reader.py"]
+    },
+    {
+     "name": "패키지 진입점",
+     "members": ["csvdelta/__init__.py"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["notes/conference_trip.md", "scratch/old_prototype.py"]
+    }
+   ]
+  },
+  {
+   "id": "bug42",
+   "text": "issue 42 BOM 버그는 이슈 글이랑 고친 io 코드, 회귀 테스트, 회의록 내용까지 한 그룹으로 모아줘",
+   "groups": [
+    {
+     "name": "문서와 예제",
+     "members": ["README.md", "docs/api.md", "docs/design.md", "examples/demo.ipynb"]
+    },
+    {
+     "name": "이슈 42 BOM 버그",
+     "members": ["csvdelta/io.py", "issues/issue_42.md", "notes/dev_meeting.md", "tests/test_io.py"]
+    },
+    {
+     "name": "핵심 라이브러리 코드",
+     "members": ["csvdelta/__init__.py", "csvdelta/core.py", "csvdelta/plugins/excel_reader.py"]
+    },
+    {
+     "name": "CLI와 설정",
+     "members": ["configs/default.toml", "csvdelta/cli.py"]
+    },
+    {
+     "name": "벤치마크와 결과",
+     "members": ["benchmarks/bench_speed.py", "benchmarks/results.csv"]
+    },
+    {
+     "name": "변경 이력·이슈·회의",
+     "members": ["CHANGELOG.md", "notes/roadmap.md"]
+    },
+    {
+     "name": "테스트",
+     "members": ["tests/test_core.py"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["notes/conference_trip.md", "scratch/old_prototype.py"]
+    }
+   ]
+  }
+ ]
+}

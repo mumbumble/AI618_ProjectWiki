@@ -1,0 +1,73 @@
+{
+ "project": "micrograd",
+ "preferences": [
+  {
+   "id": "layers",
+   "text": "엔진이랑 신경망 코드를 따로 묶어줘, engine.py는 자동미분 쪽이고 nn.py는 뉴런/레이어/MLP 쪽으로 나눠서 보고 싶어",
+   "groups": [
+    {
+     "name": "결과 및 그림",
+     "members": ["gout.svg", "moon_mlp.png"]
+    },
+    {
+     "name": "데모와 시각화 노트북",
+     "members": ["demo.ipynb", "trace_graph.ipynb"]
+    },
+    {
+     "name": "문서와 패키징",
+     "members": ["README.md", "setup.py"]
+    },
+    {
+     "name": "신경망 (뉴런/레이어/MLP)",
+     "members": ["micrograd/nn.py"]
+    },
+    {
+     "name": "자동미분 엔진",
+     "members": ["micrograd/engine.py"]
+    },
+    {
+     "name": "테스트",
+     "members": ["test/test_engine.py"]
+    },
+    {
+     "name": "핵심 라이브러리 코드",
+     "members": ["micrograd/__init__.py"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["puppy.jpg"]
+    }
+   ]
+  },
+  {
+   "id": "verify",
+   "text": "engine.py랑 그걸 검증하는 test_engine.py를 한 그룹으로 묶고, 그림이나 노트북은 따로 빼줘",
+   "groups": [
+    {
+     "name": "결과 및 그림",
+     "members": ["gout.svg", "moon_mlp.png"]
+    },
+    {
+     "name": "데모와 시각화 노트북",
+     "members": ["demo.ipynb", "trace_graph.ipynb"]
+    },
+    {
+     "name": "문서와 패키징",
+     "members": ["README.md", "setup.py"]
+    },
+    {
+     "name": "엔진과 검증 테스트",
+     "members": ["micrograd/engine.py", "test/test_engine.py"]
+    },
+    {
+     "name": "핵심 라이브러리 코드",
+     "members": ["micrograd/__init__.py", "micrograd/nn.py"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["puppy.jpg"]
+    }
+   ]
+  }
+ ]
+}

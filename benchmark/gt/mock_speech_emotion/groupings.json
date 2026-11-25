@@ -1,0 +1,81 @@
+{
+ "project": "mock_speech_emotion",
+ "preferences": [
+  {
+   "id": "stage",
+   "text": "작업 순서대로 묶어줘, 데이터 → 모델 → 학습·평가 → 결과 → 논문 이런 식으로",
+   "groups": [
+    {
+     "name": "문서·논문·발표",
+     "members": ["README.md", "docs/method.md", "docs/related_work.md", "paper/prosody_ser_draft_v1.pdf", "paper/prosody_ser_draft_v2.pdf", "paper/talk_outline.md", "site/index.html"]
+    },
+    {
+     "name": "결과와 그림",
+     "members": ["figures/overview.png", "figures/unweighted_accuracy_vs_snr_db.png", "results/ablation.md", "results/main_results.csv", "src/plot_results.py"]
+    },
+    {
+     "name": "학습·평가·설정",
+     "members": ["configs/base.yaml", "configs/bilingual_6class.yaml", "logs/train_2026-08-19.log", "src/evaluate.py", "src/train.py"]
+    },
+    {
+     "name": "회의·아이디어 노트",
+     "members": ["notes/ideas.md", "notes/meeting_2026-03-12.md", "notes/meeting_2026-08-27.md"]
+    },
+    {
+     "name": "데이터·공통 유틸",
+     "members": ["src/data.py", "src/utils.py"]
+    },
+    {
+     "name": "모델 구현",
+     "members": ["src/prosody_attention.py", "src/prosody_ser_model.py"]
+    },
+    {
+     "name": "선행 연구 노트",
+     "members": ["papers/notes_crossling_ser2023.md", "papers/notes_emoformer2021.md"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/travel_reimbursement_form.md", "reading/graph_neural_pde_reading_list.md"]
+    }
+   ]
+  },
+  {
+   "id": "version",
+   "text": "논문 초안 v1 같은 옛날 버전은 따로 한 그룹으로 빼줘",
+   "groups": [
+    {
+     "name": "문서·논문·발표",
+     "members": ["README.md", "docs/method.md", "docs/related_work.md", "paper/prosody_ser_draft_v2.pdf", "paper/talk_outline.md", "site/index.html"]
+    },
+    {
+     "name": "결과와 그림",
+     "members": ["figures/overview.png", "figures/unweighted_accuracy_vs_snr_db.png", "results/ablation.md", "results/main_results.csv", "src/plot_results.py"]
+    },
+    {
+     "name": "학습·평가·설정",
+     "members": ["configs/base.yaml", "configs/bilingual_6class.yaml", "logs/train_2026-08-19.log", "src/evaluate.py", "src/train.py"]
+    },
+    {
+     "name": "모델 코드",
+     "members": ["src/data.py", "src/prosody_attention.py", "src/prosody_ser_model.py", "src/utils.py"]
+    },
+    {
+     "name": "회의·아이디어 노트",
+     "members": ["notes/ideas.md", "notes/meeting_2026-03-12.md", "notes/meeting_2026-08-27.md"]
+    },
+    {
+     "name": "선행 연구 노트",
+     "members": ["papers/notes_crossling_ser2023.md", "papers/notes_emoformer2021.md"]
+    },
+    {
+     "name": "이전 버전 초안",
+     "members": ["paper/prosody_ser_draft_v1.pdf"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/travel_reimbursement_form.md", "reading/graph_neural_pde_reading_list.md"]
+    }
+   ]
+  }
+ ]
+}

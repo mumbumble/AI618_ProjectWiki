@@ -1,0 +1,52 @@
+{
+ "project": "nanogpt",
+ "purposes": [
+  {
+   "id": "mfu",
+   "base": "docs",
+   "text": "신입 스터디에서 GPT-2 124M 파라미터 수랑 FLOPs, MFU가 어떻게 계산되는지 설명해야 함. 노트북이랑 실제 코드(model.py, bench.py)에서 이 계산이 어디 대응되는지 알고 싶음",
+   "needed": [
+    ["bench.py", "model.py"],
+    ["bench.py", "transformer_sizing.ipynb"],
+    ["transformer_sizing.ipynb", "model.py"],
+    ["scaling_laws.ipynb", "transformer_sizing.ipynb"]
+   ],
+   "optional": [
+    ["README.md", "transformer_sizing.ipynb"],
+    ["train.py", "model.py"],
+    ["train.py", "transformer_sizing.ipynb"]
+   ],
+   "promote": [
+    ["bench.py", "transformer_sizing.ipynb"]
+   ]
+  },
+  {
+   "id": "shakespeare",
+   "base": "code",
+   "text": "맥북 CPU로 셰익스피어 문자 단위 모델 처음부터 다시 돌려서 샘플까지 뽑아보려고 함. 데이터 준비부터 학습, 샘플링까지 어떤 파일이랑 설정을 거치는지 알려줘",
+   "needed": [
+    ["config/train_shakespeare_char.py", "data/shakespeare_char/prepare.py"],
+    ["config/train_shakespeare_char.py", "train.py"],
+    ["sample.py", "configurator.py"],
+    ["data/shakespeare_char/prepare.py", "sample.py"],
+    ["data/shakespeare_char/prepare.py", "train.py"],
+    ["sample.py", "model.py"],
+    ["train.py", "model.py"]
+   ],
+   "optional": [
+    ["README.md", "config/train_shakespeare_char.py"],
+    ["README.md", "data/shakespeare_char/prepare.py"],
+    ["config/train_shakespeare_char.py", "data/shakespeare_char/readme.md"],
+    ["config/train_shakespeare_char.py", "model.py"],
+    ["configurator.py", "train.py"],
+    ["data/shakespeare_char/prepare.py", "data/shakespeare_char/readme.md"]
+   ],
+   "promote": [
+    ["config/train_shakespeare_char.py", "data/shakespeare_char/prepare.py"],
+    ["config/train_shakespeare_char.py", "train.py"],
+    ["data/shakespeare_char/prepare.py", "sample.py"],
+    ["data/shakespeare_char/prepare.py", "train.py"]
+   ]
+  }
+ ]
+}

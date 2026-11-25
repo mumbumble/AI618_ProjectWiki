@@ -1,0 +1,23 @@
+{
+ "project": "mock_gpx_simplify",
+ "preferences": [
+  {
+   "id": "codefirst",
+   "text": "코드 구조가 맨 위에 오고, 테스트랑 문서, 회의록 같은 건 아래로 내려줘.",
+   "levels": {
+    "top": ["trackslim/__init__.py", "trackslim/cli.py", "trackslim/core.py", "trackslim/io.py", "trackslim/plugins/elevation_guard.py"],
+    "middle": ["README.md", "benchmarks/bench_speed.py", "docs/api.md", "docs/design.md", "tests/test_core.py", "tests/test_io.py"],
+    "bottom": ["CHANGELOG.md", "benchmarks/results.csv", "configs/default.toml", "examples/demo.ipynb", "issues/issue_37.md", "notes/conference_trip.md", "notes/dev_meeting.md", "notes/roadmap.md", "scratch/old_prototype.py"]
+   }
+  },
+  {
+   "id": "roadmap",
+   "text": "로드맵이랑 설계 문서를 맨 위에 두고, 그 아래에 그걸 구현하는 코드가 오게 해줘.",
+   "levels": {
+    "top": ["README.md", "docs/design.md", "notes/roadmap.md"],
+    "middle": ["CHANGELOG.md", "benchmarks/bench_speed.py", "docs/api.md", "examples/demo.ipynb", "tests/test_core.py", "tests/test_io.py", "trackslim/__init__.py", "trackslim/cli.py", "trackslim/core.py", "trackslim/io.py", "trackslim/plugins/elevation_guard.py"],
+    "bottom": ["benchmarks/results.csv", "configs/default.toml", "issues/issue_37.md", "notes/conference_trip.md", "notes/dev_meeting.md", "scratch/old_prototype.py"]
+   }
+  }
+ ]
+}

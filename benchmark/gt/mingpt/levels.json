@@ -1,0 +1,23 @@
+{
+ "project": "mingpt",
+ "preferences": [
+  {
+   "id": "core",
+   "text": "model.py, trainer.py, bpe.py 같은 핵심 코드를 맨 위에 두고 데모나 노트북, 문서는 아래로 내려줘",
+   "levels": {
+    "top": ["mingpt/bpe.py", "mingpt/model.py", "mingpt/trainer.py"],
+    "middle": ["mingpt/utils.py", "tests/test_huggingface_import.py"],
+    "bottom": ["README.md", "demo.ipynb", "generate.ipynb", "mingpt.jpg", "mingpt/__init__.py", "projects/adder/adder.py", "projects/adder/readme.md", "projects/chargpt/chargpt.py", "projects/chargpt/readme.md", "projects/readme.md", "setup.py"]
+   }
+  },
+  {
+   "id": "entry",
+   "text": "README.md랑 데모 노트북처럼 처음 보는 진입 파일을 위에 두고, 그걸 뒷받침하는 mingpt 내부 코드는 아래에 둬줘",
+   "levels": {
+    "top": ["README.md", "demo.ipynb"],
+    "middle": ["generate.ipynb", "projects/adder/adder.py", "projects/chargpt/chargpt.py", "tests/test_huggingface_import.py"],
+    "bottom": ["mingpt.jpg", "mingpt/__init__.py", "mingpt/bpe.py", "mingpt/model.py", "mingpt/trainer.py", "mingpt/utils.py", "projects/adder/readme.md", "projects/chargpt/readme.md", "projects/readme.md", "setup.py"]
+   }
+  }
+ ]
+}

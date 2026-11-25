@@ -1,0 +1,23 @@
+{
+ "project": "mock_codereview_xai",
+ "preferences": [
+  {
+   "id": "results",
+   "text": "결과 요약이랑 그래프를 맨 위에 두고, 분석 스크립트랑 원자료는 그 아래, 설계 문서는 맨 아래로 내려줘.",
+   "levels": {
+    "top": ["README.md", "prototype/app.py", "results/figures/trust_composite_by_condition.png", "results/findings.md"],
+    "middle": ["analysis/analyze_logs.py", "analysis/analyze_survey.py", "data/survey_responses.csv", "data/task_logs.csv", "notes/meeting.md", "prototype/logger.py", "prototype/ui_spec.md"],
+    "bottom": ["admin/lab_snack_budget.md", "irb/consent_form.md", "irb/protocol.md", "notes/pilot_notes.md", "papers/notes_cho2024_explain_reliance.md", "proposal/study_proposal.pdf", "reading/coral_reef_bleaching_notes.md", "study/interview_guide.md", "study/survey_questions.md", "study/tasks.md"]
+   }
+  },
+  {
+   "id": "design",
+   "text": "연구 설계 문서(프로토콜, 제안서, 과제 명세)를 제일 위에 두고, 프로토타입 코드랑 데이터, 결과가 그 밑으로 가게 해줘.",
+   "levels": {
+    "top": ["README.md", "irb/protocol.md", "proposal/study_proposal.pdf", "study/tasks.md"],
+    "middle": ["analysis/analyze_logs.py", "analysis/analyze_survey.py", "data/survey_responses.csv", "data/task_logs.csv", "notes/meeting.md", "prototype/app.py", "prototype/logger.py", "prototype/ui_spec.md", "results/figures/trust_composite_by_condition.png", "results/findings.md", "study/survey_questions.md"],
+    "bottom": ["admin/lab_snack_budget.md", "irb/consent_form.md", "notes/pilot_notes.md", "papers/notes_cho2024_explain_reliance.md", "reading/coral_reef_bleaching_notes.md", "study/interview_guide.md"]
+   }
+  }
+ ]
+}

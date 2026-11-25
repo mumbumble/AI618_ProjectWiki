@@ -1,0 +1,23 @@
+{
+ "project": "mock_plant_fewshot",
+ "preferences": [
+  {
+   "id": "results",
+   "text": "결과표랑 그래프(main_results, ablation, figures)가 맨 위에 오고 그 아래에 코드랑 설정, 로그가 오게 해줘",
+   "levels": {
+    "top": ["README.md", "docs/method.md", "figures/accuracy_vs_shots.png", "figures/overview.png", "paper/leafproto_draft_v2.pdf", "results/ablation.md", "results/main_results.csv"],
+    "middle": ["configs/base.yaml", "configs/fewshot_5way.yaml", "docs/related_work.md", "logs/train_2026-10-08.log", "notes/meeting_2026-09-17.md", "paper/talk_outline.md", "papers/notes_fastadapt2022.md", "papers/notes_protoclass2019.md", "site/index.html", "src/data.py", "src/evaluate.py", "src/freq_mix.py", "src/leafproto_model.py", "src/plot_results.py", "src/train.py", "src/utils.py"],
+    "bottom": ["admin/travel_reimbursement_form.md", "notes/ideas.md", "notes/meeting_2026-03-05.md", "paper/leafproto_draft_v1.pdf", "reading/protein_folding_reading_list.md"]
+   }
+  },
+  {
+   "id": "paper",
+   "text": "논문 초안 v2랑 그 안에서 인용한 관련 연구 노트(ProtoClass, FastAdapt)를 위에 두고, 코드랑 설정은 아래로 내려줘",
+   "levels": {
+    "top": ["README.md", "docs/method.md", "paper/leafproto_draft_v2.pdf", "papers/notes_fastadapt2022.md", "papers/notes_protoclass2019.md"],
+    "middle": ["docs/related_work.md", "figures/accuracy_vs_shots.png", "figures/overview.png", "notes/meeting_2026-09-17.md", "paper/talk_outline.md", "results/ablation.md", "results/main_results.csv", "site/index.html"],
+    "bottom": ["admin/travel_reimbursement_form.md", "configs/base.yaml", "configs/fewshot_5way.yaml", "logs/train_2026-10-08.log", "notes/ideas.md", "notes/meeting_2026-03-05.md", "paper/leafproto_draft_v1.pdf", "reading/protein_folding_reading_list.md", "src/data.py", "src/evaluate.py", "src/freq_mix.py", "src/leafproto_model.py", "src/plot_results.py", "src/train.py", "src/utils.py"]
+   }
+  }
+ ]
+}

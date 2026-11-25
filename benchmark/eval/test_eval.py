@@ -10,8 +10,9 @@ sys.path.insert(0, str(ROOT / "tests"))
 
 from projectwiki import pipeline  # noqa: E402
 from projectwiki.schema import Edge, Evidence, Graph, Node, Preferences  # noqa: E402
-from graph_metrics import aggregate, evaluate, group_scores  # noqa: E402
-from gt_format import GroundTruth, GTEdge, category, check_purposes, load_purposes, pair_key, purpose_view  # noqa: E402
+from graph_metrics import aggregate, evaluate, group_scores, level_order_accuracy, partition_ari  # noqa: E402
+from gt_format import (GroundTruth, GTEdge, category, check_groupings, check_level_prefs, check_purposes,  # noqa: E402
+                       level_map, load_preferences, pair_key, project_files, purpose_view)
 from projectwiki.srcs.record import Record  # noqa: E402
 from feedback_sim import persona_view, simulate  # noqa: E402
 from test_pipeline import make_cfg, project  # noqa: E402,F401  (pytest fixture)
@@ -31,11 +32,13 @@ def test_category():
 
 def test_ground_truth_roundtrip(tmp_path):
     gt = GroundTruth(project="t", edges=[GTEdge("a.py", "b.py", "uses", personas=["code"])],
-                     negatives=[{"a": "a.py", "b": "c.md"}], groups=[{"name": "code", "members": ["a.py", "b.py"]}])
+                     negatives=[{"a": "a.py", "b": "c.md"}], groups=[{"name": "code", "members": ["a.py", "b.py"]}],
+                     levels={"top": ["a.py"], "middle": [], "bottom": ["b.py"]})
     gt.save(tmp_path / "gt.json")
     back = GroundTruth.load(tmp_path / "gt.json")
     assert back.edge_by_key[pair_key("b.py", "a.py")].personas == ["code"]
     assert back.negative_keys == {pair_key("a.py", "c.md")} and back.groups[0]["members"] == ["a.py", "b.py"]
+    assert back.levels == {"top": ["a.py"], "middle": [], "bottom": ["b.py"]}
 
 
 def node(p):
@@ -133,23 +136,59 @@ def test_purpose_view():
     gt = GroundTruth(project="t", edges=[GTEdge("a.py", "b.py", "uses"), GTEdge("a.py", "r.md", "describes"),
                                          GTEdge("p.pdf", "r.md", "supports", required=False)],
                      negatives=[{"a": "a.py", "b": "x.md"}])
-    purpose = {"id": "talk", "text": "results for a talk", "needed": [["r.md", "p.pdf"]], "optional": [["a.py", "r.md"]]}
+    purpose = {"id": "talk", "text": "results for a talk", "needed": [["r.md", "p.pdf"]], "optional": [["a.py", "r.md"]],
+               "promote": [["p.pdf", "r.md"]]}
     assert check_purposes(gt, [purpose]) == []
     view = purpose_view(gt, purpose)
     edges = view.edge_by_key
-    assert edges[pair_key("p.pdf", "r.md")].required  # needed: required even if the edge was optional
-    assert not edges[pair_key("a.py", "r.md")].required  # optional: never penalized
-    assert pair_key("a.py", "b.py") not in edges and pair_key("a.py", "b.py") in view.negative_keys
-    assert pair_key("a.py", "x.md") in view.negative_keys and len(gt.edges) == 3  # the input is left unchanged
-    bad = dict(purpose, needed=[["a.py", "zzz.py"]], optional=[["a.py", "zzz.py"]])
+    assert edges[pair_key("p.pdf", "r.md")].required  # needed: promoted to a key link
+    assert edges[pair_key("a.py", "r.md")].required and edges[pair_key("a.py", "b.py")].required  # the rest: unchanged
+    assert len(view.edges) == 3 and view.negative_keys == gt.negative_keys  # nothing dropped, nothing added
+    assert not gt.edge_by_key[pair_key("p.pdf", "r.md")].required  # the input is left unchanged
+    assert check_purposes(gt, [dict(purpose, promote=[])]) != []  # promote must be the weak needed links
+    bad = dict(purpose, needed=[["a.py", "zzz.py"]], optional=[["a.py", "zzz.py"]], promote=[])
     assert len(check_purposes(gt, [bad, bad])) == 5  # per copy: unknown pair, needed and optional; plus repeated id
 
 
-def test_purpose_files_match_ground_truth():
+def test_preference_files_match_ground_truth():
+    """Every project: default levels in gt.json and two preferences of each kind, each a (preference, output) pair."""
     gt_root = EVAL.parent / "gt"
-    found = 0
-    for gt_file in sorted(gt_root.glob("*/gt.json")):
-        purposes = load_purposes(gt_file.parent)
-        found += len(purposes)
-        assert check_purposes(GroundTruth.load(gt_file), purposes) == [], gt_file.parent.name
-    assert found >= 4
+    projects = sorted(gt_root.glob("*/gt.json"))
+    for gt_file in projects:
+        gt, name = GroundTruth.load(gt_file), gt_file.parent.name
+        purposes = load_preferences(gt_file.parent, "purposes")
+        groupings = load_preferences(gt_file.parent, "groupings")
+        levels = load_preferences(gt_file.parent, "levels")
+        assert check_purposes(gt, purposes) == [], name
+        assert check_groupings(gt, groupings) == [], name
+        assert check_level_prefs(gt, levels) == [], name  # also checks the default levels
+        assert len(purposes) == 2 and {p["base"] for p in purposes} == {"docs", "code"}, name
+        assert len(groupings) == 2 and len(levels) == 2 and gt.levels, name
+        assert all("groups" not in p and "levels" not in p for p in purposes), name  # links only
+
+
+def test_groupings_and_levels():
+    groups = [{"name": "code", "members": ["a.py", "b.py"]}, {"name": "docs", "members": ["r.md", "p.pdf"]}]
+    default = {"top": ["a.py"], "middle": ["r.md"], "bottom": ["b.py", "p.pdf"]}
+    gt = GroundTruth(project="t", edges=[GTEdge("a.py", "b.py", "uses")], groups=groups, levels=default)
+    assert project_files(gt) == {"a.py", "b.py", "r.md", "p.pdf"}
+    grouping = {"id": "stage", "text": "group by stage",
+                "groups": [{"name": "talk", "members": ["b.py", "r.md", "p.pdf"]}, {"name": "rest", "members": ["a.py"]}]}
+    level = {"id": "results", "text": "results on top", "levels": {"top": ["r.md"], "middle": ["b.py"], "bottom": ["a.py", "p.pdf"]}}
+    assert check_groupings(gt, [grouping]) == [] and check_level_prefs(gt, [level]) == []
+    assert level_map(level["levels"]) == {"r.md": 3, "b.py": 2, "a.py": 1, "p.pdf": 1}
+    assert partition_ari(groups, groups) == 1.0 and partition_ari(groups, grouping["groups"]) < 1.0
+    lv = level_map(level["levels"])
+    assert level_order_accuracy(lv, lv) == 1.0
+    assert level_order_accuracy({}, lv) == 0.5  # no levels at all: every pair is a tie
+    assert level_order_accuracy({f: 4 - v for f, v in lv.items()}, lv) == 0.0
+    bad_groups = dict(grouping, groups=[{"name": "g", "members": ["a.py", "a.py", "zzz.py"]}, {"name": "g", "members": []}])
+    problems = check_groupings(gt, [bad_groups])
+    for text in ("group name repeated", "a.py is in more than one group", "zzz.py is not a project file", "b.py is in no group"):
+        assert any(text in p for p in problems), text
+    bad_levels = dict(level, levels={"top": ["r.md", "zzz.py"], "middle": ["r.md"], "low": []})
+    problems = check_level_prefs(gt, [bad_levels])
+    for text in ("unknown level 'low'", "r.md is on more than one level", "zzz.py is not a project file", "a.py has no level"):
+        assert any(text in p for p in problems), text
+    gt_missing = GroundTruth(project="t", groups=groups, levels={"top": ["a.py"]})
+    assert any("default levels" in p for p in check_level_prefs(gt_missing, []))

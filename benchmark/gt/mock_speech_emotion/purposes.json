@@ -1,0 +1,60 @@
+{
+ "project": "mock_speech_emotion",
+ "purposes": [
+  {
+   "id": "talk",
+   "base": "docs",
+   "text": "다음 주 랩 세미나 12분 발표 준비 중인데, 결과 슬라이드에 넣을 SNR별 UA 그래프랑 ablation 표 숫자가 어떤 파일에서 나왔는지 확인하고 싶음. 발표 구성안이랑 숫자가 서로 맞는지도 보고 싶어.",
+   "needed": [
+    ["paper/talk_outline.md", "figures/unweighted_accuracy_vs_snr_db.png"],
+    ["figures/unweighted_accuracy_vs_snr_db.png", "results/main_results.csv"],
+    ["src/plot_results.py", "figures/unweighted_accuracy_vs_snr_db.png"],
+    ["paper/talk_outline.md", "paper/prosody_ser_draft_v2.pdf"],
+    ["results/ablation.md", "paper/prosody_ser_draft_v2.pdf"],
+    ["results/main_results.csv", "paper/prosody_ser_draft_v2.pdf"],
+    ["src/evaluate.py", "results/main_results.csv"],
+    ["src/plot_results.py", "results/main_results.csv"]
+   ],
+   "optional": [
+    ["README.md", "paper/prosody_ser_draft_v2.pdf"],
+    ["paper/prosody_ser_draft_v2.pdf", "figures/unweighted_accuracy_vs_snr_db.png"],
+    ["notes/meeting_2026-08-27.md", "results/ablation.md"],
+    ["notes/meeting_2026-08-27.md", "results/main_results.csv"]
+   ],
+   "promote": [
+    ["paper/talk_outline.md", "figures/unweighted_accuracy_vs_snr_db.png"],
+    ["results/ablation.md", "paper/prosody_ser_draft_v2.pdf"],
+    ["results/main_results.csv", "paper/prosody_ser_draft_v2.pdf"],
+    ["src/evaluate.py", "results/main_results.csv"]
+   ]
+  },
+  {
+   "id": "rerun",
+   "base": "code",
+   "text": "Prosody-Aware Pooling 쪽 코드를 고쳐서 실험 다시 돌려볼 생각이야. prosody_attention.py 바꾸면 어떤 모델 코드, 설정, 평가 결과랑 그림이 영향받는지 알고 싶음.",
+   "needed": [
+    ["configs/bilingual_6class.yaml", "configs/base.yaml"],
+    ["src/train.py", "configs/bilingual_6class.yaml"],
+    ["src/prosody_ser_model.py", "docs/method.md"],
+    ["src/plot_results.py", "figures/unweighted_accuracy_vs_snr_db.png"],
+    ["src/train.py", "logs/train_2026-08-19.log"],
+    ["src/evaluate.py", "results/main_results.csv"],
+    ["src/plot_results.py", "results/main_results.csv"],
+    ["src/evaluate.py", "src/prosody_ser_model.py"],
+    ["src/prosody_ser_model.py", "src/prosody_attention.py"],
+    ["src/train.py", "src/prosody_ser_model.py"]
+   ],
+   "optional": [
+    ["src/train.py", "configs/base.yaml"],
+    ["src/prosody_attention.py", "docs/method.md"],
+    ["src/evaluate.py", "src/data.py"],
+    ["src/train.py", "src/data.py"]
+   ],
+   "promote": [
+    ["src/evaluate.py", "results/main_results.csv"],
+    ["src/evaluate.py", "src/prosody_ser_model.py"],
+    ["src/train.py", "src/prosody_ser_model.py"]
+   ]
+  }
+ ]
+}
