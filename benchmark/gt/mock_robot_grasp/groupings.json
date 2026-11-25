@@ -1,0 +1,89 @@
+{
+ "project": "mock_robot_grasp",
+ "preferences": [
+  {
+   "id": "component",
+   "text": "SRS, CAR, 범위 커리큘럼 같은 방법 구성요소별로 묶어서, 각각 설명 문서랑 구현 코드(src/contact_reward.py, src/data.py 등), 설정이 한곳에 모이게 해줘",
+   "groups": [
+    {
+     "name": "논문·관련 연구",
+     "members": ["docs/related_work.md", "paper/graspdr_draft_v1.pdf", "paper/graspdr_draft_v2.pdf", "paper/talk_outline.md", "papers/notes_adrgrasp2020.md", "papers/notes_simbridge2022.md"]
+    },
+    {
+     "name": "결과 및 그림",
+     "members": ["figures/overview.png", "figures/success_rate_vs_randomization_range.png", "results/ablation.md", "results/main_results.csv", "src/plot_results.py"]
+    },
+    {
+     "name": "범위 커리큘럼·학습 설정",
+     "members": ["configs/base.yaml", "configs/sdr_contact_panda.yaml", "logs/train_2026-09-12.log", "src/train.py"]
+    },
+    {
+     "name": "CAR 접촉 인식 보상",
+     "members": ["notes/meeting_2026-03-09.md", "src/contact_reward.py", "src/graspdr_policy.py"]
+    },
+    {
+     "name": "방법 문서·프로젝트 소개",
+     "members": ["README.md", "docs/method.md", "site/index.html"]
+    },
+    {
+     "name": "평가·공용 코드",
+     "members": ["src/evaluate.py", "src/utils.py"]
+    },
+    {
+     "name": "회의·아이디어 노트",
+     "members": ["notes/ideas.md", "notes/meeting_2026-08-24.md"]
+    },
+    {
+     "name": "SRS 구조화 랜덤화",
+     "members": ["src/data.py"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/travel_reimbursement_form.md", "reading/graph_neural_pde_reading_list.md"]
+    }
+   ]
+  },
+  {
+   "id": "version",
+   "text": "논문 draft v1이랑 v2를 따로 묶어서 옛 버전이랑 최신 버전을 구분해줘",
+   "groups": [
+    {
+     "name": "모델·학습 코드",
+     "members": ["src/contact_reward.py", "src/data.py", "src/evaluate.py", "src/graspdr_policy.py", "src/train.py", "src/utils.py"]
+    },
+    {
+     "name": "결과 및 그림",
+     "members": ["figures/overview.png", "figures/success_rate_vs_randomization_range.png", "results/ablation.md", "results/main_results.csv", "src/plot_results.py"]
+    },
+    {
+     "name": "논문·관련 연구",
+     "members": ["docs/related_work.md", "paper/talk_outline.md", "papers/notes_adrgrasp2020.md", "papers/notes_simbridge2022.md"]
+    },
+    {
+     "name": "방법 문서·프로젝트 소개",
+     "members": ["README.md", "docs/method.md", "site/index.html"]
+    },
+    {
+     "name": "설정 및 학습 로그",
+     "members": ["configs/base.yaml", "configs/sdr_contact_panda.yaml", "logs/train_2026-09-12.log"]
+    },
+    {
+     "name": "회의·아이디어 노트",
+     "members": ["notes/ideas.md", "notes/meeting_2026-03-09.md", "notes/meeting_2026-08-24.md"]
+    },
+    {
+     "name": "논문 이전 버전 (v1)",
+     "members": ["paper/graspdr_draft_v1.pdf"]
+    },
+    {
+     "name": "논문 최신 버전 (v2)",
+     "members": ["paper/graspdr_draft_v2.pdf"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/travel_reimbursement_form.md", "reading/graph_neural_pde_reading_list.md"]
+    }
+   ]
+  }
+ ]
+}

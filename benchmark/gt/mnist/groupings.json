@@ -1,0 +1,45 @@
+{
+ "project": "mnist",
+ "preferences": [
+  {
+   "id": "filetype",
+   "text": "폴더 상관없이 README 문서끼리, 실행 코드끼리, requirements 파일끼리 따로 묶어줘",
+   "groups": [
+    {
+     "name": "README 문서",
+     "members": ["README.md", "mnist/README.md", "mnist_forward_forward/README.md", "mnist_hogwild/README.md", "mnist_rnn/README.md"]
+    },
+    {
+     "name": "실행 코드",
+     "members": ["mnist/main.py", "mnist_forward_forward/main.py", "mnist_hogwild/main.py", "mnist_hogwild/train.py", "mnist_rnn/main.py"]
+    },
+    {
+     "name": "requirements 파일",
+     "members": ["mnist/requirements.txt", "mnist_forward_forward/requirements.txt", "mnist_hogwild/requirements.txt", "mnist_rnn/requirements.txt"]
+    }
+   ]
+  },
+  {
+   "id": "algorithm",
+   "text": "모델 방식별로 다시 묶어줘. CNN이랑 RNN은 역전파 방식, Forward-Forward는 따로, Hogwild는 병렬 학습 쪽으로 나눠줘",
+   "groups": [
+    {
+     "name": "역전파 방식 (CNN·RNN)",
+     "members": ["mnist/README.md", "mnist/main.py", "mnist/requirements.txt", "mnist_rnn/README.md", "mnist_rnn/main.py", "mnist_rnn/requirements.txt"]
+    },
+    {
+     "name": "Hogwild 병렬 학습",
+     "members": ["mnist_hogwild/README.md", "mnist_hogwild/main.py", "mnist_hogwild/requirements.txt", "mnist_hogwild/train.py"]
+    },
+    {
+     "name": "Forward-Forward 방식",
+     "members": ["mnist_forward_forward/README.md", "mnist_forward_forward/main.py", "mnist_forward_forward/requirements.txt"]
+    },
+    {
+     "name": "저장소 개요 문서",
+     "members": ["README.md"]
+    }
+   ]
+  }
+ ]
+}

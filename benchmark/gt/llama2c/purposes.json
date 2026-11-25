@@ -1,0 +1,52 @@
+{
+ "project": "llama2c",
+ "purposes": [
+  {
+   "id": "tokenizer",
+   "base": "docs",
+   "text": "신입한테 토크나이저가 어떻게 만들어져서 쓰이는지 설명해야 함. tinystories.py로 어휘 학습하는 부분이랑 tokenizer.py, run.c의 encode가 어떻게 이어지는지, 관련 문서가 뭔지 알고 싶음",
+   "needed": [
+    ["README.md", "doc/train_llama_tokenizer.md"],
+    ["doc/stories260K.md", "tokenizer.py"],
+    ["doc/train_llama_tokenizer.md", "tinystories.py"],
+    ["doc/train_llama_tokenizer.md", "tokenizer.py"],
+    ["run.c", "tokenizer.py"],
+    ["tinystories.py", "tokenizer.py"]
+   ],
+   "optional": [
+    ["README.md", "test.c"],
+    ["README.md", "tokenizer.py"],
+    ["doc/stories260K.md", "tinystories.py"],
+    ["export.py", "tokenizer.py"],
+    ["test.c", "tokenizer.py"]
+   ],
+   "promote": [
+    ["doc/stories260K.md", "tokenizer.py"],
+    ["doc/train_llama_tokenizer.md", "tinystories.py"],
+    ["doc/train_llama_tokenizer.md", "tokenizer.py"]
+   ]
+  },
+  {
+   "id": "quant",
+   "base": "code",
+   "text": "export.py에서 Q8_0 양자화 내보내는 부분을 고쳐볼 생각인데, 이걸 읽는 runq.c 쪽이 어디고 바꾸면 뭐가 영향받는지 확인하고 싶음. 테스트는 뭘 돌려야 하는지도",
+   "needed": [
+    ["Makefile", "test_all.py"],
+    ["export.py", "model.py"],
+    ["runq.c", "export.py"],
+    ["runq.c", "run.c"],
+    ["runq.c", "test.c"]
+   ],
+   "optional": [
+    ["Makefile", "runq.c"],
+    ["README.md", "runq.c"],
+    ["run.ipynb", "export.py"],
+    ["model.py", "runq.c"],
+    ["runq.c", "win.h"]
+   ],
+   "promote": [
+    ["runq.c", "test.c"]
+   ]
+  }
+ ]
+}

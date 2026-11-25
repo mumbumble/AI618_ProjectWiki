@@ -1,0 +1,61 @@
+{
+ "project": "annotated_transformer",
+ "preferences": [
+  {
+   "id": "pipeline",
+   "text": "빌드 과정 순서대로 묶어줘, 소스 .py → 노트북 변환 → HTML 문서 만드는 데 쓰이는 파일들(Makefile, docs 스타일, 노트북)끼리 한 그룹으로",
+   "groups": [
+    {
+     "name": "빌드 파이프라인",
+     "members": ["AnnotatedTransformer.ipynb", "Makefile", "docs/header-includes.yaml", "docs/tufte.css", "the_annotated_transformer.py"]
+    },
+    {
+     "name": "아키텍처 그림",
+     "members": ["images/ModalNet-19.png", "images/ModalNet-20.png", "images/ModalNet-21.png", "images/aiayn.png"]
+    },
+    {
+     "name": "논문 양식 (writeup)",
+     "members": ["writeup/acl2018.sty", "writeup/acl_natbib.bst"]
+    },
+    {
+     "name": "문서 및 README",
+     "members": ["README.md"]
+    },
+    {
+     "name": "빌드와 환경 설정",
+     "members": ["requirements.txt"]
+    }
+   ]
+  },
+  {
+   "id": "components",
+   "text": "어텐션 그림이랑 그걸 구현한 코드는 같이 묶어줘, ModalNet 이미지들은 the_annotated_transformer.py 옆에 두고 aiayn.png는 따로 빼고",
+   "groups": [
+    {
+     "name": "어텐션 그림과 구현 코드",
+     "members": ["images/ModalNet-19.png", "images/ModalNet-20.png", "images/ModalNet-21.png", "the_annotated_transformer.py"]
+    },
+    {
+     "name": "문서 및 README",
+     "members": ["README.md", "docs/header-includes.yaml", "docs/tufte.css"]
+    },
+    {
+     "name": "논문 양식 (writeup)",
+     "members": ["writeup/acl2018.sty", "writeup/acl_natbib.bst"]
+    },
+    {
+     "name": "빌드와 환경 설정",
+     "members": ["Makefile", "requirements.txt"]
+    },
+    {
+     "name": "논문 저자 이미지",
+     "members": ["images/aiayn.png"]
+    },
+    {
+     "name": "모델 구현 코드",
+     "members": ["AnnotatedTransformer.ipynb"]
+    }
+   ]
+  }
+ ]
+}

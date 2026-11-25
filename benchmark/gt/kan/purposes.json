@@ -1,0 +1,63 @@
+{
+ "project": "kan",
+ "purposes": [
+  {
+   "id": "newcomer",
+   "base": "docs",
+   "text": "이번 주 스터디에서 KAN이 MLP랑 뭐가 다른지 신입한테 설명해야 함. 논문이랑 hellokan 노트북, docs/intro 중에 어디를 보여주면 엣지 위 스플라인 활성화 구조가 제일 잘 설명되는지 알고 싶음",
+   "needed": [
+    ["README.md", "docs/intro.rst"],
+    ["README.md", "hellokan.ipynb"],
+    ["hellokan.ipynb", "paper/kan.pdf"],
+    ["kan/KANLayer.py", "paper/kan.pdf"]
+   ],
+   "optional": [
+    ["docs/intro.rst", "hellokan.ipynb"],
+    ["docs/intro.rst", "paper/kan.pdf"],
+    ["hellokan.ipynb", "kan/KANLayer.py"],
+    ["hellokan.ipynb", "kan/MultKAN.py"],
+    ["paper/kan.pdf", "related_work/kan_or_mlp_fairer_comparison.pdf"]
+   ],
+   "promote": [
+    ["hellokan.ipynb", "paper/kan.pdf"]
+   ]
+  },
+  {
+   "id": "prune",
+   "base": "code",
+   "text": "가지치기(prune)랑 grid refine 로직을 좀 바꿔볼 생각인데, 관련 코드가 kan 폴더 어디에 있고 수정하면 어떤 튜토리얼 노트북이 영향받는지 알고 싶음",
+   "needed": [
+    ["kan/MultKAN.py", "kan/KANLayer.py"],
+    ["kan/MultKAN.py", "kan/LBFGS.py"],
+    ["kan/experiment.py", "kan/MultKAN.py"],
+    ["kan/MultKAN.py", "tutorials/API_demo/API_1_indexing.ipynb"],
+    ["kan/MultKAN.py", "tutorials/API_demo/API_7_pruning.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Example/Example_1_function_fitting.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Example/Example_4_classfication.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Example/Example_6_PDE_interpretation.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Example/Example_8_continual_learning.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Interp/Interp_4_feature_attribution.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Physics/Physics_1_Lagrangian.ipynb"]
+   ],
+   "optional": [
+    ["kan/KANLayer.py", "kan/spline.py"],
+    ["kan/MultKAN.py", "kan/Symbolic_KANLayer.py"],
+    ["kan/__init__.py", "kan/MultKAN.py"],
+    ["kan/MultKAN.py", "kan/hypothesis.py"],
+    ["kan/MultKAN.py", "kan/spline.py"],
+    ["kan/MultKAN.py", "kan/utils.py"],
+    ["kan/experiment.py", "tutorials/API_demo/API_7_pruning.ipynb"]
+   ],
+   "promote": [
+    ["kan/MultKAN.py", "tutorials/API_demo/API_1_indexing.ipynb"],
+    ["kan/MultKAN.py", "tutorials/API_demo/API_7_pruning.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Example/Example_1_function_fitting.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Example/Example_4_classfication.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Example/Example_6_PDE_interpretation.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Example/Example_8_continual_learning.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Interp/Interp_4_feature_attribution.ipynb"],
+    ["kan/MultKAN.py", "tutorials/Physics/Physics_1_Lagrangian.ipynb"]
+   ]
+  }
+ ]
+}

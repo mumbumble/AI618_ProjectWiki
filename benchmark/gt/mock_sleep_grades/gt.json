@@ -1238,5 +1238,30 @@
     "notes/personal_schedule.md"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "notebooks/02_model.ipynb",
+   "report/final_report.md"
+  ],
+  "middle": [
+   "assignment/project_spec.pdf",
+   "data/clean_student_sleep_survey_2026.csv",
+   "data/codebook.md",
+   "notebooks/01_eda.ipynb",
+   "notes/ta_feedback.md",
+   "notes/team_meeting.md",
+   "references/notes_han2024_sleep_parttime_grades.md",
+   "report/figures/predicted_vs_actual_grade.png",
+   "report/figures/sleep_vs_grade_scatter.png",
+   "src/clean_data.py",
+   "src/features.py"
+  ],
+  "bottom": [
+   "data/raw_student_sleep_survey_2026.csv",
+   "misc/hw1_solution.py",
+   "notes/personal_schedule.md"
+  ]
+ }
 }

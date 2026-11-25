@@ -1,0 +1,73 @@
+{
+ "project": "mock_vr_text_entry",
+ "preferences": [
+  {
+   "id": "stage",
+   "text": "파일들을 연구 진행 순서대로 묶어줘, 계획서 → IRB → 파일럿 → 프로토타입 → 데이터 수집 → 분석 → 결과 이런 식으로.",
+   "groups": [
+    {
+     "name": "계획서·연구 설계",
+     "members": ["README.md", "papers/notes_han2023_midair_typing.md", "proposal/study_proposal.pdf", "study/interview_guide.md", "study/survey_questions.md", "study/tasks.md"]
+    },
+    {
+     "name": "결과·회의",
+     "members": ["notes/meeting.md", "results/figures/likert_means_by_item.png", "results/findings.md"]
+    },
+    {
+     "name": "프로토타입 개발",
+     "members": ["prototype/app.py", "prototype/logger.py", "prototype/ui_spec.md"]
+    },
+    {
+     "name": "IRB·윤리 승인",
+     "members": ["irb/consent_form.md", "irb/protocol.md"]
+    },
+    {
+     "name": "데이터 수집",
+     "members": ["data/survey_responses.csv", "data/task_logs.csv"]
+    },
+    {
+     "name": "분석",
+     "members": ["analysis/analyze_logs.py", "analysis/analyze_survey.py"]
+    },
+    {
+     "name": "파일럿",
+     "members": ["notes/pilot_notes.md"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/lab_snack_budget.md", "reading/coral_reef_bleaching_notes.md"]
+    }
+   ]
+  },
+  {
+   "id": "design",
+   "text": "IRB 문서(consent_form, protocol)는 따로 두지 말고 과제·설문 설계 문서랑 한 그룹으로 합쳐줘",
+   "groups": [
+    {
+     "name": "연구 설계·IRB·과제·설문",
+     "members": ["README.md", "irb/consent_form.md", "irb/protocol.md", "proposal/study_proposal.pdf", "study/interview_guide.md", "study/survey_questions.md", "study/tasks.md"]
+    },
+    {
+     "name": "데이터 및 분석 스크립트",
+     "members": ["analysis/analyze_logs.py", "analysis/analyze_survey.py", "data/survey_responses.csv", "data/task_logs.csv"]
+    },
+    {
+     "name": "노트·회의·선행연구",
+     "members": ["notes/meeting.md", "notes/pilot_notes.md", "papers/notes_han2023_midair_typing.md"]
+    },
+    {
+     "name": "프로토타입 코드",
+     "members": ["prototype/app.py", "prototype/logger.py", "prototype/ui_spec.md"]
+    },
+    {
+     "name": "결과와 그림",
+     "members": ["results/figures/likert_means_by_item.png", "results/findings.md"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/lab_snack_budget.md", "reading/coral_reef_bleaching_notes.md"]
+    }
+   ]
+  }
+ ]
+}

@@ -1666,5 +1666,33 @@
     "scratch/old_prototype.py"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "docs/design.md",
+   "trackslim/core.py"
+  ],
+  "middle": [
+   "CHANGELOG.md",
+   "benchmarks/bench_speed.py",
+   "docs/api.md",
+   "examples/demo.ipynb",
+   "notes/roadmap.md",
+   "tests/test_core.py",
+   "tests/test_io.py",
+   "trackslim/__init__.py",
+   "trackslim/cli.py",
+   "trackslim/io.py",
+   "trackslim/plugins/elevation_guard.py"
+  ],
+  "bottom": [
+   "benchmarks/results.csv",
+   "configs/default.toml",
+   "issues/issue_37.md",
+   "notes/conference_trip.md",
+   "notes/dev_meeting.md",
+   "scratch/old_prototype.py"
+  ]
+ }
 }

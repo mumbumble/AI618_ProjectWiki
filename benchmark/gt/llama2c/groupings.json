@@ -1,0 +1,69 @@
+{
+ "project": "llama2c",
+ "preferences": [
+  {
+   "id": "stage",
+   "text": "파일들을 작업 순서대로 묶어줘, 데이터 준비 → 학습 → 모델 내보내기 → C로 추론 → 테스트 이런 식으로",
+   "groups": [
+    {
+     "name": "문서와 예제",
+     "members": ["README.md", "assets/llama_cute.jpg", "doc/stories260K.md", "doc/train_llama_tokenizer.md", "run.ipynb"]
+    },
+    {
+     "name": "C로 추론",
+     "members": ["run.c", "runq.c", "win.c", "win.h"]
+    },
+    {
+     "name": "모델 학습",
+     "members": ["configurator.py", "model.py", "sample.py", "train.py"]
+    },
+    {
+     "name": "빌드와 환경",
+     "members": ["Makefile", "build_msvc.bat", "requirements.txt"]
+    },
+    {
+     "name": "데이터 준비",
+     "members": ["tinystories.py", "tokenizer.py"]
+    },
+    {
+     "name": "테스트",
+     "members": ["test.c", "test_all.py"]
+    },
+    {
+     "name": "모델 내보내기",
+     "members": ["export.py"]
+    }
+   ]
+  },
+  {
+   "id": "platform",
+   "text": "윈도우 때문에 있는 파일들(win.c, win.h, build_msvc.bat)은 따로 한 그룹으로 빼줘",
+   "groups": [
+    {
+     "name": "모델과 학습",
+     "members": ["configurator.py", "export.py", "model.py", "sample.py", "train.py"]
+    },
+    {
+     "name": "문서와 예제",
+     "members": ["README.md", "assets/llama_cute.jpg", "doc/stories260K.md", "doc/train_llama_tokenizer.md", "run.ipynb"]
+    },
+    {
+     "name": "빌드와 테스트",
+     "members": ["Makefile", "requirements.txt", "test.c", "test_all.py"]
+    },
+    {
+     "name": "윈도우 지원",
+     "members": ["build_msvc.bat", "win.c", "win.h"]
+    },
+    {
+     "name": "C 추론 코드",
+     "members": ["run.c", "runq.c"]
+    },
+    {
+     "name": "데이터와 토크나이저",
+     "members": ["tinystories.py", "tokenizer.py"]
+    }
+   ]
+  }
+ ]
+}

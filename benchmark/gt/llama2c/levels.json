@@ -1,0 +1,23 @@
+{
+ "project": "llama2c",
+ "preferences": [
+  {
+   "id": "entry",
+   "text": "README랑 run.ipynb처럼 처음 보는 사람이 읽는 문서를 맨 위에 두고, 실제 코드는 아래로 내려줘",
+   "levels": {
+    "top": ["README.md", "run.ipynb"],
+    "middle": ["doc/stories260K.md", "doc/train_llama_tokenizer.md", "model.py", "run.c"],
+    "bottom": ["Makefile", "assets/llama_cute.jpg", "build_msvc.bat", "configurator.py", "export.py", "requirements.txt", "runq.c", "sample.py", "test.c", "test_all.py", "tinystories.py", "tokenizer.py", "train.py", "win.c", "win.h"]
+   }
+  },
+  {
+   "id": "core",
+   "text": "model.py랑 run.c 같은 핵심 모델 구현을 위에 놓고, 빌드 파일이나 테스트, 문서는 아래로 내려줘",
+   "levels": {
+    "top": ["model.py", "run.c", "train.py"],
+    "middle": ["README.md", "export.py", "runq.c", "sample.py", "tinystories.py", "tokenizer.py"],
+    "bottom": ["Makefile", "assets/llama_cute.jpg", "build_msvc.bat", "configurator.py", "doc/stories260K.md", "doc/train_llama_tokenizer.md", "requirements.txt", "run.ipynb", "test.c", "test_all.py", "win.c", "win.h"]
+   }
+  }
+ ]
+}

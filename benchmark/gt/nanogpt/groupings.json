@@ -1,0 +1,61 @@
+{
+ "project": "nanogpt",
+ "preferences": [
+  {
+   "id": "dataset",
+   "text": "셰익스피어 관련 파일끼리, OpenWebText 관련 파일끼리 묶어줘. 데이터 준비 스크립트랑 그 데이터로 돌리는 config도 같이 넣어서.",
+   "groups": [
+    {
+     "name": "셰익스피어 데이터·설정",
+     "members": ["config/finetune_shakespeare.py", "config/train_shakespeare_char.py", "data/shakespeare/prepare.py", "data/shakespeare/readme.md", "data/shakespeare_char/prepare.py", "data/shakespeare_char/readme.md"]
+    },
+    {
+     "name": "모델·학습 코드",
+     "members": ["bench.py", "configurator.py", "model.py", "sample.py", "train.py"]
+    },
+    {
+     "name": "OpenWebText 데이터·설정",
+     "members": ["config/eval_gpt2.py", "config/eval_gpt2_large.py", "config/eval_gpt2_medium.py", "config/eval_gpt2_xl.py", "config/train_gpt2.py", "data/openwebtext/prepare.py", "data/openwebtext/readme.md"]
+    },
+    {
+     "name": "문서 및 이미지",
+     "members": ["README.md", "assets/gpt2_124M_loss.png", "assets/nanogpt.jpg"]
+    },
+    {
+     "name": "분석 노트북",
+     "members": ["scaling_laws.ipynb", "transformer_sizing.ipynb"]
+    }
+   ]
+  },
+  {
+   "id": "stage",
+   "text": "작업 순서대로 묶어줘. 데이터 준비 → 학습 → 평가 → 샘플링 순으로, 각 단계에 쓰는 코드랑 config를 같이 놓고.",
+   "groups": [
+    {
+     "name": "2. 학습 코드·설정",
+     "members": ["bench.py", "config/finetune_shakespeare.py", "config/train_gpt2.py", "config/train_shakespeare_char.py", "configurator.py", "model.py", "train.py"]
+    },
+    {
+     "name": "1. 데이터 준비",
+     "members": ["data/openwebtext/prepare.py", "data/openwebtext/readme.md", "data/shakespeare/prepare.py", "data/shakespeare/readme.md", "data/shakespeare_char/prepare.py", "data/shakespeare_char/readme.md"]
+    },
+    {
+     "name": "3. 평가 설정",
+     "members": ["config/eval_gpt2.py", "config/eval_gpt2_large.py", "config/eval_gpt2_medium.py", "config/eval_gpt2_xl.py"]
+    },
+    {
+     "name": "문서 및 이미지",
+     "members": ["README.md", "assets/gpt2_124M_loss.png", "assets/nanogpt.jpg"]
+    },
+    {
+     "name": "분석 노트북",
+     "members": ["scaling_laws.ipynb", "transformer_sizing.ipynb"]
+    },
+    {
+     "name": "4. 샘플링",
+     "members": ["sample.py"]
+    }
+   ]
+  }
+ ]
+}

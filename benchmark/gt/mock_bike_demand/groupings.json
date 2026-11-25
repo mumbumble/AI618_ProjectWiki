@@ -1,0 +1,77 @@
+{
+ "project": "mock_bike_demand",
+ "preferences": [
+  {
+   "id": "stage",
+   "text": "작업 순서대로 묶어줘, 원본 데이터 → 정제 코드 → EDA → 모델링 → 보고서 이런 식으로",
+   "groups": [
+    {
+     "name": "보고서와 그림",
+     "members": ["report/figures/demand_by_hour.png", "report/figures/pred_vs_actual.png", "report/final_report.md"]
+    },
+    {
+     "name": "회의·피드백·선행연구",
+     "members": ["notes/ta_feedback.md", "notes/team_meeting.md", "references/notes_han2023_bike_weather.md"]
+    },
+    {
+     "name": "데이터 정제 단계",
+     "members": ["data/clean_seoul_bike_2025.csv", "src/clean_data.py"]
+    },
+    {
+     "name": "모델링 단계",
+     "members": ["notebooks/02_model.ipynb", "src/features.py"]
+    },
+    {
+     "name": "문서·명세",
+     "members": ["README.md", "assignment/project_spec.pdf"]
+    },
+    {
+     "name": "원본 데이터와 코드북",
+     "members": ["data/codebook.md", "data/raw_seoul_bike_2025.csv"]
+    },
+    {
+     "name": "EDA 단계",
+     "members": ["notebooks/01_eda.ipynb"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["misc/hw1_solution.py", "notes/personal_schedule.md"]
+    }
+   ]
+  },
+  {
+   "id": "feedback",
+   "text": "TA 피드백이랑 회의록은 그걸 반영한 보고서 파일이랑 같이 묶어줘",
+   "groups": [
+    {
+     "name": "보고서와 피드백·회의록",
+     "members": ["notes/ta_feedback.md", "notes/team_meeting.md", "report/figures/demand_by_hour.png", "report/figures/pred_vs_actual.png", "report/final_report.md"]
+    },
+    {
+     "name": "데이터와 코드북",
+     "members": ["data/clean_seoul_bike_2025.csv", "data/codebook.md", "data/raw_seoul_bike_2025.csv"]
+    },
+    {
+     "name": "EDA·모델링 노트북",
+     "members": ["notebooks/01_eda.ipynb", "notebooks/02_model.ipynb"]
+    },
+    {
+     "name": "데이터 정제 코드",
+     "members": ["src/clean_data.py", "src/features.py"]
+    },
+    {
+     "name": "문서·명세",
+     "members": ["README.md", "assignment/project_spec.pdf"]
+    },
+    {
+     "name": "선행연구 노트",
+     "members": ["references/notes_han2023_bike_weather.md"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["misc/hw1_solution.py", "notes/personal_schedule.md"]
+    }
+   ]
+  }
+ ]
+}

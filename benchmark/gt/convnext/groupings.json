@@ -1,0 +1,77 @@
+{
+ "project": "convnext",
+ "preferences": [
+  {
+   "id": "backbone",
+   "text": "세 군데에 흩어져 있는 convnext.py 백본 구현(분류, 탐지, 분할)을 한 그룹으로 묶어줘",
+   "groups": [
+    {
+     "name": "학습 파이프라인",
+     "members": ["datasets.py", "engine.py", "main.py", "optim_factory.py", "run_with_submitit.py", "utils.py"]
+    },
+    {
+     "name": "ConvNeXt 백본 구현",
+     "members": ["models/convnext.py", "object_detection/mmdet/models/backbones/convnext.py", "semantic_segmentation/backbone/convnext.py"]
+    },
+    {
+     "name": "객체 탐지 (COCO)",
+     "members": ["object_detection/README.md", "object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py", "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py"]
+    },
+    {
+     "name": "문서 및 설치 가이드",
+     "members": ["INSTALL.md", "README.md", "TRAINING.md"]
+    },
+    {
+     "name": "의미 분할 (ADE20k)",
+     "members": ["semantic_segmentation/README.md", "semantic_segmentation/configs/_base_/models/upernet_convnext.py", "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py"]
+    },
+    {
+     "name": "논문 및 관련 연구",
+     "members": ["paper/convnext.pdf", "related_work/swin_transformer.pdf"]
+    },
+    {
+     "name": "모델 코드 (분류)",
+     "members": ["models/convnext_isotropic.py"]
+    }
+   ]
+  },
+  {
+   "id": "taskconfig",
+   "text": "탐지랑 분할은 태스크별로 나누지 말고 모델 베이스 설정 파일끼리, 실험 config끼리 묶어줘",
+   "groups": [
+    {
+     "name": "학습 파이프라인",
+     "members": ["datasets.py", "engine.py", "main.py", "optim_factory.py", "run_with_submitit.py", "utils.py"]
+    },
+    {
+     "name": "문서 및 설치 가이드",
+     "members": ["INSTALL.md", "README.md", "TRAINING.md"]
+    },
+    {
+     "name": "객체 탐지 (COCO)",
+     "members": ["object_detection/README.md", "object_detection/mmdet/models/backbones/convnext.py"]
+    },
+    {
+     "name": "논문 및 관련 연구",
+     "members": ["paper/convnext.pdf", "related_work/swin_transformer.pdf"]
+    },
+    {
+     "name": "모델 베이스 설정",
+     "members": ["object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py", "semantic_segmentation/configs/_base_/models/upernet_convnext.py"]
+    },
+    {
+     "name": "모델 코드 (분류)",
+     "members": ["models/convnext.py", "models/convnext_isotropic.py"]
+    },
+    {
+     "name": "실험 config",
+     "members": ["object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py", "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py"]
+    },
+    {
+     "name": "의미 분할 (ADE20k)",
+     "members": ["semantic_segmentation/README.md", "semantic_segmentation/backbone/convnext.py"]
+    }
+   ]
+  }
+ ]
+}

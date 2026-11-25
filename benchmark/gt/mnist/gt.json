@@ -854,5 +854,27 @@
     "README.md"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "mnist/main.py"
+  ],
+  "middle": [
+   "mnist/README.md",
+   "mnist_forward_forward/README.md",
+   "mnist_forward_forward/main.py",
+   "mnist_hogwild/README.md",
+   "mnist_hogwild/main.py",
+   "mnist_hogwild/train.py",
+   "mnist_rnn/README.md",
+   "mnist_rnn/main.py"
+  ],
+  "bottom": [
+   "mnist/requirements.txt",
+   "mnist_forward_forward/requirements.txt",
+   "mnist_hogwild/requirements.txt",
+   "mnist_rnn/requirements.txt"
+  ]
+ }
 }

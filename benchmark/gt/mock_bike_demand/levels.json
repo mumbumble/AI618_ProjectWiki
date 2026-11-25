@@ -1,0 +1,23 @@
+{
+ "project": "mock_bike_demand",
+ "preferences": [
+  {
+   "id": "results",
+   "text": "결과물인 최종 보고서랑 그림들이 맨 위에 오고 코드랑 원본 데이터는 아래로 가면 좋겠어",
+   "levels": {
+    "top": ["README.md", "assignment/project_spec.pdf", "report/figures/demand_by_hour.png", "report/figures/pred_vs_actual.png", "report/final_report.md"],
+    "middle": ["data/clean_seoul_bike_2025.csv", "data/codebook.md"],
+    "bottom": ["data/raw_seoul_bike_2025.csv", "misc/hw1_solution.py", "notebooks/01_eda.ipynb", "notebooks/02_model.ipynb", "notes/personal_schedule.md", "notes/ta_feedback.md", "notes/team_meeting.md", "references/notes_han2023_bike_weather.md", "src/clean_data.py", "src/features.py"]
+   }
+  },
+  {
+   "id": "data",
+   "text": "데이터 파일이랑 코드북을 맨 위에 두고 그 아래에 정제 코드, 노트북, 보고서 순서로 내려가게 해줘",
+   "levels": {
+    "top": ["README.md", "assignment/project_spec.pdf", "data/clean_seoul_bike_2025.csv", "data/codebook.md", "data/raw_seoul_bike_2025.csv"],
+    "middle": ["notebooks/01_eda.ipynb", "notebooks/02_model.ipynb", "src/clean_data.py", "src/features.py"],
+    "bottom": ["misc/hw1_solution.py", "notes/personal_schedule.md", "notes/ta_feedback.md", "notes/team_meeting.md", "references/notes_han2023_bike_weather.md", "report/figures/demand_by_hour.png", "report/figures/pred_vs_actual.png", "report/final_report.md"]
+   }
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+ "project": "mock_gpx_simplify",
+ "purposes": [
+  {
+   "id": "newcomer",
+   "base": "docs",
+   "text": "이번에 합류한 팀원한테 trackslim이 어떻게 동작하는지 설명해줘야 함. TAEW-DP가 턴이랑 고도를 어떻게 가중해서 점을 남기는지, 계층 구조는 어떻게 나뉘는지 설명 자료 만들 근거를 찾고 싶음",
+   "needed": [
+    ["docs/api.md", "trackslim/core.py"],
+    ["notes/roadmap.md", "docs/design.md"],
+    ["docs/design.md", "trackslim/core.py"],
+    ["docs/design.md", "trackslim/io.py"],
+    ["docs/design.md", "trackslim/plugins/elevation_guard.py"],
+    ["trackslim/__init__.py", "trackslim/core.py"],
+    ["trackslim/__init__.py", "trackslim/io.py"],
+    ["trackslim/plugins/elevation_guard.py", "trackslim/core.py"]
+   ],
+   "optional": [
+    ["README.md", "examples/demo.ipynb"],
+    ["README.md", "trackslim/plugins/elevation_guard.py"],
+    ["docs/api.md", "trackslim/__init__.py"]
+   ],
+   "promote": [
+    ["docs/api.md", "trackslim/core.py"],
+    ["notes/roadmap.md", "docs/design.md"],
+    ["docs/design.md", "trackslim/io.py"],
+    ["docs/design.md", "trackslim/plugins/elevation_guard.py"]
+   ]
+  },
+  {
+   "id": "bugfix",
+   "base": "code",
+   "text": "이슈 #37처럼 read_gpx 쪽 세그먼트 처리 코드를 손보려고 함. 고치면 어떤 함수랑 테스트, 문서가 영향받는지 확인하고 싶음",
+   "needed": [
+    ["docs/api.md", "trackslim/io.py"],
+    ["docs/design.md", "trackslim/io.py"],
+    ["tests/test_io.py", "issues/issue_37.md"],
+    ["issues/issue_37.md", "trackslim/io.py"],
+    ["tests/test_io.py", "trackslim/io.py"],
+    ["trackslim/__init__.py", "trackslim/io.py"]
+   ],
+   "optional": [
+    ["CHANGELOG.md", "issues/issue_37.md"],
+    ["notes/dev_meeting.md", "issues/issue_37.md"],
+    ["tests/test_io.py", "trackslim/__init__.py"],
+    ["trackslim/cli.py", "trackslim/io.py"]
+   ],
+   "promote": [
+    ["docs/api.md", "trackslim/io.py"],
+    ["docs/design.md", "trackslim/io.py"],
+    ["tests/test_io.py", "issues/issue_37.md"],
+    ["issues/issue_37.md", "trackslim/io.py"],
+    ["tests/test_io.py", "trackslim/io.py"]
+   ]
+  }
+ ]
+}

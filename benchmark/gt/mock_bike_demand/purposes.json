@@ -1,0 +1,50 @@
+{
+ "project": "mock_bike_demand",
+ "purposes": [
+  {
+   "id": "report",
+   "base": "docs",
+   "text": "TA 피드백 반영해서 최종 보고서 고치는 중인데, RMSE가 362.7에서 318.4로 바뀐 게 어디서 나온 숫자인지랑 결과 절에 들어간 그림이 어떤 노트북에서 만들어졌는지 확인하고 싶음",
+   "needed": [
+    ["notebooks/01_eda.ipynb", "report/figures/demand_by_hour.png"],
+    ["notebooks/02_model.ipynb", "report/figures/pred_vs_actual.png"],
+    ["report/final_report.md", "notebooks/02_model.ipynb"],
+    ["notes/ta_feedback.md", "report/final_report.md"],
+    ["report/final_report.md", "report/figures/demand_by_hour.png"],
+    ["report/final_report.md", "report/figures/pred_vs_actual.png"]
+   ],
+   "optional": [
+    ["notebooks/02_model.ipynb", "data/clean_seoul_bike_2025.csv"],
+    ["report/final_report.md", "notebooks/01_eda.ipynb"]
+   ],
+   "promote": [
+    ["notebooks/02_model.ipynb", "report/figures/pred_vs_actual.png"],
+    ["report/final_report.md", "notebooks/02_model.ipynb"],
+    ["notes/ta_feedback.md", "report/final_report.md"]
+   ]
+  },
+  {
+   "id": "rerun",
+   "base": "code",
+   "text": "원본 CSV부터 다시 정제하고 피처 만들어서 Random Forest까지 처음부터 재현해 보려고 함. 어떤 순서로 어떤 파일을 돌려야 하는지, 정제 규칙 바꾸면 모델 결과에 어디까지 영향 가는지 알려줘",
+   "needed": [
+    ["notebooks/02_model.ipynb", "data/clean_seoul_bike_2025.csv"],
+    ["src/clean_data.py", "data/clean_seoul_bike_2025.csv"],
+    ["src/clean_data.py", "data/raw_seoul_bike_2025.csv"],
+    ["notebooks/02_model.ipynb", "src/features.py"]
+   ],
+   "optional": [
+    ["notebooks/01_eda.ipynb", "data/clean_seoul_bike_2025.csv"],
+    ["data/codebook.md", "src/clean_data.py"],
+    ["notebooks/02_model.ipynb", "report/figures/pred_vs_actual.png"],
+    ["notes/team_meeting.md", "src/clean_data.py"],
+    ["notes/team_meeting.md", "src/features.py"]
+   ],
+   "promote": [
+    ["notebooks/02_model.ipynb", "data/clean_seoul_bike_2025.csv"],
+    ["src/clean_data.py", "data/raw_seoul_bike_2025.csv"],
+    ["notebooks/02_model.ipynb", "src/features.py"]
+   ]
+  }
+ ]
+}

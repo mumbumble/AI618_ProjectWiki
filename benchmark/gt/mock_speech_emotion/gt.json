@@ -3038,5 +3038,41 @@
     "reading/graph_neural_pde_reading_list.md"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "docs/method.md",
+   "paper/prosody_ser_draft_v2.pdf",
+   "src/prosody_ser_model.py"
+  ],
+  "middle": [
+   "configs/bilingual_6class.yaml",
+   "docs/related_work.md",
+   "figures/overview.png",
+   "figures/unweighted_accuracy_vs_snr_db.png",
+   "notes/meeting_2026-08-27.md",
+   "paper/talk_outline.md",
+   "results/ablation.md",
+   "results/main_results.csv",
+   "site/index.html",
+   "src/data.py",
+   "src/evaluate.py",
+   "src/prosody_attention.py",
+   "src/train.py"
+  ],
+  "bottom": [
+   "admin/travel_reimbursement_form.md",
+   "configs/base.yaml",
+   "logs/train_2026-08-19.log",
+   "notes/ideas.md",
+   "notes/meeting_2026-03-12.md",
+   "paper/prosody_ser_draft_v1.pdf",
+   "papers/notes_crossling_ser2023.md",
+   "papers/notes_emoformer2021.md",
+   "reading/graph_neural_pde_reading_list.md",
+   "src/plot_results.py",
+   "src/utils.py"
+  ]
+ }
 }

@@ -1,0 +1,73 @@
+{
+ "project": "mingpt",
+ "preferences": [
+  {
+   "id": "project",
+   "text": "adder 관련 파일(adder.py, readme)이랑 chargpt 관련 파일(chargpt.py, readme)을 프로젝트별로 묶어줘",
+   "groups": [
+    {
+     "name": "핵심 모델 코드",
+     "members": ["mingpt/__init__.py", "mingpt/bpe.py", "mingpt/model.py", "mingpt/trainer.py", "mingpt/utils.py"]
+    },
+    {
+     "name": "문서 (README)",
+     "members": ["README.md", "mingpt.jpg", "projects/readme.md"]
+    },
+    {
+     "name": "adder 프로젝트",
+     "members": ["projects/adder/adder.py", "projects/adder/readme.md"]
+    },
+    {
+     "name": "chargpt 프로젝트",
+     "members": ["projects/chargpt/chargpt.py", "projects/chargpt/readme.md"]
+    },
+    {
+     "name": "노트북 데모·생성",
+     "members": ["demo.ipynb", "generate.ipynb"]
+    },
+    {
+     "name": "설치 및 테스트",
+     "members": ["setup.py", "tests/test_huggingface_import.py"]
+    }
+   ]
+  },
+  {
+   "id": "pipeline",
+   "text": "토크나이저(bpe.py), 모델(model.py), 학습(trainer.py)처럼 데이터가 흘러가는 순서대로 나눠서 묶어줘",
+   "groups": [
+    {
+     "name": "문서 (README)",
+     "members": ["README.md", "mingpt.jpg", "projects/adder/readme.md", "projects/chargpt/readme.md", "projects/readme.md"]
+    },
+    {
+     "name": "노트북 데모·생성",
+     "members": ["demo.ipynb", "generate.ipynb"]
+    },
+    {
+     "name": "데모 프로젝트 스크립트",
+     "members": ["projects/adder/adder.py", "projects/chargpt/chargpt.py"]
+    },
+    {
+     "name": "설치 및 테스트",
+     "members": ["setup.py", "tests/test_huggingface_import.py"]
+    },
+    {
+     "name": "핵심 모델 코드",
+     "members": ["mingpt/__init__.py", "mingpt/utils.py"]
+    },
+    {
+     "name": "1단계 토크나이저",
+     "members": ["mingpt/bpe.py"]
+    },
+    {
+     "name": "2단계 모델",
+     "members": ["mingpt/model.py"]
+    },
+    {
+     "name": "3단계 학습",
+     "members": ["mingpt/trainer.py"]
+    }
+   ]
+  }
+ ]
+}

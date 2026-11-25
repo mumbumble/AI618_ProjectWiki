@@ -22,6 +22,9 @@ Metrics, following Text2KGBench (Mihindukulasooriya et al., ISWC 2023) where the
   conformance; the inverse of its relation hallucination).
 - evidence grounding: the share of predicted edges with a quote found verbatim in the record (the analogue of
   Text2KGBench's subject/object hallucination checks against the source text).
+- per purpose (purposes.json): group ARI against the purpose's groups, and level order accuracy, the share of file
+  pairs on different ground-truth levels that a predicted level puts in the same order (ties count half, so a
+  view without levels scores 50%).
 """
 from __future__ import annotations
 
@@ -75,6 +78,33 @@ def group_scores(graph: Graph, gt: GroundTruth) -> dict:
     pred = [n.group if n.group is not None else f"_single_{n.path}" for n in nodes]
     gold = [truth[n.path] for n in nodes]
     return {"group_ari": float(adjusted_rand_score(gold, pred)), "group_nmi": float(normalized_mutual_info_score(gold, pred))}
+
+
+def partition_ari(a: list[dict], b: list[dict]) -> float | None:
+    """Adjusted Rand index between two groupings ([{"name", "members"}]) over the files both contain."""
+    from sklearn.metrics import adjusted_rand_score
+    ga = {m: i for i, g in enumerate(a) for m in g["members"]}
+    gb = {m: i for i, g in enumerate(b) for m in g["members"]}
+    files = sorted(ga.keys() & gb.keys())
+    return float(adjusted_rand_score([ga[f] for f in files], [gb[f] for f in files])) if files else None
+
+
+def level_order_accuracy(pred: dict[str, float], gold: dict[str, int]) -> float | None:
+    """Share of file pairs on different gold levels that pred orders the same way; a tie in pred counts half.
+    Files missing from pred count as tied with everything. None when gold has no such pair."""
+    files = sorted(gold)
+    agree, pairs = 0.0, 0
+    for i, a in enumerate(files):
+        for b in files[i + 1:]:
+            if gold[a] == gold[b]:
+                continue
+            pairs += 1
+            pa, pb = pred.get(a), pred.get(b)
+            if pa is None or pb is None or pa == pb:
+                agree += 0.5
+            elif (pa > pb) == (gold[a] > gold[b]):
+                agree += 1
+    return agree / pairs if pairs else None
 
 
 def group_pair(a: str, b: str, group_of: dict[str, str]) -> frozenset | None:

@@ -1,0 +1,89 @@
+{
+ "project": "mock_gpx_simplify",
+ "preferences": [
+  {
+   "id": "layers",
+   "text": "코어 알고리즘(core.py)이랑 파일 읽기/쓰기(io.py), 플러그인을 계층별로 따로 묶고, CLI는 또 따로 빼줘.",
+   "groups": [
+    {
+     "name": "문서와 예제",
+     "members": ["CHANGELOG.md", "README.md", "docs/api.md", "docs/design.md", "examples/demo.ipynb"]
+    },
+    {
+     "name": "이슈·회의·로드맵",
+     "members": ["issues/issue_37.md", "notes/dev_meeting.md", "notes/roadmap.md"]
+    },
+    {
+     "name": "CLI와 설정",
+     "members": ["configs/default.toml", "trackslim/cli.py"]
+    },
+    {
+     "name": "벤치마크와 결과",
+     "members": ["benchmarks/bench_speed.py", "benchmarks/results.csv"]
+    },
+    {
+     "name": "테스트",
+     "members": ["tests/test_core.py", "tests/test_io.py"]
+    },
+    {
+     "name": "코어 알고리즘",
+     "members": ["trackslim/core.py"]
+    },
+    {
+     "name": "파일 읽기/쓰기",
+     "members": ["trackslim/io.py"]
+    },
+    {
+     "name": "플러그인",
+     "members": ["trackslim/plugins/elevation_guard.py"]
+    },
+    {
+     "name": "핵심 라이브러리 코드",
+     "members": ["trackslim/__init__.py"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["notes/conference_trip.md", "scratch/old_prototype.py"]
+    }
+   ]
+  },
+  {
+   "id": "bugfix",
+   "text": "이슈 #37이랑 관련된 파일들, 그러니까 이슈 문서, 회의록, io.py, test_io.py, CHANGELOG를 한 그룹으로 묶어줘.",
+   "groups": [
+    {
+     "name": "이슈 #37 관련",
+     "members": ["CHANGELOG.md", "issues/issue_37.md", "notes/dev_meeting.md", "tests/test_io.py", "trackslim/io.py"]
+    },
+    {
+     "name": "문서와 예제",
+     "members": ["README.md", "docs/api.md", "docs/design.md", "examples/demo.ipynb"]
+    },
+    {
+     "name": "핵심 라이브러리 코드",
+     "members": ["trackslim/__init__.py", "trackslim/core.py", "trackslim/plugins/elevation_guard.py"]
+    },
+    {
+     "name": "CLI와 설정",
+     "members": ["configs/default.toml", "trackslim/cli.py"]
+    },
+    {
+     "name": "벤치마크와 결과",
+     "members": ["benchmarks/bench_speed.py", "benchmarks/results.csv"]
+    },
+    {
+     "name": "이슈·회의·로드맵",
+     "members": ["notes/roadmap.md"]
+    },
+    {
+     "name": "테스트",
+     "members": ["tests/test_core.py"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["notes/conference_trip.md", "scratch/old_prototype.py"]
+    }
+   ]
+  }
+ ]
+}

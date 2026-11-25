@@ -11,11 +11,16 @@ were unjudged, a locally closed world as in Text2KGBench (Mihindukulasooriya et 
 
 Edges come in two layers: explicit (what the files state themselves: imports, links, file-name mentions) and
 semantic (judged on a pool of candidate pairs, as in TREC pooling). `groups` records how a person would chunk
-the files. How the benchmark's ground truth was built is described in benchmark/README.md.
+the files, and `levels` the default hierarchy of the whole folder (top / middle / bottom, every file once). How the
+benchmark's ground truth was built is described in benchmark/README.md.
 
-A project may also have purposes (benchmark/gt/<project>/purposes.json, optional): a user's purpose in words
-(the text given to `projectwiki build --purpose`) with the ground-truth pairs it needs and the ones it can take
-or leave. purpose_view turns the ground truth into the graph that purpose wants, for the same metrics.
+Preference ground truth pairs a user's preference (the input, one sentence) with the output it should produce, one
+file per kind next to gt.json:
+- purposes.json, links: a purpose -> the ground-truth links it needs (and the ones it can take or leave).
+  A link preference changes only those links: needed links become key links, so `promote` lists the weak ones it
+  raises; every other link keeps its default state. purpose_view applies this for the same metrics.
+- groupings.json, groups: how the user wants the files grouped -> every file in one group.
+- levels.json, levels: what the user wants higher or lower -> the level of every file.
 """
 from __future__ import annotations
 
@@ -89,6 +94,7 @@ class GroundTruth:
     unsure: list[dict] = field(default_factory=list)  # judged but undecided; left out like unjudged pairs
     meta: dict = field(default_factory=dict)
     groups: list[dict] = field(default_factory=list)  # {"name", "members": [paths]}: how a person chunks the files
+    levels: dict = field(default_factory=dict)  # {"top", "middle", "bottom": [paths]}: the folder's default hierarchy
 
     @property
     def edge_by_key(self) -> dict[str, GTEdge]:
@@ -106,42 +112,106 @@ class GroundTruth:
     def load(cls, path: Path) -> GroundTruth:
         d = json.loads(Path(path).read_text(encoding="utf-8"))
         return cls(project=d["project"], edges=[GTEdge(**e) for e in d["edges"]], negatives=d.get("negatives", []),
-                   unsure=d.get("unsure", []), meta=d.get("meta", {}), groups=d.get("groups", []))
+                   unsure=d.get("unsure", []), meta=d.get("meta", {}), groups=d.get("groups", []),
+                   levels=d.get("levels", {}))
 
 
-# ---- purposes ------------------------------------------------------------------------------------
-# purposes.json: {"project", "purposes": [{"id", "base", "text", "needed": [[a, b]], "optional": [[a, b]],
-# "notes": {pair_key: why}}], "review_log": [...]}. `base` is the persona the tags started from (code | docs).
-# needed: the purpose wants the link shown. optional: shown or hidden, both fine. Every other pair: not needed.
+# ---- preference ground truth --------------------------------------------------------------------
+# Each file: {"project", <key>: [{"id", "text", <output>}]}. `text` is the user's
+# preference (the input); the output is what the map should show for it.
+# purposes.json, key "purposes": also "base" (the side the purpose starts from: code | docs), output "needed" and
+#   "optional" ([[a, b]] ground-truth pairs), "promote" (the needed pairs that are weak by default: the links this
+#   preference changes; every other link keeps its default state) and, for the teammate's hand labels, "notes" {pair_key: why}.
+# groupings.json, key "preferences": output "groups" [{"name", "members"}], every project file once.
+# levels.json, key "preferences": output "levels" {"top", "middle", "bottom": [paths]}, every project file once.
+LEVEL_VALUE = {"top": 3, "middle": 2, "bottom": 1}
+PREFERENCE_FILES = {"purposes": ("purposes.json", "purposes"), "groupings": ("groupings.json", "preferences"),
+                    "levels": ("levels.json", "preferences")}
+
+
+def load_preferences(gt_dir: Path, kind: str) -> list[dict]:
+    """One kind of preference ground truth (purposes | groupings | levels) next to a gt.json, or []."""
+    name, key = PREFERENCE_FILES[kind]
+    path = Path(gt_dir) / name
+    return json.loads(path.read_text(encoding="utf-8"))[key] if path.exists() else []
+
 
 def load_purposes(gt_dir: Path) -> list[dict]:
-    """The purposes defined next to a gt.json, or [] when the project has none."""
-    path = Path(gt_dir) / "purposes.json"
-    return json.loads(path.read_text(encoding="utf-8"))["purposes"] if path.exists() else []
+    """The purposes (link preferences) defined next to a gt.json, or [] when the project has none."""
+    return load_preferences(gt_dir, "purposes")
 
 
-def check_purposes(gt: GroundTruth, purposes: list[dict]) -> list[str]:
-    """Problems in a project's purposes: unknown pairs, a pair both needed and optional, bad ids or text."""
-    edges, problems, ids = gt.edge_by_key, [], set()
-    for p in purposes:
-        if not p.get("id") or p["id"] in ids:
-            problems.append(f"purpose id missing or repeated: {p.get('id')!r}")
-        ids.add(p.get("id"))
+def project_files(gt: GroundTruth) -> set[str]:
+    return {m for g in gt.groups for m in g["members"]}
+
+
+def level_map(levels: dict) -> dict[str, int]:
+    """{"top", "middle", "bottom": [paths]} -> path -> 3 | 2 | 1."""
+    return {m: LEVEL_VALUE[k] for k in LEVEL_VALUE for m in levels.get(k, [])}
+
+
+def check_levels(files: set[str], levels: dict, who: str) -> list[str]:
+    """Every project file on exactly one of the three levels."""
+    placed = [m for k in LEVEL_VALUE for m in levels.get(k, [])]
+    return ([f"{who}: unknown level {k!r}" for k in sorted(set(levels) - LEVEL_VALUE.keys())]
+            + [f"{who}: {m} is on more than one level" for m in sorted({m for m in placed if placed.count(m) > 1})]
+            + [f"{who}: {m} is not a project file" for m in sorted(set(placed) - files)]
+            + [f"{who}: {m} has no level" for m in sorted(files - set(placed))])
+
+
+def check_groups(files: set[str], groups: list[dict], who: str) -> list[str]:
+    """Every project file in exactly one group, group names distinct."""
+    members = [m for g in groups for m in g["members"]]
+    names = [g["name"] for g in groups]
+    return ([f"{who}: group name repeated: {n}" for n in sorted({n for n in names if names.count(n) > 1})]
+            + [f"{who}: {m} is in more than one group" for m in sorted({m for m in members if members.count(m) > 1})]
+            + [f"{who}: {m} is not a project file" for m in sorted(set(members) - files)]
+            + [f"{who}: {m} is in no group" for m in sorted(files - set(members))])
+
+
+def check_ids(prefs: list[dict]) -> list[str]:
+    problems, ids = [], set()
+    for p in prefs:
+        pid = p.get("id")
+        if not pid or pid in ids:
+            problems.append(f"preference id missing or repeated: {pid!r}")
+        ids.add(pid)
         if not p.get("text", "").strip():
-            problems.append(f"{p.get('id')}: empty text")
-        needed = {pair_key(a, b) for a, b in p.get("needed", [])}
-        optional = {pair_key(a, b) for a, b in p.get("optional", [])}
-        problems += [f"{p['id']}: {k} is not a ground-truth edge" for k in sorted((needed | optional) - edges.keys())]
-        problems += [f"{p['id']}: {k} is both needed and optional" for k in sorted(needed & optional)]
+            problems.append(f"{pid}: empty text")
     return problems
 
 
+def check_purposes(gt: GroundTruth, purposes: list[dict]) -> list[str]:
+    """Problems in a project's purposes: unknown pairs, a pair both needed and optional, a `promote` list that is not
+    exactly the needed links that are weak by default, bad ids or text."""
+    edges, problems = gt.edge_by_key, check_ids(purposes)
+    for p in purposes:
+        pid = p.get("id")
+        needed = {pair_key(a, b) for a, b in p.get("needed", [])}
+        optional = {pair_key(a, b) for a, b in p.get("optional", [])}
+        problems += [f"{pid}: {k} is not a ground-truth edge" for k in sorted((needed | optional) - edges.keys())]
+        problems += [f"{pid}: {k} is both needed and optional" for k in sorted(needed & optional)]
+        if "promote" in p:
+            promote = {pair_key(a, b) for a, b in p["promote"]}
+            weak_needed = {k for k in needed if k in edges and not edges[k].required}
+            problems += [f"{pid}: promote should be the needed links that are weak by default"] if promote != weak_needed else []
+    return problems
+
+
+def check_groupings(gt: GroundTruth, prefs: list[dict]) -> list[str]:
+    files = project_files(gt)
+    return check_ids(prefs) + [x for p in prefs for x in check_groups(files, p.get("groups", []), str(p.get("id")))]
+
+
+def check_level_prefs(gt: GroundTruth, prefs: list[dict]) -> list[str]:
+    files = project_files(gt)
+    problems = check_ids(prefs) + [x for p in prefs for x in check_levels(files, p.get("levels", {}), str(p.get("id")))]
+    return problems + (check_levels(files, gt.levels, "default levels") if gt.levels else [])
+
+
 def purpose_view(gt: GroundTruth, purpose: dict) -> GroundTruth:
-    """Ground truth as one purpose sees it: needed edges are required, optional ones are never penalized,
-    every other edge becomes a negative. The same shape as feedback_sim.persona_view, so every metric applies."""
+    """Ground truth with one link preference applied. A preference changes only the links it is about: its needed
+    links become key (required) links, weak ones included; every other link keeps its default state, and nothing is
+    dropped. The same shape as feedback_sim.persona_view, so every metric applies."""
     needed = {pair_key(a, b) for a, b in purpose.get("needed", [])}
-    optional = {pair_key(a, b) for a, b in purpose.get("optional", [])}
-    keep = [replace(e, required=e.key in needed) for e in gt.edges if e.key in needed | optional]
-    off = [{"a": e.a, "b": e.b, "source": "purpose", "note": f"not needed for {purpose['id']}"}
-           for e in gt.edges if e.key not in needed | optional]
-    return replace(gt, edges=keep, negatives=gt.negatives + off)
+    return replace(gt, edges=[replace(e, required=e.required or e.key in needed) for e in gt.edges])

@@ -1,0 +1,23 @@
+{
+ "project": "convnext",
+ "preferences": [
+  {
+   "id": "docsfirst",
+   "text": "README나 INSTALL, TRAINING 같은 문서랑 논문을 맨 위에 두고 코드는 아래로 내려줘",
+   "levels": {
+    "top": ["INSTALL.md", "README.md", "TRAINING.md", "object_detection/README.md", "paper/convnext.pdf", "semantic_segmentation/README.md"],
+    "middle": ["datasets.py", "engine.py", "main.py", "models/convnext.py", "models/convnext_isotropic.py", "object_detection/mmdet/models/backbones/convnext.py", "related_work/swin_transformer.pdf", "run_with_submitit.py", "semantic_segmentation/backbone/convnext.py"],
+    "bottom": ["object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py", "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py", "optim_factory.py", "semantic_segmentation/configs/_base_/models/upernet_convnext.py", "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py", "utils.py"]
+   }
+  },
+  {
+   "id": "entrypoint",
+   "text": "main.py랑 run_with_submitit.py 같은 실행 진입점을 위에 두고, 모델 정의랑 유틸은 아래에 놓아줘",
+   "levels": {
+    "top": ["README.md", "main.py", "paper/convnext.pdf", "run_with_submitit.py"],
+    "middle": ["INSTALL.md", "TRAINING.md", "datasets.py", "engine.py", "object_detection/README.md", "semantic_segmentation/README.md"],
+    "bottom": ["models/convnext.py", "models/convnext_isotropic.py", "object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py", "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py", "object_detection/mmdet/models/backbones/convnext.py", "optim_factory.py", "related_work/swin_transformer.pdf", "semantic_segmentation/backbone/convnext.py", "semantic_segmentation/configs/_base_/models/upernet_convnext.py", "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py", "utils.py"]
+   }
+  }
+ ]
+}
