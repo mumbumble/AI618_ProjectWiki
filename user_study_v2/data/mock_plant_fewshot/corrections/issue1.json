@@ -1,0 +1,210 @@
+{
+ "meta": {
+  "source": "hand",
+  "made_from": "make_hand.py from benchmark/gt (stand-in until the pipeline output exists)"
+ },
+ "intent": "handover",
+ "edge": [
+  "paper/talk_outline.md",
+  "figures/accuracy_vs_shots.png"
+ ],
+ "planted": "up",
+ "hint": {
+  "meaning": "발표 개요(talk_outline.md)에서 정확도 그래프를 발표에 쓴다는 연결입니다.",
+  "state": "지금 굵게(중요하게) 표시되어 있습니다.",
+  "ask": "후배가 학습과 평가를 다시 돌리는 데 이 연결이 필요할까요? 필요하면 [필요한 연결], 필요 없으면 [지금은 불필요]를 고르세요."
+ },
+ "kind": "발표 자료 ↔ 그림·논문",
+ "options": {
+  "edge_irrelevant": {
+   "events": [
+    {
+     "type": "edge_irrelevant",
+     "source": "paper/talk_outline.md",
+     "target": "figures/accuracy_vs_shots.png"
+    }
+   ],
+   "report": {
+    "direct": [
+     {
+      "files": [
+       "paper/talk_outline.md",
+       "figures/accuracy_vs_shots.png"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "uses",
+       "score": 0.95
+      },
+      "after": {
+       "visible": false,
+       "status": "removed_irrelevant",
+       "relation": "uses",
+       "score": 0.95
+      },
+      "reason": "",
+      "action": "관련은 있지만 목적상 불필요"
+     }
+    ],
+    "automatic": [
+     {
+      "files": [
+       "paper/talk_outline.md",
+       "paper/leafproto_draft_v2.pdf"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "describes",
+       "score": 0.95
+      },
+      "after": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "describes",
+       "score": 0.3
+      },
+      "reason": "방금 고친 연결과 같은 종류(발표 자료 ↔ 그림·논문)라서 같이 흐리게 했습니다."
+     },
+     {
+      "files": [
+       "notes/meeting_2026-09-17.md",
+       "paper/leafproto_draft_v2.pdf"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "describes",
+       "score": 0.95
+      },
+      "after": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "describes",
+       "score": 0.3
+      },
+      "reason": "방금 고친 연결과 같은 종류(발표 자료 ↔ 그림·논문)라서 같이 흐리게 했습니다."
+     }
+    ],
+    "corrector": "best-of-n",
+    "applied": 1,
+    "note": ""
+   }
+  },
+  "edge_confirm": {
+   "events": [
+    {
+     "type": "edge_confirm",
+     "source": "paper/talk_outline.md",
+     "target": "figures/accuracy_vs_shots.png",
+     "relation": "uses"
+    }
+   ],
+   "report": {
+    "direct": [
+     {
+      "files": [
+       "paper/talk_outline.md",
+       "figures/accuracy_vs_shots.png"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "uses",
+       "score": 0.95
+      },
+      "after": {
+       "visible": true,
+       "status": "confirmed",
+       "relation": "uses",
+       "score": 1.0
+      },
+      "reason": "",
+      "action": "맞는 연결 (승인)"
+     }
+    ],
+    "automatic": [
+     {
+      "files": [
+       "paper/talk_outline.md",
+       "paper/leafproto_draft_v2.pdf"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "describes",
+       "score": 0.95
+      },
+      "after": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "describes",
+       "score": 0.98
+      },
+      "reason": "필요하다고 한 연결과 같은 종류(발표 자료 ↔ 그림·논문)라서 조금 더 굵게 했습니다."
+     },
+     {
+      "files": [
+       "notes/meeting_2026-09-17.md",
+       "paper/leafproto_draft_v2.pdf"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "describes",
+       "score": 0.95
+      },
+      "after": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "describes",
+       "score": 0.98
+      },
+      "reason": "필요하다고 한 연결과 같은 종류(발표 자료 ↔ 그림·논문)라서 조금 더 굵게 했습니다."
+     }
+    ],
+    "corrector": "best-of-n",
+    "applied": 1,
+    "note": ""
+   }
+  },
+  "edge_wrong": {
+   "events": [
+    {
+     "type": "edge_wrong",
+     "source": "paper/talk_outline.md",
+     "target": "figures/accuracy_vs_shots.png"
+    }
+   ],
+   "report": {
+    "direct": [
+     {
+      "files": [
+       "paper/talk_outline.md",
+       "figures/accuracy_vs_shots.png"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "uses",
+       "score": 0.95
+      },
+      "after": {
+       "visible": false,
+       "status": "removed_wrong",
+       "relation": "uses",
+       "score": 0.95
+      },
+      "reason": "",
+      "action": "잘못된 연결 (사실 오류)"
+     }
+    ],
+    "automatic": [],
+    "corrector": "best-of-n",
+    "applied": 1,
+    "note": "‘틀린 연결’은 그 연결 하나만 고칩니다. 사실이 틀린 경우라서 다른 연결에는 영향을 주지 않습니다."
+   }
+  }
+ }
+}

@@ -1,0 +1,210 @@
+{
+ "meta": {
+  "source": "hand",
+  "made_from": "make_hand.py from benchmark/gt (stand-in until the pipeline output exists)"
+ },
+ "intent": "handover",
+ "edge": [
+  "src/train.py",
+  "configs/base.yaml"
+ ],
+ "planted": "down",
+ "hint": {
+  "meaning": "학습 코드(train.py)가 기본 설정 파일(base.yaml)을 읽어서 학습한다는 연결입니다.",
+  "state": "지금 흐리게(덜 중요하게) 표시되어 있습니다.",
+  "ask": "후배가 학습을 다시 돌리는 데 이 연결이 필요할까요? 필요하면 [필요한 연결], 필요 없으면 [지금은 불필요]를 고르세요."
+ },
+ "kind": "설정 ↔ 학습 코드",
+ "options": {
+  "edge_confirm": {
+   "events": [
+    {
+     "type": "edge_confirm",
+     "source": "src/train.py",
+     "target": "configs/base.yaml",
+     "relation": "uses"
+    }
+   ],
+   "report": {
+    "direct": [
+     {
+      "files": [
+       "src/train.py",
+       "configs/base.yaml"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "uses",
+       "score": 0.3
+      },
+      "after": {
+       "visible": true,
+       "status": "confirmed",
+       "relation": "uses",
+       "score": 1.0
+      },
+      "reason": "",
+      "action": "맞는 연결 (승인)"
+     }
+    ],
+    "automatic": [
+     {
+      "files": [
+       "configs/fewshot_5way.yaml",
+       "configs/base.yaml"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "extends",
+       "score": 0.3
+      },
+      "after": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "extends",
+       "score": 0.9
+      },
+      "reason": "필요하다고 한 연결과 같은 종류(설정 ↔ 학습 코드)라서 다시 굵게 했습니다."
+     },
+     {
+      "files": [
+       "configs/fewshot_5way.yaml",
+       "src/train.py"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "other",
+       "score": 0.3
+      },
+      "after": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "other",
+       "score": 0.9
+      },
+      "reason": "필요하다고 한 연결과 같은 종류(설정 ↔ 학습 코드)라서 다시 굵게 했습니다."
+     }
+    ],
+    "corrector": "best-of-n",
+    "applied": 1,
+    "note": ""
+   }
+  },
+  "edge_irrelevant": {
+   "events": [
+    {
+     "type": "edge_irrelevant",
+     "source": "src/train.py",
+     "target": "configs/base.yaml"
+    }
+   ],
+   "report": {
+    "direct": [
+     {
+      "files": [
+       "src/train.py",
+       "configs/base.yaml"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "uses",
+       "score": 0.3
+      },
+      "after": {
+       "visible": false,
+       "status": "removed_irrelevant",
+       "relation": "uses",
+       "score": 0.3
+      },
+      "reason": "",
+      "action": "관련은 있지만 목적상 불필요"
+     }
+    ],
+    "automatic": [
+     {
+      "files": [
+       "configs/fewshot_5way.yaml",
+       "configs/base.yaml"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "extends",
+       "score": 0.3
+      },
+      "after": {
+       "visible": false,
+       "status": "removed_by_corrector",
+       "relation": "extends",
+       "score": 0.3
+      },
+      "reason": "방금 고친 연결과 같은 종류(설정 ↔ 학습 코드)라서 같이 숨겼습니다."
+     },
+     {
+      "files": [
+       "configs/fewshot_5way.yaml",
+       "src/train.py"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "other",
+       "score": 0.3
+      },
+      "after": {
+       "visible": false,
+       "status": "removed_by_corrector",
+       "relation": "other",
+       "score": 0.3
+      },
+      "reason": "방금 고친 연결과 같은 종류(설정 ↔ 학습 코드)라서 같이 숨겼습니다."
+     }
+    ],
+    "corrector": "best-of-n",
+    "applied": 1,
+    "note": ""
+   }
+  },
+  "edge_wrong": {
+   "events": [
+    {
+     "type": "edge_wrong",
+     "source": "src/train.py",
+     "target": "configs/base.yaml"
+    }
+   ],
+   "report": {
+    "direct": [
+     {
+      "files": [
+       "src/train.py",
+       "configs/base.yaml"
+      ],
+      "before": {
+       "visible": true,
+       "status": "proposed",
+       "relation": "uses",
+       "score": 0.3
+      },
+      "after": {
+       "visible": false,
+       "status": "removed_wrong",
+       "relation": "uses",
+       "score": 0.3
+      },
+      "reason": "",
+      "action": "잘못된 연결 (사실 오류)"
+     }
+    ],
+    "automatic": [],
+    "corrector": "best-of-n",
+    "applied": 1,
+    "note": "‘틀린 연결’은 그 연결 하나만 고칩니다. 사실이 틀린 경우라서 다른 연결에는 영향을 주지 않습니다."
+   }
+  }
+ }
+}

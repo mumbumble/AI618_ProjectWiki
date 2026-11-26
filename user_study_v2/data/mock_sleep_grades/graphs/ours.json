@@ -1,0 +1,644 @@
+{
+ "meta": {
+  "source": "hand",
+  "method": "ours",
+  "made_from": "make_hand.py from benchmark/gt (stand-in until the pipeline output exists)"
+ },
+ "nodes": [
+  {
+   "id": "README.md",
+   "path": "README.md",
+   "type": "markdown",
+   "title": "README.md",
+   "group": "g1",
+   "role": "",
+   "summary": "팀 과제 소개: 연구 질문(수면·아르바이트 시간과 성적), 실행 방법"
+  },
+  {
+   "id": "assignment/project_spec.pdf",
+   "path": "assignment/project_spec.pdf",
+   "type": "pdf",
+   "title": "project_spec.pdf",
+   "group": "g1",
+   "role": "",
+   "summary": "과목 과제 명세 (보고서 6개 절, 채점 기준)"
+  },
+  {
+   "id": "references/notes_han2024_sleep_parttime_grades.md",
+   "path": "references/notes_han2024_sleep_parttime_grades.md",
+   "type": "markdown",
+   "title": "notes_han2024_sleep_parttime_grades.md",
+   "group": "g1",
+   "role": "",
+   "summary": "같은 질문을 다룬 선행 연구 읽기 노트"
+  },
+  {
+   "id": "report/figures/predicted_vs_actual_grade.png",
+   "path": "report/figures/predicted_vs_actual_grade.png",
+   "type": "image",
+   "title": "predicted_vs_actual_grade.png",
+   "group": "g1",
+   "role": "",
+   "summary": "예측 성적 vs 실제 성적 그림"
+  },
+  {
+   "id": "report/figures/sleep_vs_grade_scatter.png",
+   "path": "report/figures/sleep_vs_grade_scatter.png",
+   "type": "image",
+   "title": "sleep_vs_grade_scatter.png",
+   "group": "g1",
+   "role": "",
+   "summary": "수면 시간 vs 성적 산점도"
+  },
+  {
+   "id": "report/final_report.md",
+   "path": "report/final_report.md",
+   "type": "markdown",
+   "title": "final_report.md",
+   "group": "g1",
+   "role": "",
+   "summary": "최종 보고서 (데이터 정제, 상관, 회귀 결과)"
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv",
+   "path": "data/clean_student_sleep_survey_2026.csv",
+   "type": "text",
+   "title": "clean_student_sleep_survey_2026.csv",
+   "group": "g2",
+   "role": "",
+   "summary": "정제한 설문 데이터 (28행)"
+  },
+  {
+   "id": "data/codebook.md",
+   "path": "data/codebook.md",
+   "type": "markdown",
+   "title": "codebook.md",
+   "group": "g2",
+   "role": "",
+   "summary": "원자료 설문 변수 설명"
+  },
+  {
+   "id": "data/raw_student_sleep_survey_2026.csv",
+   "path": "data/raw_student_sleep_survey_2026.csv",
+   "type": "text",
+   "title": "raw_student_sleep_survey_2026.csv",
+   "group": "g2",
+   "role": "",
+   "summary": "원자료 설문 데이터 (32행)"
+  },
+  {
+   "id": "src/clean_data.py",
+   "path": "src/clean_data.py",
+   "type": "python",
+   "title": "clean_data.py",
+   "group": "g3",
+   "role": "",
+   "summary": "원자료를 정제해 clean 파일을 만드는 코드"
+  },
+  {
+   "id": "src/features.py",
+   "path": "src/features.py",
+   "type": "python",
+   "title": "features.py",
+   "group": "g3",
+   "role": "",
+   "summary": "회귀에 쓸 변수 행렬을 만드는 코드"
+  },
+  {
+   "id": "notebooks/01_eda.ipynb",
+   "path": "notebooks/01_eda.ipynb",
+   "type": "notebook",
+   "title": "01_eda.ipynb",
+   "group": "g4",
+   "role": "",
+   "summary": "탐색적 분석 노트북 (상관, 산점도)"
+  },
+  {
+   "id": "notebooks/02_model.ipynb",
+   "path": "notebooks/02_model.ipynb",
+   "type": "notebook",
+   "title": "02_model.ipynb",
+   "group": "g4",
+   "role": "",
+   "summary": "선형 회귀 모델 노트북"
+  },
+  {
+   "id": "notes/ta_feedback.md",
+   "path": "notes/ta_feedback.md",
+   "type": "markdown",
+   "title": "ta_feedback.md",
+   "group": "g5",
+   "role": "",
+   "summary": "TA의 보고서 초안 피드백"
+  },
+  {
+   "id": "notes/team_meeting.md",
+   "path": "notes/team_meeting.md",
+   "type": "markdown",
+   "title": "team_meeting.md",
+   "group": "g5",
+   "role": "",
+   "summary": "팀 회의록: 역할 분담과 분석 방향 결정"
+  },
+  {
+   "id": "misc/hw1_solution.py",
+   "path": "misc/hw1_solution.py",
+   "type": "python",
+   "title": "hw1_solution.py",
+   "group": "g6",
+   "role": "",
+   "summary": "다른 과목 숙제 풀이 (과제와 무관)"
+  },
+  {
+   "id": "notes/personal_schedule.md",
+   "path": "notes/personal_schedule.md",
+   "type": "markdown",
+   "title": "personal_schedule.md",
+   "group": "g6",
+   "role": "",
+   "summary": "개인 주간 시간표 (과제와 무관)"
+  }
+ ],
+ "groups": [
+  {
+   "id": "g1",
+   "name": "보고서와 그림",
+   "members": [
+    "README.md",
+    "assignment/project_spec.pdf",
+    "references/notes_han2024_sleep_parttime_grades.md",
+    "report/figures/predicted_vs_actual_grade.png",
+    "report/figures/sleep_vs_grade_scatter.png",
+    "report/final_report.md"
+   ],
+   "origin": "ai",
+   "description": "과제의 결과물: 과제 명세, 최종 보고서와 그림, 참고 문헌 노트"
+  },
+  {
+   "id": "g2",
+   "name": "데이터 및 코드북",
+   "members": [
+    "data/clean_student_sleep_survey_2026.csv",
+    "data/codebook.md",
+    "data/raw_student_sleep_survey_2026.csv"
+   ],
+   "origin": "ai",
+   "description": "설문 원자료와 정제한 데이터, 변수 설명서"
+  },
+  {
+   "id": "g3",
+   "name": "데이터 정제·피처 코드",
+   "members": [
+    "src/clean_data.py",
+    "src/features.py"
+   ],
+   "origin": "ai",
+   "description": "원자료를 정제하고 회귀용 변수를 만드는 코드"
+  },
+  {
+   "id": "g4",
+   "name": "분석 노트북",
+   "members": [
+    "notebooks/01_eda.ipynb",
+    "notebooks/02_model.ipynb"
+   ],
+   "origin": "ai",
+   "description": "탐색 분석과 회귀 모델 노트북"
+  },
+  {
+   "id": "g5",
+   "name": "회의·피드백 노트",
+   "members": [
+    "notes/ta_feedback.md",
+    "notes/team_meeting.md"
+   ],
+   "origin": "ai",
+   "description": "팀 회의록과 TA 피드백"
+  },
+  {
+   "id": "g6",
+   "name": "관련 없음",
+   "members": [
+    "misc/hw1_solution.py",
+    "notes/personal_schedule.md"
+   ],
+   "origin": "ai",
+   "description": "과제와 상관없는 파일"
+  }
+ ],
+ "edges": [
+  {
+   "id": "data/raw_student_sleep_survey_2026.csv|src/clean_data.py",
+   "source": "src/clean_data.py",
+   "target": "data/raw_student_sleep_survey_2026.csv",
+   "relation": "uses",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.6,
+   "label": "clean_data.py가 원자료 CSV를 경로로 지정해 읽어 들입니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "src/clean_data.py",
+     "locator": "",
+     "quote": "\"\"\"Clean the raw STAT2101 student sleep survey. Run from the project root: python src/clean_data.py Reads data/raw_student_sleep_survey_2026.csv Writes data/clean_student_sleep_survey_2026.csv Steps: 1. parse messy numeric text (\"7h\", \"six and half\", \"N/A\", \"abc\") 2. drop invalid rows (m"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv|src/clean_data.py",
+   "source": "src/clean_data.py",
+   "target": "data/clean_student_sleep_survey_2026.csv",
+   "relation": "produces",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.9,
+   "label": "clean_data.py가 정제를 마친 데이터를 clean CSV로 저장합니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "src/clean_data.py",
+     "locator": "",
+     "quote": "the raw STAT2101 student sleep survey. Run from the project root: python src/clean_data.py Reads data/raw_student_sleep_survey_2026.csv Writes data/clean_student_sleep_survey_2026.csv Steps: 1. parse messy numeric text (\"7h\", \"six and half\", \"N/A\", \"abc\") 2. drop invalid rows (missing or"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/codebook.md|data/raw_student_sleep_survey_2026.csv",
+   "source": "data/codebook.md",
+   "target": "data/raw_student_sleep_survey_2026.csv",
+   "relation": "describes",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.9,
+   "label": "변수 설명서에 원자료 CSV의 이름과 각 열의 의미가 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "data/codebook.md",
+     "locator": "",
+     "quote": "# Codebook: Raw Student Sleep Survey 2026 **File:** `data/raw_student_sleep_survey_2026.csv` **Source:** Online survey of STAT2101 students, Hanbit University, Fall 2026 **Collection window:** 2026-09-21 to 2026-10-02 **Rows:** 32 respondent rows plus one header row **Unit of observation:** one stu"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv|data/codebook.md",
+   "source": "data/codebook.md",
+   "target": "data/clean_student_sleep_survey_2026.csv",
+   "relation": "describes",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.9,
+   "label": "정제 데이터도 원자료와 같은 열을 쓰므로 변수 설명서가 그대로 적용됩니다.",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv|notebooks/01_eda.ipynb",
+   "source": "notebooks/01_eda.ipynb",
+   "target": "data/clean_student_sleep_survey_2026.csv",
+   "relation": "uses",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.9,
+   "label": "EDA 노트북이 정제 데이터를 불러와 분석합니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notebooks/01_eda.ipynb",
+     "locator": "",
+     "quote": "urse_grade` (A2) 5. One EDA figure: sleep vs grade, colored by work load (A4) Run from the repository root or from `notebooks/`. The notebook reads `data/clean_student_sleep_survey_2026.csv` and saves the figure to `report/figures/sleep_vs_grade_scatter.png`."
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notebooks/01_eda.ipynb|report/figures/sleep_vs_grade_scatter.png",
+   "source": "notebooks/01_eda.ipynb",
+   "target": "report/figures/sleep_vs_grade_scatter.png",
+   "relation": "produces",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.9,
+   "label": "EDA 노트북이 수면–성적 산점도를 그려 그림 파일로 저장합니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notebooks/01_eda.ipynb",
+     "locator": "",
+     "quote": "load (A4) Run from the repository root or from `notebooks/`. The notebook reads `data/clean_student_sleep_survey_2026.csv` and saves the figure to `report/figures/sleep_vs_grade_scatter.png`."
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notebooks/02_model.ipynb|src/features.py",
+   "source": "notebooks/02_model.ipynb",
+   "target": "src/features.py",
+   "relation": "uses",
+   "reason": "imports",
+   "direct": true,
+   "score": 0.6,
+   "label": "모델 노트북이 features.py의 함수를 불러와 회귀 변수를 만듭니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notebooks/02_model.ipynb",
+     "locator": "",
+     "quote": "port DummyRegressor from sklearn.model_selection import LeaveOneOut, cross_val_predict from sklearn.metrics import mean_squared_error, r2_score from src.features import build_feature_matrix, add_sleep_deficit, add_work_heavy SEED = 2026 np.random.seed(SEED) print(\"numpy\", np.__version__, \"| pandas"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv|notebooks/02_model.ipynb",
+   "source": "notebooks/02_model.ipynb",
+   "target": "data/clean_student_sleep_survey_2026.csv",
+   "relation": "uses",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.6,
+   "label": "모델 노트북이 정제 데이터를 불러와 회귀 모델을 학습합니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notebooks/02_model.ipynb",
+     "locator": "",
+     "quote": "els because the sample is small and the coefficients are easy to interpret. Run the EDA notebook first, and make sure the cleaned data file exists (`data/clean_student_sleep_survey_2026.csv`) before running this notebook."
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notebooks/02_model.ipynb|report/figures/predicted_vs_actual_grade.png",
+   "source": "notebooks/02_model.ipynb",
+   "target": "report/figures/predicted_vs_actual_grade.png",
+   "relation": "produces",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.6,
+   "label": "모델 노트북이 예측 성적 vs 실제 성적 그림을 저장합니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notebooks/02_model.ipynb",
+     "locator": "",
+     "quote": "acecolor=\"white\", alpha=0.9)) ax.legend(loc=\"lower right\", fontsize=11) ax.grid(alpha=0.3) os.makedirs(\"report/figures\", exist_ok=True) fig.savefig(\"report/figures/predicted_vs_actual_grade.png\", dpi=200, bbox_inches=\"tight\") plt.show()"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "report/figures/sleep_vs_grade_scatter.png|report/final_report.md",
+   "source": "report/final_report.md",
+   "target": "report/figures/sleep_vs_grade_scatter.png",
+   "relation": "uses",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.9,
+   "label": "최종 보고서에 수면–성적 산점도가 그림으로 들어가 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "report/final_report.md",
+     "locator": "",
+     "quote": "ared with 76.9 for the other 19. Eleven students sleep less than 7 hours a night. ![Figure 1. Sleep vs course grade (n = 28), colored by work_heavy](figures/sleep_vs_grade_scatter.png) *Figure 1. Blue points: under 15 work hours per week. Orange points: 15 or more. The black line is the regression"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "report/figures/predicted_vs_actual_grade.png|report/final_report.md",
+   "source": "report/final_report.md",
+   "target": "report/figures/predicted_vs_actual_grade.png",
+   "relation": "uses",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.9,
+   "label": "최종 보고서에 예측 vs 실제 그림이 들어가 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "report/final_report.md",
+     "locator": "",
+     "quote": "work_hours | −0.48 per hour | | study_hours | +1.05 per hour | ![Figure 2. Linear model: predicted vs actual grade (LOO-CV), RMSE = 6.42, R2 = 0.41](figures/predicted_vs_actual_grade.png) *Figure 2. Points close to the dashed 45-degree line are predicted well. The annotation gives the LOO-CV RMSE"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notebooks/02_model.ipynb|report/final_report.md",
+   "source": "report/final_report.md",
+   "target": "notebooks/02_model.ipynb",
+   "relation": "describes",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.6,
+   "label": "보고서의 결과 절이 모델 노트북에서 나온 수치를 그대로 보고합니다.",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "assignment/project_spec.pdf|report/final_report.md",
+   "source": "report/final_report.md",
+   "target": "assignment/project_spec.pdf",
+   "relation": "implements",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.9,
+   "label": "보고서가 과제 명세에서 요구한 절 구성과 분석을 따릅니다.",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "README.md|src/clean_data.py",
+   "source": "README.md",
+   "target": "src/clean_data.py",
+   "relation": "describes",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.6,
+   "label": "README에 정제 스크립트 실행 방법이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "README.md",
+     "locator": "",
+     "quote": "equires Python 3.11. ```bash git clone <repo-url> SleepWork-Grade cd SleepWork-Grade pip install pandas numpy scikit-learn matplotlib jupyter python src/clean_data.py jupyter notebook notebooks/ ``` Then: 1. Run the EDA notebook first. It prints `describe()` and the correlation matrix and saves t"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "README.md|report/final_report.md",
+   "source": "README.md",
+   "target": "report/final_report.md",
+   "relation": "describes",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.9,
+   "label": "README에 최종 보고서 위치가 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "README.md",
+     "locator": "",
+     "quote": "eaned dataset src/ cleaning script and feature functions notebooks/ exploratory analysis and model notebooks report/ final_report.md and report/figures/ ```"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notes/ta_feedback.md|report/final_report.md",
+   "source": "notes/ta_feedback.md",
+   "target": "report/final_report.md",
+   "relation": "describes",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.6,
+   "label": "TA 피드백에 보고서의 특정 절과 수치에 대한 수정 사항이 적혀 있습니다.",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notes/team_meeting.md|src/features.py",
+   "source": "notes/team_meeting.md",
+   "target": "src/features.py",
+   "relation": "describes",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.6,
+   "label": "팀 회의에서 변수 만들기(features.py) 작업 담당을 정했습니다.",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "assignment/project_spec.pdf|notes/team_meeting.md",
+   "source": "notes/team_meeting.md",
+   "target": "assignment/project_spec.pdf",
+   "relation": "describes",
+   "reason": "mentions",
+   "direct": true,
+   "score": 0.9,
+   "label": "팀 회의록에 과제 명세 PDF와 마감일이 언급되어 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notes/team_meeting.md",
+     "locator": "",
+     "quote": "## 1. 프로젝트 개요 - 연구 질문: 주중 평균 수면 시간과 주당 아르바이트 시간이 STAT2101 최종 성적을 예측하는가? - 데이터: STAT2101 수강생 온라인 설문 (2026-09-21 ~ 2026-10-02), 원자료 32행 - 과제 명세: `assignment/project_spec.pdf` (\"STAT2101 Term Project Specification\") - 보고서 필수 섹션 순서: 1 Question, 2 Data, 3 Methods, 4 Results, 5 Discussion, 6 Limitations"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "references/notes_han2024_sleep_parttime_grades.md|report/final_report.md",
+   "source": "report/final_report.md",
+   "target": "references/notes_han2024_sleep_parttime_grades.md",
+   "relation": "compares",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.9,
+   "label": "보고서가 결과를 같은 질문을 다룬 선행 연구(Han & Oh 2024)와 비교합니다.",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notes/team_meeting.md|report/final_report.md",
+   "source": "notes/team_meeting.md",
+   "target": "report/final_report.md",
+   "relation": "describes",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.6,
+   "label": "보고서가 팀 회의에서 정한 연구 질문, 방법, 그림 형식을 따릅니다.",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "README.md|notebooks/02_model.ipynb",
+   "source": "README.md",
+   "target": "notebooks/02_model.ipynb",
+   "relation": "describes",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.6,
+   "label": "README가 모델링 방법과 결과(교차검증, RMSE, R²)를 요약하고, 재현 방법으로 모델 노트북을 안내합니다.",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notes/ta_feedback.md|references/notes_han2024_sleep_parttime_grades.md",
+   "source": "notes/ta_feedback.md",
+   "target": "references/notes_han2024_sleep_parttime_grades.md",
+   "relation": "describes",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.6,
+   "label": "TA 피드백이 선행 연구와의 비교를 요청했고, 그 근거는 선행 연구 노트에 있습니다.",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "README.md|notebooks/01_eda.ipynb",
+   "source": "README.md",
+   "target": "notebooks/01_eda.ipynb",
+   "relation": "describes",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.6,
+   "label": "README의 재현 순서에 EDA 노트북 실행이 포함되어 있습니다.",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  }
+ ]
+}

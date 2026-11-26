@@ -1,0 +1,1266 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>연구 폴더 정리 스터디</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.9/standalone/umd/vis-network.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<style>
+/*CSS*/
+/* ---- v2 ---- */
+#hback{margin-left:14px;padding:3px 10px;font-size:12.5px} #hback[hidden]{display:none}
+.graph-caption strong#gcap{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.ik{display:inline-block;font-size:12px;font-weight:700;color:#173022;background:#8fd6a8;border-radius:5px;padding:2px 8px;margin-right:9px;vertical-align:3px}
+.fbcols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:8px 0 12px}
+.fbcols>div{border:1px solid var(--line);background:#26252b;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.fbcols b{font-size:16px;color:#fff} .fbcols svg{margin:6px 0 4px;background:#1f1f22;border-radius:6px}
+.fbcols span{font-size:14px;line-height:1.55;color:#dcdcdc} .fbcols span.w{color:#cbb8ff;font-weight:600;font-size:13.5px}
+.svfoot #svback{flex:none}
+.todo.guide .th{display:flex;align-items:center} .gnav{margin-left:auto;display:flex;align-items:center;gap:2px}
+.gnav button{border:0;background:transparent;color:#d9c9ff;width:24px;height:22px;padding:0;font-size:17px;line-height:1;border-radius:5px} .gnav button:hover:not(:disabled){background:#4a3e66} .gnav button:disabled{opacity:.25;cursor:default}
+.gnav .tp{margin:0 2px!important}
+.todo.guide .tcur{min-height:146px;height:auto} .todo.guide .gm{margin:0;font-size:14px;line-height:1.62;color:#ececec;font-weight:400}
+.todo.guide .gm b{color:#fff;font-weight:700}
+.todo.guide .ga{margin:8px 0 0;padding-top:8px;border-top:1px dashed #5b4b7c;font-size:13px;line-height:1.55;color:#e8c58f;font-weight:600}
+.todo.guide .tcur.past .gm,.todo.guide .tcur.past .ga{opacity:.7}
+.tourbub .tt p.big{font-size:16.5px;line-height:1.7;color:#fff}
+.abc{display:flex;align-items:center;gap:6px;margin:4px 0 14px} .abc span{padding:5px 12px;border-radius:7px;background:#3a3150;border:1px solid #6b5aa0;color:#fff;font-weight:700;font-size:13.5px} .abc em{font-style:normal;color:var(--muted);margin:0 4px} .abc .go{background:var(--oksoft);border-color:var(--ok);color:#bfe6cf}
+.fold{padding:12px 14px;border:1px solid var(--line);background:#26252b;border-radius:10px;margin:0 0 10px} .fold .fk{font-size:12px;font-weight:700;color:#cbb8ff;margin-bottom:4px} .fold .fw{font-size:14.5px;color:#fff;line-height:1.6} .fold .flow{margin:10px 0 0}
+.foldside{font-size:13px;color:var(--sub);line-height:1.6;padding:2px 2px 6px} .foldside .flow{margin:8px 0} .foldside .dirs{margin-top:6px}
+.tourbub.wide,.tourbub.center.wide{width:min(1020px,calc(100vw - 24px))}
+.rev3 .noimg{display:flex;align-items:center;justify-content:center;font-size:12.5px;color:var(--muted)}
+.rev3{gap:16px} .rev3>div{padding:12px} .rev3 .rl{font-size:12px;font-weight:700;color:#cbb8ff} .rev3 b{font-size:16px;margin-top:-2px} .rev3 span{display:block;font-size:14px;line-height:1.6;color:#dcdcdc}
+.checkpt.big{margin:12px 0 14px;padding:14px 16px;border:1.5px solid #c48a3c;background:#35291a;border-radius:10px}
+.checkpt.big .ck{font-size:15px;font-weight:800;color:#ffc77a;margin-bottom:8px}
+.checkpt.big .cl{grid-template-columns:64px 1fr;font-size:14px;margin:4px 0} .checkpt.big .cl b{color:#e8b878}
+.checkpt.big .cask{margin-top:10px;padding-top:10px;border-top:1px solid #6b5230;font-size:15.5px;font-weight:700;line-height:1.6;color:#fff}
+.chsum{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.chsum .cs{border-radius:10px;padding:10px 14px;border:1px solid} .chsum .cs b{display:block;font-size:24px;line-height:1.1} .chsum .cs span{font-size:12.5px;color:var(--sub)}
+.chsum .direct{border-color:#7b65b8;background:#2e2840} .chsum .direct b{color:#c4a8ff} .chsum .auto{border-color:#a0702d;background:#33291b} .chsum .auto b{color:#ffa940}
+.rh{margin:16px 0 6px;font-size:13.5px;font-weight:700;color:var(--text)} .rh span{font-weight:400;font-size:12px;color:var(--muted);margin-left:6px} .rh.direct{color:#c4a8ff} .rh.auto{color:#ffb25c}
+.chgs{display:flex;flex-direction:column;gap:6px}
+.chg{border:1px solid var(--line);border-left:3px solid #ffa940;border-radius:8px;background:#28272c} .chg.direct{border-left-color:#c4a8ff}
+.chg summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:9px 12px} .chg summary::-webkit-details-marker{display:none}
+.chg summary:hover{background:#302e35} .chg .cn{flex:1;min-width:0;font-weight:600;font-size:14px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chg .cc{flex:none;font-size:12px;font-weight:700;padding:2px 8px;border-radius:12px;background:#3b3220;color:#ffc77a} .chg .cc.up{background:#22352a;color:#8fdcaa}
+.chg .cb{padding:0 12px 10px;font-size:13px;color:var(--sub);display:flex;flex-direction:column;gap:5px} .chg .cb .why{color:var(--text);line-height:1.55}
+.chg .dis{display:flex;gap:6px;align-items:center;padding:0 12px 9px;font-size:12px;color:var(--muted)}
+.todo.guide{border:1.5px solid #8a70d6;background:linear-gradient(180deg,#352c4c,#2a2538);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.todo.guide .th{font-size:12.5px;color:#d9c9ff}
+.todo.guide .tcur{font-size:14px;font-weight:500;color:#f2f2f2;line-height:1.6;min-height:146px;word-break:keep-all}
+.todo.guide .tcur b{color:#fff;font-weight:700}
+.todo.guide .tcur span{display:block;margin-top:4px;font-size:13px;color:#b9b2c9;font-weight:400}
+@keyframes guidein{0%{box-shadow:0 0 0 0 rgba(180,154,244,.0)}30%{box-shadow:0 0 0 5px rgba(180,154,244,.55)}100%{box-shadow:0 6px 18px rgba(0,0,0,.25)}}
+.todo.guide.fresh{animation:guidein 1.1s ease-out 2}
+.fixbar.nudge{animation:fixglow 1.5s ease-in-out infinite;border-color:#e0a458!important}
+@keyframes fixglow{0%,100%{box-shadow:0 8px 16px #0006,inset 0 0 0 0 rgba(224,164,88,0)}50%{box-shadow:0 8px 16px #0006,inset 0 0 0 2px rgba(224,164,88,.85)}}
+.tourbub.wide{width:min(880px,calc(100vw - 24px))}
+.rev3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0 2px}
+.rev3>div{border:1px solid var(--line);background:#26252b;border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.rev3>div.ours{border-color:#6b5aa0}
+.rev3 img,.rev3 .noimg{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px;background:#1c1c1e;border:1px solid var(--line)}
+.rev3 b{font-size:14px;color:#fff} .rev3 span{font-size:13px;line-height:1.55;color:var(--sub)}
+.page{background:radial-gradient(900px 420px at 50% -120px,#2c2542 0%,rgba(30,30,30,0) 70%),var(--bg)}
+.page>.paper{background:#232326;border:1px solid var(--line);border-radius:16px;padding:30px 36px 28px;box-shadow:0 18px 50px rgba(0,0,0,.35);align-self:flex-start}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--accent);margin:0 0 6px}
+.pcnote{margin:0 0 14px;padding:10px 14px;border:1px solid #3d3552;background:#29253a;border-radius:8px;font-size:13.5px;color:var(--sub);line-height:1.6} .pcnote b{color:#fff}
+.narrow{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);z-index:50;padding:8px 14px;border-radius:8px;background:var(--warnsoft);border:1px solid #6b5230;color:var(--warn);font-size:13px} .narrow[hidden]{display:none}
+.seerow{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 2px} .seerow #seeChg{margin:0}
+.whybox .say{min-height:6.4em} .whybox .say.muted{color:var(--muted)!important}
+.sv{max-width:700px} .sv .svh{display:flex;align-items:center;gap:10px;margin:26px 0 8px;font-size:13px;font-weight:600;color:var(--sub)}
+.sv .svh span{font-size:11.5px;font-weight:700;color:#d4bfff;background:var(--accsoft);border-radius:20px;padding:3px 10px}
+.sv .q{border:1px solid var(--line);background:#28282c;border-radius:12px;padding:16px 18px 14px;margin:0 0 10px;transition:border-color .15s}
+.sv .q:has(input:checked),.sv .q:has(textarea:not(:placeholder-shown)){border-color:#4d4166}
+.sv .q b{font-size:15px;font-weight:600;color:var(--text);line-height:1.55;margin-bottom:4px}
+.sv .scale{gap:6px;margin:12px 0 6px}
+.sv .scale label{position:relative;border:1px solid var(--line2);border-radius:8px;padding:9px 0;font-size:14px;font-weight:600;color:var(--sub);background:#2f2f34}
+.sv .scale label:hover{background:#38353f}
+.sv .scale input{position:absolute;opacity:0;pointer-events:none;margin:0}
+.sv .scale label:has(input:checked){background:var(--accent);border-color:var(--accent);color:#1e1e1e}
+.sv .scale-ends{margin-top:2px}
+.sv textarea{margin-top:8px;border-radius:8px;min-height:70px;background:#1f1f22;padding:10px 12px;line-height:1.55}
+.svfoot{position:sticky;bottom:0;margin:18px -36px -28px;padding:14px 36px;background:#26252b;border-top:1px solid var(--line);border-radius:0 0 16px 16px;display:flex;align-items:center;gap:12px}
+.svfoot .err{margin:0;flex:1;text-align:right} .svfoot #send{min-width:140px}
+.svcount{font-size:12.5px;color:var(--muted)} .svcount.ok{color:var(--ok)}
+.page:has(.introp){padding-top:20px;padding-bottom:20px} .page>.paper.introp{padding:24px 32px 20px} .introp .q{padding:11px 0} .introp .q b{margin-bottom:6px} .introp .opts{display:flex!important;flex-wrap:wrap;gap:4px 22px} .introp .lead2{margin-bottom:12px}
+.introp{max-width:660px} .lead2{font-size:15px;color:var(--sub);line-height:1.7;margin:0 0 18px} .lead2 b{color:var(--text)}
+.introp .terms{margin-bottom:6px}
+.pnav{display:flex;align-items:center;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid var(--line)} .pnav #pnext2{margin-left:auto} .pnav #pprev+#pnext2{margin-left:0}
+.pdots2{display:flex;gap:6px;margin-right:auto} .pdots2 i{width:8px;height:8px;border-radius:50%;background:var(--line2)} .pdots2 i.on{background:var(--accent)}
+.tin{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:9px 12px;font-size:14px}
+.endp{text-align:center;max-width:560px;padding-top:60px} .endp .pidbox{text-align:left;margin:18px auto} .endp .actions{justify-content:center}
+.spin{width:38px;height:38px;margin:0 auto 18px;border:3px solid var(--line2);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite} @keyframes spin{to{transform:rotate(360deg)}}
+.okmark{width:46px;height:46px;margin:0 auto 14px;border-radius:50%;background:var(--oksoft);border:1px solid var(--ok);color:var(--ok);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
+.fixbar .fh span{display:block;font-weight:400;font-size:11.5px;color:var(--muted);margin-top:1px}
+.fb3 small{display:block;text-align:center;font-size:11px;color:var(--muted);line-height:1.35}
+.checkpt .ck{font-weight:700;color:#f2b866;margin-bottom:6px} .checkpt .cl{display:grid;grid-template-columns:82px 1fr;gap:8px;font-size:13.5px;line-height:1.55;color:var(--text);margin:3px 0} .checkpt .cl b{color:#e0b980;font-weight:600}
+#seeChg{margin:4px 0 2px}
+.todo .th{display:flex;align-items:center} .todo .tp{margin-left:auto;font-weight:600;color:var(--muted);font-size:11.5px}
+.todo .tcur{font-size:14.5px;font-weight:600;color:#fff;line-height:1.55;min-height:45px}
+.todo .tdots{display:flex;gap:5px;margin-top:8px} .todo .tdots i{width:18px;height:4px;border-radius:2px;background:var(--line2)} .todo .tdots i.ok{background:var(--ok)} .todo .tdots i.now{background:var(--accent)}
+@keyframes nudge{0%,100%{box-shadow:0 0 0 0 rgba(224,164,88,0)}50%{box-shadow:0 0 0 4px rgba(224,164,88,.75)}}
+.nudge{animation:nudge 1.5s ease-in-out infinite;border-color:#e0a458!important;position:relative;z-index:2}
+.intents{display:flex;flex-direction:column;gap:6px}
+.intent{display:flex;gap:10px;align-items:center;padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:#232326;color:var(--muted)}
+.intent .n{flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--line2);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.intent b{display:block;font-size:14px;color:var(--sub);font-weight:600} .intent span:not(.n){font-size:12px}
+.intent.on{border-color:#8768ca;background:#2f2840} .intent.on b{color:#fff} .intent.on .n{background:var(--accent);border-color:var(--accent);color:#1e1e1e}
+.intent.done .n{background:var(--oksoft);border-color:var(--ok);color:var(--ok)}
+.tourbub .intents{margin:6px 0 4px} .tourbub .intent{background:#2a2930}
+details.setupd{margin-top:10px} details.setupd>summary{cursor:pointer;font-size:12.5px;color:var(--accent)} details.setupd .setupq{margin-top:8px}
+.pstat .pk{font-size:12px;font-weight:600;color:#8fd6a8} .pstat .pw{font-size:16px;font-weight:700;color:#fff;margin:3px 0 2px;line-height:1.45} .pstat .ps{font-size:12px;color:var(--muted)}
+.ptabs{gap:4px;padding:6px 10px!important}
+.ptabs>span{padding:0 6px}
+.ptabs button{border:0;background:transparent;color:var(--muted);padding:6px 14px;border-radius:7px;font-weight:600;font-size:13.5px}
+.ptabs button.on{background:#3a3150;color:#fff}
+.ptabs button.attn{color:#fff;background:#5a3f9e;box-shadow:0 0 0 0 #b49af4;animation:glow 1.6s ease-in-out infinite}
+#iscroll[hidden],.qpane[hidden]{display:none}
+.qpane{flex:1;min-height:0;display:flex;flex-direction:column}
+.qscroll{flex:1;overflow:auto;padding:20px 22px}
+.qfoot{flex:none;border-top:1px solid var(--line);padding:12px 20px;background:#2b2a2f;box-shadow:0 -8px 18px #0005}
+.qfoot .err{min-height:0;margin:0 0 6px} .qfoot .err:empty{display:none}
+.qintro{font-size:14px;color:var(--text);line-height:1.65;margin:0 0 6px;padding:10px 14px;border-left:3px solid var(--accent);background:#2a2635;border-radius:0 8px 8px 0}
+.qintro b{color:#fff}
+.qpane .qblk{padding:16px 0 4px;border-top:1px solid var(--line);margin:12px 0 0}
+.qpane .qintro+.qblk{border-top:0;margin-top:4px}
+.qpane .qblk .qh{font-size:15px;margin-bottom:10px;line-height:1.5}
+.qpane .r3row>span:first-child{width:54px;font-size:13.5px}
+.qpane .r3row .b button{width:36px;padding:6px 0;font-size:14px}
+.qpane .r3row.solo>span.b{width:auto}
+.qpane .q7ends{width:270px;margin-left:62px;font-size:12px} .qpane .q7ends.solo{margin-left:0}
+.qpane .choices label{font-size:14px;padding:8px 12px}
+.qpane textarea{font-size:14px;min-height:72px}
+.qpane textarea.short{height:60px;min-height:60px}
+.qpane .pickm{display:grid;grid-template-columns:repeat(3,1fr);gap:8px} .qpane .pickm label{justify-content:center;padding:9px 0;font-size:14.5px;font-weight:600}
+.gdesc{margin-top:10px;max-width:min(560px,100%);padding:9px 13px;background:rgba(36,34,42,.94);border:1px solid #4f4566;border-radius:9px;display:flex;flex-direction:column;gap:3px;pointer-events:auto}
+.gdesc[hidden]{display:none}
+.gdesc div{display:grid;grid-template-columns:78px 1fr;gap:8px;font-size:13.5px;color:#e6e6e6;line-height:1.55}
+.gdesc b{color:#cbb8ff;font-weight:600}
+.todo{border:1px solid #5b4b7c;background:#2a2635;border-radius:10px;padding:12px 14px}
+.todo .th{font-size:12px;font-weight:700;color:#cbb8ff;letter-spacing:.3px;margin-bottom:8px}
+.todo ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.todo li{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;color:var(--muted);line-height:1.5}
+.todo li .n{flex:none;width:20px;height:20px;border-radius:50%;border:1px solid var(--line2);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-top:1px}
+.todo li.cur{color:var(--text);font-weight:600} .todo li.cur .n{background:var(--accent);border-color:var(--accent);color:#1e1e1e}
+.todo li.done{color:#8fc7a8} .todo li.done .n{background:var(--oksoft);border-color:var(--ok);color:var(--ok)}
+.sh{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.3px;margin:0 0 8px}
+.say{margin:0 0 10px!important;font-size:13.5px!important;color:var(--sub)!important;line-height:1.6}
+.desc{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;font-size:13.5px;color:var(--sub);line-height:1.55}
+.desc li{display:grid;grid-template-columns:72px 1fr;gap:8px} .desc b{color:var(--text);font-weight:600}
+.qblk{margin:0 0 16px} .qblk .qh{font-size:13.5px;font-weight:600;color:var(--text);margin:0 0 7px}
+.r3row.solo{margin:0} .r3row.solo>span.b{width:auto;flex:none} .q7ends.solo{margin-left:0}
+.choices{display:flex;flex-direction:column;gap:5px}
+.choices label{display:flex;gap:8px;align-items:center;padding:6px 10px;border:1px solid var(--line);border-radius:7px;font-size:13px;cursor:pointer;color:var(--sub)}
+.choices label:has(input:checked){border-color:#8768ca;background:#2f2840;color:var(--text)} .choices input{accent-color:#a88be5}
+.fixbar{position:sticky;top:-20px;z-index:3;margin:12px -20px 14px;padding:12px 20px 10px;background:#2c2738;border-top:1px solid #5b4b7c;border-bottom:1px solid #5b4b7c;box-shadow:0 8px 16px #0006}
+.fixbar .fh{font-size:12.5px;font-weight:600;color:#d4bfff;margin-bottom:7px}
+.fb3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px} .fb3 button{padding:7px 0;font-weight:600;border-color:#6b5aa0;background:#3a3150}
+.fb3 button:hover{background:#4b3f68}
+.fixbar .fixdef{display:block;margin-top:7px;font-size:11.5px;color:var(--muted);line-height:1.5}
+button.linkish{border:0;background:none;padding:4px 0 0;color:var(--accent);font-size:12.5px} button.linkish:hover{background:none;text-decoration:underline}
+.fixbar .fixmore{margin-top:8px}
+.fixmore[hidden]{display:none}
+.taskfoot{flex:none;border-top:1px solid var(--line);padding:12px 16px;background:#2b2a2f;box-shadow:0 -8px 18px #0005}
+.taskfoot[hidden]{display:none}
+.taskfoot .err{min-height:0;margin:0 0 6px} .taskfoot .err:empty,.taskfoot .hint:empty{display:none} .taskfoot .hint{margin:0 0 8px}
+.fixpanel{margin:14px 0 6px!important;padding:12px 14px!important;border:1px solid #4a4256!important;border-radius:10px;background:#2a2730}
+.fixpanel h3{margin:0 0 8px!important;color:var(--text)!important}
+.fixpanel .row{margin:0 0 8px}
+.fixdef{display:flex;flex-direction:column;gap:2px;font-size:12px;color:var(--muted)} .fixdef b{color:var(--sub);font-weight:600;margin-right:6px}
+.taskpane .pickm{display:grid;grid-template-columns:repeat(3,1fr);gap:6px} .taskpane .pickm label{justify-content:center;padding:7px 0}
+.plan{display:flex;flex-direction:column;gap:8px;margin:6px 0 8px}
+.plan>div{display:flex;gap:12px;align-items:flex-start;padding:8px 14px;background:var(--bg);border:1px solid var(--line);border-radius:8px}
+.plan b{flex:none;width:24px;height:24px;border-radius:50%;background:var(--accsoft);color:#d4bfff;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+.plan span{font-size:13.5px;color:var(--sub);line-height:1.6} .plan em{display:block;font-style:normal;font-weight:600;color:var(--text)}
+.tourhl{position:fixed;z-index:80;border-radius:10px;box-shadow:0 0 0 9999px rgba(0,0,0,.6);outline:2px solid var(--accent);pointer-events:none;transition:left .25s,top .25s,width .25s,height .25s}
+.tourblk{position:fixed;z-index:80}
+.tourhl.full{inset:0;outline:none;border-radius:0;box-shadow:none;background:rgba(0,0,0,.6)}
+.tourbub{position:fixed;z-index:81;width:min(410px,calc(100vw - 24px));background:var(--panel);border:1px solid #6b5aa0;border-radius:12px;padding:16px 18px;box-shadow:0 18px 50px #000b}
+.tourbub.center{left:50%;top:50%;transform:translate(-50%,-50%);width:min(720px,calc(100vw - 32px));max-height:calc(100vh - 40px);overflow:auto;padding:26px 30px}
+.tourbub .tk{font-size:12.5px;color:#cbb8ff;font-weight:700;letter-spacing:.3px}
+.tourbub h3{margin:4px 0 8px;font-size:18px;font-weight:700;color:#fff} .tourbub.center h3{font-size:24px;margin-bottom:14px}
+.tourbub .tt{font-size:15px;line-height:1.75;color:#e6e6e6} .tourbub .tt b{color:#fff;font-weight:700} .tourbub .tt p{margin:0 0 12px}
+.tourbub.center .tt{font-size:15.5px} .tourbub .tt .hint{font-size:13px} .tourbub .chg3 div{font-size:14px;color:#e6e6e6} .tourbub .chg3 b{color:#cbb8ff;font-size:13px}
+.tourbub .tf{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.tourbub .do{font-size:14px;color:#f2b866;font-weight:700}
+.tabsbox{display:flex;align-items:center;gap:10px} .tablbl{font-size:12.5px;color:var(--muted)}
+.ttabs.big{border-color:#5b4b7c;padding:3px} .ttabs.big button{padding:6px 22px;font-size:15px;font-weight:600}
+.bigtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.bigtabs button{padding:9px 0;font-size:14px;font-weight:600;border-radius:8px}
+.bigtabs button.on{background:#493b65;border-color:#8768ca;color:#fff}
+.bigtabs i{font-style:normal;color:var(--ok);margin-left:5px;font-size:12px} .bigtabs button.on i{color:#bff0d2}
+.lead1{color:var(--text)!important;font-size:14.5px!important;line-height:1.6;margin:0}
+button.wide{width:100%;padding:9px 0;font-size:14px}
+.qh{font-size:13.5px!important;color:var(--text)!important;letter-spacing:0!important;margin:0 0 8px!important;font-weight:600}
+.r3row{display:flex;align-items:center;gap:8px;margin:5px 0}
+.r3row>span:first-child{width:50px;font-size:13px;color:var(--sub);flex:none}
+.r3row.now>span:first-child{color:#d4bfff;font-weight:600}
+.r3row .b{display:flex;gap:3px} .r3row .b button{width:29px;padding:3px 0;font-size:12.5px;border-radius:6px}
+.r3row .b button.on{background:var(--accdeep);border-color:#8768ca;color:#fff}
+.q7ends{display:flex;justify-content:space-between;width:227px;margin-left:58px;font-size:11px;color:var(--muted)}
+.tourbub .flow{margin:4px 0 12px} .tourbub .dirs{margin:4px 0 14px}
+.workspace{--cardh:40px}
+.taskpane{width:330px;flex:none;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.taskpane .pane-title{gap:8px;font-weight:600}
+.dotlbl{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+.task-scroll{overflow:auto;flex:1;min-height:0}
+#sidebody .sidebox{padding:14px 16px 16px;border-bottom:1px solid var(--line)}
+#sidebody .sidebox p{font-size:13.5px}
+.side-sec{border-bottom:1px solid var(--line)}
+.side-sec>summary{cursor:pointer;padding:10px 16px;font-size:12px;letter-spacing:.5px;color:var(--muted);font-weight:600;list-style:none}
+.side-sec>summary::before{content:"▸ ";font-size:10px} .side-sec[open]>summary::before{content:"▾ "}
+.side-sec #legendWrap,.side-sec .file-tree{padding:0 10px 10px}
+.side-sec .search-box{margin:0 12px 8px}
+.taskpane .cardgrid{grid-template-columns:1fr;gap:14px}
+.taskpane .r7{grid-template-columns:1fr;gap:3px}
+.taskpane .r7>span:not(.b):not(.r7ends){margin-top:6px}
+.taskpane .r7ends{grid-column:1;width:229px}
+.taskpane .issue{flex-wrap:wrap;gap:6px 8px}
+.taskpane .issue .nm{flex-basis:calc(100% - 32px);white-space:normal;overflow-wrap:anywhere}
+.taskpane .issue .stt{flex:1}
+.taskpane .tabstat span{font-size:11.5px}
+.handmark{margin-left:auto;font-size:11px;font-weight:600;color:var(--warn);border:1px solid #6b5230;background:var(--warnsoft);border-radius:4px;padding:1px 7px}
+.handmark+.header-note{margin-left:10px}
+.ttabs{display:inline-flex;border:1px solid var(--line);border-radius:7px;padding:2px;background:var(--rail);gap:2px}
+.ttabs[hidden]{display:none}
+.ttabs button{border:0;background:transparent;padding:4px 14px;color:var(--muted);border-radius:5px}
+.ttabs button[aria-pressed="true"]{background:#493b65;color:#e1d3ff;font-weight:600}
+.ttabs button .ok{color:var(--ok);margin-left:4px}
+.r7{display:grid;grid-template-columns:minmax(150px,1fr) auto;align-items:center;gap:6px 14px;font-size:13.5px}
+.r7 .b{display:flex;gap:3px} .r7 .b button{width:30px;padding:3px 0;border-radius:6px;font-size:12.5px}
+.r7 .b button.on{background:var(--accdeep);border-color:#8768ca;color:#fff}
+.r7ends{grid-column:2;display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:-4px}
+.cardgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px}
+.cardgrid h4,.sidebox h4{margin:0 0 6px;font-size:12px;letter-spacing:.4px;color:var(--muted);font-weight:600}
+.ul{margin:0;padding-left:18px;color:var(--sub);font-size:13.5px} .ul li{margin:3px 0}
+.tabstat{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tabstat span{font-size:12px;padding:2px 10px;border:1px solid var(--line);border-radius:12px;color:var(--muted)}
+.tabstat span.ok{color:var(--ok);border-color:#3f6a55;background:var(--oksoft)}
+.tabstat span.now{color:var(--text);border-color:#6b5aa0}
+.cardfoot{display:flex;align-items:center;gap:12px;margin-top:12px}
+.cardfoot .hint{flex:1}
+.setupq{display:flex;flex-direction:column;gap:6px}
+.setupq>div>span{font-size:12px;color:var(--muted)}
+.setupq .a{font-size:13.5px;line-height:1.5;color:var(--text);border-left:3px solid #6b5aa0;padding:1px 0 1px 9px;margin-top:2px}
+.sidebox textarea.short{min-height:34px;height:34px;margin-top:8px}
+.changeList{list-style:none;margin:6px 0 10px;padding:0}
+.changeList li{padding:8px 0;border-top:1px solid var(--line);font-size:13px}
+.changeList li b{font-weight:600;cursor:pointer} .changeList li b:hover{color:var(--accent)}
+.changeList .st{color:var(--sub);margin-top:2px}
+.changeList .dis{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted);margin-top:4px;cursor:pointer}
+.changeList li.auto{border-left:3px solid var(--warn);padding-left:8px}
+.changeList li.direct{border-left:3px solid var(--accent);padding-left:8px}
+details.rep{margin:10px 0} details.rep>summary{cursor:pointer;font-weight:600;font-size:13.5px}
+.repnote{font-size:13px;color:var(--sub);padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.fixpanel{margin-top:22px;padding-top:6px;border-top:1px solid var(--line)}
+.fixpanel .row button{border-radius:6px}
+.fixmore{margin-top:8px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);display:flex;flex-direction:column;gap:8px}
+.fixmore .line{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.fixmore select,.fixmore input{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:4px 8px;max-width:100%}
+.fixmore input{flex:1;min-width:120px}
+.checkpt{margin:10px 0 0;padding:10px 12px;border:1px solid #8a6a3a;background:var(--warnsoft);border-radius:8px;font-size:13px;color:var(--warn)}
+.issues{display:flex;flex-direction:column;gap:6px}
+.issue{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#232326;font-size:13.5px}
+.issue .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.issue .stt{font-size:12px;color:var(--muted)} .issue.done{border-color:#3f6a55} .issue.done .stt{color:var(--ok)}
+.issue .n{flex:none;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:var(--warn);color:#1e1e1e}
+.issue.done .n{background:var(--ok)}
+.chg3{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.chg3 div{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-size:13px}
+.chg3 b{display:block;font-weight:600;font-size:12.5px;color:var(--muted)}
+.reveal{margin-top:16px;padding:14px 16px;border:1px solid #5b4b7c;background:#2b2635;border-radius:8px}
+.reveal div{margin:6px 0;font-size:13.5px;color:var(--sub)} .reveal b{color:var(--text)}
+.pickm{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pickm label{display:flex;gap:6px;align-items:center;padding:6px 14px;border:1px solid var(--line);border-radius:18px;cursor:pointer}
+.pickm input{accent-color:#a88be5}
+.okchip{display:inline-block;font-size:12.5px;color:var(--ok);padding:3px 10px;border:1px solid #3f6a55;border-radius:12px;background:var(--oksoft);margin-right:8px}
+.addhint{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:var(--warnsoft);color:var(--warn);border:1px solid #6b5230;border-radius:16px;padding:4px 14px;font-size:12.5px;z-index:4}
+.legendv2{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin-top:4px}
+.legendv2 i{display:inline-block;width:18px;height:0;border-top:3px solid;vertical-align:middle;margin-right:5px}
+</style>
+</head>
+<body>
+<header><span class="brand" aria-hidden="true">◈</span><h1>연구 폴더 정리 스터디</h1><span id="where"></span><button class="ghost sm" id="hback" hidden>← 이전 단계</button><span id="hand"></span><div id="prog"></div></header>
+<div id="app"></div>
+<script>
+/*DATA*/
+/* ---------- basics ---------- */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const base=p=>p.split("/").pop();
+const ext=p=>{const n=base(p).toLowerCase();return n.includes(".")?n.split(".").pop():""};
+const clone=o=>JSON.parse(JSON.stringify(o));
+const ekey=(a,b)=>a<b?a+"|"+b:b+"|"+a;
+const REL=D.relations,FBT=D.feedback_types,VIS=new Set(D.visible);
+/* same as the team viewer (projectwiki/srcs/view_template.html) */
+const DIRECTED=new Set(["imports","links_to","mentions","implements","describes","uses","produces","extends","supports","contradicts"]);
+const PALETTE=["#b49af4","#83b6c9","#c7ad77","#8bbb9a","#ce92aa","#8b9cd1","#c18e70","#a4ba77","#9c96b9","#80b8af"];
+const SHAPE={py:"diamond",pdf:"square",ipynb:"triangle",png:"star",jpg:"star",jpeg:"star"};
+const C={bg:"#1e1e1e",text:"#dedede",muted:"#a3a3a3",accent:"#b49af4",warn:"#e0a458",up:"#5fd38d",neutral:"#8d8a96",
+ hi:"#8a84a0",mid:"#625e6c",lo:"#38363d",down:"#4a4750"};
+const STATUS={proposed:"표시",confirmed:"승인됨",removed_wrong:"틀린 연결로 숨김",removed_irrelevant:"불필요로 숨김",
+ removed_by_corrector:"같이 숨겨짐",removed_low_score:"점수가 낮아 숨김",llm_rejected:"판정에서 제외"};
+const mix=(hex,to,a)=>{const p=h=>[1,3,5].map(k=>parseInt(h.slice(k,k+2),16)),x=p(hex),y=p(to);return "#"+x.map((v,k)=>Math.round(v*(1-a)+y[k]*a).toString(16).padStart(2,"0")).join("")};
+const tier=s=>s>=.8?2:s>=.5?1:0, TIER=["흐리게","보통","굵게"];
+function fileIcon(path){
+ const e=ext(path);let art;
+ if(e==="py")art='<path fill="#5aa9df" d="M12 2c-5 0-5 2-5 5h6v1H5c-4 0-4 8 0 8h2v-4c0-2 1-3 3-3h7V6c0-3-2-4-5-4Z"/><path fill="#ffda68" d="M12 22c5 0 5-2 5-5h-6v-1h8c4 0 4-8 0-8h-2v4c0 2-1 3-3 3H7v3c0 3 2 4 5 4Z"/>';
+ else if(["md","markdown"].includes(e))art='<rect x="2" y="4" width="20" height="16" rx="2" stroke="#8fcfff" stroke-width="1.5"/><path d="M5 16V8l3 4 3-4v8M17 8v8m-3-3 3 3 3-3" stroke="#8fcfff" stroke-width="1.8" stroke-linejoin="round"/>';
+ else if(["png","jpg","jpeg"].includes(e))art='<rect x="2.5" y="3.5" width="19" height="17" rx="2" stroke="#87d5a2" stroke-width="1.6"/><circle cx="8" cy="9" r="2" fill="#f5d580"/><path d="m4 18 5-6 3 3 3-5 5 8H4Z" fill="#87d5a2"/>';
+ else if(e==="pdf")art='<path d="M5 2h9l5 5v15H5Z" stroke="#ef8f91" stroke-width="1.5"/><path d="M14 2v6h5" stroke="#ef8f91" stroke-width="1.5"/>';
+ else if(e==="ipynb")art='<path d="M4 9c3-7 13-7 16 0M4 15c3 7 13 7 16 0" stroke="#edaa68" stroke-width="2.8" stroke-linecap="round"/>';
+ else if(["yaml","yml","toml","ini","cfg"].includes(e))art='<path d="M4 6h16M4 12h16M4 18h16" stroke="#bf9ce7" stroke-width="1.6"/>';
+ else if(["csv","tsv"].includes(e))art='<rect x="3" y="3" width="18" height="18" rx="2" stroke="#71c9ad" stroke-width="1.5"/><path d="M3 9h18M3 15h18M9 9v12M15 9v12" stroke="#71c9ad" stroke-width="1.3"/>';
+ else if(["js","ts","html","css","sh"].includes(e))art='<path d="m8 6-6 6 6 6m8-12 6 6-6 6" stroke="#ee9f78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+ else art='<path d="M5 2h9l5 5v15H5Z" stroke="#b4bac5" stroke-width="1.5"/><path d="M14 2v6h5M8 12h8M8 16h8" stroke="#b4bac5" stroke-width="1.5"/>';
+ return `<span class="file-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${art}</svg></span>`;
+}
+const LANG={py:"python",yaml:"yaml",yml:"yaml",json:"json",html:"xml",log:"plaintext",sh:"bash"};
+function hl(code,lang){try{return window.hljs?hljs.highlight(code,{language:lang||"plaintext",ignoreIllegals:true}).value:esc(code)}catch(e){return esc(code)}}
+function md(t){return window.marked&&window.DOMPurify?DOMPurify.sanitize(marked.parse(t)):`<pre>${esc(t)}</pre>`}
+function csv(t){const rows=t.trim().split(/\r?\n/).map(r=>r.split(","));
+ return `<table class="csv"><tr>${rows[0].map(c=>`<th>${esc(c)}</th>`).join("")}</tr>${rows.slice(1,41).map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</table>`}
+function contentHtml(c){
+ if(!c)return "";
+ if(c.kind=="image")return `<img class="shot" src="${c.data}">`;
+ if(c.kind=="pdf")return `<iframe class="pdf" data-pdf="1"></iframe>`;
+ if(c.kind=="nb")return c.data.map(([t,s])=>t=="code"?`<div class="cell"><div class="ctag">코드 셀</div><pre class="code"><code class="hljs">${hl(s,"python")}</code></pre></div>`:`<div class="cell doc">${md(s)}</div>`).join("");
+ if(c.ext=="md")return `<div class="doc">${md(c.data)}</div>`;
+ if(c.ext=="csv")return csv(c.data);
+ return `<pre class="code"><code class="hljs">${hl(c.data,LANG[c.ext])}</code></pre>`;
+}
+function mountPdf(root,c){const f=root.querySelector("iframe[data-pdf]");if(!f||!c)return;const b=atob(c.data),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
+ f.src=URL.createObjectURL(new Blob([u],{type:"application/pdf"}))}
+
+/* ---------- flow, log, resume ---------- */
+const FLOW=[{id:"intro",name:"시작"},{id:"t1",name:"과제 1"},{id:"practice",name:"도구 연습"},
+ {id:"t2a",name:"과제 2 (의도)"},{id:"t2b",name:"과제 2 (고치기)"},{id:"survey",name:"마지막 질문"},{id:"end",name:"끝"}];
+let step=0;
+const LOG={v:2,started:new Date().toISOString(),steps:{},feedback:[],hand:D.hand.length>0,
+ pid:"P-"+[...crypto.getRandomValues(new Uint8Array(4))].map(b=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[b%31]).join("")};
+/* counterbalancing from the participant number: task 1 tab order (Latin square of 3), task 2 intent order */
+(()=>{const h=[...LOG.pid].reduce((a,c)=>a+c.charCodeAt(0),0),M=["obsidian","similar","ours"],I=Object.keys(D.intents).sort();
+ LOG.order={t1:[0,1,2].map(i=>M[(i+h)%3]),intents:h%2?I.slice().reverse():I}})();
+const SAVE_KEY="projectwiki_study_v2";
+function persist(){try{localStorage.setItem(SAVE_KEY,JSON.stringify({step,LOG,at:Date.now()}))}catch(e){}}
+function forget(){try{localStorage.removeItem(SAVE_KEY)}catch(e){}}
+const S=()=>LOG.steps[FLOW[step].id]||(LOG.steps[FLOW[step].id]={t0:Date.now(),events:[]});
+function log(k,v){S().events.push([Date.now()-S().t0,k,v])}
+function go(n){const s=LOG.steps[FLOW[step].id];if(s)s.sec=(s.sec||0)+Math.round((Date.now()-(s.t1||s.t0))/1000);step=n;const id=FLOW[step].id,x=LOG.steps[id];
+ if(x){x.t1=Date.now();x.revisits=(x.revisits||0)+1}else LOG.steps[id]={t0:Date.now(),events:[]};persist();render()}
+function bar(){$("where").innerHTML=`· <b>${FLOW[step].name}</b>`;const hb=$("hback");if(hb){hb.hidden=!(step>=2&&step<=5);hb.onclick=()=>{log("back");go(step-1)}}$("prog").style.width=(100*step/(FLOW.length-1))+"%"}
+let TIMER=null;
+function render(){
+ clearInterval(TIMER);TIMER=null;TOUR=null;tourClear();if(V&&V.pulseT)clearInterval(V.pulseT);if(ro){ro.disconnect();ro=null}
+ if(net){net.destroy();net=null}V=null;document.body.classList.remove("briefing");
+ $("app").oninput=$("app").onchange=null;bar();
+ ({intro,practice,t1,t2a,t2b,survey,end})[FLOW[step].id]();
+}
+function resume(saved){
+ const id=FLOW[saved.step].id,keep=(id=="t1"||id=="t2a")&&saved.LOG.steps&&saved.LOG.steps[id];
+ $("app").innerHTML=`<div class="page"><div class="paper"><div class="eyebrow">이어서 하기</div><h2>하던 스터디가 있습니다</h2>
+  <p class="lead2"><b>${esc(FLOW[saved.step].name)}</b>에서 멈추셨습니다. ${keep?"이어서 하면 멈춘 곳 근처에서 다시 시작하고, 이미 답한 내용은 그대로 남아 있습니다.":"이어서 하면 이 단계를 처음부터 다시 하고, 앞 단계에서 답한 내용은 그대로 남아 있습니다."}</p>
+  <div class="actions"><button class="primary" id="cont">이어서 하기</button><button class="ghost" id="fresh">처음부터 다시 하기</button></div></div></div>`;
+ $("cont").onclick=()=>{Object.assign(LOG,saved.LOG);step=saved.step;(LOG.resumed||(LOG.resumed=[])).push({step:id,at:new Date().toISOString()});
+  if(!keep)LOG.steps[id]={t0:Date.now(),events:[]};persist();render()};
+ $("fresh").onclick=()=>{forget();step=0;LOG.steps={};render()};
+}
+addEventListener("resize",()=>{const n=$("narrow");if(n)n.hidden=innerWidth>=1100});
+addEventListener("beforeunload",e=>{if(step>0&&LOG.sent!="ok"){e.preventDefault();e.returnValue=""}});
+
+/* ---------- questions ---------- */
+function qHtml(x,n){
+ const body=x.t=="scale"?`<div class="scale">${[1,2,3,4,5,6,7].map(i=>`<label><input type="radio" name="${x.k}" value="${i}">${i}</label>`).join("")}</div>
+   <div class="scale-ends"><span>${esc((x.ends||[])[0]||"전혀 그렇지 않다")}</span><span>${esc((x.ends||[])[1]||"매우 그렇다")}</span></div>`
+  :x.t=="text"?`<textarea id="s_${x.k}" placeholder="${esc(x.ph||"")}"></textarea>`
+  :`<div class="opts">${x.o.map(o=>`<label><input type="${x.t=="check"?"checkbox":"radio"}" name="${x.k}" value="${esc(o)}">${esc(o)}</label>`).join("")}</div>`;
+ return `<div class="q"><b>${n}. ${esc(x.q)}</b>${body}</div>`;
+}
+function qRead(list,start){const A={};
+ for(const [i,x] of list.entries()){
+  if(x.t=="text"){A[x.k]=$("s_"+x.k).value.trim();if(x.need&&A[x.k].length<5)return {err:`${start+i}번 문항을 한 줄 정도 적어 주세요.`};continue}
+  const v=[...document.querySelectorAll(`input[name=${x.k}]:checked`)].map(e=>e.value);
+  if(!v.length)return {err:`${start+i}번 문항에 답해 주세요.`};
+  A[x.k]=x.t=="check"?v:x.t=="scale"?+v[0]:v[0]}
+ return {A};
+}
+/* compact 1-7 rows for the task cards: r7(items, answers) + bindR7(root, answers, onchange) */
+function r7(items,ans){return `<div class="r7">${items.map(([k,q])=>`<span>${esc(q)}</span><span class="b" data-k="${k}">${[1,2,3,4,5,6,7].map(i=>`<button class="sm ${ans[k]==i?"on":""}" data-v="${i}">${i}</button>`).join("")}</span>`).join("")}
+  <span class="r7ends"><span>전혀 아니다</span><span>매우 그렇다</span></span></div>`}
+function bindR7(root,ans,cb){root.querySelectorAll(".r7 .b").forEach(b=>b.querySelectorAll("button").forEach(x=>x.onclick=()=>{ans[b.dataset.k]=+x.dataset.v;
+ b.querySelectorAll("button").forEach(y=>y.classList.toggle("on",y===x));log("rate",[b.dataset.k,+x.dataset.v]);cb&&cb()}))}
+
+/* ---------- start page ---------- */
+const PROFILE=[
+ {k:"level",t:"radio",q:"과정",o:["학부","석사","박사","기타"]},
+ {k:"organize",t:"check",q:"연구 파일은 평소 어떻게 정리하시나요? (모두 선택)",o:["폴더 구조","파일 이름 규칙","노트 앱 (노션·옵시디언 등)","따로 정리하지 않음"]},
+ {k:"graphtool",t:"radio",q:"Obsidian처럼 문서 사이의 연결을 그래프로 보여 주는 도구를 써 보셨나요?",o:["자주 쓴다","가끔 쓴다","써 본 적만 있다","써 본 적 없다"]}];
+function consentHtml(){
+ return `<ul class="terms">
+  <li><b>무엇을 하나요</b><span>연구 폴더를 그래프로 정리하는 몇 가지 방식을 비교하고, 정리 의도를 알려 주거나 피드백을 주었을 때 그래프가 어떻게 바뀌는지 보면서 의견을 주시는 ${esc(STUDY.who)}의 사용자 스터디입니다. 25분 정도 걸리고, 정답을 맞히는 시험이 아닙니다.</span></li>
+  <li><b>받는 정보</b><span>닉네임, 간단한 배경 질문 3개의 답, 평가와 소감, 화면 조작 기록(어떤 파일과 연결을 눌렀는지, 어떤 피드백을 주었는지, 걸린 시간)입니다. 실명, 이메일, 화면 녹화는 받지 않습니다.</span></li>
+  <li><b>보관과 이용</b><span>연구진의 구글 계정에 저장되며 연구진만 봅니다. 분석과 보고서에는 닉네임 대신 참가자 번호를 씁니다.</span></li>
+  <li><b>삭제</b><span>모든 기록은 ${esc(STUDY.delete_by)}까지 지웁니다. 그 전이라도 스터디를 안내한 연구진에게 닉네임을 알려 주시면 바로 지웁니다.</span></li>
+  <li><b>참여와 중단</b><span>참여는 자유이며 언제든 그만두셔도 됩니다. 마지막에 [제출하기]를 누르기 전에는 아무것도 전송되지 않습니다. 진행 상황은 이어서 할 수 있도록 이 브라우저에만 잠시 저장되고, 제출하면 지워집니다.</span></li></ul>`}
+/* the start is three short pages (what it is, consent, who you are), each fits a laptop screen without scrolling */
+function intro(){
+ const A=LOG.introDraft||(LOG.introDraft={});let pg=0;
+ const pages=[
+  ()=>`<h2>연구 폴더 정리 스터디</h2><p class="lead2">연구 폴더를 그래프로 정리하는 방식들을 직접 보고 의견을 들려주시는 스터디입니다. 모든 과정이 이 화면 안에서 진행되고, <b>25분 정도</b> 걸립니다.</p>
+   <div class="pcnote"><b>PC나 노트북</b>에서, 브라우저 창을 화면에 꽉 차게 키운 상태로 진행해 주세요. 그래프와 파일 내용을 나란히 보기 때문에 휴대폰이나 작은 창에서는 보기 어렵습니다.</div>
+   ${innerWidth<1100?`<div class="warnbox">지금 창이 좁습니다. 창을 최대로 키우거나 PC에서 열어 주세요.</div>`:""}
+   <div class="plan">
+    <div><b>1</b><span><em>과제 1</em>같은 연구 폴더를 세 가지 방식으로 정리한 그래프를 보고, 어느 쪽이 파악하기 좋은지 평가합니다.</span></div>
+    <div><b>2</b><span><em>도구 연습</em>그중 한 도구로 작은 폴더에서 그래프를 보고 피드백을 주는 법을 따라 해 봅니다.</span></div>
+    <div><b>3</b><span><em>과제 2</em>정리 의도를 알려 주면 그래프가 어떻게 바뀌는지 보고, 표시된 두 곳에 피드백을 줍니다.</span></div>
+    <div><b>4</b><span><em>마무리</em>짧은 질문에 답하면 끝납니다.</span></div></div>
+   <p class="hint">처음 보는 폴더라 내용을 잘 몰라도 괜찮습니다. 단계마다 짧은 설명이 먼저 나오고, 할 일은 화면 왼쪽에 하나씩 나옵니다.</p>`,
+  ()=>`<h2>연구 참여 안내</h2><p class="lead2">시작하기 전에 한 번 읽어 주세요.</p>${consentHtml()}`,
+  ()=>`<h2>참가자 정보</h2><p class="lead2">간단한 정보만 받습니다.</p>
+   <div class="q"><b>이름 또는 닉네임</b><input id="nm" class="tin" autocomplete="nickname" placeholder="예: 준" value="${esc(A.name||"")}"></div>
+   ${PROFILE.map((x,i)=>qHtml(x,i+1)).join("")}
+   <label class="check" style="margin-top:14px"><input type="checkbox" id="c1">앞 장의 안내를 읽었고, 스터디 참여와 정보 수집·이용에 동의합니다.</label><div class="err" id="err"></div>`];
+ const show=()=>{
+  $("app").innerHTML=`<div class="page"><div class="paper introp">${pages[pg]()}
+   <div class="pnav"><span class="pdots2">${pages.map((x,i)=>`<i class="${i==pg?"on":""}"></i>`).join("")}</span>${pg?`<button class="ghost" id="pprev">← 이전</button>`:""}<button class="primary" id="pnext2">${pg<2?"다음 →":"시작하기"}</button></div></div></div>`;
+  $("app").oninput=$("app").onchange=()=>{if($("err"))$("err").textContent="";if($("nm"))A.name=$("nm").value};
+  if($("pprev"))$("pprev").onclick=()=>{pg--;show()};
+  $("pnext2").onclick=()=>{if(pg<2){pg++;show();return}
+   const nm=$("nm").value.trim();if(!nm)return $("err").textContent="이름이나 닉네임을 적어 주세요.";
+   const r=qRead(PROFILE,1);if(r.err)return $("err").textContent=r.err;
+   if(!$("c1").checked)return $("err").textContent="동의에 체크해야 시작할 수 있습니다.";
+   LOG.who={name:nm};delete LOG.introDraft;LOG.profile=r.A;LOG.consent={at:new Date().toISOString(),delete_by:STUDY.delete_by};go(1)}};
+ show();
+}
+
+/* ---------- briefing overlay ---------- */
+function brief(html,btn,onClose){
+ document.body.classList.add("briefing");
+ const el=document.createElement("div");el.className="brief";el.id="brief";
+ el.innerHTML=`<div class="card">${html}<div class="foot"><span></span><button class="primary" id="bgo">${btn||"시작하기"}</button></div></div>`;
+ document.body.appendChild(el);
+ $("bgo").onclick=()=>{el.remove();document.body.classList.remove("briefing");log("brief_close");cardPad();onClose&&onClose()};
+}
+function dirsHtml(p){return p.intro.dirs.length?`<div class="dirs">${p.intro.dirs.map(([d,t])=>`<div class="${/admin/.test(d)?"off":""}"><b>${esc(d)}</b><span>${esc(t)}</span></div>`).join("")}</div>`:""}
+
+/* ================= viewer ================= */
+let V=null,net=null,NS=null,ES=null,ro=null;
+/* o: {proj, crumb, canFix, corr, home(), edgeExtra(e), onOpen(kind,id), onEvent(ev,rep), tools(html), bindTools()} */
+function workspace(o){
+ const P=D.projects[o.proj];
+ V={o,P,g:null,sel:null,stick:null,diff:{},prio:new Set(),pulse:new Set(),canFix:!!o.canFix,events:[],addFrom:undefined,q:"",closed:new Set(),pos:null};
+ /* left column: the task (instructions, questions, progress) on top, then groups and the folder tree.
+    Nothing floats over the graph or the inspector, so both keep the full height even on a laptop screen. */
+ $("app").innerHTML=`<div class="workspace" id="work">
+  <section class="taskpane"><div class="pane-title"><span class="dotlbl"></span><span id="btitle">할 일</span></div>
+   <div class="task-scroll" id="exs"><div id="sidebody"></div>
+    <details class="side-sec" id="secG" open><summary>그룹</summary><div id="legendWrap"></div></details>
+    <details class="side-sec" id="secF"><summary>폴더 <span class="hint">${P.files.length}</span></summary><div class="search-box"><input type="search" id="search" placeholder="파일 검색…"></div><div id="fileTree" class="file-tree"></div></details></div><div class="taskfoot" id="taskfoot" hidden></div></section>
+  <main><div class="toolbar"><div class="breadcrumb">${esc(P.name)} / <strong id="crumb">${esc(o.crumb||"전체 그래프")}</strong></div><div class="tools" id="tools">${o.tools||""}</div></div>
+   <div id="graphwrap"><div id="net"></div><div class="graph-caption"><strong id="gcap">프로젝트의 연결 지도</strong><span id="graphStats"></span><div class="gdesc" id="gdesc" hidden></div><div class="legendv2" id="gleg"></div></div>
+    <div class="graph-controls"><button id="zout" title="축소">−</button><button id="zin" title="확대">+</button><button id="zfit">전체 보기</button></div></div></main>
+  <div id="vsplit" title="끌어서 폭 조절"></div><aside class="inspector"><div class="pane-title ptabs" id="ptabs"><span>내용과 근거</span></div><div class="inspector-scroll" id="iscroll"><div id="detail"></div></div><div class="qpane" id="qpane" hidden><div class="qscroll" id="qscroll"></div><div class="qfoot" id="qfoot"></div></div></aside>
+ </div><div class="narrow" id="narrow" ${innerWidth<1100?"":"hidden"}>창이 좁아 일부가 가려질 수 있습니다. 브라우저 창을 최대로 키워 주세요.</div><footer><span id="meta"></span><span id="sessionStatus"></span></footer>`;
+ $("search").oninput=()=>{V.q=$("search").value.trim().toLowerCase();tree();if(!V.q){stick(null);return}
+  stick({hn:new Set(V.g.nodes.filter(n=>n.path.toLowerCase().includes(V.q)).map(n=>n.id)),he:new Set()})};
+ $("search").onchange=()=>V.q&&log("search",V.q);
+ const z=f=>net&&net.moveTo({scale:net.getScale()*f,position:net.getViewPosition()});
+ $("zin").onclick=()=>z(1.25);$("zout").onclick=()=>z(.8);$("zfit").onclick=()=>fitView();
+ const vs=$("vsplit");vs.onmousedown=ev=>{ev.preventDefault();vs.classList.add("drag");const r=$("work").getBoundingClientRect();
+  const mv=e=>$("work").style.setProperty("--dw",Math.min(Math.max(r.right-e.clientX,300),r.width*.6)+"px");
+  const up=()=>{vs.classList.remove("drag");removeEventListener("mousemove",mv);removeEventListener("mouseup",up)};addEventListener("mousemove",mv);addEventListener("mouseup",up)};
+ ro=new ResizeObserver(()=>{if(net){net.setSize("100%","100%");net.redraw()}});ro.observe($("graphwrap"));
+ o.bindTools&&o.bindTools();
+}
+function cardPad(){}
+/* parts marked .pinfoot (the next / submit buttons) go to a bar fixed at the bottom of the task pane, so they never scroll out of sight */
+function card(title,mini,html,bind){$("btitle").textContent=title;const s=$("exs").scrollTop;$("sidebody").innerHTML=html;const f=$("taskfoot");f.innerHTML="";
+ $("sidebody").querySelectorAll(".pinfoot").forEach(x=>f.appendChild(x));f.hidden=!f.children.length;bind&&bind(document.querySelector(".taskpane"));$("exs").scrollTop=s;setTimeout(applyNudge,0)}
+/* graph data */
+function setGraph(g){
+ V.g=g;V.node={};g.nodes.forEach(n=>V.node[n.id]=n);V.E={};g.edges.forEach(e=>V.E[e.id]=e);
+ V.gi={};g.groups.forEach((x,i)=>V.gi[x.id]=i);legend();tree();meta();
+}
+const gcolor=gid=>{if(gid==null||!(gid in V.gi))return C.neutral;const gr=V.g.groups[V.gi[gid]];return /관련 없음/.test(gr.name)?"#9aa0a6":PALETTE[V.gi[gid]%PALETTE.length]};
+const shown=e=>VIS.has(e.status);
+function degree(){const d={};V.g.edges.forEach(e=>{if(!shown(e))return;d[e.source]=(d[e.source]||0)+1;d[e.target]=(d[e.target]||0)+1});return d}
+function nodeStyle(n,dg){
+ const s=V.stick,dim=s&&!s.hn.has(n.id),hot=s&&s.hn.has(n.id),c=gcolor(n.group),cc=dim?mix(c,C.bg,V.hov?.07:.14):c,pr=V.prio.has(n.id);
+ return {shape:SHAPE[ext(n.path)]||"dot",size:(pr?14:8)+Math.min(9,dg[n.id]||0),
+  color:{background:cc,border:pr?"#ffffff":hot?C.text:cc,highlight:{background:c,border:C.text},hover:{background:c,border:C.text}},borderWidth:pr?3:hot?(V.hov?1.2:1.6):1,
+  font:{color:dim?mix(C.text,C.bg,V.hov?.08:.16):C.text,size:pr?17:15,strokeWidth:4,strokeColor:C.bg,bold:pr}};
+}
+function edgeStyle(e){
+ /* strength tiers only mean something for ProjectWiki scores; the comparison graphs draw every link the same */
+ const s=V.stick,hot=s&&s.he.has(e.id),dim=s&&!hot,t=(V.g.meta||{}).method=="ours"?tier(+e.score):1.6,d=V.diff[e.id];
+ let col=t==1.6?"#77718a":[C.lo,C.mid,C.hi][t],w=t==1.6?1.6:[1,1.5,2.6][t],dash=e.direct?false:[5,5];
+ if(d=="up"){col=C.up;w=3.6;dash=false}else if(d=="down"){col=C.down;w=1;dash=[2,4]}
+ else if(d=="auto"){col="#ffa940";w=4.8;dash=false}else if(d=="direct"){col="#c4a8ff";w=4.8;dash=false}
+ let hide=!shown(e),label="";
+ /* a link that went down is drawn dashed so "changed" never reads as "made stronger" */
+ const dd=V.diffDir&&V.diffDir[e.id];
+ if(d=="auto"||d=="direct"){label=d=="auto"?(hide?"같이 숨겨짐":dd=="down"?"같이 흐려짐":"같이 굵어짐"):(hide?"내가 숨김":"내가 고침");if(hide){hide=false;dash=[5,5];w=3;col=mix(col,C.bg,.3)}else if(dd=="down"){dash=[8,5];w=3.6}if(V.flashOn)w+=3}
+ if(V.pulse.has(e.id)){col="#ff8f6b";w=V.pulseOn?5:3;dash=false}
+ if(dim&&!label)col=mix(col,C.bg,V.hov?.05:.12);if(hot){if(!d)col=V.hov?mix(col,C.accent,.25):mix(col,C.accent,.55);w=V.hov?w+.6:Math.max(w+.8,2.4)}
+ return {hidden:hide,color:{color:col,highlight:col,hover:col},width:w,dashes:dash,
+  arrows:{to:{enabled:DIRECTED.has(e.relation),scaleFactor:.55}},label:"",font:{size:19,color:col,strokeWidth:6,strokeColor:C.bg,align:"horizontal",bold:{color:col}}};
+}
+function restyle(){if(!NS)return;const dg=degree();
+ NS.update(V.g.nodes.map(n=>Object.assign({id:n.id},nodeStyle(n,dg))));
+ const ids=new Set(ES.getIds());const up=[],add=[];
+ V.g.edges.forEach(e=>{const x=Object.assign({id:e.id,from:e.source,to:e.target},edgeStyle(e));(ids.has(e.id)?up:add).push(x)});
+ ES.update(up);if(add.length)ES.add(add);stats();
+}
+function stick(s){V.stick=s;restyle()}
+/* draw: fresh layout, or start from pos and let the nodes move to their new groups (live) */
+function draw(opt={}){
+ const g=V.g,dg=degree();
+ /* without given positions, start every group around its own spot on a grid so groups do not pile on top of each other */
+ let seed={};if(!opt.pos&&g.groups.length){const G=g.groups.length,cols=Math.ceil(Math.sqrt(G*1.6)),rnd=s=>{let h=0;for(const ch of s)h=(h*31+ch.charCodeAt(0))|0;return (h%1000)/1000};
+  g.groups.forEach((gr,i)=>gr.members.forEach((m,j)=>{const a=j/Math.max(1,gr.members.length)*6.283;seed[m]={x:(i%cols)*420+Math.cos(a)*60+rnd(m)*20,y:Math.floor(i/cols)*300+Math.sin(a)*60}}));
+  g.nodes.forEach((n,i)=>{if(!seed[n.id])seed[n.id]={x:cols*420,y:i*40}})}
+ const at=opt.pos||seed;
+ const nodes=g.nodes.map(n=>Object.assign({id:n.id,label:base(n.path),title:n.path+(n.summary?" · "+n.summary:"")},nodeStyle(n,dg),at[n.id]?{x:at[n.id].x,y:at[n.id].y}:{}));
+ const edges=g.edges.map(e=>Object.assign({id:e.id,from:e.source,to:e.target},edgeStyle(e)));
+ g.groups.forEach(gr=>{const m=gr.members.filter(x=>V.node[x]);m.forEach((a,i)=>m.slice(i+1).forEach(b=>edges.push({id:"g:"+a+"|"+b,from:a,to:b,hidden:true,length:75})))});
+ const grouped=g.groups.length>0;
+ if(net)net.destroy();
+ NS=new vis.DataSet(nodes);ES=new vis.DataSet(edges);
+ net=new vis.Network($("net"),{nodes:NS,edges:ES},{layout:{randomSeed:7},
+  interaction:{hover:true,tooltipDelay:200,selectConnectedEdges:false,hoverConnectedEdges:false},
+  physics:opt.fixed?false:{solver:"barnesHut",barnesHut:grouped?{gravitationalConstant:-8500,centralGravity:.3,springLength:210,springConstant:.02,avoidOverlap:1}
+   :{gravitationalConstant:-3600,centralGravity:1,springLength:140,springConstant:.05,avoidOverlap:1},
+   stabilization:opt.live?false:{iterations:600}},
+  edges:{smooth:{type:"continuous"},selectionWidth:1,hoverWidth:1}});
+ const EP=Object.getPrototypeOf(Object.values(net.body.edges)[0]||{});
+ if(EP&&EP.isOverlappingWith&&!EP._wide){EP._wide=1;EP.isOverlappingWith=function(r){if(!this.connected)return false;
+  return this.edgeType.getDistanceToEdge(this.from.x,this.from.y,this.to.x,this.to.y,r.left,r.top)<Math.max(10,9/(net?net.getScale():1))}}
+ /* every deferred step checks that this network is still the one on screen (switching tabs quickly used to stop the next layout half way) */
+ const me=net,mine=()=>net===me;
+ const done=()=>{if(!mine())return;net.setOptions({physics:false});V.pos=net.getPositions();if(!opt.nofit)fitView();opt.then&&opt.then()};
+ if(opt.fixed)setTimeout(done,0);
+ else if(opt.live){fitView();setTimeout(()=>{if(!mine())return;net.setOptions({physics:false});const to=pack(net.getPositions());tween(to,700,done)},1800)}
+ else net.once("stabilizationIterationsDone",()=>{if(!mine())return;net.setOptions({physics:false});spread();const to=pack(net.getPositions());if(to)NS.update(Object.entries(to).map(([id,p])=>({id,x:p.x,y:p.y})));done()});
+ net.on("beforeDrawing",ctx=>regions(ctx));
+ net.on("hoverNode",p=>{const s=neighbours(p.node);V.hover=1;stickTmp(s)});net.on("blurNode",()=>stickTmp(null));
+ net.on("hoverEdge",p=>{if(p.edge.startsWith("g:"))return;const e=V.E[p.edge];stickTmp({hn:new Set([e.source,e.target]),he:new Set([e.id])})});net.on("blurEdge",()=>stickTmp(null));
+ const nearest=pt=>{let best=null,bd=Infinity;Object.entries(net.body.edges).forEach(([id,E])=>{if(!E.connected||E.options.hidden||id.startsWith("g:"))return;
+  const d=E.edgeType.getDistanceToEdge(E.from.x,E.from.y,E.to.x,E.to.y,pt.x,pt.y);if(d<bd){bd=d;best=id}});return bd<Math.max(14,15/net.getScale())?best:null};
+ const nearNode=pt=>{const P=net.getPositions();let b=null,bd=Infinity;for(const id in P){const d=Math.hypot(P[id].x-pt.x,P[id].y-pt.y);if(d<bd){bd=d;b=id}}return bd<Math.max(16,14/net.getScale())+8?b:null};
+ net.on("click",p=>{if(V.addFrom!==undefined&&p.nodes.length){pickAdd(p.nodes[0]);return}if(p.nodes.length){openFile(p.nodes[0]);return}const nn=nearNode(p.pointer.canvas);if(nn){openFile(nn);return}const j=nearest(p.pointer.canvas);if(j)openEdge(j);else if(V.sel||V.stick)home()});
+ stats();
+}
+let tmpS=null;function stickTmp(s){const keep=V.stick;if(s){V.stick=s;V.hov=true;restyle();V.hov=false;V.stick=keep}else restyle()}
+/* group regions: every group is a tinted box with its name, so groups read at a glance without a separate card view */
+function regions(ctx){
+ if(!V||!V.g.groups.length)return;const P=net.getPositions(),sc=Math.max(.5,net.getScale());
+ V.g.groups.forEach((gr,gi)=>{const m=gr.members.filter(x=>P[x]);if(!m.length)return;const sel=V.sel&&V.sel.k=="g"&&V.sel.id==gr.id;
+  const lw=i=>(V.lw&&V.lw[i]||90)/2;
+  ctx.font="600 15px Segoe UI, Malgun Gothic, sans-serif";
+  const x1=Math.min(...m.map(i=>P[i].x-lw(i)))-12,x2=Math.max(Math.max(...m.map(i=>P[i].x+lw(i)))+12,x1+ctx.measureText(gr.name).width+16),y1=Math.min(...m.map(i=>P[i].y))-34,y2=Math.max(...m.map(i=>P[i].y))+30;
+  const c=gcolor(gr.id),rgb=[1,3,5].map(k=>parseInt(c.slice(k,k+2),16)).join(",");
+  ctx.save();ctx.fillStyle=`rgba(${rgb},${sel?.12:.06})`;ctx.strokeStyle=`rgba(${rgb},${sel?.9:.38})`;ctx.lineWidth=(sel?2:1.2)/sc;
+  ctx.beginPath();ctx.roundRect(x1,y1,x2-x1,y2-y1,12);ctx.fill();ctx.stroke();
+  ctx.fillStyle=`rgba(${rgb},${sel?1:.85})`;ctx.font="600 15px Segoe UI, Malgun Gothic, sans-serif";ctx.fillText(gr.name,x1+8,y1-7);ctx.restore()});
+}
+function spread(){const r=spreadPos(net.getPositions());NS.update(Object.entries(r.pos).map(([id,p])=>({id,x:p.x,y:p.y})));V.lw=r.lw}
+/* stretch a settled layout sideways (the panel is wide and short), then push apart labels that still overlap */
+function spreadPos(P){
+ const ids=Object.keys(P),ctx=document.createElement("canvas").getContext("2d");ctx.font="15px Segoe UI";
+ const q=ids.map(i=>({i,x:P[i].x*1.85,y:P[i].y*1.05,w:ctx.measureText(base(i)).width+8}));
+ for(let it=0;it<40;it++){let moved=false;
+  for(let a=0;a<q.length;a++)for(let b=a+1;b<q.length;b++){const A=q[a],B=q[b],ox=(A.w+B.w)/2-Math.abs(A.x-B.x),oy=30-Math.abs(A.y-B.y);
+   if(ox>0&&oy>0){moved=true;const d=Math.min(ox,oy)/2+1;if(oy<ox){const s=A.y<=B.y?-1:1;A.y+=s*d;B.y-=s*d}else{const s=A.x<=B.x?-1:1;A.x+=s*d;B.x-=s*d}}}
+  if(!moved)break}
+ return {pos:Object.fromEntries(q.map(o=>[o.i,{x:o.x,y:o.y}])),lw:Object.fromEntries(q.map(o=>[o.i,o.w]))};
+}
+/* Changing intent or regrouping: the new layout is worked out off screen, starting from where the files are now, and the
+   files then glide there in under a second. Link highlights change only once they have arrived, so it reads as the same
+   graph rearranged, not a new one. Layouts are cached per key so going back and forth is steady. */
+function layoutFor(g,start){return new Promise(res=>{
+ const box=document.createElement("div");box.style.cssText="position:fixed;left:-5000px;top:0;width:900px;height:650px";document.body.appendChild(box);
+ const nodes=g.nodes.map(n=>Object.assign({id:n.id,shape:"dot",size:8,label:""},start[n.id]?{x:start[n.id].x/1.85,y:start[n.id].y/1.05}:{}));
+ const edges=g.edges.filter(shown).map(e=>({from:e.source,to:e.target}));
+ g.groups.forEach(gr=>gr.members.forEach((a,i)=>gr.members.slice(i+1).forEach(b=>edges.push({from:a,to:b,length:75}))));
+ const nw=new vis.Network(box,{nodes:new vis.DataSet(nodes),edges:new vis.DataSet(edges)},{layout:{randomSeed:7},
+  physics:{solver:"barnesHut",barnesHut:{gravitationalConstant:-8500,centralGravity:.3,springLength:210,springConstant:.02,avoidOverlap:1},stabilization:{iterations:400,updateInterval:50}}});
+ let fin=false;const finish=()=>{if(fin)return;fin=true;const P=nw.getPositions();nw.destroy();box.remove();res(P)};
+ nw.once("stabilizationIterationsDone",finish);setTimeout(finish,4000);
+})}
+async function morph(g,opt={}){
+ const from=net.getPositions(),id=V.morphId=(V.morphId||0)+1;
+ let to=opt.key&&V.lay&&V.lay[opt.key];
+ if(!to){const P=await layoutFor(g,from);if(id!==V.morphId)return;setGraph(g);const r=spreadPos(P);V.lw=r.lw;to=pack(r.pos)||r.pos;if(opt.key)(V.lay=V.lay||{})[opt.key]=to}
+ if(id!==V.morphId)return;
+ setGraph(g);V.diff={};if(opt.prio)V.prio=opt.prio;V.stick=null;
+ const cam0={scale:net.getScale(),position:net.getViewPosition()};
+ draw({pos:from,fixed:true,nofit:true});net.moveTo(cam0);
+ tween(to,1000,()=>{if(id!==V.morphId)return;V.pos=to;V.diff=opt.diff||{};restyle();opt.then&&opt.then()},cam0,fitFor(to));
+}
+/* lay the group boxes out in rows without overlap, keeping each group's inner layout and their rough order */
+function pack(P){
+ const gs=V.g.groups.filter(g=>g.members.some(m=>P[m]));if(!gs.length)return null;
+ const lw=i=>(V.lw&&V.lw[i]||base(i).length*7+8)/2,gap=64,cv=document.createElement("canvas").getContext("2d");cv.font="600 15px Segoe UI, Malgun Gothic, sans-serif";
+ const B=gs.map(g=>{const m=g.members.filter(x=>P[x]);let x1=Math.min(...m.map(i=>P[i].x-lw(i))),x2=Math.max(...m.map(i=>P[i].x+lw(i)));const y1=Math.min(...m.map(i=>P[i].y)),y2=Math.max(...m.map(i=>P[i].y));
+  const need=cv.measureText(g.name).width+4-(x2-x1);if(need>0)x2+=need; /* the box is at least as wide as its name */
+  return {g,m,x1,y1,w:x2-x1,h:y2-y1+20,cx:(x1+x2)/2,cy:(y1+y2)/2}});
+ const el=$("net"),avail=el.clientHeight-130,
+  aspect=Math.min(3.6,Math.max(1.4,el.clientWidth/Math.max(200,avail))),area=B.reduce((a,b)=>a+(b.w+gap)*(b.h+gap+30),0),rowW=Math.max(...B.map(b=>b.w),Math.sqrt(area*aspect));
+ B.sort((a,b)=>a.cy-b.cy);const rows=[];let cur=[],w=0;
+ B.forEach(b=>{if(cur.length&&w+b.w>rowW){rows.push(cur);cur=[];w=0}cur.push(b);w+=b.w+gap});if(cur.length)rows.push(cur);
+ const to={};let y=0;
+ rows.forEach(r=>{r.sort((a,b)=>a.cx-b.cx);const rw=r.reduce((a,b)=>a+b.w+gap,-gap);let x=-rw/2;const rh=Math.max(...r.map(b=>b.h));
+  r.forEach(b=>{const dx=x-b.x1,dy=y+(rh-b.h)/2-b.y1;b.m.forEach(i=>to[i]={x:P[i].x+dx,y:P[i].y+dy});x+=b.w+gap});y+=rh+gap+56});
+ Object.keys(P).forEach(i=>{if(!to[i])to[i]={x:P[i].x,y:y+20}});
+ return to;
+}
+function tween(to,ms,then,c0,c1){if(!to){then&&then();return}const me=net,from=net.getPositions(),t0=performance.now(),L=(a,b,e)=>a+(b-a)*e;
+ const f=now=>{if(net!==me)return;const k=Math.min(1,(now-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+  if(c0&&c1)net.moveTo({scale:L(c0.scale,c1.scale,e),position:{x:L(c0.position.x,c1.position.x,e),y:L(c0.position.y,c1.position.y,e)}});
+  NS.update(Object.keys(to).map(id=>({id,x:from[id].x+(to[id].x-from[id].x)*e,y:from[id].y+(to[id].y-from[id].y)*e})));if(k<1)requestAnimationFrame(f);else then&&then()};requestAnimationFrame(f)}
+function fitView(anim){if(!net)return;const f=fitFor(net.getPositions());if(f)net.moveTo(Object.assign(f,{animation:anim?{duration:500,easingFunction:"easeInOutQuad"}:false}))}
+/* the view (scale and centre) that shows all of P */
+function fitFor(P){const ids=Object.keys(P);if(!ids.length)return null;const lw=i=>(V.lw&&V.lw[i]||120)/2;
+ const x1=Math.min(...ids.map(i=>P[i].x-lw(i)))-14,x2=Math.max(...ids.map(i=>P[i].x+lw(i)))+14,y1=Math.min(...ids.map(i=>P[i].y-40)),y2=Math.max(...ids.map(i=>P[i].y+34));
+ const el=$("net"),cap=document.querySelector(".graph-caption"),pad=24,top=cap?cap.offsetTop+cap.offsetHeight+34:104,bot=36+pad,h=el.clientHeight;
+ const sc=Math.min(1.1,(el.clientWidth-2*pad)/(x2-x1),Math.max(80,h-top-bot)/(y2-y1));
+ return {scale:sc,position:{x:(x1+x2)/2,y:(y1+y2)/2-((top+(h-top-bot)/2)-h/2)/sc}}}
+function revealNode(id){if(!net)return;const p=net.getPosition(id),c=net.canvasToDOM(p),el=$("net");if(c.x>40&&c.x<el.clientWidth-40&&c.y>60&&c.y<el.clientHeight*.55)return;
+ net.moveTo({position:p,animation:{duration:350,easingFunction:"easeInOutQuad"}})}
+function neighbours(id){const hn=new Set([id]),he=new Set();V.g.edges.forEach(e=>{if(!shown(e))return;if(e.source==id||e.target==id){he.add(e.id);hn.add(e.source);hn.add(e.target)}});return {hn,he}}
+function groupSet(gid){const gr=V.g.groups[V.gi[gid]],hn=new Set(gr.members),he=new Set();V.g.edges.forEach(e=>{if(shown(e)&&hn.has(e.source)&&hn.has(e.target))he.add(e.id)});return {hn,he}}
+function stats(){const n=V.g.edges.filter(shown).length;if($("graphStats"))$("graphStats").textContent=`파일 ${V.g.nodes.length}개 · 연결 ${n}개${V.g.groups.length?` · 그룹 ${V.g.groups.length}개`:""}`}
+function meta(){$("meta").textContent=`${V.P.name} · 파일 ${V.g.nodes.length} · 연결 ${V.g.edges.filter(shown).length}`}
+function legend(){
+ const g=V.g;$("legendWrap").innerHTML=g.groups.length?`<div id="legend">${g.groups.map(gr=>`<div class="group-row"><button class="item ${V.sel&&V.sel.k=="g"&&V.sel.id==gr.id?"on":""}" data-g="${esc(gr.id)}" title="${esc(gr.description)}"><span class="dot" style="background:${gcolor(gr.id)}"></span>${esc(gr.name)} <span class="hint">${gr.members.length}</span></button></div>`).join("")}</div>`:
+  `<p class="hint" style="padding:0 8px;margin:0">이 정리에는 그룹이 없습니다.</p>`;
+ $("legendWrap").querySelectorAll("[data-g]").forEach(b=>{b.onclick=()=>openGroup(b.dataset.g);b.onmouseenter=()=>stickTmp(groupSet(b.dataset.g));b.onmouseleave=()=>stickTmp(null)});
+}
+function tree(){
+ const q=V.q,root={f:new Map(),files:[]};
+ V.P.files.forEach(p=>{if(q&&!p.toLowerCase().includes(q))return;const parts=p.split("/");parts.pop();let b=root;for(const x of parts){if(!b.f.has(x))b.f.set(x,{f:new Map(),files:[]});b=b.f.get(x)}b.files.push(p)});
+ const br=(b,pre)=>[...b.f.entries()].sort(([a],[c])=>a.localeCompare(c)).map(([n,ch])=>{const k=pre+n+"/";
+   return `<details data-k="${esc(k)}" ${q||!V.closed.has(k)?"open":""}><summary>${esc(n)}</summary>${br(ch,k)}</details>`}).join("")
+  +b.files.sort((x,y)=>base(x).localeCompare(base(y))).map(p=>`<button class="file ${V.sel&&V.sel.k=="f"&&V.sel.id==p?"selected":""}" data-p="${esc(p)}" title="${esc(p)}">${fileIcon(p)}<span>${esc(base(p))}</span></button>`).join("");
+ const sc=$("exs").scrollTop;$("fileTree").innerHTML=br(root,"")||`<p class="hint" style="padding:0 8px">일치하는 파일이 없습니다.</p>`;$("exs").scrollTop=sc;
+ $("fileTree").querySelectorAll("details").forEach(el=>el.querySelector("summary").onclick=ev=>{ev.preventDefault();el.open=!el.open;if(el.open)V.closed.delete(el.dataset.k);else V.closed.add(el.dataset.k)});
+ $("fileTree").querySelectorAll(".file").forEach(b=>{const p=b.dataset.p;b.onclick=()=>{openFile(p);revealNode(p)};b.onmouseenter=()=>stickTmp(neighbours(p));b.onmouseleave=()=>stickTmp(null)});
+}
+/* ---------- inspector ---------- */
+function home(){V.sel=null;stick(null);legend();if(net){net.unselectAll();net.redraw()}
+ if(V.o.home){$("detail").innerHTML=V.o.home();bindDetail();return}
+ $("detail").innerHTML=`<div class="empty-state"><div class="empty-symbol" aria-hidden="true">⌘</div><h2>점이나 선을 눌러 보세요</h2>
+  <p>점(파일)을 누르면 요약과 내용이, 선(연결)을 누르면 두 파일의 관계와 근거가 이곳에 나옵니다.</p>${V.g.groups.length?`<p class="hint">색 영역은 그룹입니다. 왼쪽 ‘그룹’ 목록을 누르면 그룹 설명이 나옵니다.</p>`:""}</div>`}
+const back=()=>`<a class="back" id="back">‹ 처음으로</a>`;
+function bindDetail(){const r=$("detail"),b=$("back");if(b)b.onclick=home;
+ r.querySelectorAll("[data-f]").forEach(x=>{const p=x.dataset.f;x.onclick=()=>{openFile(p);revealNode(p)};x.onmouseenter=()=>stickTmp(neighbours(p));x.onmouseleave=()=>stickTmp(null)});
+ r.querySelectorAll("[data-e]").forEach(x=>{const k=x.dataset.e;x.onclick=()=>V.E[k]&&openEdge(k);x.onmouseenter=()=>{const e=V.E[k];e&&stickTmp({hn:new Set([e.source,e.target]),he:new Set([k])})};x.onmouseleave=()=>stickTmp(null)});
+ r.querySelectorAll("[data-g]").forEach(x=>x.onclick=()=>openGroup(x.dataset.g))}
+function fileLink(p,extra){return `<button class="edge-link" data-f="${esc(p)}">${fileIcon(p)}<span>${esc(base(p))}${extra?` <span class="hint">· ${esc(extra)}</span>`:""}</span></button>`}
+const arrowOf=(e,from)=>!DIRECTED.has(e.relation)?"↔":e.source==from?"→":"←";
+const pairName=e=>`${base(e.source)} ${DIRECTED.has(e.relation)?"→":"↔"} ${base(e.target)}`;
+function groupBadge(n){if(n.group==null||!(n.group in V.gi))return "";const gr=V.g.groups[V.gi[n.group]];return `<span class="badge" style="background:${gcolor(n.group)};color:#fff;cursor:pointer" data-g="${esc(gr.id)}">${esc(gr.name)}</span>`}
+function openFile(p){
+ const n=V.node[p];if(!n)return;qAway();V.sel={k:"f",id:p};log("open",p);tree();legend();stick(neighbours(p));
+ const es=V.g.edges.filter(e=>shown(e)&&(e.source==p||e.target==p)),c=V.P.content[p];
+ $("detail").innerHTML=back()+`<h2>${esc(base(p))}</h2><div class="path">${esc(p)}</div>
+  <div class="row"><span class="badge">${esc((ext(p)||"file").toUpperCase())}</span>${groupBadge(n)}${V.prio.has(p)?`<span class="badge user">먼저 볼 파일</span>`:""}</div>
+  ${n.summary?`<h3>요약</h3><div>${esc(n.summary)}</div>`:""}
+  <h3>연결 ${es.length}개</h3>${es.map(e=>{const o=e.source==p?e.target:e.source;return `<button class="edge-link" data-e="${esc(e.id)}"><span>${arrowOf(e,p)} ${esc(base(o))} <span class="hint">· ${esc(REL[e.relation]||e.relation)}${e.direct?"":" (추론)"}</span></span></button>`}).join("")||`<p class="hint">이어진 파일이 없습니다.</p>`}
+  ${V.canFix?nodeFixHtml(n):""}
+  <h3>내용</h3>${contentHtml(c)}`;
+ mountPdf($("detail"),c);bindDetail();V.canFix&&bindNodeFix(n);$("iscroll").scrollTop=0;if(net)net.selectNodes([p]);V.o.onOpen&&V.o.onOpen("file",p);
+}
+function edgeHtml(e){
+ const a=V.node[e.source],b=V.node[e.target],dir=DIRECTED.has(e.relation);
+ return `<h2>${esc(base(a.path))} ${dir?"→":"↔"} ${esc(base(b.path))}</h2><div class="path">${esc(a.path)}<br>${dir?"→":"↔"} ${esc(b.path)}</div>
+  ${V.o.edgeExtra?V.o.edgeExtra(e):""}${V.canFix?edgeFixHtml(e):""}
+  <div class="row"><span class="badge">${esc(REL[e.relation]||e.relation)}</span><span class="badge ${e.direct?"direct":""}">${e.direct?"직접 근거":"추론"}</span>
+   ${e.origin=="user"?`<span class="badge user">사용자 추가</span>`:""}${shown(e)?"":`<span class="badge removed">${esc(STATUS[e.status]||e.status)}</span>`}
+   ${e.status=="confirmed"?`<span class="badge user">필요한 연결로 표시됨</span>`:""}</div>
+  ${e.label?`<div class="explain">${esc(e.label)}</div>`:""}
+  ${e.correction?`<h3>고친 내용 반영</h3><div>${esc(e.correction)}</div>`:""}
+  <h3>근거</h3>${(e.evidence||[]).map(v=>`<div class="path">${esc(base(v.file_id||""))}${v.locator?" · "+esc(v.locator):""}</div><blockquote>${esc(v.quote)}</blockquote>`).join("")||`<p class="hint">${e.reason=="similar"?"두 파일의 내용(단어)이 비슷해서 이은 연결입니다. 따로 적힌 근거는 없습니다.":"근거 없음"}</p>`}
+  <h3>이어진 두 파일</h3>${fileLink(a.path,a.summary)}${fileLink(b.path,b.summary)}`;
+}
+function openEdge(k){
+ const e=V.E[k];if(!e)return;qAway();V.sel={k:"e",id:k};log("edge",k);legend();stick({hn:new Set([e.source,e.target]),he:new Set([k])});
+ $("detail").innerHTML=back()+edgeHtml(e);bindDetail();V.canFix&&bindEdgeFix(e);$("iscroll").scrollTop=0;
+ if(net)net.selectEdges([k]);V.o.onOpen&&V.o.onOpen("edge",k);setTimeout(applyNudge,0);
+}
+function openGroup(gid){
+ const gr=V.g.groups[V.gi[gid]];if(!gr)return;if(V.sel&&V.sel.k=="g"&&V.sel.id==gid){log("group_off",gid);home();return}qAway();V.sel={k:"g",id:gid};log("group",gid);legend();stick(groupSet(gid));if(net)net.redraw();
+ const cnt={};V.g.edges.forEach(e=>{if(!shown(e))return;const ga=V.node[e.source].group,gb=V.node[e.target].group;if(ga==gid&&gb!=gid&&gb!=null)cnt[gb]=(cnt[gb]||0)+1;if(gb==gid&&ga!=gid&&ga!=null)cnt[ga]=(cnt[ga]||0)+1});
+ $("detail").innerHTML=back()+`<h2>${esc(gr.name)}</h2><div class="row"><span class="badge" style="background:${gcolor(gid)};color:#fff">그룹</span><span class="badge">파일 ${gr.members.length}개</span>${gr.origin=="user"?`<span class="badge user">사용자가 만든 그룹</span>`:""}</div>
+  <div>${esc(gr.description||"")}</div><h3>안에 있는 파일</h3>${gr.members.map(p=>fileLink(p,(V.node[p]||{}).summary)).join("")}
+  <h3>다른 그룹과의 연결</h3>${Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(([og,c])=>`<button class="edge-link" data-g="${esc(og)}"><span class="dot" style="background:${gcolor(og)};align-self:center"></span><span>${esc(V.g.groups[V.gi[og]].name)} <span class="hint">· 연결 ${c}개</span></span></button>`).join("")||`<p class="hint">다른 그룹과 이어진 연결이 없습니다.</p>`}`;
+ bindDetail();$("iscroll").scrollTop=0;V.o.onOpen&&V.o.onOpen("group",gid);
+}
+/* ---------- one correction panel: every choice sends the same event as the team viewer ---------- */
+function edgeFixHtml(e){
+ const dir=DIRECTED.has(e.relation),rels=Object.keys(REL).filter(r=>!["imports","links_to","mentions","similar","user"].includes(r));
+ return `<div class="fixbar"><div class="fh">이 연결에 대한 피드백 <span>고르면 바로 그래프에 반영됩니다</span></div>
+  <div class="fb3"><button data-t="edge_confirm">필요한 연결</button><button data-t="edge_wrong">틀린 연결</button><button data-t="edge_irrelevant">지금은 불필요</button>
+   <small>필요해요 (흐린 선은 다시 굵게)</small><small>사실과 달라요</small><small>관련은 있지만 지금은 필요 없어요</small></div>
+  <button class="linkish" id="fxMore">관계 이름이나 방향 바꾸기 ▾</button>
+  <div class="fixmore" id="fxBox" hidden>
+   <div class="line"><span class="hint" style="width:74px">관계 바꾸기</span><select id="fxRel">${rels.map(r=>`<option value="${r}" ${r==e.relation?"selected":""}>${esc(REL[r])}</option>`).join("")}</select><input id="fxNote" placeholder="관계 설명 (선택)"><button class="sm" id="fxRelGo">적용</button></div>
+   ${dir?`<div class="line"><span class="hint" style="width:74px">방향 바꾸기</span><button class="sm" id="fxFlip">${esc(base(e.target))} → ${esc(base(e.source))} 로</button></div>`:""}
+   <div class="line"><span class="hint" style="width:74px">다른 파일과</span><select id="fxTo">${V.g.nodes.filter(n=>n.id!=e.source&&n.id!=e.target).map(n=>`<option value="${esc(n.id)}">${esc(n.path)}</option>`).join("")}</select><button class="sm" id="fxToGo">${esc(base(e.source))}와 잇기</button></div>
+  </div></div>`}
+function bindEdgeFix(e){
+ $("detail").querySelectorAll("button[data-t]").forEach(b=>b.onclick=()=>push(b.dataset.t=="edge_confirm"?{type:"edge_confirm",source:e.source,target:e.target,relation:e.relation,note:e.label}:{type:b.dataset.t,source:e.source,target:e.target}));
+ $("fxMore").onclick=()=>{$("fxBox").hidden=!$("fxBox").hidden};
+ $("fxRelGo").onclick=()=>push({type:"edge_add",source:e.source,target:e.target,relation:$("fxRel").value,note:$("fxNote").value.trim()||undefined});
+ if($("fxFlip"))$("fxFlip").onclick=()=>push({type:"edge_add",source:e.target,target:e.source,relation:e.relation,flip:true});
+ $("fxToGo").onclick=()=>pushMany([{type:"edge_wrong",source:e.source,target:e.target},{type:"edge_add",source:e.source,target:$("fxTo").value,relation:e.relation}]);
+}
+function nodeFixHtml(n){
+ return `<div class="fixpanel"><h3>이 파일 고치기</h3><div class="fixmore"><div class="line"><span class="hint" style="width:74px">그룹 옮기기</span><select id="nxG">${V.g.groups.map(gr=>`<option value="${esc(gr.id)}" ${gr.id==n.group?"selected":""}>${esc(gr.name)}</option>`).join("")}<option value="__new">새 그룹…</option></select>
+  <input id="nxNew" placeholder="새 그룹 이름" hidden><button class="sm" id="nxGo">옮기기</button></div>
+  ${n.group!=null?`<div class="line"><span class="hint" style="width:74px"></span><button class="sm" id="nxOut">그룹에서 빼기</button></div>`:""}
+  <div class="line"><span class="hint" style="width:74px">연결 추가</span><button class="sm" id="nxAdd">이 파일에서 다른 파일로 잇기</button></div></div></div>`}
+function bindNodeFix(n){
+ $("nxG").onchange=()=>{$("nxNew").hidden=$("nxG").value!="__new"};
+ $("nxGo").onclick=()=>{const v=$("nxG").value,name=v=="__new"?$("nxNew").value.trim():v;if(!name||name==n.group)return;push({type:"node_move",node:n.id,group:name})};
+ if($("nxOut"))$("nxOut").onclick=()=>push({type:"node_ungroup",node:n.id});
+ $("nxAdd").onclick=()=>{V.addFrom=n.id;addHint(`${base(n.id)}에서 이을 파일을 그래프에서 눌러 주세요 (Esc: 취소)`)};
+}
+function addHint(t){let h=$("addhint");if(!t){h&&h.remove();return}if(!h){h=document.createElement("div");h.id="addhint";h.className="addhint";$("graphwrap").appendChild(h)}h.textContent=t}
+function pickAdd(tgt){const src=V.addFrom;V.addFrom=undefined;addHint(null);if(tgt==src)return;
+ const rels=Object.keys(REL).filter(r=>!["imports","links_to","mentions","similar","user"].includes(r));
+ $("detail").innerHTML=back()+`<h2>${esc(base(src))} → ${esc(base(tgt))}</h2><p class="hint">새 연결의 관계를 골라 주세요.</p>
+  <div class="fixmore"><div class="line"><select id="adRel">${rels.map(r=>`<option value="${r}">${esc(REL[r])}</option>`).join("")}</select><input id="adNote" placeholder="관계 설명 (선택)"><button class="sm primary" id="adGo">추가</button></div></div>`;
+ bindDetail();$("adGo").onclick=()=>push({type:"edge_add",source:src,target:tgt,relation:$("adRel").value,note:$("adNote").value.trim()||undefined})}
+document.addEventListener("keydown",ev=>{if(ev.key=="Escape"&&V&&V.addFrom!==undefined){V.addFrom=undefined;addHint(null)}});
+/* ---------- applying feedback ----------
+   A planted mistake answered with one of its prepared options uses the prepared report (corrections/*.json:
+   the pipeline's feedback_changes() format). Anything else changes only what was asked, as finalize.py does. */
+const st=e=>e?{visible:VIS.has(e.status),status:e.status,relation:e.relation,score:+(+e.score).toFixed(4)}:null;
+function directRows(ev){
+ if(ev.type.startsWith("node_")){const n=V.node[ev.node],from=n.group!=null&&n.group in V.gi?V.g.groups[V.gi[n.group]].name:"그룹 없음";
+  return [{files:[ev.node],action:FBT[ev.type],from_group:from,to_group:ev.type=="node_ungroup"?"그룹 없음":(V.g.groups.find(g=>g.id==ev.group)||{name:ev.group}).name,_node:ev}]}
+ const k=ekey(ev.source,ev.target),e=V.E[k];let a=e?clone(e):null,action=FBT[ev.type];
+ if(ev.type=="edge_add"){
+  if(!a)a={id:k,source:ev.source,target:ev.target,relation:ev.relation||"user",reason:"user",direct:true,score:1,label:ev.note||"",evidence:[],origin:"user",status:"confirmed",correction:""};
+  else{a.status="confirmed";if(ev.relation&&ev.relation!=e.relation)action="관계 이름 수정";if(ev.relation)a.relation=ev.relation;if(ev.note)a.label=ev.note;
+   if(ev.flip){a.source=ev.source;a.target=ev.target;action="방향 수정"}}
+ }else if(a)a.status={edge_confirm:"confirmed",edge_wrong:"removed_wrong",edge_irrelevant:"removed_irrelevant"}[ev.type];
+ if(ev.type=="edge_confirm"&&a)a.score=Math.max(+a.score,1);
+ return [{files:[a.source,a.target],before:st(e),after:st(a),reason:"",action,_edge:a}];
+}
+function reportFor(ev){
+ if(V.o.corr&&ev.type!="edge_add"&&ev.type.startsWith("edge_")){
+  const c=Object.values(V.o.corr).find(c=>ekey(...c.edge)==ekey(ev.source,ev.target));
+  if(c&&c.options[ev.type]&&!V.events.some(x=>x._issue==c)){ev._issue=c;return clone(c.options[ev.type].report)}}
+ return {direct:directRows(ev),automatic:[],corrector:"직접 고친 것만 반영",applied:1};
+}
+function applyRows(rep){
+ const mark={};
+ const put=(row,kind)=>{
+  if(row._node){const ev=row._node,n=V.node[ev.node];if(ev.type=="node_ungroup")n.group=null;else{let g=V.g.groups.find(x=>x.id==ev.group||x.name==ev.group);
+    if(!g){g={id:"u"+(V.g.groups.filter(x=>x.origin=="user").length+1),name:ev.group,members:[],origin:"user",description:"사용자가 만든 그룹"};V.g.groups.push(g)}n.group=g.id}
+   V.g.groups.forEach(g=>g.members=V.g.nodes.filter(x=>x.group==g.id).map(x=>x.id));V.g.groups=V.g.groups.filter(g=>g.members.length||g.origin!="user");return}
+  const k=ekey(...row.files);let e=V.E[k];
+  if(row._edge){if(e)Object.assign(e,row._edge);else{V.g.edges.push(row._edge)}mark[k]=kind;return}
+  if(!e||!row.after)return;
+  e.status=row.after.status;e.relation=row.after.relation;e.score=row.after.score;if(row.reason)e.correction=row.reason;
+  if(DIRECTED.has(e.relation)&&row.files[0]!=e.source&&kind=="direct"){e.source=row.files[0];e.target=row.files[1]}
+  mark[k]=kind};
+ rep.direct.forEach(r=>put(r,"direct"));rep.automatic.forEach(r=>put(r,"auto"));
+ setGraph(V.g);return mark;
+}
+function pushMany(evs){evs.forEach((ev,i)=>push(ev,i<evs.length-1))}
+function push(ev,quiet){
+ Object.keys(ev).forEach(k=>ev[k]===undefined&&delete ev[k]);ev.ts=new Date().toISOString().slice(0,19);
+ const before=clone(V.g),groups=JSON.stringify(V.g.groups.map(g=>g.members)),rep=reportFor(ev),mark=applyRows(rep);
+ V.events.push(ev);const rec={step:FLOW[step].id,...ev};delete rec._issue;delete rec.flip;if(ev.flip)rec.note=(rec.note?rec.note+" ":"")+"[direction flip]";
+ if(!V.replay){LOG.feedback.push(rec);log("feedback",[ev.type,ev.source||ev.node,ev.target||ev.group||""])}
+ V.diff=mark;V.diffDir={};[...rep.direct,...rep.automatic].forEach(r=>{if(r.files.length>1&&r.before&&r.after)V.diffDir[ekey(...r.files)]=!r.after.visible||r.after.score<r.before.score?"down":"up"});V.stick=null;if(net)net.unselectAll();const regroup=JSON.stringify(V.g.groups.map(g=>g.members))!=groups;
+ if(regroup)morph(V.g,{diff:mark});else restyle();
+ if(quiet)return;
+ V.lastRep=rep;showReport(rep,ev);V.o.onEvent&&V.o.onEvent(ev,rep,before);setTimeout(()=>showChanged(rep),regroup?1300:150);
+}
+/* "흐리게 → 굵게 · 확장·후속" when only the strength changes; the relation is repeated only when it changed */
+function changeText(a,b){if(a&&b&&a.relation==b.relation){const t=s=>s.visible?TIER[tier(s.score)]:"숨김";return `${t(a)} → ${t(b)} · ${REL[a.relation]||a.relation}`}return `${stateText(a)} → ${stateText(b)}`}
+/* bring the links a feedback touched into view and keep them lit (purple: mine, orange: changed with it) */
+function showChanged(rep){if(!V||!net)return;const ks=[...rep.direct,...rep.automatic].filter(r=>r.files.length>1).map(r=>ekey(...r.files)).filter(k=>V.E[k]);if(!ks.length)return;
+ const hn=new Set(),he=new Set(ks);ks.forEach(k=>{hn.add(V.E[k].source);hn.add(V.E[k].target)});V.stick={hn,he};restyle();
+ const P=net.getPositions([...hn]),xs=Object.values(P).map(q=>q.x),ys=Object.values(P).map(q=>q.y),el=$("net");
+ const w=Math.max(...xs)-Math.min(...xs)+320,h=Math.max(...ys)-Math.min(...ys)+240,sc=Math.min(el.clientWidth/w,(el.clientHeight-150)/h,Math.max(net.getScale(),.75)); /* never zoom in further than a comfortable reading size */
+ net.moveTo({position:{x:(Math.max(...xs)+Math.min(...xs))/2,y:(Math.max(...ys)+Math.min(...ys))/2-50/sc},scale:sc,animation:{duration:700,easingFunction:"easeInOutQuad"}});
+ clearInterval(V.flashT);let n=0;V.flashT=setInterval(()=>{if(!V){return}V.flashOn=!V.flashOn;restyle();if(++n>=8){clearInterval(V.flashT);V.flashOn=false;restyle()}},380)}
+function stateText(s){return s?`${REL[s.relation]||s.relation} · ${s.visible?TIER[tier(s.score)]:"숨김"}`:"연결 없음"}
+/* the pipeline names its feedback types one way; participants see the button names */
+const ACT={"맞는 연결 (승인)":"필요한 연결","잘못된 연결 (사실 오류)":"틀린 연결","관련은 있지만 목적상 불필요":"지금은 불필요"};
+const stem=f=>base(f).replace(/\.[^.]+$/,"");
+function chipOf(a,b){const t=s=>!s?"없음":s.visible?TIER[tier(s.score)]:"숨김";return `${t(a)} → ${t(b)}`}
+function repRows(rows,kind,dis){return rows.length?`<div class="chgs">${rows.map(r=>{const k=r.files.length>1?ekey(...r.files):"",e=k&&V.E[k],ar=e&&DIRECTED.has(e.relation)?"→":"↔";
+ const nm=r.files.length>1?`${stem(r.files[0])} ${ar} ${stem(r.files[1])}`:stem(r.files[0]);
+ const down=r.after&&(!r.after.visible||(r.before&&r.after.score<r.before.score));
+ return `<div class="chg ${kind}"><details><summary><span class="cn">${esc(nm)}</span><span class="cc ${down?"down":"up"}">${r.from_group!==undefined?"그룹 이동":esc(chipOf(r.before,r.after))}</span></summary>
+  <div class="cb">${r.files.length>1?`<div class="path">${esc(r.files[0])}<br>${ar} ${esc(r.files[1])}</div>`:`<div class="path">${esc(r.files[0])}</div>`}
+   ${r.action?`<div><span class="badge">${esc(ACT[r.action]||r.action)}</span></div>`:""}
+   <div class="st">${r.from_group!==undefined?`${esc(r.from_group)} → ${esc(r.to_group)}`:`${esc(changeText(r.before,r.after))}`}</div>
+   ${r.reason?`<div class="why">${esc(r.reason)}</div>`:""}${k?`<button class="linkish" data-e="${esc(k)}">이 연결 자세히 보기</button>`:""}</div></details>
+  ${dis&&k?`<label class="dis"><input type="checkbox" data-dis="${esc(k)}" ${V.dis&&V.dis.has(k)?"checked":""}>동의하지 않음</label>`:""}</div>`}).join("")}</div>`:`<p class="hint">같이 바뀐 연결은 없습니다.</p>`}
+function showReport(rep,ev){
+ qAway();const dis=!!V.o.disagree;
+ $("detail").innerHTML=back()+`<h2>피드백을 반영했습니다</h2>
+  <div class="chsum"><div class="cs direct"><b>${rep.direct.length}</b><span>내가 고친 연결</span></div><div class="cs auto"><b>${rep.automatic.length}</b><span>같이 바뀐 연결</span></div></div>
+  <div class="seerow"><button class="sm" id="seeChg">그래프에서 다시 보기</button><button class="sm ghost" id="seeAll">전체 그래프 보기</button></div>
+  <div class="rh direct">내가 고친 것</div>${repRows(rep.direct,"direct",false)}
+  <div class="rh auto">같이 바뀐 연결 <span>눌러서 이유 보기</span></div>${repRows(rep.automatic,"auto",dis)}
+  ${rep.note?`<div class="repnote">${esc(rep.note)}</div>`:""}`;
+ bindDetail();$("iscroll").scrollTop=0;$("seeChg").onclick=()=>{log("see_changes");showChanged(rep)};$("seeAll").onclick=()=>{log("see_all");fitView(true)};
+ $("detail").querySelectorAll("[data-dis]").forEach(x=>x.onchange=()=>{V.dis=V.dis||new Set();if(x.checked)V.dis.add(x.dataset.dis);else V.dis.delete(x.dataset.dis);log("disagree",[x.dataset.dis,x.checked]);if(V.o.disagree){S().disagree=[...V.dis];persist()}});
+}
+
+/* ================= steps ================= */
+/* ---------- guided tour: dims the page, rings one element and says one thing at a time.
+   A step either waits for the participant to do it (wait: "tab" | "file" | "edge" | "group" | "fix") or has a button. */
+let TOUR=null;
+function tour(steps,done){TOUR={steps,i:0,done};tourShow()}
+function tourClear(){document.querySelectorAll(".tourhl,.tourbub,.tourblk").forEach(x=>x.remove())}
+function tourShow(){
+ tourClear();const t=TOUR;if(!t)return;const s=t.steps[t.i];
+ if(!s){TOUR=null;log("tour_done");t.done&&t.done();return}
+ const els=s.el?[...document.querySelectorAll(s.el)]:[],el=els[0],hl=document.createElement("div"),bub=document.createElement("div");
+ hl.className="tourhl"+(el?"":" full");bub.className="tourbub"+(el?"":" center")+(s.wide?" wide":"");
+ bub.innerHTML=`${s.k?`<div class="tk">${s.k}</div>`:`<div class="tk">화면 안내 ${t.i} / ${t.steps.length-1}</div>`}${s.title?`<h3>${s.title}</h3>`:""}<div class="tt">${s.text}</div>
+  <div class="tf">${s.wait?`<span class="do">${s.waitText||"직접 해 보면 다음으로 넘어갑니다."}</span>`:`<span></span><button class="primary" id="tnext">${s.btn||"다음"}</button>`}</div>`;
+ /* four transparent blockers around the ringed element: only the ringed part (and the bubble) can be clicked */
+ const blk=[0,1,2,3].map(()=>{const b=document.createElement("div");b.className="tourblk";return b});
+ document.body.append(hl,...blk,bub);
+ const place=()=>{const W=innerWidth,H=innerHeight;
+  if(!el){Object.assign(blk[0].style,{left:0,top:0,width:W+"px",height:H+"px"});return}
+  /* several selectors ring the box around all of them */
+  const rs=els.map(x=>x.getBoundingClientRect()),r={left:Math.min(...rs.map(q=>q.left)),top:Math.min(...rs.map(q=>q.top)),right:Math.max(...rs.map(q=>q.right)),bottom:Math.max(...rs.map(q=>q.bottom))};r.width=r.right-r.left;r.height=r.bottom-r.top;const p=6;
+  Object.assign(hl.style,{left:r.left-p+"px",top:r.top-p+"px",width:r.width+2*p+"px",height:r.height+2*p+"px"});
+  const L=r.left-p,T=r.top-p,R=r.right+p,B=r.bottom+p;
+  [[0,0,W,T],[0,B,W,H-B],[0,T,L,B-T],[R,T,W-R,B-T]].forEach(([x,y,w,h],i)=>Object.assign(blk[i].style,{left:x+"px",top:y+"px",width:Math.max(0,w)+"px",height:Math.max(0,h)+"px"}));
+  const bw=bub.offsetWidth,bh=bub.offsetHeight;let x,y;
+  if(s.side=="right"){x=r.right+18;y=r.top+20}else if(s.side=="left"){x=r.left-bw-18;y=r.top+20}
+  else if(s.side=="inside"){x=r.left+(r.width-bw)/2;y=r.top+70}
+  else if(r.bottom+bh+24<=H){x=r.left+(r.width-bw)/2;y=r.bottom+16}else{x=r.left+(r.width-bw)/2;y=r.top-bh-16}
+  if(s.side=="inside"&&els.length>1){x=r.left+40;y=r.top+70}
+  if(s.side=="bottom"){x=(W-bw)/2;y=H-bh-40}
+  Object.assign(bub.style,{left:Math.max(12,Math.min(W-bw-12,x))+"px",top:Math.max(12,Math.min(H-bh-12,y))+"px"})};
+ place();t.place=place;const b=$("tnext");if(b)b.onclick=tourNext;log("tour",t.i);
+}
+function tourNext(){if(!TOUR)return;TOUR.i++;tourShow()}
+function tourHit(k){if(TOUR&&TOUR.steps[TOUR.i]&&TOUR.steps[TOUR.i].wait==k&&!TOUR.busy){TOUR.busy=true;setTimeout(()=>{if(TOUR){TOUR.busy=false;tourNext()}},450)}}
+addEventListener("resize",()=>TOUR&&TOUR.place&&TOUR.place());
+function flowHtml(p){return p.intro.flow?`<div class="flow">${p.intro.flow.map(x=>`<span>${esc(x)}</span>`).join("<em>→</em>")}</div>`:""}
+
+/* ---------- shared pieces of the left pane: what to do now -> what you are looking at -> questions -> next button ---------- */
+/* Only the current step is shown (same height every time), with a small count. items: [text, done, control to highlight] */
+/* items: [explanation, what to press, done, control to highlight]. Only the current note is shown; the arrows page back through earlier ones. */
+function todo(items){const cur=items.findIndex(x=>!x[2]),n=items.length,ci=cur<0?n-1:cur;V.gItems=items;V.gCur=ci;
+ if(V.gKey!==ci){V.gKey=ci;V.gView=ci}V.nudge=cur<0?null:(items[cur][3]||null);
+ const fresh=V.lastGuide!==undefined&&V.lastGuide!==items[ci][0];V.lastGuide=items[ci][0];
+ return `<div class="todo guide ${fresh?"fresh":""}" id="guide">${guideInner()}</div>`}
+function guideInner(){const it=V.gItems,i=V.gView,x=it[i],past=i<V.gCur;
+ return `<div class="th">${past?"지난 안내":"안내"}<span class="gnav"><button data-g="-1" title="이전 안내" ${i?"":"disabled"}>‹</button><span class="tp">${i+1} / ${it.length}</span><button data-g="1" title="다음 안내" ${past?"":"disabled"}>›</button></span></div>
+  <div class="tcur ${past?"past":""}"><p class="gm">${x[0]}</p>${x[1]?`<p class="ga">${x[1]}</p>`:""}</div>
+  <div class="tdots">${it.map((y,j)=>`<i class="${j==i?"now":y[2]||j<V.gCur?"ok":""}"></i>`).join("")}</div>`}
+document.addEventListener("click",e=>{const b=e.target.closest("#guide [data-g]");if(!b||!V||!V.gItems)return;V.gView=Math.max(0,Math.min(V.gCur,V.gView+ +b.dataset.g));$("guide").innerHTML=guideInner();log("guide_nav",V.gView)});
+/* the control the current step talks about gets a soft glow; nothing else does */
+function applyNudge(){document.querySelectorAll(".nudge").forEach(x=>x.classList.remove("nudge"));const sel=V&&V.nudge;if(!sel||(sel=="#tQ"&&V.qOpen))return;const el=document.querySelector(sel);if(el)el.classList.add("nudge")}
+function scaleHtml(k,q,ans){return `<div class="qblk"><div class="qh">${esc(q)}</div><div class="r3row solo"><span class="b" data-k="${k}">${[1,2,3,4,5,6,7].map(i=>`<button class="sm ${ans[k]==i?"on":""}" data-v="${i}">${i}</button>`).join("")}</span></div><div class="q7ends solo"><span>전혀 아니다</span><span>매우 그렇다</span></div></div>`}
+function bindScales(r,ans,cb){r.querySelectorAll(".r3row.solo .b").forEach(b=>b.querySelectorAll("button").forEach(x=>x.onclick=()=>{ans[b.dataset.k]=+x.dataset.v;
+ b.querySelectorAll("button").forEach(y=>y.classList.toggle("on",y===x));log("rate",[b.dataset.k,+x.dataset.v]);cb&&cb()}))}
+function choiceHtml(name,q,opts,val){return `<div class="qblk"><div class="qh">${esc(q)}</div><div class="choices">${opts.map(o=>`<label><input type="radio" name="${name}" value="${esc(o)}" ${val==o?"checked":""}>${esc(o)}</label>`).join("")}</div></div>`}
+function intro1(k,title,html,btn,done){tour([{el:null,k,title,text:html,btn}],done)}
+/* questions get the wide right column as their own tab, next to the file / link details.
+   Re-rendering the same sheet (key) keeps its scroll and which tab is showing. Clicking the graph flips to the details. */
+function qsheet(key,html,foot,bind,opt={}){
+ const same=V.q&&V.q.key==key,sc=same?$("qscroll").scrollTop:0,open=same?V.qOpen:opt.open!==false;
+ V.q={key};$("ptabs").innerHTML=`<button id="tQ">질문</button><button id="tD">${opt.dlabel||"내용과 근거"}</button>`;
+ $("qscroll").innerHTML=html;$("qfoot").innerHTML=foot;$("qscroll").scrollTop=sc;
+ $("tQ").onclick=()=>qtab(true);$("tD").onclick=()=>qtab(false);qtab(open);bind&&bind($("qpane"));
+}
+function qtab(on){if(!V.q)return;V.qOpen=on;$("qpane").hidden=!on;$("iscroll").hidden=on;$("tQ").classList.toggle("on",on);$("tD").classList.toggle("on",!on);applyNudge();log("qtab",on)}
+function qclose(){if(!V||!$("ptabs"))return;V.q=null;V.qOpen=false;$("ptabs").innerHTML=`<span>내용과 근거</span>`;$("qpane").hidden=true;$("iscroll").hidden=false}
+function qAway(){if(V&&V.q&&V.qOpen)qtab(false)}
+
+/* ---------- practice (after task 1, so the tool is not familiar before the comparison) ----------
+   a link -> a group -> what the three kinds of feedback do (one card) -> each of them once on its own marked link.
+   The three tries show the difference that matters in task 2: "필요한 연결" and "지금은 불필요" also move links of the
+   same kind, "틀린 연결" changes only the one link. */
+const PSTEPS=[
+ {k:"edge",do:["ProjectWiki는 연결마다 관계와 근거를 붙여 둡니다. 선이 굵을수록 중요하다고 본 연결이고, 화살표는 방향입니다.","선을 하나 누르면 오른쪽에 관계와 근거가 나옵니다."],why:"화살표는 ‘A가 B를 사용함’처럼 관계의 방향입니다. 굵은 선은 중요하다고 본 연결이고, 가늘고 흐릴수록 덜 중요하다고 본 연결입니다. 점선은 파일에 직접 적혀 있지 않아 내용을 보고 추론한 연결입니다."},
+ {k:"group",do:["색으로 칠한 영역이 그룹입니다. 프로젝트 안에서 하는 일이 비슷한 파일끼리 묶었습니다.","왼쪽 아래 그룹 목록에서 하나를 누르면 설명이 나옵니다. 같은 그룹을 한 번 더 누르면 전체 그래프로 돌아옵니다."],why:"그룹을 누르면 그룹 설명, 안에 든 파일, 다른 그룹과 몇 개로 이어졌는지가 오른쪽에 나옵니다."},
+ {k:"fbi",do:["다음은 연결에 피드백을 주는 방법입니다. 그래프가 틀렸거나 지금 하는 일과 맞지 않을 때 쓰고, 과제 2에서 가장 많이 쓰게 됩니다.",`<button class="sm primary" id="fbgo">피드백 설명 보기</button>`],why:"깜빡이는 선 세 개로 피드백 세 가지를 하나씩 해 봅니다."},
+ {k:"fixA",t:"edge_confirm"},{k:"fixB",t:"edge_irrelevant"},{k:"fixC",t:"edge_wrong"}];
+function pfixDo(x){const e=V.E[V.pt[x.k]],nm=e?`${stem(e.source)} → ${stem(e.target)}`:"",lv=e?TIER[tier(+e.score)]:"";
+ return x.k=="fixA"?[`깜빡이는 선(${nm})은 지금 ‘${lv}’로 표시돼 있습니다. 이 연결이 하는 일에 꼭 필요하다고 가정해 보세요.`,"선을 누르고 오른쪽 위에서 [필요한 연결]을 고르세요."]
+  :x.k=="fixB"?[`이번 선(${nm})은 ‘${lv}’로 표시돼 있습니다. 관련은 있지만 지금 하는 일에는 필요 없다고 가정해 보세요.`,"선을 누르고 [지금은 불필요]를 고르세요."]
+  :[`마지막 선(${nm})은 시스템이 잘못 이은 연결이라고 가정해 보세요. 앞의 두 번과 결과가 어떻게 다른지 봐 주세요.`,"선을 누르고 [틀린 연결]을 고르세요."]}
+/* three marked links and a prepared result for each kind of feedback on them, built from the practice graph itself */
+function practiceCorr(){
+ const E=V.g.edges.filter(shown),same=(e,f)=>E.filter(x=>x.id!=e.id&&x.relation==e.relation&&f(x));
+ const A=E.find(e=>tier(+e.score)<2&&same(e,x=>tier(+x.score)<2).length>=2)||E[0];
+ const B=E.find(e=>e.id!=A.id&&tier(+e.score)==2&&e.relation!=A.relation&&same(e,()=>true).length>=2)||E.find(e=>e.id!=A.id);
+ const Cc=E.find(e=>e.id!=A.id&&e.id!=B.id&&!e.direct&&e.relation!=A.relation&&e.relation!=B.relation)||E.find(e=>e.id!=A.id&&e.id!=B.id);
+ V.pt={fixA:A.id,fixB:B.id,fixC:Cc.id};const tg=new Set(Object.values(V.pt));
+ const row=(e,ch,reason,action)=>({files:[e.source,e.target],before:st(e),after:Object.assign(st(e),ch),reason:reason||"",action:action||""});
+ const sh=(e,x)=>[x.source,x.target].some(n=>n==e.source||n==e.target)?1:0,kind=e=>REL[e.relation]||e.relation;
+ const mk=e=>({edge:[e.source,e.target],options:{
+  edge_confirm:{report:{direct:[row(e,{status:"confirmed",score:Math.max(+e.score,1)},"",FBT.edge_confirm)],
+   automatic:same(e,x=>tier(+x.score)<2&&!tg.has(x.id)).sort((x,y)=>sh(e,y)-sh(e,x)).slice(0,3).map(x=>row(x,{score:.85},`필요하다고 한 연결과 같은 종류(${kind(e)})라서 조금 더 굵게 했습니다.`))}},
+  edge_irrelevant:{report:{direct:[row(e,{status:"removed_irrelevant",visible:VIS.has("removed_irrelevant")},"",FBT.edge_irrelevant)],
+   automatic:same(e,x=>!tg.has(x.id)).sort((x,y)=>sh(e,y)-sh(e,x)).slice(0,3).map(x=>row(x,{score:+Math.max(.2,+x.score-.35).toFixed(2)},`불필요하다고 한 연결과 같은 종류(${kind(e)})라서 조금 흐리게 했습니다.`))}},
+  edge_wrong:{report:{direct:[row(e,{status:"removed_wrong",visible:VIS.has("removed_wrong")},"",FBT.edge_wrong)],automatic:[]}}}});
+ return {pa:mk(A),pb:mk(B),pc:mk(Cc)};
+}
+function fixWhy(ev,rep){const n=rep.automatic.length;
+ if(ev.type=="edge_confirm")return n?`고른 선이 굵어졌고, 같은 종류의 연결 ${n}개도 조금 굵어졌습니다. 같이 바뀐 연결은 그래프에 주황색으로, 바뀐 이유는 오른쪽에 나옵니다.`:"고른 선이 굵어졌습니다. 같은 종류의 다른 연결은 없어서 이 선만 바뀌었습니다.";
+ if(ev.type=="edge_irrelevant")return n?`고른 선은 지우지 않고 흐리게 숨겼고, 같은 종류의 연결 ${n}개도 조금 흐려졌습니다. 첫 번째와 반대 방향으로 같이 바뀐 셈입니다.`:"고른 선을 지우지 않고 흐리게 숨겼습니다.";
+ if(ev.type=="edge_wrong")return "이번에는 고른 선만 숨겨지고 다른 연결은 그대로입니다. 사실이 틀린 건 그 연결 하나의 문제라서, 같은 종류의 연결까지 바꾸지 않습니다.";
+ return "고친 내용이 그래프에 반영됐습니다."}
+/* what the three kinds do, drawn: the top line is the one chosen, the two below are links of the same kind */
+function fbSvg(t){const L=(x,y,c,w,d,o)=>`<line x1="${x+8}" y1="${y}" x2="${x+92}" y2="${y}" stroke="${c}" stroke-width="${w}" ${d?`stroke-dasharray="${d}"`:""} opacity="${o||1}" stroke-linecap="round"/><circle cx="${x+5}" cy="${y}" r="4.5" fill="#9a97a6"/><circle cx="${x+95}" cy="${y}" r="4.5" fill="#9a97a6"/>`;
+ const g="#77718a",pre=L(0,16,g,2.4)+L(0,44,g,2.4)+L(0,68,g,2.4);
+ const post=t=="edge_confirm"?L(140,16,"#c4a8ff",6)+L(140,44,"#ffa940",4)+L(140,68,"#ffa940",4)
+  :t=="edge_irrelevant"?L(140,16,"#c4a8ff",2,"4 4",.55)+L(140,44,"#ffa940",1.4,"6 4",.8)+L(140,68,"#ffa940",1.4,"6 4",.8)
+  :L(140,16,"#c4a8ff",2,"4 4",.45)+`<text x="190" y="21" fill="#ff8f8f" font-size="15" text-anchor="middle" font-weight="700">×</text>`+L(140,44,g,2.4)+L(140,68,g,2.4);
+ return `<svg viewBox="0 0 240 84" width="100%" height="84" aria-hidden="true">${pre}<text x="120" y="47" fill="#8a8a96" font-size="16" text-anchor="middle">→</text>${post}</svg>`}
+function fbIntro(){
+ const col=(t,when,what)=>`<div><b>${FBN[t]}</b>${fbSvg(t)}<span class="w">${when}</span><span>${what}</span></div>`;
+ tour([{el:null,wide:true,k:"도구 연습",title:"연결에 피드백 주기",btn:"해 보기",text:`<p class="big">선을 누르면 오른쪽 위에 피드백 버튼 세 개가 있습니다. 어떤 것을 고르느냐에 따라 고른 선만 바뀌기도 하고, 같은 종류의 연결이 같이 바뀌기도 합니다.</p>
+  <div class="fbcols">${col("edge_confirm","지금 하는 일에 필요한 연결일 때","이 선이 굵어지고, 같은 종류의 연결도 조금 굵어집니다.")}${col("edge_irrelevant","관련은 있지만 지금은 필요 없을 때","이 선은 지우지 않고 흐리게 숨기고, 같은 종류의 연결도 조금 흐려집니다.")}${col("edge_wrong","연결 자체가 사실과 다를 때","이 선만 숨기고, 다른 연결은 그대로 둡니다.")}</div>
+  <p class="hint">그림에서 맨 위 선이 고른 선이고, 아래 두 선은 같은 종류의 연결입니다. 이제 깜빡이는 선 세 개로 하나씩 해 봅니다.</p>`}],()=>{pdone("fbi")})}
+const FBN={edge_confirm:"필요한 연결",edge_irrelevant:"지금은 불필요",edge_wrong:"틀린 연결"};
+document.addEventListener("click",e=>{if(e.target.closest("#fbgo")&&V&&!TOUR)fbIntro()});
+function practice(){
+ const P=D.projects[D.practice],s=S();
+ workspace({proj:D.practice,canFix:true,crumb:"연습",onOpen:k=>pdone(k),
+  onEvent:(ev,rep)=>{const cur=PSTEPS.find(x=>!V.pdone.has(x.k));if(!cur||!cur.t)return;V.pulse.clear();pdone(cur.k,fixWhy(ev,rep))}});
+ setGraph(clone(P.graphs.ours));V.pdone=new Set();V.o.corr=practiceCorr();
+ V.pulseT=setInterval(()=>{V.pulseOn=!V.pulseOn;if(V.pulse.size)restyle()},600);
+ draw();home();pcard();
+ const lab=LBL[LOG.order.t1.indexOf("ours")];
+ if(!s.toured)intro1("도구 연습","ProjectWiki 연습",`<p class="big">과제 2에서는 과제 1의 정리 ${lab}였던 ProjectWiki를 씁니다. 그 전에 작은 폴더에서 그래프를 보는 법과 연결에 피드백을 주는 법을 연습합니다.</p>
+  <p class="hint">연습 폴더: ${esc(P.intro.who)}</p>`,"시작하기",()=>{s.toured=true});
+}
+function pdone(k,why){if(!PSTEPS.some(x=>x.k==k)||V.pdone.has(k))return;V.pdone.add(k);V.lastWhy=why||PSTEPS.find(x=>x.k==k).why;log("pstep",k);pcard()}
+function pcard(){
+ const cur=PSTEPS.find(x=>!V.pdone.has(x.k));V.pulse.clear();if(cur&&cur.t)V.pulse.add(V.pt[cur.k]);restyle();
+ card("도구 연습","",`<div class="sidebox">${todo([...PSTEPS.map(x=>[...(x.t?pfixDo(x):x.do),V.pdone.has(x.k),x.k=="group"?"#secG":x.k=="fbi"?"#fbgo":x.t?`.fb3 button[data-t="${x.t}"]`:null]),["연습은 여기까지입니다. 과제 2에서도 같은 방법으로 그래프를 보고 고칩니다.","본 과제로 가려면 아래 [과제 2로]를 누르세요.",false,"#pnext"]])}</div>
+  <div class="sidebox whybox"><div class="sh">방금 본 것</div><p class="say ${V.lastWhy?"":"muted"}">${esc(V.lastWhy||"안내대로 눌러 보면 방금 본 것이 무엇인지 여기에 짧게 설명이 나옵니다.")}</p></div>
+  <div class="pinfoot"><button class="primary wide" id="pnext">과제 2로 →</button></div>`,
+  r=>{r.querySelector("#pnext").onclick=()=>{LOG.steps.practice.done=[...V.pdone];go(step+1)}});
+}
+
+/* ---------- task 1: three organisations of the same folder ----------
+   short orientation (where things are, no clicking on any one organisation) -> look at A, B, C in turn, each with the
+   same two little actions and a factual one-line description of how it links and groups -> rate the three side by side
+   (tabs still work) -> pick one and say why -> reveal. Time per organisation is only recorded. */
+const T1R=[["glance","한눈에 구조가 보인다"],["why","파일이 왜 이어졌는지 알 수 있다"],["trust","믿고 쓸 수 있겠다"],["use","내 연구 폴더에도 쓰고 싶다"]];
+const LBL=["A","B","C"];
+/* what each organisation does, said the same way for all three (names stay hidden until the end) */
+const T1DESC={
+ obsidian:["한 파일 안에 다른 파일의 이름이나 링크가 적혀 있으면 이었습니다.","같은 폴더에 있는 파일끼리 묶었습니다.","어느 파일에 어떻게 적혀 있었는지"],
+ similar:["내용에 같은 단어가 많이 나오는 파일끼리 이었습니다.","자주 쓰는 단어가 비슷한 파일끼리 묶었습니다.","두 파일에 함께 나오는 단어"],
+ ours:["두 파일이 어떤 관계인지(사용, 생성, 설명 등) 판단해서 이었습니다.","프로젝트에서 하는 역할이 비슷한 파일끼리 묶었습니다.","관계와 그 근거가 된 문장"]};
+function t1(){
+ const P=D.projects[D.main],order=LOG.order.t1,s=S();
+ ["rate","dwell","rdwell","visits","seen"].forEach(k=>s[k]=s[k]||{});
+ order.forEach(m=>{s.rate[m]=s.rate[m]||{};s.dwell[m]=s.dwell[m]||0;s.rdwell[m]=s.rdwell[m]||0;s.visits[m]=s.visits[m]||0;s.seen[m]=s.seen[m]||{}});
+ workspace({proj:D.main,crumb:"정리 비교",onOpen:k=>{if(V.phase=="visit"&&(k=="file"||k=="edge")&&!s.seen[V.tab][k]){s.seen[V.tab][k]=true;t1card()}},
+  tools:`<div class="tabsbox"><span class="tablbl">정리 바꾸기</span><div class="ttabs big" id="ttabs">${order.map((m,i)=>`<button data-m="${m}">정리 ${LBL[i]}</button>`).join("")}</div></div>`,
+  bindTools:()=>document.querySelectorAll("#ttabs button").forEach(b=>b.onclick=()=>{if(V.free&&b.dataset.m!=V.tab)V.freeSw=true;tab(b.dataset.m,true)})});
+ V.cache={};V.phase=s.phase||"visit";V.free=!!s.free;tab(order[0]);
+ TIMER=setInterval(()=>{if(document.hidden||TOUR||!V||!V.tab)return;(V.phase=="visit"?s.dwell:s.rdwell)[V.tab]++},1000);
+ if(!s.toured)tour([
+  {el:null,k:"과제 1",title:"정리 방식 비교",btn:"다음",
+   text:`<p class="big">연구실에 새로 들어와서 선배의 연구 폴더를 넘겨받았다고 생각해 주세요. 이 폴더를 세 가지 방식으로 정리한 그래프를 하나씩 살펴보고, 폴더를 파악하는 데 어느 쪽이 더 도움이 되는지 평가해 주세요.</p>
+    <div class="abc"><span>정리 A</span><span>정리 B</span><span>정리 C</span><em>→</em><span class="go">비교·평가</span></div>
+    ${folderHtml(P)}<p class="hint">폴더 내용을 자세히 몰라도 됩니다. 이 설명은 왼쪽 ‘이 폴더’에서 다시 볼 수 있습니다.</p>`},
+  {el:"#guide",side:"right",title:"안내",text:"단계마다 무엇을 보면 되는지와 다음으로 넘어가는 방법이 여기에 나옵니다. 지난 안내는 ‹ › 로 다시 볼 수 있습니다."},
+  {el:"#ttabs",title:"정리 바꾸기",text:"정리 A, B, C는 여기서 바꿉니다. 정리 A부터 봅니다.",btn:"시작하기"}
+ ],()=>{s.toured=true});
+}
+function tab(m,user){
+ if(V.tab==m)return;if(V.tab&&net){if(!(V.shots||{})[V.tab])t1shot(V.tab);V.cache[V.tab]={pos:net.getPositions(),lw:V.lw}}
+ V.tab=m;log("tab",m);S().visits[m]++;const g=clone(D.projects[D.main].graphs[m]);V.sel=null;V.stick=null;setGraph(g);
+ const c=V.cache[m];if(c){V.lw=c.lw;draw({pos:c.pos,fixed:true})}else{V.lw=null;draw({then:()=>setTimeout(()=>t1shot(m),350)})}
+ document.querySelectorAll("#ttabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m==m));
+ const d=T1DESC[m];$("gcap").textContent=`정리 ${LBL[LOG.order.t1.indexOf(m)]}`;
+ /* how this organisation was made, pinned to the graph it describes */
+ $("gdesc").innerHTML=`<div><b>선</b><span>${d[0]}</span></div><div><b>색 묶음</b><span>${d[1]}</span></div><div><b>선을 누르면</b><span>${d[2]}이 나옵니다.</span></div>`;$("gdesc").hidden=false;
+ $("gleg").innerHTML=`<span><i style="border-color:${C.hi}"></i>연결</span><span><i style="border-color:${C.mid};border-top-style:dashed"></i>추론한 연결</span><span>→ 관계 방향</span>`;
+ home();t1card();
+}
+function folderHtml(P){return `<div class="fold"><div class="fk">어떤 폴더인가요?</div><div class="fw">${esc(P.intro.short||P.intro.who)}</div>${flowHtml(P)}</div>`}
+function folderSec(){const P=D.projects[D.main];return `<details class="side-sec" id="secP"><summary>이 폴더</summary><div class="foldside">${esc(P.intro.who)}${flowHtml(P)}${dirsHtml(P)}</div></details>`}
+function tabsHtml(){const s=S();return `<div class="bigtabs">${LOG.order.t1.map((m,i)=>`<button data-m="${m}" class="${m==V.tab?"on":""}">정리 ${LBL[i]}${s.visits[m]?`<i>✓</i>`:""}</button>`).join("")}</div>`}
+function bindTabs(r){r.querySelectorAll(".bigtabs button").forEach(b=>b.onclick=()=>tab(b.dataset.m,true))}
+/* a small picture of each organisation for the reveal at the end of task 1 */
+function t1shot(m){try{const c=net&&net.canvas.frame.canvas;if(!c||!V||V.tab!=m)return;
+ /* crop to the drawn graph and put it on the page background */
+ const P=net.getPositions(),ids=Object.keys(P);if(!ids.length)return;const k=c.width/c.clientWidth,pad=26;
+ const pts=ids.map(i=>net.canvasToDOM(P[i])),x1=Math.max(0,Math.min(...pts.map(p=>p.x))-pad-40),x2=Math.min(c.clientWidth,Math.max(...pts.map(p=>p.x))+pad+40),y1=Math.max(0,Math.min(...pts.map(p=>p.y))-pad-20),y2=Math.min(c.clientHeight,Math.max(...pts.map(p=>p.y))+pad);
+ const o=document.createElement("canvas");o.width=480;o.height=360;const g=o.getContext("2d");g.fillStyle="#1e1e1e";g.fillRect(0,0,480,360);
+ const sw=(x2-x1)*k,sh=(y2-y1)*k,sc=Math.min(480/sw,360/sh);g.drawImage(c,x1*k,y1*k,sw,sh,(480-sw*sc)/2,(360-sh*sc)/2,sw*sc,sh*sc);
+ (V.shots||(V.shots={}))[m]=o.toDataURL("image/jpeg",.85)}catch(e){}}
+function t1card(){
+ const s=S(),o=LOG.order.t1;s.phase=V.phase;s.free=!!V.free;persist();
+ if(V.gph!=V.phase){V.gph=V.phase;const g=$("secG");if(g)g.open=V.phase=="visit"}
+ if(V.phase=="visit"){
+  qclose();const m=V.tab,i=o.indexOf(m),sn=s.seen[m];
+  /* only the first organisation walks through the clicks; after that the participant looks around freely */
+  if(!V.free&&i==0){
+   card(`정리 ${LBL[0]} 살펴보기`,"",`<div class="sidebox">${todo([[`정리 ${LBL[0]}는 폴더 안 파일을 점으로, 파일 사이의 관계를 선으로 그린 그래프입니다.`,"점을 누르면 오른쪽에 파일 요약과 내용이 나옵니다.",sn.file],
+    ["선은 두 파일이 관련 있다고 본 곳입니다. 비교할 때는 왜 이었는지가 납득되는지도 봐 주세요.","선을 누르면 오른쪽에 이어진 이유가 나옵니다.",sn.edge],
+    ["그래프를 보면서 폴더가 어떻게 짜여 있는지 감이 오는지 살펴보세요. 이 정리를 만든 방식은 그래프 왼쪽 위에 적혀 있습니다.",`다 봤으면 아래 [정리 ${LBL[1]} 보기]로 넘어가세요.`,false]])}</div>
+    ${folderSec()}<div class="pinfoot"><button class="primary wide" id="vnext">정리 ${LBL[1]} 보기 →</button></div>`,
+    r=>{r.querySelector("#vnext").onclick=()=>{V.free=true;tab(o[1],true)}});return}
+  V.free=true;
+  card("세 정리 둘러보기","",`<div class="sidebox">${todo([[`${LBL[1]}와 ${LBL[2]}도 ${LBL[0]}처럼 점과 선을 눌러 보면서 살펴보세요. 위쪽 탭으로 세 정리를 오갈 수 있습니다.`,"충분히 봤으면 아래 [평가로 넘어가기]를 누르세요.",false]])}</div>
+   ${folderSec()}<div class="pinfoot"><p class="hint" id="t1warn"></p><button class="primary wide" id="vnext">평가로 넘어가기 →</button></div>`,
+   r=>{r.querySelector("#vnext").onclick=()=>{const miss=o.filter(x=>!s.visits[x]);
+    if(miss.length&&!V.warned){V.warned=true;$("t1warn").textContent=`정리 ${miss.map(x=>LBL[o.indexOf(x)]).join(", ")}는 아직 열어 보지 않았습니다. 그래도 넘어가려면 한 번 더 누르세요.`;return}
+    s.skipped=miss;V.phase="rate";log("phase","rate");t1card()}});return}
+ /* rating and choosing: the questions take the wide right column; the left keeps the checklist and the switch between organisations */
+ const a=s.answer||{},rated=T1R.every(([k])=>o.every(m=>s.rate[m][k]));
+ card("세 정리 비교","",`<div class="sidebox">${todo([["문항마다 세 정리에 각각 1~7점을 매겨 주세요. 기억이 잘 안 나면 정리를 바꿔 다시 봐도 됩니다.","문항은 오른쪽 [질문]에 있습니다.",rated,"#tQ"],
+    ["마지막으로 가장 도움이 될 것 같은 정리 하나와 그 이유를 적어 주세요.","오른쪽 질문의 두 번째 장입니다.",V.phase=="choose"&&!!a.best,"#tQ"],
+    ["제출하면 세 정리를 각각 어떻게 만들었는지 알려 드립니다.","다 적었으면 오른쪽 아래 [제출]을 누르세요.",false,"#tQ"]])}</div>
+  <div class="sidebox"><div class="sh">정리 다시 보기</div>${tabsHtml()}<p class="hint" style="margin-top:8px">파일이나 선을 누르면 오른쪽이 내용으로 바뀌고, 위쪽 [질문]을 누르면 돌아옵니다.</p></div>
+  <div class="pinfoot"><button class="ghost" id="rback">← 다시 살펴보기</button></div>`,
+  r=>{bindTabs(r);r.querySelector("#rback").onclick=()=>{V.phase="visit";t1card()}});
+ if(V.phase=="rate"){
+  const row=(m,k)=>`<div class="r3row"><span>정리 ${LBL[o.indexOf(m)]}</span><span class="b" data-m="${m}" data-k="${k}">${[1,2,3,4,5,6,7].map(i=>`<button class="sm ${s.rate[m][k]==i?"on":""}" data-v="${i}">${i}</button>`).join("")}</span></div>`;
+  qsheet("t1rate",`<div class="qintro"><b>문항마다 세 정리를 각각 1~7점</b>으로 매겨 주세요. 기억이 안 나면 정리를 바꿔 다시 봐도 됩니다.</div>
+   ${T1R.map(([k,q],n)=>`<div class="qblk"><div class="qh">${n+1}. ${esc(q)}</div>${o.map(m=>row(m,k)).join("")}<div class="q7ends"><span>전혀 아니다</span><span>매우 그렇다</span></div></div>`).join("")}`,
+   `<div class="err" id="rerr"></div><button class="primary wide" id="rnext">다음 질문 (1/2) →</button>`,
+   r=>{r.querySelectorAll(".r3row .b").forEach(b=>b.querySelectorAll("button").forEach(x=>x.onclick=()=>{s.rate[b.dataset.m][b.dataset.k]=+x.dataset.v;
+     b.querySelectorAll("button").forEach(y=>y.classList.toggle("on",y===x));log("rate",[b.dataset.m,b.dataset.k,+x.dataset.v]);$("rerr").textContent="";persist()}));
+    r.querySelector("#rnext").onclick=()=>{const left=T1R.filter(([k])=>o.some(m=>!s.rate[m][k])).length;if(left){$("rerr").textContent=`아직 비어 있는 칸이 있습니다 (${left}개 문항).`;return}V.phase="choose";log("phase","choose");t1card()}});return}
+ qsheet("t1choose",`<div class="qintro">마지막으로 <b>하나를 골라</b> 주세요. 이때도 정리를 다시 볼 수 있습니다.</div>
+  <div class="qblk"><div class="qh">처음 받은 폴더를 파악할 때 가장 도움이 될 정리는?</div><div class="pickm">${o.map((m,i)=>`<label><input type="radio" name="best" value="${m}" ${a.best==m?"checked":""}>정리 ${LBL[i]}</label>`).join("")}</div></div>
+  <div class="qblk"><div class="qh">그렇게 고른 이유</div><textarea id="why" placeholder="예: 연결마다 이유가 적혀 있어서 따라가기 쉬웠다">${esc(a.why||"")}</textarea></div>
+  <div class="qblk"><div class="qh">동료에게 이 폴더를 한두 문장으로 소개한다면?</div><textarea id="desc" placeholder="예: 잎 사진 몇 장으로 병을 분류하는 모델을 연구하는 폴더다">${esc(a.desc||"")}</textarea></div>`,
+  `<div class="err" id="cerr"></div><div class="actions"><button class="ghost" id="cback">← 이전 질문</button><button class="primary" id="csub" style="margin-left:auto">제출</button></div>`,
+  r=>{const keep=()=>{const b=document.querySelector("input[name=best]:checked");s.answer={best:b?b.value:"",why:$("why").value.trim(),desc:$("desc").value.trim()}};
+   r.querySelectorAll("input,textarea").forEach(x=>x.oninput=x.onchange=()=>{keep();$("cerr").textContent=""});
+   r.querySelector("#cback").onclick=()=>{keep();V.phase="rate";t1card()};
+   r.querySelector("#csub").onclick=()=>{keep();if(!s.answer.best)return $("cerr").textContent="하나를 골라 주세요.";
+    if(!s.answer.why)return $("cerr").textContent="이유를 적어 주세요.";if(!s.answer.desc)return $("cerr").textContent="폴더 소개를 적어 주세요.";
+    t1shot(V.tab);persist();const sh=V.shots||{};
+    tour([{el:null,wide:true,k:"과제 1",title:"과제 1을 마쳤습니다",btn:"다음으로",text:`<p>세 정리는 아래 방식으로 만들었습니다. 과제 2에서는 정리 ${LBL[o.indexOf("ours")]}였던 ProjectWiki를 직접 써 봅니다. 그 전에 작은 폴더로 사용법을 연습합니다.</p>
+     <div class="rev3">${o.map((m,i)=>{const [nm,...rest]=D.methods[m].split(":");return `<div class="${m=="ours"?"ours":""}">${sh[m]?`<img src="${sh[m]}" alt="">`:`<div class="noimg">열어 보지 않은 정리</div>`}<div class="rl">정리 ${LBL[i]}</div><b>${esc(nm)}</b>${rest.join(":").trim().split(/(?<=다\.)\s*/).filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join("")}</div>`}).join("")}</div>`}],()=>go(step+1))}});
+}
+
+/* ---------- task 2-1: the same folder under two intents ---------- */
+const CHANGES=["그룹이 다시 묶였다","필요한 연결이 굵어졌다","필요 없는 연결이 흐려졌다","먼저 볼 파일이 커졌다","잘 모르겠다"];
+function diffOf(a,b){const A={};a.edges.forEach(e=>A[e.id]=e);const d={};b.edges.forEach(e=>{const o=A[e.id];if(!o)return;const t=tier(+e.score)-tier(+o.score);if(t>0)d[e.id]="up";else if(t<0)d[e.id]="down"});return d}
+function moved(a,b){const ga={},gb={};a.nodes.forEach(n=>ga[n.id]=(a.groups.find(g=>g.id==n.group)||{}).name);b.nodes.forEach(n=>gb[n.id]=(b.groups.find(g=>g.id==n.group)||{}).name);return b.nodes.filter(n=>ga[n.id]!=gb[n.id]).map(n=>n.id)}
+const LEG_BASE=()=>`<span><i style="border-color:${C.hi}"></i>핵심 연결</span><span><i style="border-color:${C.mid};border-top-width:2px"></i>약한 연결</span>`;
+const LEG_INTENT=()=>`<span><i style="border-color:${C.up}"></i>굵어진 연결</span><span><i style="border-color:${C.hi}"></i>핵심 연결</span><span><i style="border-color:${C.down};border-top-style:dashed"></i>흐려진 연결</span><span>큰 점: 먼저 볼 파일</span>`;
+function t2a(){
+ const P=D.projects[D.main];S().intents=S().intents||{};
+ workspace({proj:D.main,crumb:"의도 적용",home:t2aHome,edgeExtra:t2aExtra,
+  onOpen:(k,id)=>{if(k=="edge"&&V.diff[id]=="up"&&!V.sawUp){V.sawUp=true;t2aCard()}},
+  tools:`<div class="ttabs big" id="ba" hidden><button data-v="0">적용 전</button><button data-v="1" aria-pressed="true">적용 후</button></div>`,
+  bindTools:()=>document.querySelectorAll("#ba button").forEach(b=>b.onclick=()=>beforeAfter(b.dataset.v=="1"))});
+ V.base=clone(P.graphs.ours);setGraph(clone(V.base));V.k=Math.min(S().k||0,LOG.order.intents.length-1);V.applied=false;V.lay={};
+ draw({then:()=>{V.lay.base=net.getPositions()}});home();t2aCard();
+ $("gleg").innerHTML=LEG_BASE();$("gcap").textContent="의도 적용 전 (원래 그래프)";
+ if(!S().toured)tour([
+  {el:null,k:"과제 2",title:"의도 반영",btn:"시작하기",
+   text:`<p class="big">같은 폴더라도 무엇을 하려는지에 따라 필요한 연결이 달라집니다. ProjectWiki는 그 의도를 반영해 그래프를 다시 그립니다.</p>
+    <p>아래 두 의도를 차례로 적용해 봅니다. 의도에 대한 답은 미리 정해 두었으니, 그래프가 어떻게 바뀌는지만 보시면 됩니다.</p>
+    <div class="intents">${LOG.order.intents.map((id,i)=>`<div class="intent"><span class="n">${i+1}</span><div><b>${esc(D.intents[id].label)}</b></div></div>`).join("")}</div>`},
+ ],()=>{S().toured=true});
+}
+function curIntent(){return D.intents[LOG.order.intents[V.k]]}
+function t2aCard(){
+ const it=curIntent(),a=S().intents[it.id]||(S().intents[it.id]={}),n=LOG.order.intents.length,last=V.k==n-1;persist();
+ const form=`<div class="setupq">${[["이 위키를 어디에 쓰나요?",it.setup.purpose],["어떤 자료를 먼저 보고 싶나요?",it.setup.priority],["파일을 어떤 기준으로 묶고 싶나요?",it.setup.grouping]]
+  .map(([q,v])=>`<div><span>${q}</span><div class="a">${esc(v)}</div></div>`).join("")}</div>`;
+ const answered=!!(a.fit&&a.change),order=LOG.order.intents;
+ const cards=order.map((id,i)=>`<div class="intent ${i==V.k?"on":i<V.k?"done":""}"><span class="n">${i<V.k?"✓":i+1}</span><div><b>${esc(D.intents[id].label)}</b><span>${i<V.k?"다 봤음":i==V.k?(V.applied?"지금 보는 중":"이제 적용할 차례"):"다음 차례"}</span></div></div>`).join("");
+ card(`과제 2: 그래프 의도 (${V.k+1}/${n})`,"",`<div class="sidebox">${todo(V.k==0?[["ProjectWiki는 쓰는 사람이 무엇을 하려는지 먼저 묻고, 그 답에 맞춰 그래프를 다시 그립니다. 이번에 적용할 의도와 답은 아래 카드에 있습니다.","아래 [이 의도로 적용하기]를 누르면 적용됩니다.",V.applied,"#apply"],
+    ["이 의도에 필요한 연결은 초록색으로 굵어지고, 필요 없는 연결은 흐려집니다. 먼저 볼 파일은 크게 표시됩니다.","초록 선을 누르면 왜 필요한지 나옵니다. 위쪽 [적용 전 / 적용 후]로 원래 그래프와 비교할 수 있습니다.",!!V.sawUp],
+    ["그래프가 이 의도에 맞게 바뀌었는지 생각해 보세요.","답은 오른쪽 [질문]에 적습니다.",answered,"#tQ"],
+    [last?"다음 단계에서는 그래프를 직접 고쳐 봅니다.":"다음 의도에서는 같은 폴더가 또 다르게 그려집니다.",`넘어가려면 오른쪽 아래 [${last?"다음 단계로":"두 번째 의도로"}]를 누르세요.`,false,"#tQ"]]
+   :[["두 번째 의도는 목적이 다릅니다.","아래 [이 의도로 적용하기]를 누르면 적용됩니다.",V.applied,"#apply"],
+    ["두 번째 의도를 적용했습니다. 첫 번째 의도 때와 무엇이 달라졌는지 살펴보세요.","답은 오른쪽 [질문]에 적습니다. 위쪽 [적용 전 / 적용 후]로 원래 그래프와도 비교할 수 있습니다.",answered,"#tQ"],
+    [last?"다음 단계에서는 그래프를 직접 고쳐 봅니다.":"다음 의도로 넘어갑니다.",`넘어가려면 오른쪽 아래 [${last?"다음 단계로":"두 번째 의도로"}]를 누르세요.`,false,"#tQ"]])}</div>
+  <div class="sidebox"><div class="sh">그래프 의도 두 가지</div><div class="intents">${cards}</div>
+   <details class="setupd"><summary>‘${esc(it.label)}’ 의도의 설정 보기</summary>${form}</details></div>
+  ${V.applied?"":`<div class="pinfoot"><button class="primary wide" id="apply">이 의도로 적용하기</button></div>`}`,
+  r=>{const ap=r.querySelector("#apply");if(ap)ap.onclick=applyIntent});
+ if(!V.applied){qclose();return}
+ /* the questions open by themselves once the participant has looked at the change both ways */
+ const autoOpen=false;
+ qsheet("t2a"+V.k,`<div class="qintro">‘${esc(it.label)}’ 의도를 적용한 결과에 대해 답해 주세요. 위쪽 <b>[적용 전 / 적용 후]</b>를 오가며 다시 봐도 됩니다.</div>
+  ${scaleHtml("fit","그래프가 이 의도에 맞게 바뀌었다",a)}${choiceHtml("chg","가장 눈에 띈 변화는?",CHANGES,a.change)}
+  <div class="qblk"><div class="qh">한 줄 소감 <span class="hint">(선택)</span></div><textarea id="inote" class="short">${esc(a.note||"")}</textarea></div>`,
+  `<div class="err" id="ierr"></div><button class="primary wide" id="inext">${last?"다음 단계로 →":"두 번째 의도로 →"}</button>`,
+  r=>{bindScales(r,a,()=>{$("ierr").textContent="";if(a.fit&&a.change)t2aCard()});
+   r.querySelectorAll("input[name=chg]").forEach(x=>x.onchange=()=>{a.change=x.value;$("ierr").textContent="";if(a.fit)t2aCard()});r.querySelector("#inote").oninput=e=>a.note=e.target.value;
+   r.querySelector("#inext").onclick=()=>{if(!a.fit)return $("ierr").textContent="1~7 중 하나를 골라 주세요.";if(!a.change)return $("ierr").textContent="가장 눈에 띈 변화를 골라 주세요.";
+    a.sec=Math.round((Date.now()-V.t0)/1000);a.sawUp=!!V.sawUp;a.sawBefore=!!V.sawBefore;persist();if(last){go(step+1);return}
+    V.k++;S().k=V.k;V.sawUp=V.sawBefore=V.qAuto=false;qclose();applyIntent();$("exs").scrollTop=0}},
+  {open:autoOpen,dlabel:"바뀐 내용"});
+ if(autoOpen)qtab(true);
+}
+function applyIntent(){
+ const it=curIntent();V.t0=Date.now();log("apply",it.id);
+ V.after=clone(it.graph);V.moved=moved(V.base,V.after);V.applied=true;V.showAfter=true;
+ morph(clone(V.after),{key:it.id,diff:diffOf(V.base,V.after),prio:new Set(it.priority_files),then:()=>{if(!V.sel)home()}});
+ $("ba").hidden=false;document.querySelectorAll("#ba button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v=="1"));
+ $("gleg").innerHTML=LEG_INTENT();capIntent(it.label);home();t2aCard();
+}
+function beforeAfter(after){if(!V.applied||V.showAfter==after)return;V.showAfter=after;log("toggle",after?"after":"before");
+ const it=curIntent();if(!after&&!V.sawBefore){V.sawBefore=true;t2aCard()}
+ morph(clone(after?V.after:V.base),after?{key:it.id,diff:diffOf(V.base,V.after),prio:new Set(it.priority_files)}:{key:"base",prio:new Set()});
+ $("gleg").innerHTML=after?LEG_INTENT():LEG_BASE();if(after)capIntent(it.label);else $("gcap").textContent="의도 적용 전 (원래 그래프)";
+ document.querySelectorAll("#ba button").forEach(b=>b.setAttribute("aria-pressed",(b.dataset.v=="1")==after));home()}
+function t2aHome(){
+ if(!V.applied)return `<div class="empty-state"><div class="empty-symbol">⌘</div><h2>아직 의도를 적용하지 않은 그래프입니다</h2><p>왼쪽 맨 아래 [이 의도로 적용하기]를 누르면 그래프가 바뀌고, 무엇이 바뀌었는지 여기에 정리됩니다.</p></div>`;
+ if(!V.showAfter)return `<div class="empty-state"><h2>적용 전 그래프</h2><p>위쪽 [적용 후]를 누르면 의도를 적용한 그래프로 돌아갑니다.</p></div>`;
+ const it=curIntent(),d=diffOf(V.base,V.after),up=Object.keys(d).filter(k=>d[k]=="up"),down=Object.keys(d).filter(k=>d[k]=="down"),E=V.E;
+ const row=k=>E[k]?`<button class="edge-link" data-e="${esc(k)}"><span>${esc(pairName(E[k]))}${it.why[k]?` <span class="hint">· ${esc(it.why[k])}</span>`:""}</span></button>`:"";
+ return `<h2>‘${esc(it.label)}’ 의도를 적용했습니다</h2><div class="pnum" style="margin:8px 0 4px"><span><i style="background:${C.up}"></i>굵어진 연결 <b>${up.length}</b></span><span><i style="background:${C.down}"></i>흐려진 연결 <b>${down.length}</b></span></div>
+  <div class="chg3"><div><b>이 위키를 어디에 쓰나요?</b>필요한 연결 ${up.length}개를 굵게, 필요 없는 연결 ${down.length}개를 흐리게 했습니다. 지운 연결은 없습니다.</div>
+  <div><b>어떤 자료를 먼저 보고 싶나요?</b>먼저 볼 파일 ${it.priority_files.length}개를 크게 표시했습니다.</div>
+  <div><b>파일을 어떤 기준으로 묶고 싶나요?</b>그룹을 ${V.base.groups.length}개에서 ${V.after.groups.length}개로 다시 묶었습니다. 그룹이 바뀐 파일은 ${V.moved.length}개입니다.</div></div>
+  <h3>굵어진 연결 ${up.length}개</h3>${up.map(row).join("")||`<p class="hint">없음</p>`}
+  <h3>먼저 볼 파일</h3>${it.priority_files.map(p=>fileLink(p)).join("")}
+  <h3>새 그룹</h3>${V.after.groups.map(g=>`<button class="edge-link" data-g="${esc(g.id)}"><span class="dot" style="background:${gcolor(g.id)};align-self:center"></span><span>${esc(g.name)} <span class="hint">· ${g.members.length}개</span></span></button>`).join("")}
+  <details style="margin-top:14px"><summary class="hint">흐려진 연결 ${down.length}개 보기</summary>${down.map(row).join("")}</details>`;
+}
+function t2aExtra(e){const d=V.diff[e.id],it=V.applied&&V.showAfter?curIntent():null;if(!it||!d)return "";const why=it.why[e.id];
+ return `<div class="pstat ${d=="up"?"s3":""}"><div class="pk">‘${esc(it.label)}’ 의도로 ${d=="up"?"굵게 올림":"흐리게 내림"}</div>
+  <div class="pw">${why?esc(why):d=="up"?"이 의도에 필요한 연결":"이 의도에는 필요 없는 연결"}</div>
+  <div class="ps">${d=="up"?(why?"이 의도에 필요한 연결이라 굵게 올렸습니다.":""):"지우지는 않고 흐리게만 했습니다."}</div></div>`}
+
+/* ---------- task 2-2: fix two planted mistakes and watch the rest follow ---------- */
+const T2R=[["c_fit","내가 고친 내용이 그래프에 제대로 반영됐다"],["c_side","같이 바뀐 연결들이 납득이 됐다"],["c_trust","다음에도 이 도구에 고칠 내용을 맡길 수 있겠다"]];
+function t2b(){
+ const it=D.intents.handover,s=S();s.issues=s.issues||{};s.rate=s.rate||{};
+ workspace({proj:D.main,crumb:"고치기",canFix:true,corr:D.corrections,disagree:true,home:t2bHome,edgeExtra:t2bNote,
+  onOpen:(k,id)=>{if(k=="edge"&&Object.values(D.corrections).some(c=>ekey(...c.edge)==id)&&!V.opened){V.opened=true;t2bCard()}},
+  onEvent:(ev,rep)=>{(s.evs=s.evs||[]).push(Object.fromEntries(Object.entries(ev).filter(([k])=>k[0]!="_")));const c=ev._issue;if(c){const id=Object.keys(D.corrections).find(k=>D.corrections[k]==c);s.issues[id]={type:ev.type,action:rep.direct[0].action,auto:rep.automatic.length};V.pulse.delete(ekey(...c.edge))}
+   V.fixed=true;$("ba").hidden=false;document.querySelectorAll("#ba button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v=="1"));V.showAfter=true;t2bCard()},
+  tools:`<div class="ttabs big" id="ba" hidden><button data-v="0">고치기 전</button><button data-v="1" aria-pressed="true">고친 후</button></div>`,
+  bindTools:()=>document.querySelectorAll("#ba button").forEach(b=>b.onclick=()=>fixToggle(b.dataset.v=="1"))});
+ V.start=clone(it.graph);setGraph(clone(V.start));V.prio=new Set(it.priority_files);V.dis=new Set(s.disagree||[]);
+ Object.values(D.corrections).forEach(c=>V.pulse.add(ekey(...c.edge)));
+ V.pulseT=setInterval(()=>{V.pulseOn=!V.pulseOn;if(V.pulse.size)restyle()},600);
+ const replay=()=>{if(!s.evs||!s.evs.length||V.replayed)return;V.replayed=true;V.replay=true;s.evs.forEach(ev=>push(clone(ev),true));V.replay=false;
+  V.fixed=true;V.showAfter=true;$("ba").hidden=false;Object.keys(D.corrections).forEach(id=>{if(s.issues[id])V.pulse.delete(ekey(...D.corrections[id].edge))});V.diff={};restyle();t2bCard()};
+ draw({then:replay});home();t2bCard();capIntent(it.label);
+ $("gleg").innerHTML=`<span><i style="border-color:#ff8f6b"></i>확인할 곳</span><span><i style="border-color:${C.accent}"></i>내가 고친 연결</span><span><i style="border-color:#ffa940"></i>같이 굵어짐</span><span><i style="border-color:#ffa940;border-top-style:dashed"></i>같이 흐려짐</span>`;
+ if(!s.toured)intro1("과제 2","그래프 고치기",`<p class="big">‘${esc(it.label)}’ 의도의 그래프에서 확인해 볼 연결 두 곳을 보고, 고칠지 그대로 둘지 정해 주세요.</p>
+  <p>연습 때처럼 피드백을 주면 같은 종류의 연결이 같이 바뀌기도 합니다. 그렇게 같이 바뀐 것이 납득되는지도 봐 주세요.</p>`,"시작하기",()=>{s.toured=true});
+}
+function capIntent(l){$("gcap").innerHTML=`<span class="ik">의도</span>${esc(l)}`}
+function issueName(c){return `${base(c.edge[0])} – ${base(c.edge[1])}`}
+function t2bNote(e){const c=Object.values(D.corrections).find(c=>ekey(...c.edge)==e.id);if(!c||V.events.some(x=>x._issue==c))return "";const h=c.hint;
+ return `<div class="checkpt"><div class="ck">확인할 점</div><div class="cl"><b>이 연결의 뜻</b><span>${esc(h.meaning)}</span></div><div class="cl"><b>지금 상태</b><span>${esc(h.state)}</span></div><div class="cl"><b>생각해 볼 것</b><span>${esc(h.ask)}</span></div></div>`}
+function t2bHome(){return `<div class="empty-state"><div class="empty-symbol">⌘</div><h2>깜빡이는 선을 눌러 보세요</h2><p>왼쪽 ‘표시된 두 곳’의 [보기]를 눌러도 됩니다.</p></div>`}
+function fixToggle(after){if(!V.fixed||V.showAfter==after)return;V.showAfter=after;log("toggle",after?"after":"before");
+ if(!after){V.keep={g:V.g,diff:V.diff};setGraph(clone(V.start));V.diff={};V.canFix=false}else{setGraph(V.keep.g);V.diff=V.keep.diff;V.canFix=true}
+ restyle();document.querySelectorAll("#ba button").forEach(b=>b.setAttribute("aria-pressed",(b.dataset.v=="1")==after));home()}
+function t2bCard(){
+ const s=S(),ids=Object.keys(D.corrections),n=ids.filter(id=>s.issues[id]).length,all=n==ids.length;
+ const lab={edge_confirm:"필요한 연결로 표시",edge_wrong:"틀린 연결로 표시",edge_irrelevant:"지금은 불필요로 표시",none:"그대로 둠"};
+ const list=`<div class="issues">${ids.map((id,i)=>{const c=D.corrections[id],x=s.issues[id];return `<div class="issue ${x?"done":""}"><span class="n">${x?"✓":i+1}</span><span class="nm">${esc(issueName(c))}</span>
+  <span class="stt">${x?esc(lab[x.type]||x.action)+(x.auto?`, 같이 바뀐 연결 ${x.auto}건`:""):"아직 안 봄"}</span><button class="sm" data-show="${id}">보기</button>${x?"":`<button class="sm ghost" data-leave="${id}">그대로 두기</button>`}</div>`}).join("")}</div>`;
+ card("과제 2: 고치기","",`<div class="sidebox">${todo([["시스템이 만든 그래프는 틀릴 수 있습니다. 확인해 볼 만한 연결 두 곳을 주황색으로 표시해 두었습니다.","아래 ‘표시된 두 곳’에서 [보기]를 누르면 그 연결이 열립니다.",!!V.opened||n>0,".issue:not(.done) [data-show]"],
+    ["오른쪽 ‘확인할 점’을 읽고, 이 의도에 맞게 피드백을 골라 주세요. 고칠 필요가 없다고 생각하면 그대로 둬도 됩니다.","피드백은 오른쪽 위 버튼으로 줍니다. 그대로 두려면 왼쪽 [그대로 두기]를 누르세요.",n>0,".fixbar"],
+    ["피드백을 주면 같은 종류의 연결이 같이 바뀌기도 합니다. 같이 바뀐 연결이 납득되는지 봐 주세요.","두 번째 곳도 [보기]로 열어 확인해 주세요.",all,".issue:not(.done) [data-show]"],
+    ["고친 결과가 그래프에 잘 반영됐는지 생각해 보세요. 위쪽 [고치기 전 / 고친 후]로 비교할 수 있습니다.","답은 오른쪽 [질문]에 적습니다.",T2R.every(([k])=>s.rate[k]),"#tQ"],
+    ["이제 마지막 설문만 남았습니다.","넘어가려면 오른쪽 아래 [마지막 질문으로]를 누르세요.",false,"#tQ"]])}</div>
+  <div class="sidebox"><div class="sh">표시된 두 곳</div>${list}${V.fixed?`<p class="hint" style="margin-top:8px">같이 바뀐 연결 중 동의하지 않는 것은 오른쪽 목록에서 체크해 주세요.</p>`:""}</div>`,
+  bindIssues);
+ if(!all){qclose();return}
+ qsheet("t2b",`<div class="qintro">두 곳을 모두 확인했습니다. <b>고친 결과</b>에 대해 답해 주세요. 바뀐 내용은 위쪽 [내용과 근거]에서 다시 볼 수 있습니다.</div>
+  ${T2R.map(([k,q])=>scaleHtml(k,q,s.rate)).join("")}<div class="qblk"><div class="qh">한 줄 소감 <span class="hint">(선택)</span></div><textarea id="cnote" class="short">${esc(s.note||"")}</textarea></div>`,
+  `<div class="err" id="cerr"></div><button class="primary wide" id="cdone">마지막 질문으로 →</button>`,
+  r=>{bindScales(r,s.rate,()=>{$("cerr").textContent="";if(T2R.every(([k])=>s.rate[k]))t2bCard()});r.querySelector("#cnote").oninput=e=>s.note=e.target.value;
+   r.querySelector("#cdone").onclick=()=>{if(!T2R.every(([k])=>s.rate[k]))return $("cerr").textContent="세 문항에 모두 답해 주세요.";s.disagree=[...V.dis];s.events=V.events.length;persist();go(step+1)}},
+  {open:false});
+}
+function bindIssues(r){
+ r.querySelectorAll("[data-show]").forEach(b=>b.onclick=()=>{const c=D.corrections[b.dataset.show];if(!V.showAfter&&V.fixed)fixToggle(true);openEdge(ekey(...c.edge));const e=V.E[ekey(...c.edge)];
+  const A=net.getPosition(e.source),B=net.getPosition(e.target);net.moveTo({position:{x:(A.x+B.x)/2,y:(A.y+B.y)/2},scale:Math.max(net.getScale(),.8),animation:{duration:500,easingFunction:"easeInOutQuad"}})});
+ r.querySelectorAll("[data-leave]").forEach(b=>b.onclick=()=>{const id=b.dataset.leave;S().issues[id]={type:"none",action:"그대로 둠",auto:0};log("leave",id);V.pulse.delete(ekey(...D.corrections[id].edge));restyle();t2bCard()});
+}
+
+/* ---------- survey and end ---------- */
+const SURVEY=[
+ {k:"A",sec:0,t:"scale",q:"과제 1에서 ProjectWiki의 정리는 다른 두 방식과 비교해, 처음 보는 폴더를 이해하는 데 얼마나 도움이 됐나요?",ends:["훨씬 덜 됐다","훨씬 더 됐다"]},
+ {k:"B",sec:1,t:"scale",q:"과제 2에서 알려 준 의도가 그래프에 잘 반영됐다"},
+ {k:"C",t:"scale",q:"과제 2에서 고친 내용이 그래프 전체에 잘 반영됐다"},
+ {k:"easy",t:"scale",q:"그래프를 보고 고치는 일이 어렵지 않았다"},
+ {k:"reuse",sec:2,t:"scale",q:"비슷한 도구가 있다면 내 프로젝트에 쓰겠다"},
+ {k:"good",t:"text",q:"가장 좋았던 점 (선택)",ph:"예: 의도를 바꾸니 같은 폴더가 다르게 정리되는 게 바로 보였다"},
+ {k:"bad",t:"text",q:"가장 불편하거나 헷갈렸던 점 (선택)",ph:"예: 같이 바뀐 연결이 왜 바뀌었는지 잘 모르겠다"},
+ {k:"when",t:"text",q:"이런 도구를 쓰고 싶은 상황이 있다면 (선택)",ph:"예: 졸업하는 선배의 폴더를 넘겨받을 때"}];
+const SVSEC=[["과제 1","세 가지 정리 비교"],["과제 2","의도 반영과 고치기"],["전체","돌아보며"]];
+function survey(){
+ const need=SURVEY.filter(x=>x.t!="text").length;
+ $("app").innerHTML=`<div class="page"><div class="paper sv"><div class="eyebrow">마지막 단계</div><h2>전체를 돌아보며 답해 주세요</h2>
+  <p class="lead2">질문은 ${SURVEY.length}개이고, 6~8번은 떠오르는 것이 있을 때만 적어 주시면 됩니다. 제출하면 과제 기록과 함께 저장됩니다.</p>
+ ${SURVEY.map((x,i)=>(x.sec!=null?`<div class="svh"><span>${SVSEC[x.sec][0]}</span>${SVSEC[x.sec][1]}</div>`:"")+qHtml(x,i+1)).join("")}
+ <div class="svfoot"><button class="ghost" id="svback">← 이전 단계</button><span class="svcount" id="svc"></span><div class="err" id="err"></div><button class="primary" id="send">제출하기</button></div></div></div>`;
+ const cnt=()=>{const n=SURVEY.filter(x=>x.t!="text"&&document.querySelector(`input[name=${x.k}]:checked`)).length;$("svc").textContent=`필수 문항 ${n} / ${need}`;$("svc").classList.toggle("ok",n==need)};cnt();
+ const keep=()=>{const A={};SURVEY.forEach(x=>{if(x.t=="text"){A[x.k]=$("s_"+x.k).value;return}const v=[...document.querySelectorAll(`input[name=${x.k}]:checked`)].map(e=>e.value);if(v.length)A[x.k]=x.t=="check"?v:v[0]});S().draft=A;persist()};
+ const A0=S().draft||S().answer||{};SURVEY.forEach(x=>{const v=A0[x.k];if(v==null)return;if(x.t=="text"){$("s_"+x.k).value=v;return}[].concat(v).forEach(y=>{const e=document.querySelector(`input[name=${x.k}][value="${y}"]`);if(e)e.checked=true})});cnt();
+ $("svback").onclick=()=>{keep();go(step-1)};
+ $("app").oninput=$("app").onchange=()=>{$("err").textContent="";cnt();keep()};
+ $("send").onclick=()=>{const r=qRead(SURVEY,1);if(r.err)return $("err").textContent=r.err;S().answer=r.A;go(step+1)};
+}
+/* one column per value for the result sheet; the full log goes alongside */
+function resultValues(){
+ const St=LOG.steps,P=LOG.profile||{},A=(St.survey||{}).answer||{},v={pid:LOG.pid,name:(LOG.who||{}).name||"",hand_data:LOG.hand?"yes":"no",total_min:Math.round((Date.now()-Date.parse(LOG.started))/60000),
+  level:P.level||"",organize:(P.organize||[]).join(", "),graphtool:P.graphtool||"",t1_order:LOG.order.t1.join(">"),intent_order:LOG.order.intents.join(">")};
+ const t1=St.t1||{};Object.keys(D.methods).forEach(m=>{T1R.forEach(([k])=>v[`t1_${m}_${k}`]=((t1.rate||{})[m]||{})[k]??"");v[`t1_${m}_sec`]=(t1.dwell||{})[m]??""});
+ const q=t1.answer||{};Object.keys(D.methods).forEach(m=>{v[`t1_${m}_rsec`]=(t1.rdwell||{})[m]??"";v[`t1_${m}_visits`]=(t1.visits||{})[m]??""});v.t1_best=q.best||"";v.t1_why=q.why||"";v.t1_desc=q.desc||"";
+ const ia=(St.t2a||{}).intents||{};Object.keys(D.intents).forEach(i=>{const x=ia[i]||{};v[`t2a_${i}_fit`]=x.fit??"";v[`t2a_${i}_change`]=x.change||"";v[`t2a_${i}_note`]=x.note||""});
+ const b=St.t2b||{};Object.keys(D.corrections).forEach(i=>{const x=(b.issues||{})[i]||{};v[`t2b_${i}`]=x.type||""});
+ T2R.forEach(([k])=>v[`t2b_${k}`]=(b.rate||{})[k]??"");v.t2b_disagree=(b.disagree||[]).length;v.t2b_events=b.events??"";v.t2b_note=b.note||"";
+ SURVEY.forEach(x=>v["s_"+x.k]=A[x.k]??"");return v;
+}
+const rid=()=>LOG.pid+"-"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function sendResult(){
+ if(!SEND.url)return Promise.resolve("off");if(!LOG.rid)LOG.rid=rid();
+ return fetch(SEND.url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({kind:"result",pid:LOG.pid,rid:LOG.rid,values:resultValues(),log:LOG})})
+  .then(r=>r.json()).then(j=>j.ok?"ok":"fail",()=>"fail");
+}
+function saveFile(){const b=new Blob([JSON.stringify({values:resultValues(),log:LOG},null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=`projectwiki_study_${LOG.pid}.json`;a.click();LOG.saved=true}
+/* sending: only "please wait" until it is through, then the thank-you page */
+function end(){
+ const who=(LOG.who||{}).name||"";
+ const wait=()=>{$("app").innerHTML=`<div class="page"><div class="paper endp"><div class="spin"></div><h2>결과를 정리하는 중입니다</h2><p class="lead2">잠시만 기다려 주세요.</p></div></div>`};
+ const done=msg=>{$("app").innerHTML=`<div class="page"><div class="paper endp"><div class="okmark">✓</div><h2>참여해 주셔서 감사합니다</h2><p class="lead2">${msg}</p>
+   <div class="pidbox"><span>닉네임</span><b>${esc(who)}</b><span class="hint">기록 삭제를 원하시면 스터디를 안내한 연구진에게 이 닉네임을 알려 주세요. (참가자 번호 ${LOG.pid})</span></div>
+   <p class="hint">이제 창을 닫으셔도 됩니다.</p></div></div>`};
+ const send=()=>{wait();const t0=Date.now();
+  sendResult().then(r=>setTimeout(()=>{LOG.sent=r;
+   if(r=="ok"){forget();done("응답이 잘 저장되었습니다.");return}
+   if(r=="off"){$("app").innerHTML=`<div class="page"><div class="paper endp"><h2>결과 파일을 저장해 주세요</h2><p class="lead2">이 페이지는 결과를 자동으로 보내지 않습니다. 아래 버튼으로 파일을 저장해서 안내받은 곳으로 보내 주세요.</p><button class="primary" id="save">결과 파일 저장</button></div></div>`;
+    $("save").onclick=()=>{saveFile();LOG.sent="ok";forget();done("결과 파일을 저장했습니다. 안내받은 곳으로 보내 주시면 됩니다.")};return}
+   persist();$("app").innerHTML=`<div class="page"><div class="paper endp"><h2>결과를 보내지 못했습니다</h2><p class="lead2">인터넷 연결을 확인하고 다시 보내 주세요. 계속 안 되면 파일로 저장해서 연구진에게 보내 주셔도 됩니다.</p>
+    <div class="actions"><button class="primary" id="retry">다시 보내기</button><button class="ghost" id="sv">파일로 저장</button></div></div></div>`;
+   $("retry").onclick=send;$("sv").onclick=()=>{saveFile();LOG.sent="ok";forget();done("결과 파일을 저장했습니다. 연구진에게 보내 주세요.")}},Math.max(0,900-(Date.now()-t0))))};
+ send();
+}
+
+/* ---------- start ---------- */
+(()=>{let saved=null;try{saved=JSON.parse(localStorage.getItem(SAVE_KEY)||"null")}catch(e){}
+ if(saved&&saved.step>0&&saved.step<FLOW.length-1&&Date.now()-saved.at<7*864e5)resume(saved);else{LOG.steps.intro={t0:Date.now(),events:[]};render()}})();
+</script>
+</body>
+</html>

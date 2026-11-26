@@ -1,0 +1,507 @@
+{
+ "meta": {
+  "source": "rule",
+  "method": "obsidian",
+  "made_from": "make_baselines.py rules (mirror of srcs/candidates.py)"
+ },
+ "nodes": [
+  {
+   "id": "assignment/project_spec.pdf",
+   "path": "assignment/project_spec.pdf",
+   "type": "pdf",
+   "title": "project_spec.pdf",
+   "group": "o7",
+   "role": "",
+   "summary": "STAT2101 Term Project Specification"
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv",
+   "path": "data/clean_student_sleep_survey_2026.csv",
+   "type": "text",
+   "title": "clean_student_sleep_survey_2026.csv",
+   "group": "o1",
+   "role": "",
+   "summary": "student_id,gender,year,sleep_hours,work_hours,study_hours,caffeine_cups,course_grade"
+  },
+  {
+   "id": "data/codebook.md",
+   "path": "data/codebook.md",
+   "type": "markdown",
+   "title": "codebook.md",
+   "group": "o1",
+   "role": "",
+   "summary": "Codebook: Raw Student Sleep Survey 2026"
+  },
+  {
+   "id": "data/raw_student_sleep_survey_2026.csv",
+   "path": "data/raw_student_sleep_survey_2026.csv",
+   "type": "text",
+   "title": "raw_student_sleep_survey_2026.csv",
+   "group": "o1",
+   "role": "",
+   "summary": "student_id,gender,year,sleep_hours,work_hours,study_hours,caffeine_cups,course_grade"
+  },
+  {
+   "id": "misc/hw1_solution.py",
+   "path": "misc/hw1_solution.py",
+   "type": "python",
+   "title": "hw1_solution.py",
+   "group": "o8",
+   "role": "",
+   "summary": "hw1_solution.py"
+  },
+  {
+   "id": "notebooks/01_eda.ipynb",
+   "path": "notebooks/01_eda.ipynb",
+   "type": "notebook",
+   "title": "01_eda.ipynb",
+   "group": "o4",
+   "role": "",
+   "summary": "cells\": ["
+  },
+  {
+   "id": "notebooks/02_model.ipynb",
+   "path": "notebooks/02_model.ipynb",
+   "type": "notebook",
+   "title": "02_model.ipynb",
+   "group": "o4",
+   "role": "",
+   "summary": "cells\": ["
+  },
+  {
+   "id": "notes/personal_schedule.md",
+   "path": "notes/personal_schedule.md",
+   "type": "markdown",
+   "title": "personal_schedule.md",
+   "group": "o2",
+   "role": "",
+   "summary": "이번 학기 주간 시간표"
+  },
+  {
+   "id": "notes/ta_feedback.md",
+   "path": "notes/ta_feedback.md",
+   "type": "markdown",
+   "title": "ta_feedback.md",
+   "group": "o2",
+   "role": "",
+   "summary": "TA 피드백: 보고서 초안 검토 (2026-11-18)"
+  },
+  {
+   "id": "notes/team_meeting.md",
+   "path": "notes/team_meeting.md",
+   "type": "markdown",
+   "title": "team_meeting.md",
+   "group": "o2",
+   "role": "",
+   "summary": "팀 회의록: SleepWork-Grade"
+  },
+  {
+   "id": "README.md",
+   "path": "README.md",
+   "type": "markdown",
+   "title": "README.md",
+   "group": "o6",
+   "role": "",
+   "summary": "SleepWork-Grade"
+  },
+  {
+   "id": "references/notes_han2024_sleep_parttime_grades.md",
+   "path": "references/notes_han2024_sleep_parttime_grades.md",
+   "type": "markdown",
+   "title": "notes_han2024_sleep_parttime_grades.md",
+   "group": "o9",
+   "role": "",
+   "summary": "Reading notes: Han and Oh (2024)"
+  },
+  {
+   "id": "report/figures/predicted_vs_actual_grade.png",
+   "path": "report/figures/predicted_vs_actual_grade.png",
+   "type": "image",
+   "title": "predicted_vs_actual_grade.png",
+   "group": "o3",
+   "role": "",
+   "summary": ""
+  },
+  {
+   "id": "report/figures/sleep_vs_grade_scatter.png",
+   "path": "report/figures/sleep_vs_grade_scatter.png",
+   "type": "image",
+   "title": "sleep_vs_grade_scatter.png",
+   "group": "o3",
+   "role": "",
+   "summary": ""
+  },
+  {
+   "id": "report/final_report.md",
+   "path": "report/final_report.md",
+   "type": "markdown",
+   "title": "final_report.md",
+   "group": "o3",
+   "role": "",
+   "summary": "Sleep, Part-time Work and Course Grades: A Student Survey"
+  },
+  {
+   "id": "src/clean_data.py",
+   "path": "src/clean_data.py",
+   "type": "python",
+   "title": "clean_data.py",
+   "group": "o5",
+   "role": "",
+   "summary": "Clean the raw STAT2101 student sleep survey."
+  },
+  {
+   "id": "src/features.py",
+   "path": "src/features.py",
+   "type": "python",
+   "title": "features.py",
+   "group": "o5",
+   "role": "",
+   "summary": "Feature engineering for the SleepWork-Grade project."
+  }
+ ],
+ "groups": [
+  {
+   "id": "o1",
+   "name": "data/",
+   "members": [
+    "data/clean_student_sleep_survey_2026.csv",
+    "data/codebook.md",
+    "data/raw_student_sleep_survey_2026.csv"
+   ],
+   "origin": "ai",
+   "description": "data/ 폴더에 있는 파일"
+  },
+  {
+   "id": "o2",
+   "name": "notes/",
+   "members": [
+    "notes/personal_schedule.md",
+    "notes/ta_feedback.md",
+    "notes/team_meeting.md"
+   ],
+   "origin": "ai",
+   "description": "notes/ 폴더에 있는 파일"
+  },
+  {
+   "id": "o3",
+   "name": "report/",
+   "members": [
+    "report/figures/predicted_vs_actual_grade.png",
+    "report/figures/sleep_vs_grade_scatter.png",
+    "report/final_report.md"
+   ],
+   "origin": "ai",
+   "description": "report/ 폴더에 있는 파일"
+  },
+  {
+   "id": "o4",
+   "name": "notebooks/",
+   "members": [
+    "notebooks/01_eda.ipynb",
+    "notebooks/02_model.ipynb"
+   ],
+   "origin": "ai",
+   "description": "notebooks/ 폴더에 있는 파일"
+  },
+  {
+   "id": "o5",
+   "name": "src/",
+   "members": [
+    "src/clean_data.py",
+    "src/features.py"
+   ],
+   "origin": "ai",
+   "description": "src/ 폴더에 있는 파일"
+  },
+  {
+   "id": "o6",
+   "name": "(맨 위 폴더)",
+   "members": [
+    "README.md"
+   ],
+   "origin": "ai",
+   "description": "폴더에 들어 있지 않은 파일"
+  },
+  {
+   "id": "o7",
+   "name": "assignment/",
+   "members": [
+    "assignment/project_spec.pdf"
+   ],
+   "origin": "ai",
+   "description": "assignment/ 폴더에 있는 파일"
+  },
+  {
+   "id": "o8",
+   "name": "misc/",
+   "members": [
+    "misc/hw1_solution.py"
+   ],
+   "origin": "ai",
+   "description": "misc/ 폴더에 있는 파일"
+  },
+  {
+   "id": "o9",
+   "name": "references/",
+   "members": [
+    "references/notes_han2024_sleep_parttime_grades.md"
+   ],
+   "origin": "ai",
+   "description": "references/ 폴더에 있는 파일"
+  }
+ ],
+ "edges": [
+  {
+   "id": "report/figures/sleep_vs_grade_scatter.png|report/final_report.md",
+   "source": "report/final_report.md",
+   "target": "report/figures/sleep_vs_grade_scatter.png",
+   "relation": "links_to",
+   "reason": "links_to",
+   "direct": true,
+   "score": 1.0,
+   "label": "final_report.md에 sleep_vs_grade_scatter.png로 가는 링크가 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "report/final_report.md",
+     "locator": "",
+     "quote": "ared with 76.9 for the other 19. Eleven students sleep less than 7 hours a night. ![Figure 1. Sleep vs course grade (n = 28), colored by work_heavy](figures/sleep_vs_grade_scatter.png) *Figure 1. Blue points: under 15 work hours per week. Orange points: 15 or more. The black line is the regression"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "report/figures/predicted_vs_actual_grade.png|report/final_report.md",
+   "source": "report/final_report.md",
+   "target": "report/figures/predicted_vs_actual_grade.png",
+   "relation": "links_to",
+   "reason": "links_to",
+   "direct": true,
+   "score": 1.0,
+   "label": "final_report.md에 predicted_vs_actual_grade.png로 가는 링크가 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "report/final_report.md",
+     "locator": "",
+     "quote": "work_hours | −0.48 per hour | | study_hours | +1.05 per hour | ![Figure 2. Linear model: predicted vs actual grade (LOO-CV), RMSE = 6.42, R2 = 0.41](figures/predicted_vs_actual_grade.png) *Figure 2. Points close to the dashed 45-degree line are predicted well. The annotation gives the LOO-CV RMSE"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/codebook.md|data/raw_student_sleep_survey_2026.csv",
+   "source": "data/codebook.md",
+   "target": "data/raw_student_sleep_survey_2026.csv",
+   "relation": "mentions",
+   "reason": "mentions",
+   "direct": true,
+   "score": 1.0,
+   "label": "codebook.md에 raw_student_sleep_survey_2026.csv의 파일 이름이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "data/codebook.md",
+     "locator": "",
+     "quote": "# Codebook: Raw Student Sleep Survey 2026 **File:** `data/raw_student_sleep_survey_2026.csv` **Source:** Online survey of STAT2101 students, Hanbit University, Fall 2026 **Collection window:** 2026-09-21 to 2026-10-02 **Rows:** 32 respondent rows plus one header row **Unit of observation:** one stu"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv|notebooks/01_eda.ipynb",
+   "source": "notebooks/01_eda.ipynb",
+   "target": "data/clean_student_sleep_survey_2026.csv",
+   "relation": "mentions",
+   "reason": "mentions",
+   "direct": true,
+   "score": 1.0,
+   "label": "01_eda.ipynb에 clean_student_sleep_survey_2026.csv의 파일 이름이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notebooks/01_eda.ipynb",
+     "locator": "",
+     "quote": ". One EDA figure: sleep vs grade, colored by work load (A4)\\n\", \"\\n\", \"Run from the repository root or from `notebooks/`. The notebook reads `data/clean_student_sleep_survey_2026.csv` and saves the figure to `report/figures/sleep_vs_grade_scatter.png`.\" ] }, { \"cell_type\": \"code\","
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notebooks/01_eda.ipynb|report/figures/sleep_vs_grade_scatter.png",
+   "source": "notebooks/01_eda.ipynb",
+   "target": "report/figures/sleep_vs_grade_scatter.png",
+   "relation": "mentions",
+   "reason": "mentions",
+   "direct": true,
+   "score": 1.0,
+   "label": "01_eda.ipynb에 sleep_vs_grade_scatter.png의 파일 이름이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notebooks/01_eda.ipynb",
+     "locator": "",
+     "quote": "\"\\n\", \"Run from the repository root or from `notebooks/`. The notebook reads `data/clean_student_sleep_survey_2026.csv` and saves the figure to `report/figures/sleep_vs_grade_scatter.png`.\" ] }, { \"cell_type\": \"code\", \"metadata\": {}, \"source\": [ \"import numpy as np\\n\", \""
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv|notebooks/02_model.ipynb",
+   "source": "notebooks/02_model.ipynb",
+   "target": "data/clean_student_sleep_survey_2026.csv",
+   "relation": "mentions",
+   "reason": "mentions",
+   "direct": true,
+   "score": 1.0,
+   "label": "02_model.ipynb에 clean_student_sleep_survey_2026.csv의 파일 이름이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notebooks/02_model.ipynb",
+     "locator": "",
+     "quote": "mple is small and the coefficients are easy to interpret.\\n\", \"\\n\", \"Run the EDA notebook first, and make sure the cleaned data file exists (`data/clean_student_sleep_survey_2026.csv`) before running this notebook.\" ] }, { \"cell_type\": \"code\", \"metadata\": {}, \"source\": ["
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notebooks/02_model.ipynb|report/figures/predicted_vs_actual_grade.png",
+   "source": "notebooks/02_model.ipynb",
+   "target": "report/figures/predicted_vs_actual_grade.png",
+   "relation": "mentions",
+   "reason": "mentions",
+   "direct": true,
+   "score": 1.0,
+   "label": "02_model.ipynb에 predicted_vs_actual_grade.png의 파일 이름이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notebooks/02_model.ipynb",
+     "locator": "",
+     "quote": "oc=\\\"lower right\\\", fontsize=11)\\n\", \"ax.grid(alpha=0.3)\\n\", \"\\n\", \"os.makedirs(\\\"report/figures\\\", exist_ok=True)\\n\", \"fig.savefig(\\\"report/figures/predicted_vs_actual_grade.png\\\", dpi=200, bbox_inches=\\\"tight\\\")\\n\", \"plt.show()\" ], \"execution_count\": null, \"outputs\": ["
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "assignment/project_spec.pdf|notes/team_meeting.md",
+   "source": "notes/team_meeting.md",
+   "target": "assignment/project_spec.pdf",
+   "relation": "mentions",
+   "reason": "mentions",
+   "direct": true,
+   "score": 1.0,
+   "label": "team_meeting.md에 project_spec.pdf의 파일 이름이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "notes/team_meeting.md",
+     "locator": "",
+     "quote": "--- ## 1. 프로젝트 개요 - 연구 질문: 주중 평균 수면 시간과 주당 아르바이트 시간이 STAT2101 최종 성적을 예측하는가? - 데이터: STAT2101 수강생 온라인 설문 (2026-09-21 ~ 2026-10-02), 원자료 32행 - 과제 명세: `assignment/project_spec.pdf` (\"STAT2101 Term Project Specification\") - 보고서 필수 섹션 순서: 1 Question, 2 Data, 3 Methods, 4 Results, 5 Discussion, 6 Limitat"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "README.md|report/final_report.md",
+   "source": "README.md",
+   "target": "report/final_report.md",
+   "relation": "mentions",
+   "reason": "mentions",
+   "direct": true,
+   "score": 1.0,
+   "label": "README.md에 final_report.md의 파일 이름이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "README.md",
+     "locator": "",
+     "quote": "eaned dataset src/ cleaning script and feature functions notebooks/ exploratory analysis and model notebooks report/ final_report.md and report/figures/ ``` ## How to reproduce Requires Python 3.11. ```bash git clone <repo-url> SleepWork-Grade cd SleepWork-Grade p"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "README.md|src/clean_data.py",
+   "source": "README.md",
+   "target": "src/clean_data.py",
+   "relation": "mentions",
+   "reason": "mentions",
+   "direct": true,
+   "score": 1.0,
+   "label": "README.md에 clean_data.py의 파일 이름이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "README.md",
+     "locator": "",
+     "quote": "equires Python 3.11. ```bash git clone <repo-url> SleepWork-Grade cd SleepWork-Grade pip install pandas numpy scikit-learn matplotlib jupyter python src/clean_data.py jupyter notebook notebooks/ ``` Then: 1. Run the EDA notebook first. It prints `describe()` and the correlation matrix and saves t"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/raw_student_sleep_survey_2026.csv|src/clean_data.py",
+   "source": "src/clean_data.py",
+   "target": "data/raw_student_sleep_survey_2026.csv",
+   "relation": "mentions",
+   "reason": "mentions",
+   "direct": true,
+   "score": 1.0,
+   "label": "clean_data.py에 raw_student_sleep_survey_2026.csv의 파일 이름이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "src/clean_data.py",
+     "locator": "",
+     "quote": "\"\"\"Clean the raw STAT2101 student sleep survey. Run from the project root: python src/clean_data.py Reads data/raw_student_sleep_survey_2026.csv Writes data/clean_student_sleep_survey_2026.csv Steps: 1. parse messy numeric text (\"7h\", \"six and half\", \"N/A\", \"abc\") 2. drop invalid rows (m"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv|src/clean_data.py",
+   "source": "src/clean_data.py",
+   "target": "data/clean_student_sleep_survey_2026.csv",
+   "relation": "mentions",
+   "reason": "mentions",
+   "direct": true,
+   "score": 1.0,
+   "label": "clean_data.py에 clean_student_sleep_survey_2026.csv의 파일 이름이 적혀 있습니다.",
+   "evidence": [
+    {
+     "chunk_id": "",
+     "file_id": "src/clean_data.py",
+     "locator": "",
+     "quote": "the raw STAT2101 student sleep survey. Run from the project root: python src/clean_data.py Reads data/raw_student_sleep_survey_2026.csv Writes data/clean_student_sleep_survey_2026.csv Steps: 1. parse messy numeric text (\"7h\", \"six and half\", \"N/A\", \"abc\") 2. drop invalid rows (missing or"
+    }
+   ],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  }
+ ]
+}

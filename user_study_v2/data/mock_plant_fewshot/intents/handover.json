@@ -1,0 +1,1240 @@
+{
+ "meta": {
+  "source": "hand",
+  "made_from": "make_hand.py from benchmark/gt (stand-in until the pipeline output exists)"
+ },
+ "id": "handover",
+ "label": "후배에게 코드 인수인계",
+ "setup": {
+  "purpose": "후배에게 코드 인수인계. 학습·평가를 다시 돌리는 데 필요한 것만",
+  "priority": "코드와 설정 파일",
+  "grouping": "방법 구성요소(FreqMix, 코사인 헤드, 일관성 손실)별로"
+ },
+ "priority_files": [
+  "src/data.py",
+  "src/evaluate.py",
+  "src/freq_mix.py",
+  "src/leafproto_model.py",
+  "src/train.py",
+  "src/utils.py",
+  "configs/base.yaml",
+  "configs/fewshot_5way.yaml"
+ ],
+ "why": {
+  "src/leafproto_model.py|src/train.py": "학습 코드 의존",
+  "src/data.py|src/train.py": "학습 코드 의존",
+  "src/train.py|src/utils.py": "학습 코드 의존",
+  "src/freq_mix.py|src/leafproto_model.py": "모델이 FreqMix 사용. 발표엔 코드 구조 불필요",
+  "src/evaluate.py|src/leafproto_model.py": "평가 코드 의존",
+  "src/data.py|src/evaluate.py": "평가 코드 의존",
+  "results/main_results.csv|src/evaluate.py": "결과 표가 나온 곳",
+  "results/main_results.csv|src/plot_results.py": "그림 ← csv",
+  "figures/accuracy_vs_shots.png|src/plot_results.py": "발표 Figure 2가 나온 곳",
+  "logs/train_2026-10-08.log|src/train.py": "학습 로그",
+  "configs/fewshot_5way.yaml|logs/train_2026-10-08.log": "로그가 어떤 설정으로 돌았는지",
+  "README.md|src/train.py": "README의 실행 방법",
+  "README.md|src/evaluate.py": "README의 실행 방법",
+  "figures/accuracy_vs_shots.png|results/main_results.csv": "그림↔표 직접 연결 유지",
+  "configs/fewshot_5way.yaml|src/evaluate.py": "평가 설정",
+  "src/evaluate.py|src/utils.py": "공용 함수"
+ },
+ "graph": {
+  "meta": {
+   "source": "hand",
+   "method": "ours",
+   "made_from": "make_hand.py from benchmark/gt (stand-in until the pipeline output exists)"
+  },
+  "nodes": [
+   {
+    "id": "src/data.py",
+    "path": "src/data.py",
+    "type": "python",
+    "title": "data.py",
+    "group": "i3",
+    "role": "",
+    "summary": "leafdoc_fs 데이터 로딩, 에피소드 샘플링, 데이터 분할 코드"
+   },
+   {
+    "id": "src/evaluate.py",
+    "path": "src/evaluate.py",
+    "type": "python",
+    "title": "evaluate.py",
+    "group": "i3",
+    "role": "",
+    "summary": "학습된 모델을 테스트 클래스 600개 에피소드로 평가하고 결과 표(main_results.csv)에 기록"
+   },
+   {
+    "id": "src/freq_mix.py",
+    "path": "src/freq_mix.py",
+    "type": "python",
+    "title": "freq_mix.py",
+    "group": "i4",
+    "role": "",
+    "summary": "FreqMix 증강: 잎 사진의 저주파 진폭을 섞는 모듈"
+   },
+   {
+    "id": "src/leafproto_model.py",
+    "path": "src/leafproto_model.py",
+    "type": "python",
+    "title": "leafproto_model.py",
+    "group": "i7",
+    "role": "",
+    "summary": "LeafProto 모델 본체 (ResNet-12 인코더 + cosine 프로토타입 head + 손실)"
+   },
+   {
+    "id": "src/plot_results.py",
+    "path": "src/plot_results.py",
+    "type": "python",
+    "title": "plot_results.py",
+    "group": "i3",
+    "role": "",
+    "summary": "main_results.csv를 읽어 shot 수별 정확도 그래프(accuracy_vs_shots.png)를 그림"
+   },
+   {
+    "id": "src/train.py",
+    "path": "src/train.py",
+    "type": "python",
+    "title": "train.py",
+    "group": "i9",
+    "role": "",
+    "summary": "설정 파일을 받아 LeafProto를 학습하는 스크립트"
+   },
+   {
+    "id": "src/utils.py",
+    "path": "src/utils.py",
+    "type": "python",
+    "title": "utils.py",
+    "group": "i3",
+    "role": "",
+    "summary": "시드, 로그, 체크포인트 등 공용 함수"
+   },
+   {
+    "id": "README.md",
+    "path": "README.md",
+    "type": "markdown",
+    "title": "README.md",
+    "group": "i1",
+    "role": "",
+    "summary": "프로젝트 소개: 방법 요약, 결과 표, 실행 방법"
+   },
+   {
+    "id": "docs/method.md",
+    "path": "docs/method.md",
+    "type": "markdown",
+    "title": "method.md",
+    "group": "i1",
+    "role": "",
+    "summary": "LeafProto 방법 상세 설명 (FreqMix, cosine head, 손실, 하이퍼파라미터)"
+   },
+   {
+    "id": "docs/related_work.md",
+    "path": "docs/related_work.md",
+    "type": "markdown",
+    "title": "related_work.md",
+    "group": "i1",
+    "role": "",
+    "summary": "논문 관련 연구 절 초안"
+   },
+   {
+    "id": "papers/notes_fastadapt2022.md",
+    "path": "papers/notes_fastadapt2022.md",
+    "type": "markdown",
+    "title": "notes_fastadapt2022.md",
+    "group": "i1",
+    "role": "",
+    "summary": "비교 대상 FastAdapt 논문 읽기 노트"
+   },
+   {
+    "id": "papers/notes_protoclass2019.md",
+    "path": "papers/notes_protoclass2019.md",
+    "type": "markdown",
+    "title": "notes_protoclass2019.md",
+    "group": "i1",
+    "role": "",
+    "summary": "기반 방법 ProtoClass 논문 읽기 노트"
+   },
+   {
+    "id": "figures/accuracy_vs_shots.png",
+    "path": "figures/accuracy_vs_shots.png",
+    "type": "image",
+    "title": "accuracy_vs_shots.png",
+    "group": "i5",
+    "role": "",
+    "summary": "shot 수별 정확도 그래프 (논문·발표 Figure 2)"
+   },
+   {
+    "id": "figures/overview.png",
+    "path": "figures/overview.png",
+    "type": "image",
+    "title": "overview.png",
+    "group": "i5",
+    "role": "",
+    "summary": "전체 파이프라인 그림 (논문 Figure 1)"
+   },
+   {
+    "id": "results/ablation.md",
+    "path": "results/ablation.md",
+    "type": "markdown",
+    "title": "ablation.md",
+    "group": "i4",
+    "role": "",
+    "summary": "구성 요소를 하나씩 뺀 ablation 결과 표 (5-shot)"
+   },
+   {
+    "id": "results/main_results.csv",
+    "path": "results/main_results.csv",
+    "type": "text",
+    "title": "main_results.csv",
+    "group": "i5",
+    "role": "",
+    "summary": "방법별·shot별 정확도 원본 표"
+   },
+   {
+    "id": "paper/leafproto_draft_v1.pdf",
+    "path": "paper/leafproto_draft_v1.pdf",
+    "type": "pdf",
+    "title": "leafproto_draft_v1.pdf",
+    "group": "i2",
+    "role": "",
+    "summary": "논문 초안 1판 (6월, 옛 수치)"
+   },
+   {
+    "id": "paper/leafproto_draft_v2.pdf",
+    "path": "paper/leafproto_draft_v2.pdf",
+    "type": "pdf",
+    "title": "leafproto_draft_v2.pdf",
+    "group": "i2",
+    "role": "",
+    "summary": "논문 초안 2판 (최신)"
+   },
+   {
+    "id": "paper/talk_outline.md",
+    "path": "paper/talk_outline.md",
+    "type": "markdown",
+    "title": "talk_outline.md",
+    "group": "i2",
+    "role": "",
+    "summary": "11/26 랩 세미나 발표 개요 (슬라이드별 내용, 쓸 그림)"
+   },
+   {
+    "id": "site/index.html",
+    "path": "site/index.html",
+    "type": "text",
+    "title": "index.html",
+    "group": "i2",
+    "role": "",
+    "summary": "논문 소개 웹페이지"
+   },
+   {
+    "id": "configs/base.yaml",
+    "path": "configs/base.yaml",
+    "type": "text",
+    "title": "base.yaml",
+    "group": "i4",
+    "role": "",
+    "summary": "기본 학습 설정 (하이퍼파라미터)"
+   },
+   {
+    "id": "configs/fewshot_5way.yaml",
+    "path": "configs/fewshot_5way.yaml",
+    "type": "text",
+    "title": "fewshot_5way.yaml",
+    "group": "i7",
+    "role": "",
+    "summary": "메인 실험 설정 (base.yaml을 상속, 5-way 5-shot)"
+   },
+   {
+    "id": "logs/train_2026-10-08.log",
+    "path": "logs/train_2026-10-08.log",
+    "type": "text",
+    "title": "train_2026-10-08.log",
+    "group": "i8",
+    "role": "",
+    "summary": "10/8 메인 실험 학습 로그"
+   },
+   {
+    "id": "notes/ideas.md",
+    "path": "notes/ideas.md",
+    "type": "markdown",
+    "title": "ideas.md",
+    "group": "i6",
+    "role": "",
+    "summary": "다음에 시도할 연구 아이디어 메모"
+   },
+   {
+    "id": "notes/meeting_2026-03-05.md",
+    "path": "notes/meeting_2026-03-05.md",
+    "type": "markdown",
+    "title": "meeting_2026-03-05.md",
+    "group": "i6",
+    "role": "",
+    "summary": "3월 랩 미팅: 초기 설계와 베이스라인 결정"
+   },
+   {
+    "id": "notes/meeting_2026-09-17.md",
+    "path": "notes/meeting_2026-09-17.md",
+    "type": "markdown",
+    "title": "meeting_2026-09-17.md",
+    "group": "i6",
+    "role": "",
+    "summary": "9월 랩 미팅: 메인 결과·ablation 검토, v2 수치로 통일 결정"
+   },
+   {
+    "id": "admin/travel_reimbursement_form.md",
+    "path": "admin/travel_reimbursement_form.md",
+    "type": "markdown",
+    "title": "travel_reimbursement_form.md",
+    "group": "i10",
+    "role": "",
+    "summary": "출장 경비 정산 신청서 (연구와 무관)"
+   },
+   {
+    "id": "reading/protein_folding_reading_list.md",
+    "path": "reading/protein_folding_reading_list.md",
+    "type": "markdown",
+    "title": "protein_folding_reading_list.md",
+    "group": "i10",
+    "role": "",
+    "summary": "단백질 구조 예측 읽기 모임 목록 (연구와 무관)"
+   }
+  ],
+  "groups": [
+   {
+    "id": "i1",
+    "name": "방법 문서·관련 연구",
+    "members": [
+     "README.md",
+     "docs/method.md",
+     "docs/related_work.md",
+     "papers/notes_fastadapt2022.md",
+     "papers/notes_protoclass2019.md"
+    ],
+    "origin": "ai",
+    "description": "README, 방법 설명 문서, 관련 연구 정리와 읽기 노트"
+   },
+   {
+    "id": "i2",
+    "name": "논문·발표·웹페이지",
+    "members": [
+     "paper/leafproto_draft_v1.pdf",
+     "paper/leafproto_draft_v2.pdf",
+     "paper/talk_outline.md",
+     "site/index.html"
+    ],
+    "origin": "ai",
+    "description": "논문 초안 두 판, 발표 개요, 소개 웹페이지"
+   },
+   {
+    "id": "i3",
+    "name": "모델·학습 코드",
+    "members": [
+     "src/data.py",
+     "src/evaluate.py",
+     "src/plot_results.py",
+     "src/utils.py"
+    ],
+    "origin": "ai",
+    "description": "모델, 학습, 평가, 그래프를 그리는 코드"
+   },
+   {
+    "id": "i4",
+    "name": "FreqMix 증강",
+    "members": [
+     "configs/base.yaml",
+     "results/ablation.md",
+     "src/freq_mix.py"
+    ],
+    "origin": "ai",
+    "description": "FreqMix 증강 구현, 그 설정, ablation 결과"
+   },
+   {
+    "id": "i5",
+    "name": "결과와 그림",
+    "members": [
+     "figures/accuracy_vs_shots.png",
+     "figures/overview.png",
+     "results/main_results.csv"
+    ],
+    "origin": "ai",
+    "description": "실험 결과 표와 논문·발표에 쓰는 그림"
+   },
+   {
+    "id": "i6",
+    "name": "회의·아이디어 노트",
+    "members": [
+     "notes/ideas.md",
+     "notes/meeting_2026-03-05.md",
+     "notes/meeting_2026-09-17.md"
+    ],
+    "origin": "ai",
+    "description": "랩 미팅 노트와 아이디어 메모"
+   },
+   {
+    "id": "i7",
+    "name": "코사인 프로토타입 헤드",
+    "members": [
+     "configs/fewshot_5way.yaml",
+     "src/leafproto_model.py"
+    ],
+    "origin": "ai",
+    "description": "코사인 프로토타입 head가 있는 모델 코드와 5-way 설정"
+   },
+   {
+    "id": "i8",
+    "name": "설정 및 로그",
+    "members": [
+     "logs/train_2026-10-08.log"
+    ],
+    "origin": "ai",
+    "description": "학습 설정 파일과 학습 로그"
+   },
+   {
+    "id": "i9",
+    "name": "일관성 손실",
+    "members": [
+     "src/train.py"
+    ],
+    "origin": "ai",
+    "description": "일관성 손실을 쓰는 학습 코드"
+   },
+   {
+    "id": "i10",
+    "name": "관련 없음",
+    "members": [
+     "admin/travel_reimbursement_form.md",
+     "reading/protein_folding_reading_list.md"
+    ],
+    "origin": "ai",
+    "description": "연구와 상관없는 파일"
+   }
+  ],
+  "edges": [
+   {
+    "id": "src/leafproto_model.py|src/train.py",
+    "source": "src/train.py",
+    "target": "src/leafproto_model.py",
+    "relation": "uses",
+    "reason": "imports",
+    "direct": true,
+    "score": 0.95,
+    "label": "train.py가 모델 코드(leafproto_model.py)를 import해서 사용합니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/train.py",
+      "locator": "",
+      "quote": "on src/train.py --config configs/base.yaml \"\"\" import argparse import time from pathlib import Path import torch import torch.nn.functional as F from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler from utils import set_seed, get_logger, save_checkpoint, load_config VA"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "src/data.py|src/train.py",
+    "source": "src/train.py",
+    "target": "src/data.py",
+    "relation": "uses",
+    "reason": "imports",
+    "direct": true,
+    "score": 0.95,
+    "label": "train.py가 데이터 로딩 코드(data.py)를 import해서 사용합니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/train.py",
+      "locator": "",
+      "quote": "l \"\"\" import argparse import time from pathlib import Path import torch import torch.nn.functional as F from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler from utils import set_seed, get_logger, save_checkpoint, load_config VAL_EPISODES = 200 LOG_EVERY = 100 if __nam"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "src/train.py|src/utils.py",
+    "source": "src/train.py",
+    "target": "src/utils.py",
+    "relation": "uses",
+    "reason": "imports",
+    "direct": true,
+    "score": 0.95,
+    "label": "train.py가 공용 함수(utils.py)를 import해서 사용합니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/train.py",
+      "locator": "",
+      "quote": "lib import Path import torch import torch.nn.functional as F from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler from utils import set_seed, get_logger, save_checkpoint, load_config VAL_EPISODES = 200 LOG_EVERY = 100 if __name__ == \"__main__\": main()"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "src/freq_mix.py|src/leafproto_model.py",
+    "source": "src/leafproto_model.py",
+    "target": "src/freq_mix.py",
+    "relation": "uses",
+    "reason": "imports",
+    "direct": true,
+    "score": 0.95,
+    "label": "모델 코드가 FreqMix 증강 모듈을 import해서 사용합니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/leafproto_model.py",
+      "locator": "",
+      "quote": "in docs/method.md. Episodes arrive already sampled and resized to 84x84. \"\"\" import torch import torch.nn as nn import torch.nn.functional as F from freq_mix import FreqMix"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "src/evaluate.py|src/leafproto_model.py",
+    "source": "src/evaluate.py",
+    "target": "src/leafproto_model.py",
+    "relation": "uses",
+    "reason": "imports",
+    "direct": true,
+    "score": 0.95,
+    "label": "평가 코드가 모델 코드를 import해서 사용합니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/evaluate.py",
+      "locator": "",
+      "quote": "rds the row in the main results table. \"\"\" import argparse import math import os import numpy as np import pandas as pd import torch import yaml from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler RESULTS_CSV = \"results/main_results.csv\" N_TEST_EPISODES = 600 RESULT_C"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "src/data.py|src/evaluate.py",
+    "source": "src/evaluate.py",
+    "target": "src/data.py",
+    "relation": "uses",
+    "reason": "imports",
+    "direct": true,
+    "score": 0.95,
+    "label": "평가 코드가 데이터 로딩 코드를 import해서 사용합니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/evaluate.py",
+      "locator": "",
+      "quote": "\" import argparse import math import os import numpy as np import pandas as pd import torch import yaml from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler RESULTS_CSV = \"results/main_results.csv\" N_TEST_EPISODES = 600 RESULT_COLS = [\"method\", \"shots\", \"accuracy\", \"ci"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "configs/base.yaml|src/train.py",
+    "source": "src/train.py",
+    "target": "configs/base.yaml",
+    "relation": "uses",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.3,
+    "label": "train.py의 기본 설정 파일 경로가 base.yaml입니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/train.py",
+      "locator": "",
+      "quote": "\"\"\"Train LeafProto on the base classes of leafdoc_fs with episodic sampling. Usage: python src/train.py --config configs/base.yaml \"\"\" import argparse import time from pathlib import Path import torch import torch.nn.functional as F from leafproto_model import LeafProtoNet from data import get_"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "configs/base.yaml|configs/fewshot_5way.yaml",
+    "source": "configs/fewshot_5way.yaml",
+    "target": "configs/base.yaml",
+    "relation": "extends",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.3,
+    "label": "메인 실험 설정이 첫 줄 'inherits: base.yaml'로 기본 설정을 물려받습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "configs/fewshot_5way.yaml",
+      "locator": "",
+      "quote": "inherits: base.yaml # Main experiment: 5-way, 5-shot episodes on leafdoc_fs. # Every key not listed here comes from base.yaml. # Run with: # python src/train.py --config configs/fewshot_5way.yaml n_way: 5 # same as base, listed so the episode setup is readable here k_shot: 5"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "results/main_results.csv|src/evaluate.py",
+    "source": "src/evaluate.py",
+    "target": "results/main_results.csv",
+    "relation": "produces",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.95,
+    "label": "평가 코드가 결과를 main_results.csv에 기록합니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/evaluate.py",
+      "locator": "",
+      "quote": "as np import pandas as pd import torch import yaml from leafproto_model import LeafProtoNet from data import get_split, EpisodeSampler RESULTS_CSV = \"results/main_results.csv\" N_TEST_EPISODES = 600 RESULT_COLS = [\"method\", \"shots\", \"accuracy\", \"ci95\"] if __name__ == \"__main__\": main()"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "results/main_results.csv|src/plot_results.py",
+    "source": "src/plot_results.py",
+    "target": "results/main_results.csv",
+    "relation": "uses",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.95,
+    "label": "그래프 코드가 main_results.csv를 읽어 그림을 그립니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/plot_results.py",
+      "locator": "",
+      "quote": "\"\"\"Plot few-shot accuracy versus number of shots for the LeafProto paper. Reads results/main_results.csv (columns: method, shots, accuracy, ci95) and writes figures/accuracy_vs_shots.png. Usage: python src/plot_results.py python src/plot_results.py --csv results/main_results.csv --out figu"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "figures/accuracy_vs_shots.png|src/plot_results.py",
+    "source": "src/plot_results.py",
+    "target": "figures/accuracy_vs_shots.png",
+    "relation": "produces",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.95,
+    "label": "그래프 코드가 정확도 그래프를 accuracy_vs_shots.png로 저장합니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/plot_results.py",
+      "locator": "",
+      "quote": "few-shot accuracy versus number of shots for the LeafProto paper. Reads results/main_results.csv (columns: method, shots, accuracy, ci95) and writes figures/accuracy_vs_shots.png. Usage: python src/plot_results.py python src/plot_results.py --csv results/main_results.csv --out figures/accu"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "logs/train_2026-10-08.log|src/train.py",
+    "source": "src/train.py",
+    "target": "logs/train_2026-10-08.log",
+    "relation": "produces",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.95,
+    "label": "학습 코드가 날짜별 학습 로그를 남기며, 10월 8일 로그가 그중 하나입니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "configs/fewshot_5way.yaml|logs/train_2026-10-08.log",
+    "source": "logs/train_2026-10-08.log",
+    "target": "configs/fewshot_5way.yaml",
+    "relation": "uses",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.95,
+    "label": "학습 로그 첫 줄에 이 실험에 사용한 설정 파일 경로가 기록되어 있습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "logs/train_2026-10-08.log",
+      "locator": "",
+      "quote": "[2026-10-08 09:12:03] config: configs/fewshot_5way.yaml [2026-10-08 09:12:03] inherited base settings applied; overrides: k_shot=5, episodes=40000, log_dir=logs, results_csv=results/main_results.csv [2026-10-08 09:12:03] seed 42 set (torch, numpy, random) [2026-10-08 09:12:04] device cuda:0 NVIDIA G"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "docs/method.md|src/freq_mix.py",
+    "source": "src/freq_mix.py",
+    "target": "docs/method.md",
+    "relation": "implements",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.6,
+    "label": "FreqMix 코드가 방법 문서의 수식과 하이퍼파라미터를 그대로 구현합니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "docs/method.md|src/leafproto_model.py",
+    "source": "src/leafproto_model.py",
+    "target": "docs/method.md",
+    "relation": "implements",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.9,
+    "label": "모델 코드 첫 설명에 '설계는 docs/method.md에 있다'고 적혀 있습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "src/leafproto_model.py",
+      "locator": "",
+      "quote": "Proto network: ResNet-12 encoder, cosine prototype head and the episodic training loss with the FreqMix consistency term. The method is described in docs/method.md. Episodes arrive already sampled and resized to 84x84. \"\"\" import torch import torch.nn as nn import torch.nn.functional as F from freq"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "README.md|src/train.py",
+    "source": "README.md",
+    "target": "src/train.py",
+    "relation": "describes",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.95,
+    "label": "README에 학습 명령어와 스크립트 경로가 적혀 있습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "README.md",
+      "locator": "",
+      "quote": "## Training Run the 5-way training with: ```bash python src/train.py --config configs/<5-way-config>.yaml ``` Without `--config`, `src/train.py` uses the base config. Each run writes a log to `logs/train_{YYYY-MM-DD}.log`. The first line records the config, for example: ``` [2026-10-08 09:12:03"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "README.md|docs/method.md",
+    "source": "README.md",
+    "target": "docs/method.md",
+    "relation": "describes",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.9,
+    "label": "README가 방법 문서로 링크를 겁니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "README.md",
+      "locator": "",
+      "quote": "## Method in brief Full details are in `docs/method.md`. In short: - **FreqMix**: take the 2D FFT of each leaf image per channel and split it into amplitude and phase. For two images in the same episode, the low-frequency amplitude band is interpolated. The mask is a centered square covering 10% o"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "README.md|src/evaluate.py",
+    "source": "README.md",
+    "target": "src/evaluate.py",
+    "relation": "describes",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.95,
+    "label": "README에 평가 명령어가 적혀 있습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "README.md",
+      "locator": "",
+      "quote": "t episodes, 5-way, 15 queries per class, with seed 42. The output is mean accuracy in % with a 95% confidence interval over episodes. ```bash python src/evaluate.py --config configs/<5-way-config>.yaml --ckpt checkpoints/best.pt ```"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "README.md|paper/leafproto_draft_v2.pdf",
+    "source": "README.md",
+    "target": "paper/leafproto_draft_v2.pdf",
+    "relation": "describes",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.3,
+    "label": "README가 현재 논문 초안으로 v2를 가리킵니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "README.md",
+      "locator": "",
+      "quote": "nbit University. Paper: *LeafProto: Few-Shot Plant Disease Classification with Frequency-Domain Mixing and a Cosine Prototype Head* (current draft: `paper/leafproto_draft_v2.pdf`)."
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "docs/method.md|paper/leafproto_draft_v2.pdf",
+    "source": "paper/leafproto_draft_v2.pdf",
+    "target": "docs/method.md",
+    "relation": "same_method",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "논문의 방법 절과 방법 문서가 같은 구성 요소와 수식을 설명합니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "paper/leafproto_draft_v1.pdf|paper/leafproto_draft_v2.pdf",
+    "source": "paper/leafproto_draft_v2.pdf",
+    "target": "paper/leafproto_draft_v1.pdf",
+    "relation": "duplicate",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "같은 논문의 두 판입니다. v1이 이전 판, v2가 최신 판입니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "paper/leafproto_draft_v2.pdf|results/main_results.csv",
+    "source": "results/main_results.csv",
+    "target": "paper/leafproto_draft_v2.pdf",
+    "relation": "supports",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "논문의 메인 결과 표가 main_results.csv의 숫자를 그대로 옮겼습니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "paper/leafproto_draft_v2.pdf|results/ablation.md",
+    "source": "results/ablation.md",
+    "target": "paper/leafproto_draft_v2.pdf",
+    "relation": "supports",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "논문의 ablation 표가 ablation.md의 숫자를 그대로 옮겼습니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "figures/accuracy_vs_shots.png|paper/leafproto_draft_v2.pdf",
+    "source": "paper/leafproto_draft_v2.pdf",
+    "target": "figures/accuracy_vs_shots.png",
+    "relation": "uses",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "논문 Figure 2가 이 정확도 그래프입니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "figures/overview.png|paper/leafproto_draft_v2.pdf",
+    "source": "paper/leafproto_draft_v2.pdf",
+    "target": "figures/overview.png",
+    "relation": "uses",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "논문 Figure 1이 이 전체 파이프라인 그림입니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "paper/leafproto_draft_v2.pdf|paper/talk_outline.md",
+    "source": "paper/talk_outline.md",
+    "target": "paper/leafproto_draft_v2.pdf",
+    "relation": "describes",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.95,
+    "label": "발표 개요에 현재 논문 초안(v2)을 바탕으로 한다고 적혀 있습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "paper/talk_outline.md",
+      "locator": "",
+      "quote": "# LeafProto 랩 세미나 발표 아웃라인 - 발표자: 박현우 (Park Hyunwoo, 1저자) - 일시: 2026-11-26, 12분 발표 + 질의응답 - 기반 자료: paper/leafproto_draft_v2.pdf (내부 검토 마감 2026-11-30) - 발표 자료: 약 10장, 그림 2종 사용 (파이프라인 개요 Figure 1, accuracy_vs_shots 그림 Figure 2 = figures/accuracy_vs_shots.png) - 연구팀: Plant Vision Lab, Hanbit University"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "figures/accuracy_vs_shots.png|paper/talk_outline.md",
+    "source": "paper/talk_outline.md",
+    "target": "figures/accuracy_vs_shots.png",
+    "relation": "uses",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.95,
+    "label": "발표 개요에 정확도 그래프를 발표에 쓴다고 적혀 있습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "paper/talk_outline.md",
+      "locator": "",
+      "quote": "2분 발표 + 질의응답 - 기반 자료: paper/leafproto_draft_v2.pdf (내부 검토 마감 2026-11-30) - 발표 자료: 약 10장, 그림 2종 사용 (파이프라인 개요 Figure 1, accuracy_vs_shots 그림 Figure 2 = figures/accuracy_vs_shots.png) - 연구팀: Plant Vision Lab, Hanbit University (지도교수 정민준 교수) - 역할 분담 참고: 데이터/분할 및 FreqMix 실험 (김서연), 베이스라인 및 그래프 (이두윤), 작성 및"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "docs/related_work.md|papers/notes_protoclass2019.md",
+    "source": "docs/related_work.md",
+    "target": "papers/notes_protoclass2019.md",
+    "relation": "uses",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.3,
+    "label": "관련 연구 초안이 ProtoClass 읽기 노트를 인용합니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "docs/related_work.md",
+      "locator": "",
+      "quote": "dic training loop, and change three things: the similarity function, the training augmentation, and the training objective. Notes on the paper are in papers/notes_protoclass2019.md."
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "docs/related_work.md|papers/notes_fastadapt2022.md",
+    "source": "docs/related_work.md",
+    "target": "papers/notes_fastadapt2022.md",
+    "relation": "uses",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.3,
+    "label": "관련 연구 초안이 FastAdapt 읽기 노트를 인용합니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "docs/related_work.md",
+      "locator": "",
+      "quote": "er episode than LeafProto. The method also uses no image-level augmentation, so it does not address the limited variety of field photos. Notes are in papers/notes_fastadapt2022.md."
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "docs/method.md|papers/notes_protoclass2019.md",
+    "source": "docs/method.md",
+    "target": "papers/notes_protoclass2019.md",
+    "relation": "extends",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "방법 문서가 ProtoClass를 바탕으로 무엇을 바꿨는지 설명합니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "paper/leafproto_draft_v2.pdf|papers/notes_fastadapt2022.md",
+    "source": "paper/leafproto_draft_v2.pdf",
+    "target": "papers/notes_fastadapt2022.md",
+    "relation": "compares",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "논문의 결과 표에 FastAdapt가 비교 대상으로 들어가 있습니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "figures/accuracy_vs_shots.png|results/main_results.csv",
+    "source": "figures/accuracy_vs_shots.png",
+    "target": "results/main_results.csv",
+    "relation": "describes",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.95,
+    "label": "정확도 그래프가 main_results.csv의 숫자를 그린 것입니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "notes/meeting_2026-03-05.md|src/freq_mix.py",
+    "source": "notes/meeting_2026-03-05.md",
+    "target": "src/freq_mix.py",
+    "relation": "describes",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "3월 회의에서 FreqMix 모듈을 추가하기로 정했습니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "notes/meeting_2026-03-05.md|src/leafproto_model.py",
+    "source": "notes/meeting_2026-03-05.md",
+    "target": "src/leafproto_model.py",
+    "relation": "describes",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.3,
+    "label": "3월 회의에서 모델 코드 수정 담당을 정했습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "notes/meeting_2026-03-05.md",
+      "locator": "",
+      "quote": "## 3. 결정 사항 1. 베이스 방법은 ProtoClass로 한다. 2. 주 베이스라인은 FastAdapt, 보조 베이스라인은 Finetune으로 한다. 3. 주파수 영역 혼합 모듈(저주파 진폭 교환, 위상 유지)을 추가한다. 4. 모듈 연결 작업은 src/leafproto_model.py를 수정해서 진행한다. 5. 데이터 분할은 김서연 연구원이 담당한다."
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "notes/meeting_2026-09-17.md|results/main_results.csv",
+    "source": "notes/meeting_2026-09-17.md",
+    "target": "results/main_results.csv",
+    "relation": "describes",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.3,
+    "label": "9월 회의에서 main_results.csv의 메인 결과를 검토했습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "notes/meeting_2026-09-17.md",
+      "locator": "",
+      "quote": "## 1. 메인 결과 리뷰 results/main_results.csv (열: method, shots, accuracy, ci95)를 함께 확인했다. 5-way, 테스트 에피소드 600개, 정확도 %(평균 ± ci95) 기준이다. | 방법 | 1-shot | 2-shot | 5-shot | 10-shot | |---|---|---|---|---| | Finetune | 52.3 ± 0.9 | 61.8 ± 0.8 | 72.5 ± 0.7 | 79.1 ± 0.6 | | ProtoClass | 60.4 ± 0.9 | 70.2 ± 0."
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "notes/meeting_2026-09-17.md|results/ablation.md",
+    "source": "notes/meeting_2026-09-17.md",
+    "target": "results/ablation.md",
+    "relation": "describes",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "9월 회의에서 ablation 실험을 계획했고, 그 결과가 ablation.md에 있습니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "notes/meeting_2026-09-17.md|paper/leafproto_draft_v2.pdf",
+    "source": "notes/meeting_2026-09-17.md",
+    "target": "paper/leafproto_draft_v2.pdf",
+    "relation": "describes",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.95,
+    "label": "9월 회의에서 논문 v2의 검토 일정을 정했습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "notes/meeting_2026-09-17.md",
+      "locator": "",
+      "quote": "## 4. 논문 일정 - 원고: paper/leafproto_draft_v2.pdf (2026-11-10 기준) - 내부 리뷰 마감: 2026-11-30 - 투고 대상: AgriVision Workshop 2027, 제출 마감 2026-12-15 - 구성: abstract, introduction, method, experiments (Table 1 메인 결과, Table 2 ablation), Figure 1-2, related work, limitations - limitations 항목: 데이터셋 1개뿐임, 84x84 해상도"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "docs/method.md|notes/ideas.md",
+    "source": "notes/ideas.md",
+    "target": "docs/method.md",
+    "relation": "extends",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "아이디어 메모에 방법의 구성 요소를 확장하는 아이디어가 적혀 있습니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "paper/leafproto_draft_v2.pdf|site/index.html",
+    "source": "site/index.html",
+    "target": "paper/leafproto_draft_v2.pdf",
+    "relation": "describes",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.3,
+    "label": "소개 웹페이지가 현재 논문 초안 PDF로 링크를 겁니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "site/index.html",
+      "locator": "",
+      "quote": "<div class=\"links\"> <a href=\"../paper/leafproto_draft_v2.pdf\">Paper (PDF)</a> <a href=\"https://github.com/plant-vision-lab/leafproto\">Code</a> </div> <h2>Abstract</h2> <p>Diagnosing plant disease from field photos usually has only a handful of labeled examples per disease. We present LeafProto,"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "figures/overview.png|site/index.html",
+    "source": "site/index.html",
+    "target": "figures/overview.png",
+    "relation": "uses",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.3,
+    "label": "소개 웹페이지에 전체 파이프라인 그림이 들어가 있습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "site/index.html",
+      "locator": "",
+      "quote": "FastAdapt and 6.5 points above ProtoClass. In our ablation, removing FreqMix causes the largest drop.</p> <h2>Overview</h2> <figure> <img src=\"../figures/overview.png\" alt=\"LeafProto pipeline overview\"> <figcaption class=\"caption\">Overview of the LeafProto pipeline. A leaf photo is transformed"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "results/main_results.csv|site/index.html",
+    "source": "results/main_results.csv",
+    "target": "site/index.html",
+    "relation": "supports",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "웹페이지의 결과 표가 main_results.csv의 숫자를 보여 줍니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "docs/method.md|site/index.html",
+    "source": "site/index.html",
+    "target": "docs/method.md",
+    "relation": "same_method",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.3,
+    "label": "웹페이지의 방법 요약이 방법 문서와 같은 구성 요소를 설명합니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "configs/fewshot_5way.yaml|src/train.py",
+    "source": "configs/fewshot_5way.yaml",
+    "target": "src/train.py",
+    "relation": "other",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.3,
+    "label": "설정 파일 주석에 train.py 실행 명령이 적혀 있습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "configs/fewshot_5way.yaml",
+      "locator": "",
+      "quote": "nherits: base.yaml # Main experiment: 5-way, 5-shot episodes on leafdoc_fs. # Every key not listed here comes from base.yaml. # Run with: # python src/train.py --config configs/fewshot_5way.yaml n_way: 5 # same as base, listed so the episode setup is readable here k_shot: 5"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "configs/fewshot_5way.yaml|src/evaluate.py",
+    "source": "configs/fewshot_5way.yaml",
+    "target": "src/evaluate.py",
+    "relation": "other",
+    "reason": "mentions",
+    "direct": true,
+    "score": 0.95,
+    "label": "설정 파일에 평가 코드가 쓰는 평가 설정이 들어 있습니다.",
+    "evidence": [
+     {
+      "chunk_id": "",
+      "file_id": "configs/fewshot_5way.yaml",
+      "locator": "",
+      "quote": "cy table is written into the results folder checkpoint_dir: checkpoints # best checkpoint is saved here (best.pt) # Evaluation protocol (used by src/evaluate.py) eval: test_episodes: 600 # 5-way test episodes queries_per_class: 15 metric: accuracy_percent # reported with 95% confi"
+     }
+    ],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   },
+   {
+    "id": "src/evaluate.py|src/utils.py",
+    "source": "src/evaluate.py",
+    "target": "src/utils.py",
+    "relation": "uses",
+    "reason": "similar",
+    "direct": false,
+    "score": 0.95,
+    "label": "평가 코드도 train.py처럼 공용 함수로 체크포인트와 설정을 불러옵니다.",
+    "evidence": [],
+    "origin": "ai",
+    "status": "proposed",
+    "correction": ""
+   }
+  ]
+ }
+}

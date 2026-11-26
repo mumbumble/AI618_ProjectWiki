@@ -1,0 +1,447 @@
+{
+ "meta": {
+  "source": "rule",
+  "method": "similar",
+  "made_from": "make_baselines.py rules (mirror of srcs/candidates.py)"
+ },
+ "nodes": [
+  {
+   "id": "assignment/project_spec.pdf",
+   "path": "assignment/project_spec.pdf",
+   "type": "pdf",
+   "title": "project_spec.pdf",
+   "group": "s1",
+   "role": "",
+   "summary": "STAT2101 Term Project Specification"
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv",
+   "path": "data/clean_student_sleep_survey_2026.csv",
+   "type": "text",
+   "title": "clean_student_sleep_survey_2026.csv",
+   "group": "s1",
+   "role": "",
+   "summary": "student_id,gender,year,sleep_hours,work_hours,study_hours,caffeine_cups,course_grade"
+  },
+  {
+   "id": "data/codebook.md",
+   "path": "data/codebook.md",
+   "type": "markdown",
+   "title": "codebook.md",
+   "group": "s1",
+   "role": "",
+   "summary": "Codebook: Raw Student Sleep Survey 2026"
+  },
+  {
+   "id": "data/raw_student_sleep_survey_2026.csv",
+   "path": "data/raw_student_sleep_survey_2026.csv",
+   "type": "text",
+   "title": "raw_student_sleep_survey_2026.csv",
+   "group": "s1",
+   "role": "",
+   "summary": "student_id,gender,year,sleep_hours,work_hours,study_hours,caffeine_cups,course_grade"
+  },
+  {
+   "id": "misc/hw1_solution.py",
+   "path": "misc/hw1_solution.py",
+   "type": "python",
+   "title": "hw1_solution.py",
+   "group": "s3",
+   "role": "",
+   "summary": "hw1_solution.py"
+  },
+  {
+   "id": "notebooks/01_eda.ipynb",
+   "path": "notebooks/01_eda.ipynb",
+   "type": "notebook",
+   "title": "01_eda.ipynb",
+   "group": "s1",
+   "role": "",
+   "summary": "cells\": ["
+  },
+  {
+   "id": "notebooks/02_model.ipynb",
+   "path": "notebooks/02_model.ipynb",
+   "type": "notebook",
+   "title": "02_model.ipynb",
+   "group": "s1",
+   "role": "",
+   "summary": "cells\": ["
+  },
+  {
+   "id": "notes/personal_schedule.md",
+   "path": "notes/personal_schedule.md",
+   "type": "markdown",
+   "title": "personal_schedule.md",
+   "group": "s4",
+   "role": "",
+   "summary": "이번 학기 주간 시간표"
+  },
+  {
+   "id": "notes/ta_feedback.md",
+   "path": "notes/ta_feedback.md",
+   "type": "markdown",
+   "title": "ta_feedback.md",
+   "group": "s2",
+   "role": "",
+   "summary": "TA 피드백: 보고서 초안 검토 (2026-11-18)"
+  },
+  {
+   "id": "notes/team_meeting.md",
+   "path": "notes/team_meeting.md",
+   "type": "markdown",
+   "title": "team_meeting.md",
+   "group": "s2",
+   "role": "",
+   "summary": "팀 회의록: SleepWork-Grade"
+  },
+  {
+   "id": "README.md",
+   "path": "README.md",
+   "type": "markdown",
+   "title": "README.md",
+   "group": "s1",
+   "role": "",
+   "summary": "SleepWork-Grade"
+  },
+  {
+   "id": "references/notes_han2024_sleep_parttime_grades.md",
+   "path": "references/notes_han2024_sleep_parttime_grades.md",
+   "type": "markdown",
+   "title": "notes_han2024_sleep_parttime_grades.md",
+   "group": "s1",
+   "role": "",
+   "summary": "Reading notes: Han and Oh (2024)"
+  },
+  {
+   "id": "report/figures/predicted_vs_actual_grade.png",
+   "path": "report/figures/predicted_vs_actual_grade.png",
+   "type": "image",
+   "title": "predicted_vs_actual_grade.png",
+   "group": "s5",
+   "role": "",
+   "summary": ""
+  },
+  {
+   "id": "report/figures/sleep_vs_grade_scatter.png",
+   "path": "report/figures/sleep_vs_grade_scatter.png",
+   "type": "image",
+   "title": "sleep_vs_grade_scatter.png",
+   "group": "s5",
+   "role": "",
+   "summary": ""
+  },
+  {
+   "id": "report/final_report.md",
+   "path": "report/final_report.md",
+   "type": "markdown",
+   "title": "final_report.md",
+   "group": "s1",
+   "role": "",
+   "summary": "Sleep, Part-time Work and Course Grades: A Student Survey"
+  },
+  {
+   "id": "src/clean_data.py",
+   "path": "src/clean_data.py",
+   "type": "python",
+   "title": "clean_data.py",
+   "group": "s1",
+   "role": "",
+   "summary": "Clean the raw STAT2101 student sleep survey."
+  },
+  {
+   "id": "src/features.py",
+   "path": "src/features.py",
+   "type": "python",
+   "title": "features.py",
+   "group": "s1",
+   "role": "",
+   "summary": "Feature engineering for the SleepWork-Grade project."
+  }
+ ],
+ "groups": [
+  {
+   "id": "s1",
+   "name": "work_hours · sleep_hours · course_grade",
+   "members": [
+    "README.md",
+    "assignment/project_spec.pdf",
+    "data/clean_student_sleep_survey_2026.csv",
+    "data/codebook.md",
+    "data/raw_student_sleep_survey_2026.csv",
+    "notebooks/01_eda.ipynb",
+    "notebooks/02_model.ipynb",
+    "references/notes_han2024_sleep_parttime_grades.md",
+    "report/final_report.md",
+    "src/clean_data.py",
+    "src/features.py"
+   ],
+   "origin": "ai",
+   "description": "이 파일들에 자주 나오는 단어: work_hours, sleep_hours, course_grade, study_hours, sleep"
+  },
+  {
+   "id": "s2",
+   "name": "보고서 · 상관계수 · 데이터",
+   "members": [
+    "notes/ta_feedback.md",
+    "notes/team_meeting.md"
+   ],
+   "origin": "ai",
+   "description": "이 파일들에 자주 나오는 단어: 보고서, 상관계수, 데이터, 주세요, loo"
+  },
+  {
+   "id": "s3",
+   "name": "bubble_sort · is_palindrome · result",
+   "members": [
+    "misc/hw1_solution.py"
+   ],
+   "origin": "ai",
+   "description": "이 파일들에 자주 나오는 단어: bubble_sort, is_palindrome, result, assert, sort"
+  },
+  {
+   "id": "s4",
+   "name": "선형대수 · 일본어 · 헬스장",
+   "members": [
+    "notes/personal_schedule.md"
+   ],
+   "origin": "ai",
+   "description": "이 파일들에 자주 나오는 단어: 선형대수, 일본어, 헬스장, 영어회화, 동아리"
+  },
+  {
+   "id": "s5",
+   "name": "글이 없는 파일",
+   "members": [
+    "report/figures/predicted_vs_actual_grade.png",
+    "report/figures/sleep_vs_grade_scatter.png"
+   ],
+   "origin": "ai",
+   "description": "그림처럼 글 내용이 없어 단어로 비교할 수 없는 파일"
+  }
+ ],
+ "edges": [
+  {
+   "id": "assignment/project_spec.pdf|report/final_report.md",
+   "source": "assignment/project_spec.pdf",
+   "target": "report/final_report.md",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.3439,
+   "label": "두 파일에 함께 자주 나오는 단어: points, cleaning, may (유사도 0.34)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "README.md|assignment/project_spec.pdf",
+   "source": "README.md",
+   "target": "assignment/project_spec.pdf",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.328,
+   "label": "두 파일에 함께 자주 나오는 단어: repository, report, team (유사도 0.33)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/clean_student_sleep_survey_2026.csv|data/raw_student_sleep_survey_2026.csv",
+   "source": "data/clean_student_sleep_survey_2026.csv",
+   "target": "data/raw_student_sleep_survey_2026.csv",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.9464,
+   "label": "두 파일에 함께 자주 나오는 단어: s002, s004, s006 (유사도 0.95)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/codebook.md|report/final_report.md",
+   "source": "data/codebook.md",
+   "target": "report/final_report.md",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.3632,
+   "label": "두 파일에 함께 자주 나오는 단어: were, hours, rows (유사도 0.36)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "README.md|data/codebook.md",
+   "source": "README.md",
+   "target": "data/codebook.md",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.353,
+   "label": "두 파일에 함께 자주 나오는 단어: hours, median, raw (유사도 0.35)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notebooks/01_eda.ipynb|notebooks/02_model.ipynb",
+   "source": "notebooks/01_eda.ipynb",
+   "target": "notebooks/02_model.ipynb",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.4491,
+   "label": "두 파일에 함께 자주 나오는 단어: metadata, cell_type, source (유사도 0.45)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notebooks/01_eda.ipynb|report/final_report.md",
+   "source": "notebooks/01_eda.ipynb",
+   "target": "report/final_report.md",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.3001,
+   "label": "두 파일에 함께 자주 나오는 단어: more, hours, work (유사도 0.30)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notebooks/02_model.ipynb|report/final_report.md",
+   "source": "notebooks/02_model.ipynb",
+   "target": "report/final_report.md",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.3372,
+   "label": "두 파일에 함께 자주 나오는 단어: loo, rmse, model (유사도 0.34)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notes/ta_feedback.md|notes/team_meeting.md",
+   "source": "notes/ta_feedback.md",
+   "target": "notes/team_meeting.md",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.1962,
+   "label": "두 파일에 함께 자주 나오는 단어: 보고서, 상관계수, 데이터 (유사도 0.20)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "README.md|report/final_report.md",
+   "source": "README.md",
+   "target": "report/final_report.md",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.5018,
+   "label": "두 파일에 함께 자주 나오는 단어: were, hours, loo (유사도 0.50)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "references/notes_han2024_sleep_parttime_grades.md|report/final_report.md",
+   "source": "references/notes_han2024_sleep_parttime_grades.md",
+   "target": "report/final_report.md",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.4256,
+   "label": "두 파일에 함께 자주 나오는 단어: their, hours, work (유사도 0.43)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "assignment/project_spec.pdf|references/notes_han2024_sleep_parttime_grades.md",
+   "source": "assignment/project_spec.pdf",
+   "target": "references/notes_han2024_sleep_parttime_grades.md",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.2349,
+   "label": "두 파일에 함께 자주 나오는 단어: work, may, reported (유사도 0.23)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "data/codebook.md|src/clean_data.py",
+   "source": "data/codebook.md",
+   "target": "src/clean_data.py",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.2988,
+   "label": "두 파일에 함께 자주 나오는 단어: row, numeric, rows (유사도 0.30)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "README.md|src/clean_data.py",
+   "source": "README.md",
+   "target": "src/clean_data.py",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.1799,
+   "label": "두 파일에 함께 자주 나오는 단어: raw, rows, median (유사도 0.18)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "report/final_report.md|src/features.py",
+   "source": "report/final_report.md",
+   "target": "src/features.py",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.2331,
+   "label": "두 파일에 함께 자주 나오는 단어: out, feature, model (유사도 0.23)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  },
+  {
+   "id": "notebooks/02_model.ipynb|src/features.py",
+   "source": "notebooks/02_model.ipynb",
+   "target": "src/features.py",
+   "relation": "similar",
+   "reason": "similar",
+   "direct": false,
+   "score": 0.2255,
+   "label": "두 파일에 함께 자주 나오는 단어: out, add_sleep_deficit, add_work_heavy (유사도 0.23)",
+   "evidence": [],
+   "origin": "ai",
+   "status": "proposed",
+   "correction": ""
+  }
+ ]
+}
