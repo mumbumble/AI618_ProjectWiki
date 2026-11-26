@@ -7,8 +7,8 @@
 | 1 인코딩 | `encoder.py` | 근거 조각·파일 요약을 벡터로 바꿈, 텍스트 해시 캐시 | bge-m3 (테스트용 TF-IDF) | 조각·요약 → `Encoded` |
 | 2 군집화 🧪 | `clustering.py` | 파일을 그룹으로 묶음 (사용자 선호 반영) | `baseline`, `pref` | `Record` + `Preferences` → `list[Group]` |
 | 3 구조 생성 | `structure.py` | 후보 연결 → 근거 쌍 리랭킹 → 관계 판정·인용 검증 | bge-reranker-v2-m3, Claude | `Record` + 그룹 → `Graph` |
-| 4 선호도 반영 🧪 | `preference.py` | 사용자 피드백을 건드리지 않은 연결에 일반화 | `baseline`, `drift`(4안), `align`(1안) | `Graph` + 피드백 → `Correction` |
-| 5 시각화 | `visualization.py` | 뷰어 `view.html`, Obsidian 볼트 | vis-network (모델 없음) | 최종 `Graph` → 파일 |
+| 4 선호도 반영 🧪 | `preference.py` | 사용자 피드백을 건드리지 않은 연결에 일반화 | `baseline`, `drift`(4안), `align`(1안), `best-of-n`(Drift 강도 3개 중 피드백에 가장 맞는 것) | `Graph` + 피드백 → `Correction` |
+| 5 시각화 | `visualization.py` | 뷰어 `view.html`(2D·3D·그룹 카드), Obsidian 볼트 | vis-network, 3d-force-graph (모델 없음) | 최종 `Graph` → 파일 |
 
 ## 실험 구간에 방법 넣기 (2·4단계)
 
