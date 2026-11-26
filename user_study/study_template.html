@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ProjectWiki 사용자 스터디</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.9/standalone/umd/vis-network.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<style>
+/* tokens and base styles follow the team viewer (projectwiki/srcs/view_template.html, main @ aeebcf0) */
+:root{color-scheme:dark;
+ --bg:#1e1e1e;--panel:#262626;--text:#dedede;--sub:#bdbdbd;--muted:#a3a3a3;--line:#363636;--line2:#4a4a4a;
+ --accent:#b49af4;--accdeep:#7658b9;--accsoft:#3a3248;--ok:#7cbb9c;--oksoft:#26332c;--bad:#e98b90;--chip:#333136;--rail:#202020;
+ --warn:#e0a458;--warnsoft:#33291c}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif}
+body{display:flex;flex-direction:column;overflow:hidden;word-break:keep-all;overflow-wrap:break-word}
+p,li,h2,h3,.explain,.qtext,.callout,.suggest,.purpose,.inst,.empty-state,.fb,.brief,.summary,.sidebox,.edge-link span{text-wrap:pretty}
+h2,.qtext,.suggest .q,.brief h2,.paper h2{text-wrap:balance}
+.path,.file span,.card-file span,blockquote,.code,.doc code,.csv{word-break:normal;overflow-wrap:anywhere}
+button,input,select,textarea{font:inherit;color:inherit}
+button{border:1px solid var(--line);background:var(--chip);border-radius:5px;padding:5px 10px;cursor:pointer}
+button:hover{background:#403b49}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accdeep);color:#fff;border-color:#8768ca} button.primary:hover{background:#8466c7}
+button.ghost{background:transparent;border-color:transparent;color:var(--muted)} button.ghost:hover{color:var(--text);background:var(--chip)}
+button:disabled{opacity:.4;cursor:default}
+button.sm{font-size:12px;padding:2px 9px}
+.hint{color:var(--muted);font-size:12px}
+.mono,.path{font-family:ui-monospace,Consolas,monospace}
+
+/* header */
+header{display:flex;flex:none;align-items:center;height:43px;padding:0 16px;background:var(--rail);border-bottom:1px solid var(--line);gap:10px;position:relative}
+header h1{font-size:14px;font-weight:600;margin:0}
+.brand{color:var(--accent);font-size:22px}
+#where{color:var(--muted);font-size:12px;margin-left:6px} #where b{color:var(--text);font-weight:500}
+.header-note{margin-left:auto;color:var(--muted);font-size:12px}
+#prog{position:absolute;left:0;bottom:-1px;height:2px;background:var(--accent);transition:width .4s}
+#app{flex:1;min-height:0;display:flex;flex-direction:column}
+
+/* task strip */
+.task{flex:none;display:flex;align-items:center;gap:14px;min-height:44px;padding:8px 16px;background:var(--rail);border-bottom:1px solid var(--line)}
+.plbl{flex:none;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.plbl .pill{display:inline-block;padding:1px 8px;border-radius:4px;background:#38303f;color:var(--accent);font-weight:600;font-size:12px}
+.purpose{flex:1;min-width:0;font-size:14.5px;color:var(--text);line-height:1.5}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:0 6px;border-radius:4px;margin-right:8px;background:var(--warnsoft);color:var(--warn);border:1px solid #6b5230;letter-spacing:0}
+.inst{flex:none;font-size:12px;color:var(--muted)}
+
+/* workspace */
+.workspace{flex:1;min-height:0;display:flex;position:relative}
+.ribbon{width:46px;flex:none;background:var(--rail);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:10px}
+.icon-button{border:0;background:transparent;width:32px;height:32px;padding:6px;color:var(--muted);display:inline-flex;align-items:center;justify-content:center}
+.icon-button svg,.tab svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5}
+.ribbon .active{color:var(--accent);background:#38303f}
+.ribbon .bottom{margin-top:auto}
+.explorer{width:255px;flex:none;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.workspace.folder .explorer{width:285px}
+.noexp .explorer,.noinsp .inspector,.noinsp #vsplit{display:none}
+.pane-title{height:43px;padding:10px 16px;border-bottom:1px solid var(--line);font-weight:500;display:flex;align-items:center;gap:8px;flex:none}
+.pane-title .hint{margin-left:auto}
+.search-box{margin:14px 12px 6px}
+#search{width:100%;padding:6px 10px;background:var(--bg);border:1px solid var(--line);border-radius:5px}
+#search::placeholder{color:var(--muted)}
+.explorer-scroll{overflow:auto;padding:4px 10px 16px;flex:1}
+.section-title{font-size:12px;letter-spacing:.6px;color:var(--muted);margin:20px 8px 8px;font-weight:600}
+.vault-name{padding:8px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-tree details{margin-left:10px} .file-tree>details{margin-left:0}
+.file-tree summary{cursor:pointer;color:#bdbdbd;padding:3px 4px;overflow-wrap:anywhere}
+.file{border:0;background:transparent;display:flex;align-items:center;gap:7px;width:100%;text-align:left;padding:4px 8px;color:#bcbcbc;border-radius:4px}
+.file span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-icon{display:inline-flex;align-items:center;justify-content:center;flex:none;width:20px;height:20px}
+.file-icon svg{display:block;width:18px;height:18px}
+.file:hover,.file.hov{background:var(--chip)}
+.file.selected{background:var(--accsoft);color:#d4bfff}
+#legend .item{display:flex;width:100%;gap:8px;align-items:center;text-align:left;padding:5px 8px;border:0;background:transparent;border-radius:4px}
+#legend .item:hover{background:var(--chip)} #legend .item.on{background:var(--accsoft);color:#e1d3ff}
+#legend .item .hint{margin-left:auto}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;display:inline-block}
+.wantfile .callout:not(.ready){animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 #b49af400}50%{box-shadow:0 0 0 3px #b49af455}}
+
+main{flex:1;min-width:0;display:flex;flex-direction:column}
+.tabbar{height:43px;background:var(--rail);display:flex;padding:5px 8px 0;gap:4px;border-bottom:1px solid var(--line);flex:none}
+.tab{display:flex;align-items:center;gap:9px;padding:6px 16px;min-width:165px;max-width:360px;border:1px solid var(--line);border-bottom:0;background:var(--bg);border-radius:7px 7px 0 0;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tab svg{color:var(--accent)} .tab .file-icon svg{width:16px;height:16px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:8px 20px;border-bottom:1px solid #2b2b2b;flex:none}
+.breadcrumb{color:var(--muted);font-size:13px} .breadcrumb strong{color:var(--text);font-weight:500}
+.view-mode{display:inline-flex;border:1px solid var(--line);border-radius:6px;padding:2px;background:var(--rail)}
+.view-mode button{border:0;background:transparent;padding:3px 10px;color:var(--muted)}
+.view-mode button[aria-pressed="true"]{background:#493b65;color:#e1d3ff}
+#graphwrap{flex:1;min-height:160px;position:relative}
+#net{position:absolute;inset:0}
+#groupgraph{position:absolute;inset:0;overflow:hidden;cursor:grab}
+#groupgraph.drag{cursor:grabbing}
+#net[hidden],#groupgraph[hidden]{display:none}
+#groupScene{position:absolute;left:0;top:0;transform-origin:0 0}
+#groupLinks{position:absolute;left:0;top:0;overflow:visible}
+.graph-caption{position:absolute;left:22px;top:16px;pointer-events:none;color:var(--muted);font-size:12px}
+.graph-caption strong{display:block;font-size:16px;color:#cecece;font-weight:500;margin-bottom:2px}
+.tools{display:flex;align-items:center;gap:8px}
+.graph-options{position:relative}
+.graph-options summary{cursor:pointer;padding:5px 10px;color:var(--muted);list-style:none;border-radius:5px} .graph-options summary:hover{color:var(--text);background:var(--chip)}
+.graph-options summary::-webkit-details-marker{display:none} .graph-options summary:before{content:"▸ ";font-size:11px} .graph-options[open] summary:before{content:"▾ "}
+.options-panel{position:absolute;right:0;top:36px;width:200px;background:var(--panel);padding:10px 12px;border:1px solid var(--line);border-radius:7px;z-index:5;box-shadow:0 8px 24px #0006}
+.options-panel label{display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer}
+input[type=checkbox]{accent-color:#a88be5}
+.group-row{display:flex;align-items:center;gap:5px}
+.group-row .item{min-width:0;flex:1}
+.group-row.off .item{opacity:.55}
+.visibility-switch{position:relative;flex:none;width:30px;height:18px;padding:0;border:1px solid #65616b;border-radius:12px;background:#4a474f;margin-right:4px}
+.visibility-switch::after{content:"";position:absolute;width:12px;height:12px;left:2px;top:2px;border-radius:50%;background:#e6e3eb}
+.visibility-switch[aria-checked="true"]{background:#8060bd;border-color:#a88be5}
+.visibility-switch[aria-checked="true"]::after{left:14px;background:#fff}
+.visibility-switch:hover{border-color:var(--accent)}
+.feedback-section{border-top:1px solid var(--line);margin-top:24px}
+.fb{font-size:13px;padding:7px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.fb .t{color:var(--muted)}
+footer{height:27px;flex:none;display:flex;align-items:center;gap:16px;padding:0 14px;border-top:1px solid var(--line);background:var(--rail);color:var(--muted);font-size:12px}
+#sessionStatus{margin-left:auto}
+.graph-empty{position:absolute;inset:0;display:grid;place-content:center;text-align:center;color:var(--muted);pointer-events:none}
+.graph-empty[hidden]{display:none}
+.graph-controls{position:absolute;right:18px;top:16px;display:flex;border:1px solid var(--line);border-radius:6px;background:var(--panel);padding:3px}
+.graph-controls button{background:transparent;border:0;font-size:18px;min-width:32px;line-height:1.2}
+.graph-controls button:last-child{font-size:13px;border-left:1px solid var(--line);border-radius:0 4px 4px 0}
+.group-card{position:absolute;width:270px;border:1.5px solid var(--gc);border-radius:9px;background:#26282f;box-shadow:0 4px 14px #0003;overflow:hidden}
+.group-card.on,.group-card.focused{box-shadow:0 0 0 3px #b49af44d}
+.group-card-header{padding:11px 13px 8px;border-bottom:1px solid #ffffff12;cursor:pointer}
+.group-card-header:hover{background:#2d2f37}
+.group-card-title{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
+.group-card-title .dot{background:var(--gc)}
+.group-card-header .hint{display:block;margin:3px 0 0 16px}
+.group-card-items{padding:7px;max-height:248px;overflow:auto;overscroll-behavior:contain}
+.card-file{display:flex;align-items:center;gap:9px;width:100%;padding:4px 8px;border:0;background:transparent;text-align:left;font-size:13.5px;border-radius:4px}
+.card-file .badge-ext{display:inline-flex;align-items:center;justify-content:center;flex:none;min-width:38px;height:22px;padding:0 5px;border:1px solid #626262;border-radius:5px;background:#303030;color:#dedede;font:700 11px/1 ui-monospace,Consolas,monospace}
+.card-file span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-file.selected{background:#493b65;color:#e1d3ff}
+.group-connection{cursor:pointer}
+.group-connection .cl{fill:none;stroke:#80798d;opacity:.7}
+.group-connection .ch{fill:none;stroke:transparent;stroke-width:18}
+.group-connection:hover .cl,.group-connection.on .cl{stroke:var(--accent);opacity:1}
+.group-connection rect{fill:#302c38;stroke:#665d76}
+.group-connection text{fill:#e0d7eb;font:13px "Segoe UI","Malgun Gothic",sans-serif;text-anchor:middle;dominant-baseline:central}
+
+/* folder-only viewer */
+#viewer{position:absolute;inset:0;overflow:auto;padding:28px 36px var(--cardh,280px)}
+#viewer h2{font-size:18px;font-weight:600;margin:0 0 4px}
+
+/* inspector */
+#vsplit{width:5px;flex:none;cursor:col-resize;background:var(--line);border-left:1px solid var(--rail)}
+#vsplit:hover,#vsplit.drag{background:#5b4b7c}
+.inspector{width:var(--dw,400px);flex:none;background:var(--panel);display:flex;flex-direction:column;min-height:0}
+.inspector-scroll{overflow:auto;padding:20px 20px var(--cardh,240px);flex:1}
+.inspector h2{font-size:18px;font-weight:600;margin:0 0 6px;overflow-wrap:anywhere}
+.inspector h3{font-size:13px;font-weight:600;margin:22px 0 8px;color:var(--sub)}
+.empty-state{padding:24px 0 10px}
+.empty-symbol{color:var(--accent);font-size:30px;margin-bottom:16px}
+.empty-state p{color:var(--muted)}
+.path{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.badge{display:inline-block;font-size:12px;padding:2px 7px;border-radius:4px;background:var(--chip)}
+.badge.direct{background:#483c62;color:#d9c6ff}
+.badge.removed{background:#573439;color:#ffb6bd}
+.badge.prop{background:var(--warnsoft);color:var(--warn)}
+.badge.user{background:#304b3c;color:#a4ddbe}
+.inspector-scroll>#detail{min-height:40%}
+.row{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+blockquote{margin:6px 0 14px;padding:8px 12px;border-left:2px solid #77629d;background:#222;font-size:12.5px;white-space:pre-wrap;overflow-wrap:anywhere;font-family:ui-monospace,Consolas,monospace;color:#cfcfcf}
+.edge-link{cursor:pointer;display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:7px 0;font-size:13px;border-radius:0;overflow-wrap:anywhere}
+.edge-link:hover{color:var(--accent);background:transparent}
+.edge-link .file-icon{align-self:center}
+.edge-link .hint{font-size:12px}
+.explain{font-size:14.5px;line-height:1.7;margin:0}
+.back{display:inline-block;font-size:12px;color:var(--muted);cursor:pointer;margin-bottom:12px} .back:hover{color:var(--accent)}
+.propbar{margin:-20px -20px 16px;padding:10px 20px;background:var(--warnsoft);color:var(--warn);font-size:12px;font-weight:600;border-bottom:1px solid #6b5230}
+.fixrow{border-top:1px solid var(--line);margin-top:22px;padding-top:4px}
+
+/* file contents */
+.doc{font-size:14px;line-height:1.75}
+.doc h1{font-size:19px;margin:4px 0 12px} .doc h2{font-size:16px;margin:20px 0 8px} .doc h3{font-size:14.5px;margin:16px 0 6px;color:var(--text)}
+.doc table{border-collapse:collapse;margin:8px 0;font-size:13px} .doc td,.doc th{border:1px solid var(--line);padding:4px 8px}
+.doc code{font:12.5px ui-monospace,Consolas,monospace;color:#bba6db;background:#202020;padding:1px 4px;border-radius:3px}
+.doc pre{background:#202020;padding:10px 12px;border-radius:5px;overflow:auto;border:1px solid var(--line)} .doc pre code{background:none;padding:0;color:inherit}
+.doc blockquote{font-family:inherit;background:none}
+.doc a{color:var(--accent)}
+.code{margin:0;border-radius:5px;overflow:auto;font:12.5px/1.6 ui-monospace,Consolas,monospace;border:1px solid var(--line);background:#202020}
+.code code{display:block;padding:10px 12px;white-space:pre;background:none!important}
+.csv{border-collapse:collapse;font-size:12.5px} .csv td,.csv th{border:1px solid var(--line);padding:3px 8px} .csv th{background:#202020}
+.cell{margin:10px 0} .cell .ctag{font-size:11px;color:var(--muted);margin-bottom:2px}
+.pdf{width:100%;height:calc(100vh - 250px - var(--cardh,0px));min-height:300px;border:1px solid var(--line);border-radius:5px;background:#fff}
+img.shot{max-width:100%;border-radius:5px;border:1px solid var(--line);background:#fff}
+
+/* question / task bar under the graph */
+#bottom{flex:none;border-top:1px solid var(--line);background:var(--panel);max-height:46%;display:flex;flex-direction:column}
+.bhead{display:flex;align-items:center;gap:12px;height:36px;padding:0 20px;cursor:pointer;user-select:none;flex:none;border-bottom:1px solid var(--line);background:var(--rail)}
+.bhead:hover .fold{color:var(--text)}
+.bhead .lbl{font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:8px}
+.bhead .lbl:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)} .practice-b .bhead .lbl:before{background:var(--warn)}
+.bhead .mini{flex:1;min-width:0;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0}
+#bottom.min .mini{opacity:1}
+.bhead .fold{color:var(--muted);font-size:12px;margin-left:auto}
+#bottom.min #sidebody{display:none} #bottom.min .bhead{border-bottom:0}
+#sidebody{overflow:auto}
+.sidebox,.qwrap{padding:14px 20px}
+.sidebox h3{margin:0 0 4px;font-size:14px;font-weight:600}
+.sidebox p{margin:0;color:var(--muted);font-size:13px}
+.qhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.qhead .lbl{display:none}
+.qtext{font-size:16px;font-weight:500;line-height:1.5;margin-bottom:10px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.opt{text-align:left;padding:9px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);display:flex;gap:10px;align-items:center}
+.opt:hover{border-color:#8062ba;background:#2a2730}
+.opt.on{background:#493b65;border-color:#8062ba;color:#e1d3ff}
+.opt .k{font:600 11px ui-monospace,Consolas,monospace;color:var(--muted);width:12px} .opt.on .k{color:#e1d3ff}
+.callout{border:1px solid #5b4b7c;background:#2b2635;border-radius:6px;padding:10px 14px}
+.callout .big{font-size:14px;font-weight:600;color:#d4bfff}
+.callout .sm{font-size:12.5px;color:var(--muted);margin-top:2px}
+.callout.ready{border-color:#3f6a55;background:var(--oksoft)} .callout.ready .big{color:var(--ok)}
+.pickbtn{width:100%;margin-top:8px;padding:8px 14px}
+.steps{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.steps li{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:13px;color:var(--muted)}
+.steps .n{flex:0 0 20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:1px solid var(--line2)}
+.steps li.now{color:var(--text);border-color:#6b5230} .steps li.now .n{background:var(--warn);border-color:var(--warn);color:#1e1e1e}
+.steps li.ok{color:var(--ok)} .steps li.ok .n{background:var(--oksoft);border-color:var(--ok)}
+.locked{padding:0 20px 14px;color:var(--muted);font-size:13px}
+.empty{padding:14px 20px;color:var(--muted);font-size:13px}
+.suggest{padding:14px 20px;background:var(--warnsoft)}
+.suggest .h{font-size:12px;font-weight:600;color:var(--warn)}
+.suggest .q{font-size:15px;font-weight:500;margin:6px 0 2px}
+.actions{display:flex;gap:8px;align-items:center}
+.marks{font-size:13px;letter-spacing:4px;color:var(--muted)}
+.list .row2{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:13px;cursor:pointer} .list .row2:hover{color:var(--accent)}
+.sidefoot{padding:0 20px 14px}
+
+/* briefing */
+.brief{position:fixed;inset:0;z-index:50;background:#000a;display:flex;align-items:center;justify-content:center;padding:20px}
+.brief .card{max-width:640px;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:28px 30px;box-shadow:0 20px 60px #0008}
+.brief .k{font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.6px}
+.brief h2{font-size:21px;font-weight:600;margin:4px 0 10px}
+.brief p{color:var(--sub);margin:0 0 12px}
+.brief ul{margin:0;padding-left:18px;color:var(--sub)} .brief li{margin:5px 0}
+.brief .foot{display:flex;align-items:center;justify-content:space-between;margin-top:20px}
+.legend3{display:grid;grid-template-columns:30px 1fr 30px 1fr;gap:8px 10px;align-items:center;font-size:13px;color:var(--sub);margin:6px 0 16px;padding:12px 14px;background:var(--bg);border:1px solid var(--line);border-radius:6px}
+
+/* intro / survey / end pages */
+.page{flex:1;overflow:auto;display:flex;justify-content:center;padding:52px 20px}
+.paper{max-width:640px;width:100%}
+.paper h2{font-size:22px;font-weight:600;margin:0 0 8px}
+.paper>p{color:var(--muted);margin:0 0 20px}
+.box{border-top:1px solid var(--line);padding:20px 0}
+.box .lbl{display:block;font-size:12px;letter-spacing:.6px;color:var(--muted);font-weight:600;margin-bottom:6px}
+.box ol{margin:6px 0 0;padding-left:20px;color:var(--sub)} .box li{margin:3px 0}
+.check{display:flex;gap:8px;align-items:flex-start;margin:6px 0} .check input{accent-color:#a88be5;margin-top:5px}
+.err{color:var(--bad);font-size:12px;min-height:18px;margin:4px 0}
+.scale{display:flex;justify-content:space-between;gap:4px;margin:10px 0 4px}
+.scale label{flex:1;text-align:center;font-size:12px;color:var(--sub);cursor:pointer;padding:6px 0;border-radius:5px} .scale label:hover{background:var(--chip)}
+.scale input{display:block;margin:0 auto 4px;accent-color:#a88be5}
+textarea{width:100%;min-height:64px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:8px 10px;resize:vertical}
+.legend2{display:flex;gap:16px;font-size:12px;color:var(--muted);margin-top:8px}
+.legend2 i{display:inline-block;width:18px;border-top:2px dashed var(--bad);vertical-align:middle;margin-right:5px}
+.minibox{height:340px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.fields label{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--sub)}
+.fields input{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:8px 10px}
+.nextbox{margin-top:12px;padding:14px 16px;background:var(--bg);border:1px solid var(--line);border-radius:8px}
+.nextbox ol{margin:0 0 10px;padding-left:20px;color:var(--sub)} .nextbox li{margin:4px 0}
+.q{border-top:1px solid var(--line);padding:16px 0} .q b{display:block;margin-bottom:8px;font-weight:500}
+.opts{display:flex;flex-wrap:wrap;gap:6px 18px} .opts label{display:flex;gap:6px;align-items:center;color:var(--sub);cursor:pointer} .opts input{accent-color:#a88be5}
+.scale-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.box .q:first-of-type{border-top:0}
+.sent{font-size:13px;color:var(--muted);margin:0 0 4px} .sent.ok{color:var(--good,#7fc99a)}
+details.box summary{cursor:pointer;color:var(--muted);font-size:12px}
+table.sum{width:100%;border-collapse:collapse;font-size:13px} .sum td,.sum th{border-bottom:1px solid var(--line);padding:7px 4px;text-align:left} .sum th{color:var(--muted);font-weight:600}
+
+/* question / task card floating over the graph */
+#bottom{position:absolute;left:var(--cl,340px);right:16px;bottom:16px;max-height:min(58%,460px);z-index:20;
+ display:flex;flex-direction:column;background:#2a2a2d;border:1px solid #444249;border-radius:12px;box-shadow:0 14px 36px #000a,0 2px 6px #0006;overflow:hidden}
+#bottom.min{right:auto;max-width:calc(100% - var(--cl,340px) - 16px);border-radius:20px}
+.bhead{display:flex;align-items:center;gap:12px;height:40px;padding:0 16px 0 18px;cursor:pointer;user-select:none;flex:none;border-bottom:1px solid #3a393f}
+#bottom.min .bhead{border-bottom:0;height:38px}
+.bhead .lbl{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.bhead .lbl:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)} .practice-b .bhead .lbl:before{background:var(--warn)}
+.bhead .mini{flex:1;min-width:0;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:none}
+#bottom.min .mini{display:block;max-width:620px}
+.bhead .fold{color:var(--muted);font-size:12px;margin-left:auto;padding:2px 10px;border:1px solid #444249;border-radius:12px;white-space:nowrap}
+.bhead:hover .fold{color:var(--text);border-color:#6a6672}
+#bottom.min #sidebody{display:none}
+#sidebody{overflow:auto}
+.sidebox,.qwrap{padding:14px 18px 16px}
+.qtext{font-size:15.5px;font-weight:500;line-height:1.5;margin-bottom:12px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.opt{text-align:left;padding:10px 12px;border:1px solid #444249;border-radius:8px;background:#232326;display:flex;gap:10px;align-items:center;min-width:0}
+.opts.four{grid-template-columns:repeat(4,minmax(0,1fr))} .opts.four .opt{padding:10px}
+.opt .ot{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opt:hover{border-color:#8062ba;background:#2c2836}
+.callout{border-radius:8px}
+.pickbtn{border-radius:8px}
+.steps{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.steps li{display:flex;gap:8px;align-items:center;padding:5px 12px 5px 6px;border:1px solid #444249;border-radius:16px;font-size:13px;color:var(--muted);white-space:nowrap}
+.steps .n{flex:0 0 20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:1px solid var(--line2)}
+.steps li.now{color:var(--text);border-color:#8a6a3a;background:#3a2f22}
+.suggest{padding:14px 18px 16px;background:transparent;border-top:2px solid var(--warn)}
+.suggest .q{font-size:15px;font-weight:500;margin:8px 0 2px}
+.actions{display:flex;gap:8px;align-items:center;flex-wrap:nowrap}
+.actions button{border-radius:8px}
+.sidefoot{padding:0 18px 16px}
+button{white-space:nowrap}
+.list .row2 span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fixbox{margin:12px 0 4px;padding:10px 12px;border:1px solid #3d3a44;border-radius:8px;background:#2a2730}
+.fixh{font-size:12px;font-weight:600;color:var(--sub)}
+.donechip{display:inline-block;font-size:13px;color:var(--ok);padding:4px 12px;border:1px solid #3f6a55;border-radius:14px;background:var(--oksoft)}
+.guide-text{margin-top:10px;font-size:13.5px;color:var(--text);padding-left:10px;border-left:2px solid var(--warn)}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 #e0a45800}50%{box-shadow:0 0 0 3px #e0a45899}}
+.guide-group #legend{border-radius:8px;animation:glow 1.6s ease-in-out infinite}
+.guide-hide .fixbox{border-color:var(--warn);animation:glow 1.6s ease-in-out infinite}
+.guide-file #graphwrap,.guide-edge #graphwrap{box-shadow:inset 0 0 0 2px #e0a45866}
+.qline{display:flex;align-items:flex-start;gap:12px}.qline .qtext{flex:1;min-width:0}
+.pickrow{display:flex;gap:10px;align-items:stretch}.pickrow .callout{flex:1;min-width:0}
+.pickrow .pickbtn{width:auto;margin-top:0;padding:0 20px;font-size:14px;max-width:45%;overflow:hidden;text-overflow:ellipsis}
+
+/* briefing: two pages (folder intro, task), question card hidden until the timer starts */
+body.briefing #bottom{visibility:hidden}
+.brief .card{max-height:calc(100vh - 40px);overflow:auto;position:relative}
+#fintro{z-index:60}
+.bridge{margin:0 0 18px;padding:12px 14px;background:var(--oksoft);border:1px solid #3f6a55;border-radius:8px}
+.brief .bridge .lead{margin:0 0 4px;padding:0;background:none;font-weight:600}
+.bridge p{margin:0 0 8px;color:var(--sub);font-size:13.5px}
+.road.mini{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:12px;color:var(--muted)}
+.road.mini span.done{color:var(--ok)} .road.mini span.now{color:#1e1e1e;background:var(--ok);padding:1px 8px;border-radius:10px;font-weight:600}
+.road.mini em{font-style:normal;color:var(--line2)}
+.road.full{list-style:none;margin:6px 0 4px;padding:12px 14px;background:var(--bg);border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column;gap:8px}
+.road.full li{display:flex;gap:10px;align-items:flex-start;color:var(--sub);font-size:13.5px}
+.road.full li b{font-weight:600;color:var(--text)}
+.road.full .n{flex:none;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:1px solid var(--line2);margin-top:1px}
+.road.full li.now .n{background:var(--accent);border-color:var(--accent);color:#1e1e1e}
+.road.full .hint{font-size:12.5px}
+.nowtag{font-size:11px;color:var(--accent);border:1px solid #5b4b7c;border-radius:8px;padding:0 6px;margin-left:4px}
+.howto{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px}
+.howto span{padding:4px 12px 4px 4px;border:1px solid var(--line);border-radius:16px;background:var(--bg);color:var(--sub)}
+.howto b{display:inline-flex;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center;background:var(--accsoft);color:#d4bfff;font-size:11px;margin-right:6px}
+.howto em{font-style:normal;color:var(--muted)}
+.brief .lead{font-size:13.5px;color:var(--ok);margin:0 0 14px;padding:8px 12px;background:var(--oksoft);border-radius:6px}
+.brief .x{position:absolute;right:14px;top:12px;font-size:18px;line-height:1;padding:4px 9px}
+.brief .pages{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.brief .pages i{width:7px;height:7px;border-radius:50%;background:var(--line2);display:inline-block} .brief .pages i.on{background:var(--accent)}
+.dirs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px;margin:6px 0 16px;padding:12px 14px;background:var(--bg);border:1px solid var(--line);border-radius:6px}
+.dirs div{display:flex;gap:8px;align-items:baseline;font-size:13px;color:var(--sub);min-width:0}
+.dirs b{font:600 12.5px ui-monospace,Consolas,monospace;color:var(--text);flex:none}
+.dirs .hint{flex:none}
+.dirs .off b,.dirs .off{color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0 14px;font-size:13px}
+.flow span{padding:3px 10px;border:1px solid #5b4b7c;background:#2b2635;border-radius:14px;color:#d4bfff}
+.flow em{font-style:normal;color:var(--muted)}
+.brief h4{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.4px;margin:16px 0 6px}
+.introbtn{flex:none;font-size:12px;padding:3px 10px}
+
+/* practice: one step at a time */
+.pstep{display:flex;gap:14px;align-items:flex-start}
+.pstep .n{flex:none;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:var(--warn);color:#1e1e1e;margin-top:1px}
+.pstep.done .n{background:var(--ok)}
+.pstep .b{flex:1;min-width:0}
+.pstep .do{font-size:14.5px;font-weight:500;line-height:1.5}
+.pstep .why{margin-top:6px;font-size:13.5px;color:var(--sub);line-height:1.6}
+.pstep .act{display:flex;align-items:center;gap:10px;margin-top:10px}
+.pdots{display:flex;gap:5px;margin-left:auto} .pdots i{width:7px;height:7px;border-radius:50%;background:var(--line2)} .pdots i.ok{background:var(--ok)} .pdots i.now{background:var(--warn)}
+.guide-cards #vcard,.guide-cards .view-mode{animation:glow 1.6s ease-in-out infinite;border-radius:6px}
+.guide-edge #detail .edge-link{animation:glow 1.6s ease-in-out infinite}
+.guide-file #fileTree,.guide-group #legend{border-radius:8px}
+.qfb{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13.5px;line-height:1.6}
+.qfb.ok{background:var(--oksoft);color:var(--ok);border:1px solid #3f6a55}
+.qfb.no{background:#3a2629;color:#f0b4b8;border:1px solid #6b3b40}
+.qfb .act{display:flex;gap:8px;margin-top:8px}
+.opt.right{border-color:var(--ok);background:var(--oksoft)} .opt.wrong{border-color:#8a4a50;background:#3a2629}
+.qdone{padding:16px 18px;display:flex;align-items:center;gap:12px}
+.qdone p{margin:0;flex:1;font-size:14px}
+.minihead{display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--sub)} .minihead b{font-weight:600;color:var(--text)}
+.hidlist{margin-top:12px;font-size:13px} .hidlist div{display:flex;gap:10px;padding:5px 0;border-top:1px solid var(--line)} .hidlist .src{flex:none;width:86px;color:var(--muted)}
+.legend2 i{border-top:3px dashed #ff5c6c}
+.shapes{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-top:8px;font-size:12.5px;color:var(--sub)} .shapes span:nth-child(even){margin-right:10px}
+</style>
+</head>
+<body>
+<header><span class="brand" aria-hidden="true">◈</span><h1>ProjectWiki</h1><span id="where"></span><span class="header-note">사용자 스터디</span><div id="prog"></div></header>
+<div id="app"></div>
+<script>
+/*DATA*/
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const base=p=>p.split("/").pop();
+const ext=p=>{const n=base(p).toLowerCase();return n.includes(".")?n.split(".").pop():""};
+/* same palette, node shapes and edge colours as the team viewer */
+const PALETTE=["#b49af4","#83b6c9","#c7ad77","#8bbb9a","#ce92aa","#8b9cd1","#c18e70","#a4ba77","#9c96b9","#80b8af"];
+const SHAPE={py:"diamond",pdf:"square",ipynb:"triangle",png:"star",jpg:"star",jpeg:"star"};
+const C={bg:"#1e1e1e",text:"#dedede",muted:"#a3a3a3",accent:"#b49af4",bad:"#e98b90",prop:"#e0a458",direct:"#66616e",inferred:"#45424b",dim:"#2c2b2f"};
+const mix=(hex,to,a)=>{const p=h=>[1,3,5].map(k=>parseInt(h.slice(k,k+2),16)),x=p(hex),y=p(to);return "#"+x.map((v,k)=>Math.round(v*(1-a)+y[k]*a).toString(16).padStart(2,"0")).join("")};
+function fileIcon(path){
+ const name=base(path).toLowerCase(),e=ext(path);let art;
+ if(e==="py")art='<path fill="#5aa9df" d="M12 2c-5 0-5 2-5 5h6v1H5c-4 0-4 8 0 8h2v-4c0-2 1-3 3-3h7V6c0-3-2-4-5-4Z"/><path fill="#ffda68" d="M12 22c5 0 5-2 5-5h-6v-1h8c4 0 4-8 0-8h-2v4c0 2-1 3-3 3H7v3c0 3 2 4 5 4Z"/><circle cx="10" cy="5" r="1" fill="#1e1e1e"/><circle cx="14" cy="19" r="1" fill="#1e1e1e"/>';
+ else if(["md","markdown"].includes(e))art='<rect x="2" y="4" width="20" height="16" rx="2" stroke="#8fcfff" stroke-width="1.5"/><path d="M5 16V8l3 4 3-4v8M17 8v8m-3-3 3 3 3-3" stroke="#8fcfff" stroke-width="1.8" stroke-linejoin="round"/>';
+ else if(["png","jpg","jpeg","gif","webp"].includes(e))art='<rect x="2.5" y="3.5" width="19" height="17" rx="2" stroke="#87d5a2" stroke-width="1.6"/><circle cx="8" cy="9" r="2" fill="#f5d580"/><path d="m4 18 5-6 3 3 3-5 5 8H4Z" fill="#87d5a2"/>';
+ else if(e==="pdf")art='<path d="M5 2h9l5 5v15H5Z" stroke="#ef8f91" stroke-width="1.5"/><path d="M14 2v6h5M7 17c5-1 6-9 4-7-2 2 1 8 5 7 3-1-4-3-9 0Z" stroke="#ef8f91" stroke-width="1.5" stroke-linejoin="round"/>';
+ else if(e==="ipynb")art='<path d="M4 9c3-7 13-7 16 0M4 15c3 7 13 7 16 0" stroke="#edaa68" stroke-width="2.8" stroke-linecap="round"/><circle cx="6" cy="3" r="1.6" fill="#b7bbc4"/><circle cx="19" cy="21" r="1.6" fill="#b7bbc4"/><path d="m9 10-3 2 3 2m6-4 3 2-3 2" stroke="#edaa68" stroke-width="1.4"/>';
+ else if(e==="json")art='<path d="M9 3H7c-2 0-1 5-2 7l-2 2 2 2c1 2 0 7 2 7h2m6-18h2c2 0 1 5 2 7l2 2-2 2c-1 2 0 7-2 7h-2" stroke="#e8ce77" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="9" r="1" fill="#e8ce77"/><circle cx="12" cy="15" r="1" fill="#e8ce77"/>';
+ else if(["yaml","yml","toml","ini","cfg"].includes(e))art='<path d="M4 6h16M4 12h16M4 18h16" stroke="#bf9ce7" stroke-width="1.6"/><g fill="#bf9ce7" stroke="#262626" stroke-width="1.2"><rect x="7" y="3" width="4" height="6" rx="1"/><rect x="14" y="9" width="4" height="6" rx="1"/><rect x="6" y="15" width="4" height="6" rx="1"/></g>';
+ else if(["csv","tsv","xlsx"].includes(e))art='<rect x="3" y="3" width="18" height="18" rx="2" stroke="#71c9ad" stroke-width="1.5"/><path d="M3 9h18M3 15h18M9 9v12M15 9v12" stroke="#71c9ad" stroke-width="1.3"/><path d="M4 4h16v4H4Z" fill="#71c9ad"/>';
+ else if(["js","ts","html","css","sh","c","h"].includes(e)){const col=e==="js"?"#e8d572":["html","sh"].includes(e)?"#ee9f78":"#83b8ed";art=`<path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`}
+ else art='<path d="M5 2h9l5 5v15H5Z" stroke="#b4bac5" stroke-width="1.5"/><path d="M14 2v6h5M8 12h8M8 16h8" stroke="#b4bac5" stroke-width="1.5" stroke-linejoin="round"/>';
+ return `<span class="file-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${art}</svg></span>`;
+}
+const ICON={folder:'<svg viewBox="0 0 24 24"><path d="M3 5h7l2 3h9v12H3z"/></svg>',graph:'<svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="9" r="3"/><circle cx="9" cy="19" r="3"/><path d="m9 7 6 1M7 9l1 7m4 1 4-5"/></svg>',
+ search:'<svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg>',insp:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg>'};
+
+const FLOW=[{id:"intro",name:"시작"},{id:"t1a",name:"과제 1 · 앞부분"},{id:"practice",name:"도구 연습"},{id:"t1b",name:"과제 1 · 뒷부분"},{id:"c1",name:"과제 1 소감"},
+ {id:"t2",name:"과제 2"},{id:"c2",name:"과제 2 소감"},{id:"survey",name:"마지막 질문"},{id:"end",name:"끝"}];
+let step=0;
+const LOG={started:new Date().toISOString(),steps:{}};
+function log(k,v){const s=LOG.steps[FLOW[step].id]||(LOG.steps[FLOW[step].id]={t0:Date.now(),events:[]});if(k)s.events.push([Date.now()-s.t0,k,v])}
+function go(n){const s=LOG.steps[FLOW[step].id];if(s&&!s.sec)s.sec=Math.round((Date.now()-s.t0)/1000);step=n;LOG.steps[FLOW[step].id]={t0:Date.now(),events:[]};render()}
+function bar(){$("where").innerHTML=`· <b>${FLOW[step].name}</b>`;$("prog").style.width=(100*step/(FLOW.length-1))+"%"}
+function render(){if(ro){ro.disconnect();ro=null}bar();const id=FLOW[step].id;if(id=="intro")intro();else if(id=="c1"||id=="c2")compare(id);else if(id=="survey")survey();else if(id=="end")end();else workspace(id)}
+
+const LANG={py:"python",yaml:"yaml",yml:"yaml",json:"json",html:"xml",log:"plaintext",c:"c",h:"c",sh:"bash"};
+function hl(code,lang){try{return window.hljs?hljs.highlight(code,{language:lang||"plaintext",ignoreIllegals:true}).value:esc(code)}catch(e){return esc(code)}}
+function md(t){return window.marked&&window.DOMPurify?DOMPurify.sanitize(marked.parse(t)):`<pre>${esc(t)}</pre>`}
+function csv(t){const rows=t.trim().split(/\r?\n/).map(r=>r.split(","));const n=rows.length-1;
+ return `<div class="hint" style="margin-bottom:6px">${n}행 · ${rows[0].length}열${n>40?" · 앞 40행만 표시":""}</div><table class="csv"><tr>${rows[0].map(c=>`<th>${esc(c)}</th>`).join("")}</tr>${rows.slice(1,41).map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</table>`}
+function contentHtml(c){
+ if(c.kind=="image")return `<img class="shot" src="${c.data}">`;
+ if(c.kind=="pdf")return `<iframe class="pdf" data-pdf="1"></iframe>`;
+ if(c.kind=="nb")return c.data.map(([t,s])=>t=="code"?`<div class="cell"><div class="ctag">코드 셀</div><pre class="code"><code class="hljs">${hl(s,"python")}</code></pre></div>`:`<div class="cell doc">${md(s)}</div>`).join("");
+ if(c.ext=="md")return `<div class="doc">${md(c.data)}</div>`;
+ if(c.ext=="csv")return csv(c.data);
+ return `<pre class="code"><code class="hljs">${hl(c.data,LANG[c.ext])}</code></pre>`;
+}
+function mountPdf(root,c){const f=root.querySelector("iframe[data-pdf]");if(!f)return;const b=atob(c.data),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
+ f.src=URL.createObjectURL(new Blob([u],{type:"application/pdf"}))}
+
+/* questions: radio / check / scale (1-7) / text */
+const PROFILE=[
+ {k:"level",t:"radio",q:"과정",o:["학부","석사","박사","기타"]},
+ {k:"organize",t:"check",q:"연구 파일은 평소 어떻게 정리하시나요? (모두 선택)",o:["폴더 구조","파일 이름 규칙","노트 앱 (노션·옵시디언 등)","따로 정리하지 않음"]},
+ {k:"nfiles",t:"radio",q:"지금 하고 있는 프로젝트 폴더에는 파일이 대략 몇 개 있나요?",o:["50개 미만","50–200개","200–1000개","1000개 이상"]}];
+const SURVEY=[
+ {k:"reuse",t:"scale",q:"비슷한 도구가 있다면 내 프로젝트에 쓰겠다"},
+ {k:"trust",t:"scale",q:"도구가 보여 준 그룹과 연결이 믿을 만했다"},
+ {k:"good",t:"text",q:"가장 좋았던 점 (선택)",ph:"예: 연결마다 근거 문장이 있어서 믿고 따라갈 수 있었다"},
+ {k:"bad",t:"text",q:"가장 불편하거나 헷갈렸던 점 (선택)",ph:"예: 선이 겹쳐 있어서 원하는 연결을 누르기 어려웠다"}];
+function qHtml(x,n){
+ const body=x.t=="scale"?`<div class="scale">${[1,2,3,4,5,6,7].map(i=>`<label><input type="radio" name="${x.k}" value="${i}">${i}</label>`).join("")}</div>
+   <div class="scale-ends"><span>전혀 그렇지 않다</span><span>매우 그렇다</span></div>`
+  :x.t=="text"?`<textarea id="s_${x.k}" placeholder="${x.ph}"></textarea>`
+  :`<div class="opts">${x.o.map(o=>`<label><input type="${x.t=="check"?"checkbox":"radio"}" name="${x.k}" value="${o}">${o}</label>`).join("")}</div>`;
+ return `<div class="q"><b>${n}. ${x.q}</b>${body}</div>`;
+}
+function qRead(list,start){const A={};
+ for(const [i,x] of list.entries()){
+  if(x.t=="text"){A[x.k]=$("s_"+x.k).value.trim();continue}
+  const v=[...document.querySelectorAll(`input[name=${x.k}]:checked`)].map(e=>e.value);
+  if(!v.length)return {err:`${start+i}번 문항에 답해 주세요.`};
+  A[x.k]=x.t=="check"?v:x.t=="scale"?+v[0]:v[0]}
+ return {A};
+}
+function intro(){
+ $("app").innerHTML=`<div class="page"><div class="paper"><h2>ProjectWiki 사용자 스터디</h2>
+ <p>연구 폴더를 그래프로 정리해 주는 도구를 써 보고 의견을 들려주시는 스터디입니다.<br>모든 과정이 이 화면 안에서 진행되며, 30분 정도 걸립니다.</p>
+ <div class="box"><span class="lbl">진행 순서</span><ol>
+  <li>과제 1 앞부분: 연구 폴더를 파일 목록으로만 보고 질문 2개에 답합니다.</li><li>도구 연습: 다른 폴더로 그래프 도구를 하나씩 따라 해 봅니다. 점수는 없습니다.</li>
+  <li>과제 1 뒷부분: 같은 폴더를 이번에는 도구로 보고 질문 2개에 답합니다.</li><li>과제 2: 필요 없는 연결 2개를 숨긴 뒤, 시스템이 더 숨기자고 한 연결이 맞는지 판단합니다.</li>
+  <li>짧은 질문에 답하고 제출하면 끝납니다. 원하시면 본인 폴더로도 해 볼 수 있습니다(선택).</li></ol>
+  <p class="hint" style="margin-top:10px">노트북이나 PC에서 진행해 주세요. 인터넷 연결이 필요하고, 창을 닫거나 새로고침하면 기록이 사라지니 한 번에 진행해 주세요.</p></div>
+ <div class="box"><span class="lbl">참가자 정보</span><div class="fields">
+  <label>이름 또는 닉네임<input id="nm" autocomplete="nickname"></label>
+  <label>이메일<input id="em" type="email" autocomplete="email"></label></div>
+  <p class="hint" style="margin-top:6px">결과를 정리할 때와 본인 폴더 결과를 보내 드릴 때만 사용합니다.</p>
+  ${PROFILE.map((x,i)=>qHtml(x,i+1)).join("")}</div>
+ <div class="box"><span class="lbl">동의</span>
+  <label class="check"><input type="checkbox" id="c1">스터디 내용을 읽었으며 참여에 동의합니다.</label>
+  <label class="check"><input type="checkbox" id="c2">화면 조작 기록, 소요 시간, 위 정보가 연구진에게 전송되는 것에 동의합니다.</label>
+  <div class="err" id="err"></div><button class="primary" id="go">시작하기</button></div></div></div>`;
+ $("app").oninput=$("app").onchange=()=>$("err").textContent="";
+ $("go").onclick=()=>{const nm=$("nm").value.trim(),em=$("em").value.trim(),err=t=>$("err").textContent=t;
+  if(!nm)return err("이름 또는 닉네임을 입력해 주세요.");
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))return err("이메일 주소를 다시 확인해 주세요.");
+  const r=qRead(PROFILE,1);if(r.err)return err(r.err);
+  if(!$("c1").checked||!$("c2").checked)return err("두 항목에 모두 동의해야 시작할 수 있습니다.");
+  LOG.who={name:nm,email:em};LOG.profile=r.A;go(1)};
+}
+function compare(id){
+ const p1=id=="c1",L=p1?["파일 목록만 (앞부분)","도구 (뒷부분)"]:["정리 전","정리 후"],lab=["훨씬","꽤","조금","비슷함","조금","꽤","훨씬"];
+ const r=LOG.steps.t2&&LOG.steps.t2.review,d=FD[ST.t2.proj];
+ const hid=r?[...r.seed.map(e=>[e,"직접 숨김"]),...r.items.filter(x=>x.accept).map(x=>[x.e,"제안에 동의"])]:[],nE=d.edges.length;
+ const nm=j=>`${base(d.files[d.edges[j].a])} – ${base(d.files[d.edges[j].b])}`;
+ $("app").innerHTML=`<div class="page"><div class="paper" style="${p1?"":"max-width:1100px"}"><h2>${p1?"과제 1":"과제 2"} 소감</h2>
+ <p>${p1?"방금 같은 폴더를 두 가지 방법으로 살펴보셨습니다.":"정리하기 전과 후의 그래프입니다. 빨간 점선이 이번에 숨긴 연결입니다."}</p>
+ ${!p1&&r?`<div class="box">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><div class="minihead"><b>정리 전</b>연결 ${nE}개</div><div id="gBefore" class="minibox"></div></div>
+  <div><div class="minihead"><b>정리 후</b>연결 ${nE-hid.length}개</div><div id="gAfter" class="minibox"></div></div></div>
+  <div class="legend2"><span><i></i>숨긴 연결 ${hid.length}개 (정리 후 그래프에서는 빠짐)</span><span>연결이 하나도 남지 않은 파일은 흐리게 표시됩니다</span><span>휠로 확대할 수 있습니다</span></div>
+  <div class="hidlist">${hid.map(([e,src])=>`<div><span class="src">${src}</span><span>${esc(nm(e))}</span></div>`).join("")}</div></div>`:""}
+ <div class="box" style="max-width:640px"><b>${p1?"어느 쪽이 질문의 답을 찾기 더 쉬웠나요?":"후배에게 넘겨줄 때는 어느 쪽 그래프가 더 나은가요?"}</b>
+ <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:12px;color:var(--sub)"><span>← ${L[0]}</span><span>${L[1]} →</span></div>
+ <div class="scale">${lab.map((l,i)=>`<label><input type="radio" name="sc" value="${i-3}">${l}</label>`).join("")}</div>
+ <span class="lbl" style="margin-top:14px">그렇게 고른 이유</span><textarea id="why" placeholder="${p1?"예: 그래프에서 표를 누르니 만든 코드가 바로 보여서 빨랐다":"예: 학습과 평가에 필요한 파일만 남아서 한눈에 들어온다"}"></textarea>
+ <div class="err" id="err"></div><button class="primary" id="next">다음</button></div></div></div>`;
+ document.querySelectorAll("input[name=sc]").forEach(r=>r.onchange=()=>$("err").textContent="");$("why").oninput=()=>$("err").textContent="";
+ $("next").onclick=()=>{const v=document.querySelector("input[name=sc]:checked");if(!v){$("err").textContent="한 칸을 골라 주세요.";return}
+  if($("why").value.trim().length<5){$("err").textContent="이유를 한 줄 정도 적어 주세요.";return}
+  LOG.steps[id].answer={scale:+v.value,why:$("why").value.trim()};go(step+1)};
+ if(!p1&&r){const hs=new Set(hid.map(x=>x[0]));mini($("gBefore"),new Set(),hs);mini($("gAfter"),hs)}
+}
+/* Google Forms. FORMS.result: answers go to formResponse, one column per value (fields: key -> "entry.N").
+   FORMS.folder: opened in a new tab with name/email/step prefilled. Empty url: nothing is sent. */
+function resultValues(){
+ const S=LOG.steps,A={...(LOG.profile||{}),...((S.survey||{}).answer||{})},q=k=>(S[k]||{}).quiz||[],avg=(xs,f)=>xs.length?Math.round(xs.reduce((a,x)=>a+(f(x)||0),0)/xs.length):"";
+ const r=(S.t2||{}).review,acc=src=>r?r.items.filter(x=>x.src==src&&x.accept).length:"";
+ return {name:LOG.who.name,email:LOG.who.email,level:A.level||"",organize:(A.organize||[]).join(", "),nfiles:A.nfiles||"",
+  total_min:Math.round((Date.now()-Date.parse(LOG.started))/60000),
+  t1a_ok:q("t1a").filter(x=>x.ok).length,t1a_sec:avg(q("t1a"),x=>x.sec),t1a_opens:q("t1a").reduce((a,x)=>a+(x.opens||0),0),
+  t1b_ok:q("t1b").filter(x=>x.ok).length,t1b_sec:avg(q("t1b"),x=>x.sec),t1b_opens:q("t1b").reduce((a,x)=>a+(x.opens||0),0),
+  practice_sec:(S.practice||{}).sec??"",c1:(S.c1&&S.c1.answer||{}).scale??"",c1_why:(S.c1&&S.c1.answer||{}).why||"",
+  t2_sys:acc("drift"),t2_rnd:acc("base"),c2:(S.c2&&S.c2.answer||{}).scale??"",c2_why:(S.c2&&S.c2.answer||{}).why||"",
+  reuse:A.reuse??"",trust:A.trust??"",good:A.good||"",bad:A.bad||"",data:JSON.stringify(LOG)};
+}
+function formLink(f){const v={name:LOG.who.name,email:LOG.who.email,stage:f.stage||""},p=new URLSearchParams({usp:"pp_url"});
+ for(const [k,e] of Object.entries(f.fields))if(v[k])p.append(e,v[k]);return f.url+"?"+p}
+function sendResult(){
+ const f=FORMS.result;if(!f||!f.url)return Promise.resolve("off");
+ const v=resultValues(),body=new URLSearchParams();for(const [k,e] of Object.entries(f.fields))body.append(e,String(v[k]??""));
+ return fetch(f.url,{method:"POST",mode:"no-cors",body}).then(()=>"ok",()=>"fail");
+}
+function saveFile(){const b=new Blob([JSON.stringify(LOG,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="projectwiki_study_result.json";a.click()}
+function survey(){
+ $("app").innerHTML=`<div class="page"><div class="paper"><h2>마지막 질문 ${SURVEY.length}개입니다</h2><p>답하고 제출하면 과제 기록과 함께 전송됩니다.</p>
+ ${SURVEY.map((x,i)=>qHtml(x,i+1)).join("")}
+ <div class="box"><div class="err" id="err"></div><button class="primary" id="send">제출하기</button></div></div></div>`;
+ $("app").oninput=$("app").onchange=()=>$("err").textContent="";
+ $("send").onclick=()=>{const r=qRead(SURVEY,1);if(r.err){$("err").textContent=r.err;return}LOG.steps.survey.answer=r.A;go(step+1)};
+}
+function end(){
+ $("app").innerHTML=`<div class="page"><div class="paper"><h2>참여해 주셔서 감사합니다</h2>
+ <p class="sent" id="sent">결과를 보내는 중입니다…</p>
+ <p class="hint" style="margin:0 0 20px">참고로, 과제 2에서 시스템이 제안한 연결 6개 중 일부는 비교를 위해 무작위로 고른 것이었습니다.</p>
+ <div class="box" id="optbox"><span class="lbl">선택</span><b>본인 연구 폴더로도 해 보시겠어요?</b>
+  <p class="hint" style="margin:4px 0 0">폴더를 보내 주시면 같은 도구로 그래프를 만들어 보통 하루 안에 이메일로 보내 드립니다. 따로 설치할 것은 없습니다.</p>
+  <div class="nextbox"><ol>
+   <li>파일 20~60개 정도인 폴더 하나를 zip으로 묶어 주세요. 논문, 코드, 노트가 섞여 있으면 좋습니다.</li>
+   <li>개인정보, 공개 전 데이터, 키나 비밀번호, 큰 데이터 파일은 빼 주세요.</li>
+   <li>아래 버튼으로 폼을 열고 zip 파일과 정리 목적 한 줄을 올려 주세요.</li></ol>
+   <p class="hint" style="margin:0 0 12px">파일은 분석을 위해 팀 서버와 Claude API(Anthropic)를 거치며, 스터디가 끝나면 모두 지웁니다.</p>
+   <div class="actions"><button class="primary" id="open">폴더 보내기 (구글 폼 열기)</button><button class="ghost" id="skip">하지 않고 마치기</button></div><div class="err" id="ferr"></div></div></div>
+ <div class="box" id="bye" hidden><b>모두 끝났습니다.</b><p class="hint" style="margin:4px 0 0">이제 이 창을 닫으셔도 됩니다. 시간 내 주셔서 감사합니다.</p></div></div></div>`;
+ const sent=$("sent"),send=()=>{sent.className="sent";sent.textContent="결과를 보내는 중입니다…";
+  sendResult().then(st=>{LOG.sent=st;
+   if(st=="ok"){sent.textContent="✓ 결과가 전송되었습니다.";sent.classList.add("ok");return}
+   sent.innerHTML=`결과를 보내지 못했습니다. 인터넷 연결을 확인하고 다시 보내 주세요. <button class="sm" id="retry">다시 보내기</button> <button class="sm ghost" id="save">파일로 저장</button>`;
+   $("retry").onclick=send;$("save").onclick=saveFile})};
+ send();
+ $("open").onclick=()=>{LOG.optIn=true;if(!FORMS.folder||!FORMS.folder.url){$("ferr").textContent="폼 주소가 설정되지 않았습니다. 연구진에게 알려 주세요.";return}window.open(formLink(FORMS.folder),"_blank")};
+ $("skip").onclick=()=>{$("optbox").hidden=true;$("bye").hidden=false};
+}
+/* leaving mid-study loses everything: ask first */
+addEventListener("beforeunload",e=>{if(step>0&&LOG.sent!="ok"){e.preventDefault();e.returnValue=""}});
+
+/* ---------------- workspace: same layout as the team viewer ---------------- */
+let W=null,net=null,nodes=null,edges=null,ro=null,POS=null;
+const UI={noExp:false,noInsp:false,bMin:false,closed:new Set()};
+/* practice: five steps, one at a time. After each action the card explains what just appeared. */
+const PSTEPS=[
+ {k:"group",do:"왼쪽 ‘그룹’ 목록에서 <b>데이터 및 코드북</b>을 눌러 보세요.",
+  why:"도구가 비슷한 파일끼리 묶은 것이 그룹입니다. 그래프에는 그룹이 사각형으로 표시되고, 오른쪽에는 그룹 설명과 안에 든 파일이 나옵니다. 점의 색이 같으면 같은 그룹입니다."},
+ {k:"file",do:"그래프에서 점 하나를 눌러 보세요. 예를 들면 <b>01_eda.ipynb</b>입니다. 왼쪽 ‘폴더’ 목록에서 파일 이름을 눌러도 됩니다.",
+  why:"오른쪽에 파일 요약, 이 파일과 이어진 파일 목록, 파일 내용이 차례로 나옵니다. 점의 모양은 파일 종류를 뜻합니다.",legend:true},
+ {k:"edge",do:"이번에는 선(연결)을 눌러 보세요. 그래프에서 누르기 어려우면 오른쪽 ‘연결’ 목록에서 하나를 눌러도 됩니다.",
+  why:"선은 두 파일이 어떻게 이어지는지 보여 줍니다. 오른쪽에 관계 설명과 근거 문장이 나옵니다. 실선은 파일 안에 상대 파일 이름이 직접 적힌 연결이고, 점선은 내용을 보고 추론한 연결입니다."},
+ {k:"cards",do:"그래프 위쪽의 <b>[그룹 카드]</b>를 눌러 보세요.",
+  why:"그룹별로 묶어 본 화면입니다. 카드 사이의 숫자는 두 그룹 사이의 연결 수입니다. <b>[2D]</b>를 누르면 그래프로 돌아갑니다."},
+ {k:"hide",do:"마지막으로 목적에 필요 없는 연결을 숨겨 봅니다. 지금 목적은 보고서 수치 확인이라서, 팀 회의록과 과제 명세를 잇는 연결은 필요 없습니다.<br>‘회의·피드백 노트’ 그룹의 <b>team_meeting.md</b>를 열고, 오른쪽 연결 목록에서 <b>project_spec.pdf</b>를 누른 다음 <b>[목적상 불필요]</b>를 눌러 주세요.",
+  why:"숨긴 연결은 그래프에서 빠집니다. 과제 2에서 이렇게 목적에 맞지 않는 연결을 숨기게 됩니다. 잘못 숨겼다면 오른쪽 ‘세션 피드백’의 [되돌리기]로 돌릴 수 있습니다."}];
+const SW=(s)=>`<svg width="26" height="18" viewBox="0 0 26 18">${s}</svg>`;
+const SHAPES=`<div class="shapes">
+ <span>${SW('<polygon points="13,2 20,9 13,16 6,9" fill="#b49af4"/>')}</span><span>마름모: 코드 (.py)</span>
+ <span>${SW('<circle cx="13" cy="9" r="6" fill="#83b6c9"/>')}</span><span>동그라미: 문서, 데이터</span>
+ <span>${SW('<rect x="7" y="3" width="12" height="12" fill="#8bbb9a"/>')}</span><span>네모: PDF</span>
+ <span>${SW('<polygon points="13,2 20,15 6,15" fill="#c7ad77"/>')}</span><span>세모: 노트북 (.ipynb)</span>
+ <span>${SW('<polygon points="13,1 15.5,7 22,7 17,11 19,17 13,13 7,17 9,11 4,7 10.5,7" fill="#ce92aa"/>')}</span><span>별: 그림</span></div>`;
+function workspace(id){
+ const s=ST[id],d=FD[s.proj];
+ W={id,s,d,sel:null,gsel:null,hidden:new Set(),conf:new Set(),fb:[],ghide:new Set(),opt:{inferred:true,labels:false,hidden:false},qi:0,ans:{},qt0:Date.now(),qopen:0,acc:{},todo:{},pstep:0,view:s.view||"tool",mode:"2d",seed:[],props:null,pi:0,stick:null,q:"",ct:null};
+ log("start");layoutWork();
+}
+const gcol=g=>{const n=W.d.groups[g]?W.d.groups[g][0]:"";return n.includes("관련 없음")?"#9aa0a6":PALETTE[g%PALETTE.length]};
+function groupOf(i){return W.d.groups.findIndex(g=>g[1].includes(i))}
+function layoutWork(){
+ const folder=W.view=="folder",tool=!folder;
+ $("app").innerHTML=`<div class="task" id="task"></div>
+ <div class="workspace ${folder?"folder":""} ${UI.noExp?"noexp":""} ${UI.noInsp&&tool?"noinsp":""} ${W.id=="practice"?"practice-b":""}" id="work" style="--dw:${UI.dw||"400px"}">
+  <nav class="ribbon"><button class="icon-button ${UI.noExp?"":"active"}" id="rExp" title="파일 탐색기 접기 / 펼치기">${ICON.folder}</button>
+   ${tool?`<button class="icon-button" id="rHome" title="전체 그래프">${ICON.graph}</button><button class="icon-button" id="rSearch" title="파일 검색">${ICON.search}</button>
+   <button class="icon-button bottom ${UI.noInsp?"":"active"}" id="rInsp" title="상세 패널 접기 / 펼치기">${ICON.insp}</button>`:`<button class="icon-button" id="rSearch" title="파일 검색">${ICON.search}</button>`}</nav>
+  <section class="explorer"><div class="pane-title">파일 탐색기 <span class="hint">${W.d.files.length}</span></div>
+   <div class="search-box"><input type="search" id="search" placeholder="파일 검색…"></div>
+   <div class="explorer-scroll" id="exs">${tool?`<div class="section-title" style="margin-top:6px">그룹</div><div id="legend"></div><div class="section-title">폴더</div>`:""}<div class="vault-name">${esc(W.d.name)}</div><div id="fileTree" class="file-tree"></div></div></section>
+  <main><div class="tabbar"><div class="tab" id="tab">${tool?ICON.graph+"그래프 뷰":`<span class="hint">열린 파일 없음</span>`}</div></div>
+   ${tool?`<div class="toolbar"><div class="breadcrumb">${esc(W.d.name)} / <strong>전체 그래프</strong></div><div class="tools">
+    <div class="view-mode" role="group" aria-label="그래프 보기"><button id="v2d" aria-pressed="true">2D</button><button id="vcard" aria-pressed="false">그룹 카드</button></div>
+    <details class="graph-options" id="gopt"><summary>표시 설정</summary><div class="options-panel">
+     <label><input type="checkbox" id="oInf" checked> 추론 연결</label><label><input type="checkbox" id="oLbl"> 관계 이름</label>
+     <label><input type="checkbox" id="oHid"> 숨긴 연결 <span class="hint" id="hidN"></span></label></div></details></div></div>`:""}
+   <div id="graphwrap">${folder?`<div id="viewer"><div class="empty-state"><div class="empty-symbol">⌘</div><h2 style="font-size:18px">파일을 골라 주세요</h2><p>왼쪽 파일 탐색기에서 파일을 누르면 이곳에 내용이 나옵니다.</p></div></div>`:
+    `<div id="net"></div><div id="groupgraph" hidden><div id="groupScene"><svg id="groupLinks"></svg><div id="groupCards"></div></div></div>
+    <div class="graph-caption"><strong>프로젝트의 연결 지도</strong><span id="graphStats"></span></div>
+    <div id="graphEmpty" class="graph-empty" hidden>표시 중인 파일이 없습니다.<br>왼쪽 그룹 목록에서 볼 그룹을 켜 주세요.</div>
+    <div class="graph-controls"><button id="zout" title="축소">−</button><button id="zin" title="확대">+</button><button id="zfit">전체 보기</button></div>`}
+    </div>
+   </main>
+  ${tool?`<div id="vsplit" title="끌어서 폭 조절"></div><aside class="inspector"><div class="pane-title">내용과 근거 <span class="hint">INSPECTOR</span></div><div class="inspector-scroll" id="iscroll"><div id="detail"></div><section class="feedback-section" id="fbsec"></section></div></aside>`:""}
+  <div id="bottom" class="${UI.bMin?"min":""}"><div class="bhead" id="bhead"><span class="lbl" id="btitle">할 일</span><span class="mini" id="bmini"></span><span class="fold">${UI.bMin?"펼치기":"접기"}</span></div><div id="sidebody"></div></div>
+ </div><footer><span id="meta"></span><span id="sessionStatus">탐색 준비 완료</span></footer>`;
+ $("bhead").onclick=()=>{UI.bMin=!UI.bMin;$("bottom").classList.toggle("min",UI.bMin);$("bhead").querySelector(".fold").textContent=UI.bMin?"펼치기":"접기";setTimeout(fitView,20)};
+ $("rExp").onclick=()=>{UI.noExp=!UI.noExp;$("work").classList.toggle("noexp",UI.noExp);$("rExp").classList.toggle("active",!UI.noExp);cardPad()};
+ addEventListener("resize",cardPad);
+ $("rSearch").onclick=()=>{if(UI.noExp)$("rExp").click();$("search").focus()};
+ $("search").oninput=()=>{W.q=$("search").value.trim().toLowerCase();tree();if(!nodes||W.view=="folder")return;
+  if(!W.q){stick(null);return}const hn=new Set(W.d.files.map((f,i)=>i).filter(i=>W.d.files[i].toLowerCase().includes(W.q)));stick({hn,he:new Set()});if(W.mode=="cards")renderCards()};
+ $("search").onchange=()=>W.q&&log("search",W.q);
+ if(tool){
+  $("rInsp").onclick=()=>{UI.noInsp=!UI.noInsp;$("work").classList.toggle("noinsp",UI.noInsp);$("rInsp").classList.toggle("active",!UI.noInsp)};
+  $("rHome").onclick=()=>{setMode("2d");if(!inReview())overview();fitView()};
+  $("v2d").onclick=()=>setMode("2d");$("vcard").onclick=()=>setMode("cards");
+  [["oInf","inferred"],["oLbl","labels"],["oHid","hidden"]].forEach(([id,k])=>$(id).onchange=()=>{W.opt[k]=$(id).checked;log("option",[k,W.opt[k]]);applyHidden()});
+  const vs=$("vsplit");
+  vs.onmousedown=ev=>{ev.preventDefault();vs.classList.add("drag");const r=$("work").getBoundingClientRect();
+   const mv=e=>{const w=Math.min(Math.max(r.right-e.clientX,300),r.width*.6);UI.dw=w+"px";$("work").style.setProperty("--dw",UI.dw)};
+   const up=()=>{vs.classList.remove("drag");removeEventListener("mousemove",mv);removeEventListener("mouseup",up)};
+   addEventListener("mousemove",mv);addEventListener("mouseup",up)};
+ }
+ task();tree();meta();
+ if(tool){legend();graph();overview();controls();renderFb();
+  ro=new ResizeObserver(()=>{if(net&&W.mode=="2d"){net.setSize("100%","100%");net.redraw()}});ro.observe($("graphwrap"))}
+ side();brief();
+}
+
+/* briefing before each task. The first task in a folder starts with a folder introduction page.
+   Questions stay hidden and the timer waits until [시작하기]. */
+const BRIEFS={
+ t1a:{k:"과제 1 · 앞부분",t:"파일 목록만 보고 답 찾기",p:"방금 본 폴더를 평소처럼 파일 탐색기로만 살펴봅니다. 다음 주 랩미팅 발표자라고 생각하고, 결과 슬라이드에 넣을 표와 그림의 출처를 찾아 주세요.",
+  li:["왼쪽 파일 탐색기에서 파일을 누르면 가운데에 내용이 나옵니다.","질문은 2개입니다. 보기를 누르면 다음 질문으로 넘어가고, [← 이전 질문]으로 돌아가 답을 바꿀 수 있습니다.","정답보다 평소에 찾는 방식 그대로가 중요합니다. 질문마다 걸린 시간과 연 파일 수를 기록합니다."]},
+ practice:{lead:"수고하셨습니다. 과제 1의 절반이 끝났습니다.",bridge:"이제 그래프 도구를 배워 볼 차례입니다. 과제와는 다른 작은 폴더로 연습합니다. 먼저 이 폴더를 소개하고, 이어서 따라 하는 방법을 안내해 드립니다.",k:"도구 연습",t:"그래프 도구 따라 해 보기",p:"이번에는 점수 없이 도구를 직접 만져 봅니다. 과제와 다른 작은 폴더로, 화면 아래 안내를 하나씩 따라 하시면 됩니다.",
+  li:["단계는 다섯 개입니다. 하나를 해 보면 지금 화면에 무엇이 나왔는지 설명이 이어집니다.","다섯 단계를 마치면 연습 문제 2개가 나옵니다. 틀려도 괜찮습니다. 정답과 찾는 방법을 알려 드립니다.","시간 제한은 없으니 천천히 익혀 주세요."],nostart:true},
+ t1b:{lead:"연습이 끝났습니다. 이제 도구를 쓸 수 있습니다.",bridge:"아까 파일 목록으로 살펴본 발표 준비 폴더로 돌아갑니다. 같은 상황에서, 이번에는 방금 익힌 도구로 질문 2개에 답합니다. 끝나면 앞부분과 비교해 어느 쪽이 편했는지 여쭤 봅니다.",k:"과제 1 · 뒷부분",t:"같은 폴더를 도구로 보며 답 찾기",p:"상황은 앞부분과 같습니다. 이번에는 방금 연습한 그래프 도구로 답을 찾아 주세요.",
+  li:["점과 선을 누르면 오른쪽에 요약, 연결, 근거가 나옵니다. 왼쪽 ‘그룹’ 목록이나 [그룹 카드]로 폴더 전체를 먼저 봐도 좋습니다.","두 번째 질문은 보기가 없습니다. 답이라고 생각하는 파일을 연 뒤 화면 아래 [‘파일’로 답하기]를 눌러 주세요.","앞부분처럼 [← 이전 질문]으로 돌아갈 수 있고, 걸린 시간을 기록합니다."]},
+ t2:{lead:"과제 1이 끝났습니다. 이제 마지막 과제입니다.",bridge:"같은 폴더를 이번에는 다른 목적으로 정리해 봅니다. 답을 찾는 대신, 목적에 필요 없는 연결을 숨기고 시스템이 더 숨기자고 한 연결이 맞는지 판단합니다.",k:"과제 2",t:"목적에 맞게 연결 정리하기",p:"같은 폴더를 이번에는 후배에게 실험 코드를 넘겨준다고 생각하고 정리합니다. 학습과 평가를 다시 돌리는 데 필요 없는 연결을 숨기면 그래프가 간결해집니다.",
+  li:["1단계: 필요 없어 보이는 연결 2개를 직접 골라 [목적상 불필요]로 숨깁니다.","2단계: 시스템이 연결 6개를 더 숨기자고 제안합니다. 하나씩 보고 동의할지 정해 주세요.","끝나면 정리 전과 후의 그래프를 나란히 비교합니다."]},
+};
+const SEEN=new Set();
+const ROAD=[["t1a","과제 1 앞부분","파일 목록만 보고 질문 2개에 답합니다"],["practice","도구 연습","작은 폴더로 도구를 따라 해 봅니다. 점수는 없습니다"],
+ ["t1b","과제 1 뒷부분","같은 폴더를 도구로 보고 질문 2개에 답합니다"],["t2","과제 2","같은 폴더를 다른 목적에 맞게 정리합니다"],["survey","마지막 질문","소감 몇 가지를 묻고 끝납니다"]];
+function road(cur,full){const c=ROAD.findIndex(r=>r[0]==cur);
+ return full?`<ol class="road full">${ROAD.map((r,i)=>`<li class="${i<c?"done":i==c?"now":""}"><span class="n">${i<c?"✓":i+1}</span><div><b>${r[1]}</b>${i==c?` <span class="nowtag">지금</span>`:""}<div class="hint">${r[2]}</div></div></li>`).join("")}</ol>`
+  :`<div class="road mini">${ROAD.map((r,i)=>`<span class="${i<c?"done":i==c?"now":""}">${i<c?"✓ ":""}${r[1]}</span>`).join("<em>›</em>")}</div>`}
+function overviewHtml(){
+ return `<div class="k">시작하기 전에</div><h2>이 스터디에서 하는 일</h2>
+  <p>연구를 하다 보면 폴더에 코드, 실험 결과, 그림, 논문 초안, 회의 메모가 계속 쌓입니다. 시간이 지나면 어떤 그림이 어떤 코드에서 나왔는지, 어느 메모가 어느 실험 이야기인지 헷갈리기 쉽습니다.</p>
+  <p><b>ProjectWiki</b>는 폴더 안의 파일을 읽고, 파일끼리 어떻게 이어지는지를 그래프로 보여 주는 도구입니다. 이 스터디는 그 도구가 실제로 <b>필요한 파일을 찾고</b>, <b>목적에 맞게 정리하는</b> 데 도움이 되는지 알아보려는 것입니다.</p>
+  <h4>전체 순서</h4>${road("t1a",true)}
+  <h4>단계마다 이렇게 진행됩니다</h4>
+  <div class="howto"><span><b>1</b>폴더 소개</span><em>→</em><span><b>2</b>할 일 안내</span><em>→</em><span><b>3</b>[시작하기]를 누르고 진행</span></div>
+  <p class="hint" style="margin:10px 0 0">안내를 읽는 동안에는 시간을 재지 않으니 천천히 읽어 주세요. 정답을 맞히는 시험이 아니므로, 평소에 하시던 대로 하시면 됩니다.</p>`}
+function introHtml(d){
+ const n=dir=>dir.split(", ").reduce((a,x)=>a+d.files.filter(f=>f==x||f.startsWith(x+"/")).length,0);
+ return `<div class="k">폴더 소개</div><h2 class="mono" style="font-size:19px">${esc(d.name)}</h2><p>${esc(d.intro.who)}</p>
+  <h4>폴더 구성</h4><div class="dirs">${d.intro.dirs.map(([p,t])=>`<div class="${/상관없/.test(t)?"off":""}"><b>${esc(p.includes(".")?p:p.split(", ").map(x=>x+"/").join(" "))}</b><span>${esc(t)}</span>${p.includes(".")?"":`<span class="hint">${n(p)}</span>`}</div>`).join("")}</div>
+  <h4>대략 이런 순서로 이어집니다</h4><div class="flow">${d.intro.flow.map(x=>`<span>${esc(x)}</span>`).join("<em>→</em>")}</div>
+  <p class="hint" style="margin:0">과제 중에도 화면 위쪽 [폴더 소개] 버튼으로 다시 볼 수 있습니다.</p>`;
+}
+function openIntro(){
+ if($("fintro"))return;log("intro");
+ const el=document.createElement("div");el.className="brief";el.id="fintro";
+ el.innerHTML=`<div class="card"><button class="ghost x" id="fx" title="닫기">×</button>${introHtml(W.d)}<div class="foot"><span></span><button class="primary" id="fclose">닫기</button></div></div>`;
+ document.body.appendChild(el);const close=()=>el.remove();$("fx").onclick=$("fclose").onclick=close;el.onclick=ev=>{if(ev.target==el)close()};
+}
+function brief(){
+ const b=BRIEFS[W.id];if(!b||W.briefed)return;
+ const first=!SEEN.has(W.s.proj);SEEN.add(W.s.proj);
+ const pages=[...(W.id=="t1a"?["over"]:[]),...(first?["intro"]:[]),"task"];
+ const el=document.createElement("div");el.className="brief";el.id="brief";document.body.appendChild(el);document.body.classList.add("briefing");
+ const dots=k=>pages.length>1?`<span class="pages">${pages.map((_,i)=>`<i class="${i==k?"on":""}"></i>`).join("")}</span>`:"<span></span>";
+ const NEXT={intro:"다음: 할 일 보기",over:"다음: 폴더 소개",task:"시작하기"},BACK={over:"← 처음 안내",intro:"← 폴더 소개"};
+ const page=k=>{const pg=pages[k],top=k==0&&b.lead?`<div class="bridge"><p class="lead">${b.lead}</p>${b.bridge?`<p>${b.bridge}</p>`:""}${road(W.id,false)}</div>`:"";
+  const body=pg=="over"?overviewHtml():pg=="intro"?introHtml(W.d):`<div class="k">${b.k}</div><h2>${b.t}</h2><p>${b.p}</p><ul>${b.li.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  const back=k>0?`<button class="ghost" id="bback">${BACK[pages[k-1]]}</button>`:pg=="task"?`<button class="ghost" id="bintro">폴더 소개 다시 보기</button>`:"";
+  el.innerHTML=`<div class="card">${top}${body}<div class="foot">${dots(k)}<div class="actions">${back}<button class="primary" id="${pg=="task"?"bgo":"bnext"}">${pg=="task"?"시작하기":NEXT[pg]}</button></div></div>
+   ${pg=="task"&&!b.nostart?`<p class="hint" style="margin:10px 0 0;text-align:right">[시작하기]를 누르면 시간을 재기 시작합니다.</p>`:""}</div>`;
+  el.querySelector(".card").scrollTop=0;
+  const nx=$("bnext");if(nx)nx.onclick=()=>page(k+1);const bk=$("bback");if(bk)bk.onclick=()=>page(k-1);const bi=$("bintro");if(bi)bi.onclick=openIntro;
+  const go=$("bgo");if(go)go.onclick=()=>{W.briefed=true;el.remove();document.body.classList.remove("briefing");setTimeout(()=>{cardPad();fitView()},30);
+   const st=LOG.steps[W.id];st.t0=Date.now();st.events=[];W.qt0=Date.now();W.qopen=0;log("start")}};
+ page(0);
+}
+function task(){
+ const {s,id}=W;
+ const sub={practice:"연습입니다. 점수와 시간 제한이 없습니다.",t1a:"이 단계에서는 파일 탐색기만 쓸 수 있습니다.",t1b:"같은 폴더를 이번에는 그래프 도구로 봅니다.",t2:"같은 폴더를 인수인계 목적에 맞게 정리합니다."}[id]||"";
+ $("task").innerHTML=`<span class="plbl">${id=="practice"?`<span class="tag">연습 · 점수 없음</span>`:""}<span class="pill">상황</span></span><div class="purpose">${esc(s.purpose)}</div><div class="inst">${sub}</div><button class="sm introbtn" id="introbtn">폴더 소개</button>`;
+ $("introbtn").onclick=openIntro;
+}
+function side(){setTimeout(cardPad,0);
+ const {id}=W;
+ if(id=="practice"){
+  const ps=PSTEPS[W.pstep];["group","file","edge","cards","hide"].forEach(k=>$("work").classList.toggle("guide-"+k,!!ps&&ps.k==k&&!W.todo[k]));
+  if(!ps){$("sidebody").innerHTML=`<div id="qbox"></div>`;quiz();return}
+  const done=!!W.todo[ps.k],last=W.pstep==PSTEPS.length-1;
+  $("btitle").textContent=`연습 ${W.pstep+1} / ${PSTEPS.length}`;$("bmini").textContent=done?"다음 단계로 넘어가 주세요":ps.do.replace(/<[^>]+>/g," ");
+  $("sidebody").innerHTML=`<div class="sidebox"><div class="pstep ${done?"done":""}"><span class="n">${done?"✓":W.pstep+1}</span><div class="b">
+   <div class="do">${ps.do}</div>${done?`<div class="why">${ps.why}</div>${ps.legend?SHAPES:""}`:""}
+   <div class="act">${W.pstep>0?`<button class="sm ghost" id="pprev">← 이전 단계</button>`:""}${done?`<button class="primary" id="pnext">${last?"연습 문제 풀기":"다음 단계"}</button>`:""}
+    <span class="pdots">${PSTEPS.map((x,k)=>`<i class="${k<W.pstep||(k==W.pstep&&done)?"ok":k==W.pstep?"now":""}"></i>`).join("")}</span></div></div></div></div>`;
+  const nx=$("pnext");if(nx)nx.onclick=()=>{W.pstep++;if(W.pstep>=PSTEPS.length){W.qt0=Date.now();W.qopen=0}side()};
+  const pv=$("pprev");if(pv)pv.onclick=()=>{W.pstep--;side()};
+  return}
+ if(id=="t1a"||id=="t1b"){$("sidebody").innerHTML=`<div id="qbox"></div>`;quiz();return}
+ if(id=="t2")side2();
+}
+/* questions. Going back to an earlier question is allowed; time and opened files add up per question. */
+function qleave(){const n=W.s.qs.length;if(W.qi<n){const a=W.acc[W.qi]||(W.acc[W.qi]={sec:0,opens:0});a.sec+=(Date.now()-W.qt0)/1000;a.opens+=W.qopen}W.qopen=0;W.qt0=Date.now()}
+function quiz(){
+ const box=$("qbox");if(!box)return;setTimeout(cardPad,0);
+ const qs=W.s.qs,i=W.qi,pr=W.id=="practice";
+ if(i>=qs.length){$("btitle").textContent=pr?"연습 문제":"질문 확인";$("bmini").textContent="";$("work").classList.remove("wantfile");
+  box.innerHTML=`<div class="qdone"><p>${pr?"연습을 모두 마쳤습니다. 다음은 과제 1 뒷부분입니다.":`질문 ${qs.length}개에 모두 답했습니다. 답을 바꾸려면 이전 질문으로 돌아가세요.`}</p>
+   <button class="sm ghost" id="qprev">← 이전 ${pr?"문제":"질문"}</button><button class="primary" id="qend">${pr?"연습 마치기":"다음 단계로"}</button></div>`;
+  $("qprev").onclick=()=>{W.qi=qs.length-1;W.qt0=Date.now();W.qopen=0;quiz()};$("qend").onclick=phaseDone;return}
+ const q=qs[i],a=W.ans[i],f=W.sel&&W.sel.k=="f"?W.sel.i:null,shown=pr&&a!=null;
+ $("btitle").textContent=pr?`연습 문제 ${i+1} / ${qs.length}`:`질문 ${i+1} / ${qs.length}`;$("bmini").textContent=q.q;
+ $("work").classList.toggle("wantfile",q.t=="file"&&f==null&&a==null);
+ let h=`<div class="qwrap"><div class="qline"><div class="qtext">${esc(q.q)}</div>${i>0?`<button class="sm ghost" id="qprev">← 이전 ${pr?"문제":"질문"}</button>`:""}</div>`;
+ if(q.t=="mc")h+=`<div class="opts ${q.o.every(o=>o.length<=24)?"four":""}">${q.o.map((o,j)=>`<button class="opt ${shown?(j===q.a?"right":j===a?"wrong":""):a===j?"on":""}" data-o="${j}" ${shown?"disabled":""}><span class="k">${"ABCD"[j]}</span><span class="ot" title="${esc(o)}">${esc(o)}</span></button>`).join("")}</div>`;
+ else if(shown)h+=`<div class="callout ${a===q.a?"ready":""}"><div class="big">고른 파일: ${esc(base(W.d.files[a]))}</div></div>`;
+ else if(a!=null)h+=`<div class="pickrow"><div class="callout ready"><div class="big">답: ${esc(base(W.d.files[a]))}</div><div class="sm">다른 파일로 바꾸려면 그 파일을 연 뒤 오른쪽 버튼을 누르세요.</div></div>
+   ${f!=null&&f!==a?`<button class="primary pickbtn" id="pick">‘${esc(base(W.d.files[f]))}’로 바꾸기</button>`:""}</div>`;
+ else if(f==null)h+=`<div class="callout"><div class="big">답이라고 생각하는 파일을 열어 주세요</div><div class="sm">이 질문에는 보기가 없습니다. ${W.view=="folder"?"왼쪽 파일 탐색기":"그래프의 점이나 왼쪽 파일 탐색기"}에서 파일을 열면 이곳에 답하기 버튼이 생깁니다.</div></div>`;
+ else h+=`<div class="pickrow"><div class="callout ready"><div class="big">지금 연 파일: ${esc(base(W.d.files[f]))}</div><div class="sm">이 파일이 답이면 오른쪽 버튼을 누르고, 아니면 다른 파일을 열어 보세요.</div></div>
+   <button class="primary pickbtn" id="pick">‘${esc(base(W.d.files[f]))}’로 답하기</button></div>`;
+ if(shown){const ok=a===q.a,right=q.t=="mc"?`${"ABCD"[q.a]} (${q.o[q.a]})`:base(W.d.files[q.a]);
+  h+=`<div class="qfb ${ok?"ok":"no"}"><b>${ok?"맞았습니다.":`정답은 ${esc(right)}입니다.`}</b> ${esc(q.hint||"")}
+   <div class="act">${ok?"":`<button class="sm" id="retry">다시 풀어 보기</button>`}<button class="sm primary" id="qnext">${i<qs.length-1?"다음 문제":"연습 마치기"}</button></div></div>`}
+ box.innerHTML=h+`</div>`;
+ const fo=box.querySelector(".opts.four");if(fo&&[...fo.querySelectorAll(".ot")].some(t=>t.scrollWidth>t.clientWidth))fo.classList.remove("four");
+ const answer=v=>{W.ans[i]=v;log("answer",[i,v]);if(pr){(W.tries||(W.tries={}))[i]=(W.tries[i]||0)+1;quiz();return}qleave();
+  const nx=qs.findIndex((_,j)=>W.ans[j]==null);W.qi=nx>=0?nx:qs.length;quiz()};
+ box.querySelectorAll(".opt[data-o]:not([disabled])").forEach(b=>b.onclick=()=>answer(+b.dataset.o));
+ const pk=$("pick");if(pk)pk.onclick=()=>answer(f);
+ const pv=$("qprev");if(pv)pv.onclick=()=>{qleave();W.qi--;quiz()};
+ const rt=$("retry");if(rt)rt.onclick=()=>{delete W.ans[i];quiz()};
+ const qn=$("qnext");if(qn)qn.onclick=()=>{qleave();if(i<qs.length-1){W.qi++;quiz()}else phaseDone()};
+}
+function phaseDone(){LOG.steps[W.id].quiz=W.s.qs.map((q,j)=>{const a=W.acc[j]||{};return Object.assign({q:q.q,answer:W.ans[j],ok:W.ans[j]===q.a,sec:Math.round(a.sec||0),opens:a.opens||0},W.tries?{tries:W.tries[j]||0}:{})});go(step+1)}
+function cardPad(){const b=$("bottom"),w=$("work");if(!b||!w)return;w.style.setProperty("--cardh",(b.offsetHeight+36)+"px");
+ const ex=w.querySelector(".explorer"),wr=w.getBoundingClientRect(),l=ex&&ex.offsetParent?ex.getBoundingClientRect().right-wr.left:46;w.style.setProperty("--cl",(l+16)+"px")}
+function refresh(){if(W.id=="practice"||W.id=="t2")side();else quiz()}
+
+/* explorer: real folder tree (as in the team viewer) + group list */
+function tree(){
+ const d=W.d,q=W.q,root={f:new Map(),files:[]},key=W.s.proj+":";
+ d.files.forEach((p,i)=>{if(q&&!p.toLowerCase().includes(q))return;const parts=p.split("/");parts.pop();let b=root;for(const x of parts){if(!b.f.has(x))b.f.set(x,{f:new Map(),files:[]});b=b.f.get(x)}b.files.push(i)});
+ const br=(b,pre)=>[...b.f.entries()].sort(([a],[c])=>a.localeCompare(c)).map(([n,ch])=>{const k=pre+n+"/";
+   return `<details data-k="${esc(k)}" ${q||!UI.closed.has(key+k)?"open":""}><summary>${esc(n)}</summary>${br(ch,k)}</details>`}).join("")
+  +b.files.sort((x,y)=>base(d.files[x]).localeCompare(base(d.files[y]))).map(i=>`<button class="file ${W.sel&&W.sel.k=="f"&&W.sel.i==i?"selected":""}" data-i="${i}" title="${esc(d.files[i])}">${fileIcon(d.files[i])}<span>${esc(base(d.files[i]))}</span></button>`).join("");
+ const sc=$("exs").scrollTop;
+ $("fileTree").innerHTML=br(root,"")||`<p class="hint" style="padding:0 8px">일치하는 파일이 없습니다.</p>`;$("exs").scrollTop=sc;
+ $("fileTree").querySelectorAll("details").forEach(el=>el.querySelector("summary").onclick=ev=>{ev.preventDefault();el.open=!el.open;const k=key+el.dataset.k;if(el.open)UI.closed.delete(k);else UI.closed.add(k)});
+ $("fileTree").querySelectorAll(".file").forEach(b=>{const i=+b.dataset.i;b.onclick=()=>{openFile(i);reveal(i)};if(W.view!="folder"){b.onmouseenter=()=>focus(i);b.onmouseleave=()=>restyle()}});
+}
+function legend(){
+ const d=W.d;if(!$("legend"))return;
+ $("legend").innerHTML=d.groups.map(([n,m],g)=>`<div class="group-row ${W.ghide.has(g)?"off":""}"><button class="item ${W.gsel===g?"on":""}" data-g="${g}" title="${esc(d.gdesc[g])}"><span class="dot" style="background:${gcol(g)}"></span>${esc(n)} <span class="hint">${m.length}</span></button>
+  <button class="visibility-switch" role="switch" aria-checked="${!W.ghide.has(g)}" data-sw="${g}" title="그래프에 표시 / 숨기기" aria-label="${esc(n)} 그룹 표시"></button></div>`).join("");
+ $("legend").querySelectorAll(".item").forEach(b=>{const g=+b.dataset.g;b.onclick=()=>openGroup(g);b.onmouseenter=()=>focusG(g);b.onmouseleave=()=>{W.ghov=null;restyle();net&&net.redraw()}});
+ $("legend").querySelectorAll("[data-sw]").forEach(b=>{const g=+b.dataset.sw;b.onclick=()=>{if(W.ghide.has(g))W.ghide.delete(g);else W.ghide.add(g);log("groupvis",[g,!W.ghide.has(g)]);legend();applyHidden()}});
+}
+function revealPt(p){const c=net.canvasToDOM(p),el=$("net"),b=$("bottom"),r=el.getBoundingClientRect();const lim=b?Math.min(el.clientHeight,b.getBoundingClientRect().top-r.top):el.clientHeight;
+ if(c.x>60&&c.x<el.clientWidth-60&&c.y>80&&c.y<lim-40)return;const v=net.getViewPosition(),sc=net.getScale();net.moveTo({position:{x:v.x+(c.x-el.clientWidth/2)/sc,y:v.y+(c.y-Math.min(el.clientHeight/2,lim/2+30))/sc},animation:{duration:350,easingFunction:"easeInOutQuad"}})}
+function reveal(i){if(!net||W.mode!="2d"||W.ghide.has(groupOf(i)))return;const p=net.getPosition(i),c=net.canvasToDOM(p),el=$("net"),b=$("bottom"),r=el.getBoundingClientRect();
+ const lim=b?Math.min(el.clientHeight,b.getBoundingClientRect().top-r.top):el.clientHeight;
+ if(c.x>40&&c.x<el.clientWidth-40&&c.y>70&&c.y<lim-30)return;net.moveTo({position:p,animation:{duration:350,easingFunction:"easeInOutQuad"}})}
+function meta(){const n=W.d.edges.length-(W.hidden?W.hidden.size:0);$("meta").textContent=`${W.d.name} · 파일 ${W.d.files.length} · 연결 ${n}`}
+
+/* graph: team-viewer node/edge style, fixed seed so every participant sees the same layout */
+function degree(){const dg={};W.d.edges.forEach((e,j)=>{if(W.hidden.has(j))return;dg[e.a]=(dg[e.a]||0)+1;dg[e.b]=(dg[e.b]||0)+1});return dg}
+function nodeView(i,hot,dg,soft){const c=gcol(groupOf(i)),dim=hot===false,cc=dim?mix(c,C.bg,soft?.5:.72):c,f=W.d.files[i];
+ const lbl=W.d.files.length<=20||hot===true||(dg[i]||0)>=3||W.zoomLbl;
+ return {shape:SHAPE[ext(f)]||"dot",size:6+Math.min(10,dg[i]||0),
+  color:{background:cc,border:hot?C.text:cc,highlight:{background:c,border:C.text},hover:{background:c,border:C.text}},borderWidth:hot?2:1,
+  font:lbl?{color:dim?(soft?"#8a8a8a":"#5c5c5c"):C.text,size:15,strokeWidth:4,strokeColor:C.bg}:{color:"rgba(0,0,0,0)",size:15,strokeWidth:0}}}
+function edgeView(j,hot,soft){const e=W.d.edges[j],cf=W.conf&&W.conf.has(j),col=hot?C.accent:hot===false?(soft?"#38363c":C.dim):cf?C.accent:(e.direct?C.direct:C.inferred);
+ return {color:{color:col,highlight:C.accent,hover:C.accent},width:hot||cf?2.8:1.8,dashes:e.direct?false:[5,5],label:W.opt&&W.opt.labels?e.rel:"",
+  font:{size:10,color:C.muted,strokeWidth:3,strokeColor:C.bg,align:"middle"},
+  arrows:{to:{enabled:e.d==1,scaleFactor:.5},from:{enabled:e.d==-1,scaleFactor:.5}}}}
+function graph(){
+ const d=W.d,dg=degree();
+ nodes=new vis.DataSet(d.files.map((f,i)=>Object.assign({id:i,label:base(f),title:f+" · "+d.sum[i]},nodeView(i,undefined,dg),POS&&W.id=="t2"&&POS[i]?{x:POS[i].x,y:POS[i].y}:{})));
+ edges=new vis.DataSet(d.edges.map((e,j)=>Object.assign({id:j,from:e.a,to:e.b,hidden:W.hidden.has(j)},edgeView(j))));
+ d.groups.forEach(([n,m],g)=>m.forEach((a,x)=>m.slice(x+1).forEach(b=>edges.add({id:`g${a}_${b}`,from:a,to:b,hidden:true,length:90}))));
+ if(net)net.destroy();
+ net=new vis.Network($("net"),{nodes,edges},{layout:{randomSeed:7},
+  interaction:{hover:true,tooltipDelay:150,selectConnectedEdges:false,hoverConnectedEdges:false},
+  /* the team viewer uses gravity -6000 / spring 170; the study panel is smaller, so the layout is pulled in to keep labels readable */
+  physics:{solver:"barnesHut",barnesHut:{gravitationalConstant:-2600,centralGravity:1.1,springLength:100,springConstant:.05,avoidOverlap:1},stabilization:{iterations:600}},
+  nodes:{scaling:{label:{drawThreshold:3}}},
+  edges:{smooth:{type:"continuous"},selectionWidth:1,hoverWidth:1}});
+ const EP=Object.getPrototypeOf(Object.values(net.body.edges)[0]||{});
+ if(EP&&EP.isOverlappingWith&&!EP._wide){EP._wide=1;EP.isOverlappingWith=function(g){if(!this.connected)return false;
+  return this.edgeType.getDistanceToEdge(this.from.x,this.from.y,this.to.x,this.to.y,g.left,g.top)<Math.max(10,9/(net?net.getScale():1))}}
+ net.once("stabilizationIterationsDone",()=>{net.setOptions({physics:false});spread();W.pos=net.getPositions();fitView()});
+ net.on("beforeDrawing",ctx=>{[[W.ghov,.45],[W.gsel,1]].forEach(([g,a])=>{if(g==null||g<0||W.ghide.has(g))return;
+  const m=W.d.groups[g][1],P=net.getPositions(m),lw=i=>(W.lw&&W.lw[i]||100)/2;
+  const x1=Math.min(...m.map(i=>P[i].x-lw(i)))-14,x2=Math.max(...m.map(i=>P[i].x+lw(i)))+14,y1=Math.min(...m.map(i=>P[i].y))-38,y2=Math.max(...m.map(i=>P[i].y))+34;
+  const c=gcol(g),rgb=[1,3,5].map(k=>parseInt(c.slice(k,k+2),16)).join(",");
+  ctx.save();ctx.fillStyle=`rgba(${rgb},${.07*a})`;ctx.strokeStyle=`rgba(${rgb},${.85*a})`;ctx.lineWidth=1.5/Math.max(.5,net.getScale());ctx.setLineDash(a<1?[6,5]:[]);
+  ctx.beginPath();ctx.roundRect(x1,y1,x2-x1,y2-y1,12);ctx.fill();ctx.stroke();
+  ctx.setLineDash([]);ctx.fillStyle=`rgba(${rgb},${a})`;ctx.font=`600 ${Math.round(13/Math.max(.5,net.getScale()))}px Segoe UI, Malgun Gothic, sans-serif`;ctx.fillText(W.d.groups[g][0],x1+10,y1-8);ctx.restore()})});
+ net.on("zoom",()=>{const z=net.getScale()>1.3;if(z!=!!W.zoomLbl){W.zoomLbl=z;restyle()}});
+ net.on("hoverNode",p=>focus(p.node));net.on("blurNode",()=>restyle());
+ net.on("hoverEdge",p=>focusE(p.edge));net.on("blurEdge",()=>restyle());
+ /* clicks pick the link nearest to the pointer (vis would take whichever overlapping link it meets first) */
+ const nearest=pt=>{let best=null,bd=Infinity;Object.entries(net.body.edges).forEach(([id,E])=>{if(!E.connected||E.options.hidden)return;
+  const d=E.edgeType.getDistanceToEdge(E.from.x,E.from.y,E.to.x,E.to.y,pt.x,pt.y);if(d<bd){bd=d;best=+id}});return bd<Math.max(10,9/net.getScale())?best:null};
+ net.on("click",p=>{if(p.nodes.length){openFile(p.nodes[0]);return}const j=nearest(p.pointer.canvas);if(j!=null)openEdge(j)});
+ stats();floating();
+}
+/* the panel is wide and short: stretch the settled layout sideways, then push apart labels that still overlap */
+function spread(){
+ const P=net.getPositions(),ids=Object.keys(P).map(Number),ctx=document.createElement("canvas").getContext("2d");ctx.font="15px Segoe UI";
+ const q=ids.map(i=>({i,x:P[i].x*1.7,y:P[i].y*.9,w:ctx.measureText(base(W.d.files[i])).width+8}));
+ for(let it=0;it<40;it++){let moved=false;
+  for(let a=0;a<q.length;a++)for(let b=a+1;b<q.length;b++){const A=q[a],B=q[b],ox=(A.w+B.w)/2-Math.abs(A.x-B.x),oy=30-Math.abs(A.y-B.y);
+   if(ox>0&&oy>0){moved=true;const d=Math.min(ox,oy)/2+1;if(oy<ox){const s=A.y<=B.y?-1:1;A.y+=s*d;B.y-=s*d}else{const s=A.x<=B.x?-1:1;A.x+=s*d;B.x-=s*d}}}
+  if(!moved)break}
+ nodes.update(q.map(o=>({id:o.i,x:o.x,y:o.y})));W.lw=Object.fromEntries(q.map(o=>[o.i,o.w]));
+}
+/* fit including label widths (vis only fits the node shapes, so long names at the edge got cut off) */
+function fitView(){if(W&&W.mode=="cards"){fitCards();return}if(!net)return;
+ const P=net.getPositions(),ids=Object.keys(P).map(Number).filter(i=>!W.ghide.has(groupOf(i)));if(!ids.length)return;
+ const lw=i=>(W.lw&&W.lw[i]||120)/2;
+ const x1=Math.min(...ids.map(i=>P[i].x-lw(i))),x2=Math.max(...ids.map(i=>P[i].x+lw(i))),y1=Math.min(...ids.map(i=>P[i].y-16)),y2=Math.max(...ids.map(i=>P[i].y+30));
+ const el=$("net"),pad=28,top=64,bot=Math.max(0,($("bottom")?el.getBoundingClientRect().bottom-$("bottom").getBoundingClientRect().top+12:0))+pad,h=el.clientHeight,sc=Math.min(1.1,(el.clientWidth-2*pad)/(x2-x1),(h-top-bot)/(y2-y1));
+ net.moveTo({scale:sc,position:{x:(x1+x2)/2,y:(y1+y2)/2-((top+(h-top-bot)/2)-h/2)/sc}})}
+function controls(){
+ const z=f=>{if(W.mode=="cards"){zoomCards(f);return}net.moveTo({scale:net.getScale()*f,position:net.getViewPosition()})};
+ $("zin").onclick=()=>z(1.25);$("zout").onclick=()=>z(.8);$("zfit").onclick=fitView;
+}
+function setMode(m){if(W.mode==m)return;W.mode=m;log("view",m);if(m=="cards"&&!W.todo.cards){W.todo.cards=true;if(W.id=="practice")setTimeout(side,0)}$("v2d").setAttribute("aria-pressed",m=="2d");$("vcard").setAttribute("aria-pressed",m=="cards");
+ $("net").hidden=m!="2d";$("groupgraph").hidden=m!="cards";
+ if(m=="cards"){renderCards();fitCards()}else{net.setSize("100%","100%");net.redraw();restyle()}}
+function stats(){if(!$("graphStats"))return;$("graphStats").textContent=`파일 ${W.d.files.length}개 · 표시된 연결 ${W.d.edges.length-W.hidden.size}개`}
+function floating(){if($("hidN"))$("hidN").textContent=W.hidden.size?`(${W.hidden.size})`:""}
+function applyHidden(){restyle();stats();floating();meta();if(W.mode=="cards")renderCards()}
+function neighbours(i){const hn=new Set([i]),he=new Set();W.d.edges.forEach((e,j)=>{if(W.hidden.has(j))return;if(e.a==i||e.b==i){he.add(j);hn.add(e.a);hn.add(e.b)}});return {hn,he}}
+function groupSet(g){const hn=new Set(W.d.groups[g][1]),he=new Set();W.d.edges.forEach((e,j)=>{if(!W.hidden.has(j)&&hn.has(e.a)&&hn.has(e.b))he.add(j)});return {hn,he}}
+function focus(i){document.querySelectorAll("#fileTree .file").forEach(b=>b.classList.toggle("hov",+b.dataset.i===i));const s=neighbours(i);restyle(s.hn,s.he)}
+function focusE(j){const e=W.d.edges[j];restyle(new Set([e.a,e.b]),new Set([j]))}
+function focusG(g){const s=groupSet(g);W.ghov=g;restyle(s.hn,s.he);if(net)net.redraw()}
+function restyle(hn,he){if(!nodes||W.view=="folder")return;if(!hn)document.querySelectorAll("#fileTree .file.hov").forEach(b=>b.classList.remove("hov"));
+ const s=hn?{hn,he}:W.stick,soft=!hn,dg=degree();
+ nodes.update(W.d.files.map((f,i)=>Object.assign({id:i,hidden:W.ghide.has(groupOf(i))},nodeView(i,s?s.hn.has(i):undefined,dg,soft))));
+ edges.update(W.d.edges.map((e,j)=>W.hidden.has(j)?Object.assign({id:j,hidden:!W.opt.hidden},edgeView(j),{color:{color:C.bad,highlight:C.bad,hover:C.bad},dashes:[2,4],width:1.4}):
+  Object.assign({id:j,hidden:!e.direct&&!W.opt.inferred},edgeView(j,s?s.he.has(j):undefined,soft))));
+ if($("graphEmpty"))$("graphEmpty").hidden=W.ghide.size<W.d.groups.length;
+ if(inReview())markProp()}
+function stick(s){W.stick=s;restyle()}
+function showInsp(){if(UI.noInsp&&$("rInsp")){UI.noInsp=false;$("work").classList.remove("noinsp");$("rInsp").classList.add("active")}}
+document.addEventListener("keydown",ev=>{if(!W||!$("search"))return;
+ if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()=="k"){ev.preventDefault();$("rSearch").click()}
+ if(ev.key=="Escape"){const fi=$("fintro");if(fi){fi.remove();return}const o=$("gopt");if(o&&o.open){o.open=false;return}if(document.activeElement==$("search")&&W.q){$("search").value="";$("search").oninput();return}if($("detail")&&!inReview()&&!document.getElementById("brief"))overview()}});
+const inReview=()=>!!(W.props&&W.props.some(p=>p.accept==null));
+
+/* group-card view (same idea as the team viewer's 그룹 카드) */
+function renderCards(){
+ const d=W.d,cards=d.groups.map(([n,m],g)=>({g,n,m,int:0,ext:0})),links={};
+ d.edges.forEach((e,j)=>{if(W.hidden.has(j))return;const a=groupOf(e.a),b=groupOf(e.b);if(a==b)cards[a].int++;else{cards[a].ext++;cards[b].ext++;const k=a<b?a+"-"+b:b+"-"+a;links[k]=(links[k]||0)+1}});
+ const order=cards.filter(c=>!W.ghide.has(c.g)).sort((x,y)=>y.ext-x.ext||x.n.localeCompare(y.n));
+ Object.keys(links).forEach(k=>{const [a,b]=k.split("-").map(Number);if(W.ghide.has(a)||W.ghide.has(b))delete links[k]});
+ const want=W.stick?W.stick.hn:null;
+ $("groupCards").innerHTML=order.map(c=>`<section class="group-card ${W.gsel===c.g?"on":want&&c.m.some(i=>want.has(i))?"focused":""}" data-g="${c.g}" style="--gc:${gcol(c.g)}">
+  <div class="group-card-header"><div class="group-card-title"><span class="dot"></span>${esc(c.n)} <span class="hint">(${c.m.length})</span></div><span class="hint">내부 연결 ${c.int}개 · 외부 연결 ${c.ext}개</span></div>
+  <div class="group-card-items">${c.m.slice().sort((x,y)=>base(d.files[x]).localeCompare(base(d.files[y]))).map(i=>`<button class="card-file ${(W.sel&&W.sel.k=="f"&&W.sel.i==i)||(W.q&&want&&want.has(i))?"selected":""}" data-i="${i}" title="${esc(d.files[i])}"><span class="badge-ext">${esc((ext(d.files[i])||"file").toUpperCase().slice(0,5))}</span><span>${esc(base(d.files[i]))}</span></button>`).join("")}</div></section>`).join("");
+ const box={},bottoms=[0,0];
+ $("groupCards").querySelectorAll(".group-card").forEach(el=>{const g=+el.dataset.g,col=bottoms.indexOf(Math.min(...bottoms));
+  const b={x:col*380,y:bottoms[col],w:270,h:el.offsetHeight};box[g]=b;el.style.left=b.x+"px";el.style.top=b.y+"px";bottoms[col]+=b.h+40});
+ W.cardBox={w:650,h:Math.max(1,...bottoms)};
+ const mx=Math.max(1,...Object.values(links));
+ $("groupLinks").setAttribute("width",W.cardBox.w);$("groupLinks").setAttribute("height",W.cardBox.h);
+ $("groupLinks").innerHTML=Object.entries(links).map(([k,cnt],i)=>{const [ga,gb]=k.split("-").map(Number),a=box[ga],b=box[gb],same=a.x===b.x;
+  const L=a.x<=b.x?a:b,R=L===a?b:a,sx=L.x+L.w,sy=L.y+L.h/2,tx=same?R.x+R.w:R.x,ty=R.y+R.h/2,bend=same?45+(i%4)*16:50,c1=sx+bend,c2=same?tx+bend:tx-bend;
+  const lx=(sx+3*c1+3*c2+tx)/8,ly=(sy+ty)/2,lw=Math.max(26,String(cnt).length*9+16),path=`M${sx},${sy} C${c1},${sy} ${c2},${ty} ${tx},${ty}`;
+  return `<g class="group-connection ${W.link==k?"on":""}" data-k="${k}"><path class="cl" stroke-width="${1.5+4*Math.sqrt(cnt/mx)}" d="${path}"/><path class="ch" d="${path}"/>
+   <rect x="${lx-lw/2}" y="${ly-11}" width="${lw}" height="22" rx="9"/><text x="${lx}" y="${ly}">${cnt}</text></g>`}).join("");
+ $("groupCards").querySelectorAll(".group-card-header").forEach(h=>{const g=+h.parentNode.dataset.g;h.onclick=()=>openGroup(g)});
+ $("groupCards").querySelectorAll(".card-file").forEach(b=>b.onclick=()=>openFile(+b.dataset.i));
+ $("groupLinks").querySelectorAll(".group-connection").forEach(x=>x.onclick=()=>openLink(x.dataset.k));
+ bindPan();
+}
+function applyCT(){const t=W.ct;$("groupScene").style.transform=`translate(${t.x}px,${t.y}px) scale(${t.k})`}
+function fitCards(){const el=$("groupgraph"),b=W.cardBox;if(!el||!b)return;const k=Math.max(.85,Math.min(1,(el.clientWidth-60)/b.w,(el.clientHeight-100)/b.h));
+ W.ct={k,x:(el.clientWidth-b.w*k)/2,y:80};applyCT()}
+function zoomCards(f,cx,cy){const el=$("groupgraph"),t=W.ct;cx=cx??el.clientWidth/2;cy=cy??el.clientHeight/2;const k=Math.min(2.5,Math.max(.3,t.k*f));
+ t.x=cx-(cx-t.x)*k/t.k;t.y=cy-(cy-t.y)*k/t.k;t.k=k;applyCT()}
+function bindPan(){const el=$("groupgraph");if(el.dataset.b)return;el.dataset.b=1;
+ el.addEventListener("wheel",ev=>{if(ev.target.closest(".group-card-items")&&!ev.ctrlKey)return;ev.preventDefault();const r=el.getBoundingClientRect();zoomCards(ev.deltaY<0?1.12:.89,ev.clientX-r.left,ev.clientY-r.top)},{passive:false});
+ el.addEventListener("mousedown",ev=>{if(ev.target.closest(".group-card,.group-connection"))return;ev.preventDefault();el.classList.add("drag");const sx=ev.clientX-W.ct.x,sy=ev.clientY-W.ct.y;
+  const mv=e=>{W.ct.x=e.clientX-sx;W.ct.y=e.clientY-sy;applyCT()},up=()=>{el.classList.remove("drag");removeEventListener("mousemove",mv);removeEventListener("mouseup",up)};
+  addEventListener("mousemove",mv);addEventListener("mouseup",up)})}
+
+/* inspector */
+function backHtml(){return `<a class="back" id="back">${inReview()?"‹ 제안 판단으로 돌아가기":"‹ 처음 화면"}</a>`}
+function bind(){const b=$("back");if(b)b.onclick=()=>inReview()?showReview():overview();
+ $("detail").querySelectorAll("[data-g]").forEach(x=>{const g=+x.dataset.g;x.onclick=()=>openGroup(g);x.onmouseenter=()=>focusG(g);x.onmouseleave=()=>restyle()});
+ $("detail").querySelectorAll("[data-f]").forEach(x=>{const i=+x.dataset.f;x.onclick=()=>openFile(i);x.onmouseenter=()=>focus(i);x.onmouseleave=()=>restyle()});
+ $("detail").querySelectorAll("[data-e]").forEach(x=>{const j=+x.dataset.e;x.onclick=()=>openEdge(j);x.onmouseenter=()=>focusE(j);x.onmouseleave=()=>restyle()})}
+function fileLink(i,extra){return `<button class="edge-link" data-f="${i}">${fileIcon(W.d.files[i])}<span>${esc(base(W.d.files[i]))}${extra?` <span class="hint">· ${esc(extra)}</span>`:""}</span></button>`}
+function arrow(e,i){return e.d==0?"↔":(e.d==1)===(e.a==i)?"→":"←"}
+function overview(){
+ W.gsel=null;W.link=null;stick(null);legend();if(net)net.redraw();if(W.mode=="cards")renderCards();if(net)net.unselectAll();
+ $("detail").innerHTML=`<div class="empty-state"><div class="empty-symbol" aria-hidden="true">⌘</div><h2>점이나 선을 눌러 보세요</h2>
+  <p>점(파일)을 누르면 요약과 내용이, 선(연결)을 누르면 두 파일의 관계와 근거가 이곳에 나옵니다.</p><p class="hint">왼쪽 ‘그룹’ 목록을 누르면 그룹 설명이 나옵니다.</p></div>`;
+}
+function openGroup(g){
+ const d=W.d,[n,m]=d.groups[g];showInsp();W.ghov=null;setTimeout(()=>net&&net.redraw(),0);W.gsel=g;W.link=null;W.todo.group=true;log("group",g);stick(groupSet(g));legend();if(W.mode=="cards")renderCards();
+ const cnt={};d.edges.forEach((e,j)=>{if(W.hidden.has(j))return;const ga=groupOf(e.a),gb=groupOf(e.b);if(ga==g&&gb!=g)cnt[gb]=(cnt[gb]||0)+1;if(gb==g&&ga!=g)cnt[ga]=(cnt[ga]||0)+1});
+ $("detail").innerHTML=backHtml()+`<h2>${esc(n)}</h2><div class="row"><span class="badge" style="background:${gcol(g)};color:#fff">그룹</span><span class="badge">파일 ${m.length}개</span></div>
+  <div>${esc(d.gdesc[g])}</div>
+  <h3>안에 있는 파일</h3>${m.map(i=>fileLink(i,d.sum[i])).join("")}
+  <h3>다른 그룹과의 연결</h3>${Object.keys(cnt).length?Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(([og,c])=>`<button class="edge-link" data-g="${og}"><span class="dot" style="background:${gcol(+og)};align-self:center"></span><span>${esc(d.groups[og][0])} <span class="hint">· 연결 ${c}개</span></span></button>`).join(""):`<p class="hint">다른 그룹과 이어진 연결이 없습니다.</p>`}`;
+ bind();$("iscroll").scrollTop=0;if(net)net.selectNodes(m);refresh();
+}
+function openLink(k){
+ const d=W.d,[ga,gb]=k.split("-").map(Number);W.link=k;log("grouplink",k);renderCards();
+ const es=d.edges.map((e,j)=>[e,j]).filter(([e,j])=>!W.hidden.has(j)&&((groupOf(e.a)==ga&&groupOf(e.b)==gb)||(groupOf(e.a)==gb&&groupOf(e.b)==ga)));
+ $("detail").innerHTML=backHtml()+`<h2>${esc(d.groups[ga][0])} ↔ ${esc(d.groups[gb][0])}</h2><div class="row"><span class="badge">그룹 사이 연결 ${es.length}개</span></div>
+  <h3>연결</h3>${es.map(([e,j])=>`<button class="edge-link" data-e="${j}"><span>${esc(e.s.split(":")[0])} <span class="hint">· ${esc(e.rel)}${e.direct?"":" (추론)"}</span></span></button>`).join("")}`;
+ bind();$("iscroll").scrollTop=0;
+}
+function openFile(i){
+ W.sel={k:"f",i};log("open",i);W.qopen++;W.todo.file=true;tree();
+ const d=W.d,c=d.content[i];
+ if(W.view=="folder"){$("tab").innerHTML=fileIcon(d.files[i])+esc(base(d.files[i]));
+  $("viewer").innerHTML=`<h2>${esc(base(d.files[i]))}</h2><div class="path" style="margin-bottom:16px">${esc(d.files[i])}</div>`+contentHtml(c);mountPdf($("viewer"),c);$("viewer").scrollTop=0}
+ else{showInsp();const es=d.edges.map((e,j)=>[e,j]).filter(([e,j])=>(e.a==i||e.b==i)&&!W.hidden.has(j));const g=groupOf(i);
+  W.gsel=null;W.link=null;stick(neighbours(i));legend();if(W.mode=="cards")renderCards();
+  $("detail").innerHTML=backHtml()+`<h2>${esc(base(d.files[i]))}</h2><div class="path">${esc(d.files[i])}</div>
+   <div class="row"><span class="badge">${esc((ext(d.files[i])||"file").toUpperCase())}</span><span class="badge" style="background:${gcol(g)};color:#fff;cursor:pointer" data-g="${g}">${esc(d.groups[g][0])}</span></div>
+   <h3>요약</h3><div>${esc(d.sum[i])}</div>
+   <h3>연결 ${es.length}개</h3>${es.map(([e,j])=>{const o=e.a==i?e.b:e.a;return `<button class="edge-link" data-e="${j}"><span>${arrow(e,i)} ${esc(base(d.files[o]))} <span class="hint">· ${esc(e.rel)}${e.direct?"":" (추론)"}</span></span></button>`}).join("")||`<p class="hint">이어진 파일이 없습니다.</p>`}
+   <h3>내용</h3>${contentHtml(c)}`;
+  mountPdf($("detail"),c);bind();$("iscroll").scrollTop=0;net.selectNodes([i])}
+ refresh();
+}
+function edgeHtml(j){
+ const d=W.d,e=d.edges[j];
+ return `<h2>${esc(e.s.split(":")[0])}</h2><div class="path">${esc(d.files[e.a])}<br>${e.d==0?"↔":"→"} ${esc(d.files[e.b])}</div>
+  <div class="row"><span class="badge">${esc(e.rel)}</span><span class="badge ${e.direct?"direct":""}">${e.direct?"직접 근거":"추론"}</span>${W.hidden.has(j)?`<span class="badge removed">숨긴 연결</span>`:""}${W.conf.has(j)?`<span class="badge user">맞는 연결로 표시함</span>`:""}</div>
+  ${W._act||""}<h3>관계 설명</h3><p class="explain">${esc(e.x||"설명이 없습니다.")}</p>
+  <p class="hint" style="margin:6px 0 0">${e.direct?"파일 안에 상대 파일의 이름이나 경로가 직접 적혀 있습니다.":"파일에 직접 적혀 있지는 않으며, 내용으로 추론한 연결입니다."}</p>
+  ${e.ev?`<h3>근거</h3><div class="path">${esc(base(e.evf))}에 적힌 부분</div><blockquote>${esc(e.ev.length>360?e.ev.slice(0,360)+" …":e.ev)}</blockquote>`:""}
+  <h3>이어진 두 파일</h3>${fileLink(e.a,d.sum[e.a])}${fileLink(e.b,d.sum[e.b])}`;
+}
+function openEdge(j){
+ if(inReview()&&W.props.some(p=>p.e==j&&p.accept==null)){W.pi=W.props.findIndex(p=>p.e==j);showReview();return}
+ const e=W.d.edges[j];showInsp();W.sel={k:"e",i:j};log("edge",j);W.todo.edge=true;W.gsel=null;W.link=null;stick({hn:new Set([e.a,e.b]),he:new Set([j])});legend();
+ let act="";
+ const canFix=W.id=="practice"||(W.id=="t2"&&!W.props);
+ if(canFix)act=`<div class="fixbox"><div class="fixh">연결 교정</div>${W.hidden.has(j)?`<p class="hint" style="margin:0">숨긴 연결입니다. 아래 ‘세션 피드백’의 [되돌리기]로 다시 보이게 할 수 있습니다.</p>`:`<div class="row" style="margin:6px 0">
+   <button data-t="edge_confirm" ${W.conf.has(j)?"disabled":""}>맞는 연결</button><button data-t="edge_wrong">잘못된 연결</button><button data-t="edge_irrelevant" class="${W.id=="t2"?"primary":""}">목적상 불필요</button></div>
+   <p class="hint" style="margin:0">${W.id=="t2"?"인수인계에 필요 없는 연결이면 [목적상 불필요]로 숨겨 주세요.":"[잘못된 연결]과 [목적상 불필요]는 연결을 숨기고, [맞는 연결]은 선을 굵게 표시합니다."}</p>`}</div>`;
+ W._act=act;$("detail").innerHTML=backHtml()+edgeHtml(j);W._act="";bind();
+ $("detail").querySelectorAll("button[data-t]").forEach(b=>b.onclick=()=>fix(b.dataset.t,j));
+ $("iscroll").scrollTop=0;if(net)net.selectEdges([j]);refresh();
+}
+const FBT={edge_confirm:"맞는 연결 (승인)",edge_wrong:"잘못된 연결 (사실 오류)",edge_irrelevant:"관련은 있지만 목적상 불필요",prop_accept:"목적상 불필요 (시스템 제안 수락)"};
+function fix(t,j){
+ if(t=="edge_irrelevant"){hide(j);return}
+ W.fb.push({t,j});log("feedback",[t,j]);
+ if(t=="edge_confirm")W.conf.add(j);else{W.hidden.add(j);W.todo.hide=true}
+ applyHidden();renderFb();openEdge(j);
+}
+function renderFb(){
+ const sec=$("fbsec");if(!sec)return;
+ const ed=W.id=="practice"||W.id=="t2",n=W.fb.length,canUndo=n&&!(W.id=="t2"&&W.props);
+ const nm=j=>`${base(W.d.files[W.d.edges[j].a])} – ${base(W.d.files[W.d.edges[j].b])}`;
+ sec.hidden=!ed;
+ sec.innerHTML=`<h3>세션 피드백 ${n?`(${n})`:""}</h3>${W.fb.map(f=>`<div class="fb"><span class="t">${FBT[f.t]}:</span> ${esc(nm(f.j))}</div>`).join("")||`<p class="hint">아직 없음</p>`}
+  <div class="row"><button id="undo" ${canUndo?"":"disabled"}>되돌리기</button></div>`;
+ $("undo").onclick=undo;
+ $("sessionStatus").textContent=n?`피드백 ${n}개 · 기록됨`:"탐색 준비 완료";
+}
+function undo(){
+ const f=W.fb.pop();if(!f)return;log("undo",[f.t,f.j]);
+ if(f.t=="edge_confirm")W.conf.delete(f.j);else W.hidden.delete(f.j);
+ if(f.t=="edge_irrelevant"&&W.id=="t2"){const k=W.seed.lastIndexOf(f.j);if(k>=0)W.seed.splice(k,1)}
+ applyHidden();renderFb();if(W.sel&&W.sel.k=="e")openEdge(W.sel.i);else refresh();
+}
+function hide(j){
+ W.hidden.add(j);W.todo.hide=true;log("hide",j);W.fb.push({t:"edge_irrelevant",j});applyHidden();renderFb();
+ if(W.id=="t2"){W.seed.push(j);if(W.seed.length>=W.s.seed_hides){buildProps();showReview();return}}
+ openEdge(j);
+}
+function side2(){
+ const s=W.s,n=W.seed.length,need=s.seed_hides;
+ $("btitle").textContent=W.props?"2단계 · 제안 판단":"1단계 · 연결 숨기기";
+ if(!W.props){const e=W.sel&&W.sel.k=="e"?W.sel.i:null;
+  $("sidebody").innerHTML=`<div class="sidebox"><h3>연결 ${need}개 숨기기 (${Math.min(n,need)}/${need})</h3><p>후배가 학습과 평가를 다시 돌리는 데 필요 없어 보이는 연결을 골라 [목적상 불필요]로 숨겨 주세요. ${need}개를 숨기면 2단계로 넘어갑니다. 잘못 숨겼다면 오른쪽 ‘세션 피드백’의 [되돌리기]를 누르면 됩니다.</p>
+   ${e!=null&&!W.hidden.has(e)?`<div class="actions" style="margin-top:10px"><span style="flex:1;min-width:0">선택한 연결: <b style="font-weight:500">${esc(W.d.edges[e].s.split(":")[0])}</b></span><button class="primary" id="hideSide">목적상 불필요</button></div>`:""}</div>`;
+  const b=$("hideSide");if(b)b.onclick=()=>hide(e);return}
+ const all=W.props.every(p=>p.accept!=null);
+ if(all){reviewDone();return}
+ const d=W.d,p=W.props[W.pi],nm=j=>`${base(d.files[d.edges[j].a])} – ${base(d.files[d.edges[j].b])}`;
+ $("sidebody").innerHTML=`<div class="suggest"><div class="h">시스템 제안 ${W.pi+1} / ${W.props.length}</div>
+   <div style="font-size:13px;margin-top:2px;color:var(--sub)">시스템이 인수인계에 필요 없어 보인다고 고른 연결입니다. 그래프의 주황 점선이며, 설명은 오른쪽 패널에 있습니다.</div>
+   <div class="q">${esc(d.edges[p.e].s.split(":")[0])}</div>
+   <div class="actions" style="margin-top:10px"><button class="primary" id="acc">숨기기에 동의</button><button id="rej">그대로 두기</button>${W.pi>0?`<button class="sm ghost" id="prevP">← 이전</button>`:""}<span class="marks" style="margin-left:auto">${W.props.map(q=>q.accept==null?"○":q.accept?"✓":"✕").join("")}</span></div></div>`;
+ const decide=v=>{p.accept=v;log("judge",[p.e,p.src,v]);if(v){W.hidden.add(p.e);W.fb.push({t:"prop_accept",j:p.e})}else W.hidden.delete(p.e);renderFb();
+  const nx=W.props.findIndex(q=>q.accept==null);if(nx>=0){W.pi=nx;showReview()}else{applyHidden();reviewDone()}};
+ $("acc").onclick=()=>decide(true);$("rej").onclick=()=>decide(false);
+ const pv=$("prevP");if(pv)pv.onclick=()=>{W.pi--;showReview()};
+}
+/* task 2: after the seed hides, 3 suggestions from drift (similar to what was hidden) + 3 random visible links, shuffled, source not shown */
+function buildProps(){
+ const d=W.d,n=W.s.review/2,used=new Set(W.seed),best={};
+ W.seed.forEach(j=>(d.drift[j]||[]).forEach(([k,sc])=>{if(!used.has(k)&&!W.hidden.has(k))best[k]=Math.max(best[k]||0,sc)}));
+ const drift=Object.keys(best).map(Number).sort((a,b)=>best[b]-best[a]||a-b).slice(0,n);drift.forEach(k=>used.add(k));
+ const rnd=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+ const base_=rnd(d.edges.map((e,j)=>j).filter(j=>!used.has(j)&&!W.hidden.has(j))).slice(0,n);
+ W.props=rnd([...drift.map(e=>({e,src:"drift"})),...base_.map(e=>({e,src:"base"}))]).map(p=>Object.assign(p,{accept:null}));
+ W.pi=0;log("proposals",W.props.map(p=>[p.e,p.src]));
+}
+function markProp(){const p=W.props[W.pi];if(p)edges.update([{id:p.e,hidden:false,color:{color:C.prop,highlight:C.prop,hover:C.prop},width:3.5,dashes:[8,5]}])}
+function showReview(){
+ const p=W.props[W.pi],e=W.d.edges[p.e];renderFb();if(W.mode=="cards")setMode("2d");stick({hn:new Set([e.a,e.b]),he:new Set()});
+ $("detail").innerHTML=`<div class="propbar">지금 판단 중인 시스템 제안</div>`+edgeHtml(p.e);bind();
+ $("iscroll").scrollTop=0;net.selectEdges([p.e]);side2();setTimeout(()=>{const A=net.getPosition(e.a),B=net.getPosition(e.b);revealPt({x:(A.x+B.x)/2,y:(A.y+B.y)/2})},30);
+}
+function reviewDone(){
+ const acc=W.props.filter(p=>p.accept).length;stick(null);if($("detail")&&$("detail").querySelector(".propbar"))overview();
+ $("sidebody").innerHTML=`<div class="sidebox"><h3>제안을 모두 판단했습니다</h3><p>제안 ${W.props.length}개 중 ${acc}개를 숨겼습니다. 정리된 그래프를 한번 둘러본 뒤 [다음]을 눌러 주세요. 판단을 바꾸려면 아래 항목을 누르면 됩니다.</p>
+  <div class="list" style="margin-top:8px">${W.props.map((p,k)=>`<div class="row2" data-k="${k}"><span style="color:${p.accept?"var(--bad)":"var(--ok)"};width:32px">${p.accept?"숨김":"남김"}</span><span>${esc(W.d.edges[p.e].s.split(":")[0])}</span></div>`).join("")}</div></div>
+  <div class="sidefoot"><button class="primary" id="done">다음</button></div>`;
+ $("sidebody").querySelectorAll("[data-k]").forEach(x=>x.onclick=()=>{W.pi=+x.dataset.k;const p=W.props[W.pi];p.accept=null;W.hidden.delete(p.e);W.fb=W.fb.filter(f=>!(f.t=="prop_accept"&&f.j==p.e));renderFb();applyHidden();showReview()});
+ $("done").onclick=finish2;
+}
+function mini(el,hidden,mark){
+ const d=W.d,dg={},pos=POS||{};d.edges.forEach((e,j)=>{if(hidden.has(j))return;dg[e.a]=(dg[e.a]||0)+1;dg[e.b]=(dg[e.b]||0)+1});
+ const lone=i=>hidden.size&&!dg[i]&&d.edges.some(e=>e.a==i||e.b==i),dg0={},touch=new Set();
+ d.edges.forEach((e,j)=>{dg0[e.a]=(dg0[e.a]||0)+1;dg0[e.b]=(dg0[e.b]||0)+1;if(hidden.has(j)||mark&&mark.has(j)){touch.add(e.a);touch.add(e.b)}});
+ const n=new vis.DataSet(d.files.map((f,i)=>Object.assign({id:i,label:dg0[i]>=4||touch.has(i)?base(f):""},nodeView(i,lone(i)?false:undefined,dg),{font:{size:15,color:lone(i)?"#5c5c5c":C.text,strokeWidth:4,strokeColor:C.bg}},pos[i]?{x:pos[i].x,y:pos[i].y}:{})));
+ const e=new vis.DataSet(d.edges.map((x,j)=>Object.assign({id:j,from:x.a,to:x.b},hidden.has(j)?{hidden:true}:mark&&mark.has(j)?{color:{color:"#ff5c6c"},width:4.5,dashes:[8,5],arrows:{to:{enabled:false},from:{enabled:false}}}:Object.assign(edgeView(j),{color:{color:"#57525e"}}))));
+ const nw=new vis.Network(el,{nodes:n,edges:e},{physics:false,interaction:{dragNodes:false,zoomView:true,hover:false},edges:{smooth:{type:"continuous"}}});
+ nw.once("afterDrawing",()=>nw.fit({animation:false}));
+}
+function finish2(){
+ const st=W.d.st[W.s.pid];POS=W.pos;
+ LOG.steps.t2.review={seed:W.seed.slice(),items:W.props.map(p=>({e:p.e,src:p.src,accept:p.accept,gtOk:st[p.e]==0}))};
+ go(step+1);
+}
+LOG.steps.intro={t0:Date.now(),events:[]};render();
+</script>
+</body>
+</html>
