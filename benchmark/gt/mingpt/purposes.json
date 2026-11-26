@@ -1,0 +1,56 @@
+{
+ "project": "mingpt",
+ "purposes": [
+  {
+   "id": "explain",
+   "base": "docs",
+   "text": "이번에 스터디에서 GPT 구조를 설명해야 해서 준비 중이야. CausalSelfAttention이랑 Block이 model.py에서 어떻게 쌓여서 전체 GPT가 되는지, 그리고 BPE 토크나이저가 입력을 어떻게 토큰으로 바꾸는지 흐름을 알고 싶음",
+   "needed": [
+    ["README.md", "mingpt/bpe.py"],
+    ["README.md", "mingpt/model.py"],
+    ["mingpt/bpe.py", "mingpt/model.py"],
+    ["mingpt/model.py", "mingpt/utils.py"]
+   ],
+   "optional": [
+    ["demo.ipynb", "mingpt/model.py"],
+    ["generate.ipynb", "mingpt/bpe.py"],
+    ["mingpt.jpg", "mingpt/model.py"],
+    ["tests/test_huggingface_import.py", "mingpt/bpe.py"]
+   ],
+   "promote": [
+    ["README.md", "mingpt/bpe.py"],
+    ["README.md", "mingpt/model.py"],
+    ["mingpt/bpe.py", "mingpt/model.py"]
+   ]
+  },
+  {
+   "id": "rerun",
+   "base": "code",
+   "text": "adder 프로젝트 다시 돌려서 덧셈 정확도 재현해보려고 함. adder.py가 Trainer랑 모델, 설정 쪽에서 뭘 가져다 쓰는지, 그리고 Trainer를 고치면 chargpt나 demo에도 영향이 가는지 알고 싶어",
+   "needed": [
+    ["demo.ipynb", "mingpt/trainer.py"],
+    ["projects/adder/adder.py", "mingpt/model.py"],
+    ["mingpt/trainer.py", "mingpt/utils.py"],
+    ["projects/adder/adder.py", "mingpt/trainer.py"],
+    ["projects/chargpt/chargpt.py", "mingpt/trainer.py"],
+    ["projects/adder/adder.py", "mingpt/utils.py"]
+   ],
+   "optional": [
+    ["README.md", "projects/adder/adder.py"],
+    ["demo.ipynb", "mingpt/utils.py"],
+    ["demo.ipynb", "projects/adder/adder.py"],
+    ["demo.ipynb", "projects/chargpt/chargpt.py"],
+    ["mingpt/model.py", "mingpt/utils.py"],
+    ["projects/chargpt/chargpt.py", "mingpt/model.py"],
+    ["projects/chargpt/chargpt.py", "mingpt/utils.py"],
+    ["projects/adder/adder.py", "projects/adder/readme.md"]
+   ],
+   "promote": [
+    ["demo.ipynb", "mingpt/trainer.py"],
+    ["projects/adder/adder.py", "mingpt/trainer.py"],
+    ["projects/chargpt/chargpt.py", "mingpt/trainer.py"],
+    ["projects/adder/adder.py", "mingpt/utils.py"]
+   ]
+  }
+ ]
+}

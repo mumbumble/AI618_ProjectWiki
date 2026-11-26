@@ -1,0 +1,53 @@
+{
+ "project": "mock_robot_grasp",
+ "purposes": [
+  {
+   "id": "advisor",
+   "base": "docs",
+   "text": "교수님한테 CAR이 왜 필요한지 설명드려야 함. 방법 문서랑 ablation 결과 보고, CAR 빼면 성공률이 얼마나 떨어지는지랑 그 수치가 어느 실험에서 나온 건지 정리하고 싶음",
+   "needed": [
+    ["src/contact_reward.py", "docs/method.md"],
+    ["notes/meeting_2026-08-24.md", "results/ablation.md"],
+    ["notes/meeting_2026-08-24.md", "results/main_results.csv"]
+   ],
+   "optional": [
+    ["README.md", "docs/method.md"],
+    ["paper/graspdr_draft_v2.pdf", "docs/method.md"],
+    ["src/graspdr_policy.py", "docs/method.md"],
+    ["notes/meeting_2026-08-24.md", "paper/graspdr_draft_v2.pdf"],
+    ["results/ablation.md", "paper/graspdr_draft_v2.pdf"]
+   ],
+   "promote": [
+    ["src/contact_reward.py", "docs/method.md"],
+    ["notes/meeting_2026-08-24.md", "results/ablation.md"],
+    ["notes/meeting_2026-08-24.md", "results/main_results.csv"]
+   ]
+  },
+  {
+   "id": "rerun",
+   "base": "code",
+   "text": "보상 함수(contact_reward)에서 힘 패널티 가중치를 바꿔서 다시 학습해보려고 함. 어떤 설정 파일이랑 학습 코드가 이 보상을 쓰는지, 바꾸면 어떤 평가 결과나 그림까지 영향 가는지 알고 싶음",
+   "needed": [
+    ["configs/sdr_contact_panda.yaml", "configs/base.yaml"],
+    ["src/train.py", "configs/base.yaml"],
+    ["src/train.py", "configs/sdr_contact_panda.yaml"],
+    ["src/plot_results.py", "figures/success_rate_vs_randomization_range.png"],
+    ["src/evaluate.py", "results/main_results.csv"],
+    ["src/plot_results.py", "results/main_results.csv"],
+    ["src/graspdr_policy.py", "src/contact_reward.py"],
+    ["src/train.py", "src/contact_reward.py"]
+   ],
+   "optional": [
+    ["logs/train_2026-09-12.log", "configs/sdr_contact_panda.yaml"],
+    ["figures/success_rate_vs_randomization_range.png", "results/main_results.csv"],
+    ["src/train.py", "logs/train_2026-09-12.log"],
+    ["results/main_results.csv", "paper/graspdr_draft_v2.pdf"],
+    ["src/evaluate.py", "src/graspdr_policy.py"]
+   ],
+   "promote": [
+    ["src/train.py", "configs/sdr_contact_panda.yaml"],
+    ["src/evaluate.py", "results/main_results.csv"]
+   ]
+  }
+ ]
+}

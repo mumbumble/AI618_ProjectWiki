@@ -1541,5 +1541,36 @@
     "transformer_sizing.ipynb"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "model.py",
+   "train.py"
+  ],
+  "middle": [
+   "assets/gpt2_124M_loss.png",
+   "bench.py",
+   "config/finetune_shakespeare.py",
+   "config/train_gpt2.py",
+   "config/train_shakespeare_char.py",
+   "configurator.py",
+   "data/openwebtext/prepare.py",
+   "data/shakespeare_char/prepare.py",
+   "sample.py",
+   "scaling_laws.ipynb",
+   "transformer_sizing.ipynb"
+  ],
+  "bottom": [
+   "assets/nanogpt.jpg",
+   "config/eval_gpt2.py",
+   "config/eval_gpt2_large.py",
+   "config/eval_gpt2_medium.py",
+   "config/eval_gpt2_xl.py",
+   "data/openwebtext/readme.md",
+   "data/shakespeare/prepare.py",
+   "data/shakespeare/readme.md",
+   "data/shakespeare_char/readme.md"
+  ]
+ }
 }

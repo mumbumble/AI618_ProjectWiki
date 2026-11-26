@@ -1,0 +1,23 @@
+{
+ "project": "qlora",
+ "preferences": [
+  {
+   "id": "paperfirst",
+   "text": "논문(paper/qlora.pdf)이랑 README를 맨 위에 두고, 그 밑에 qlora.py 같은 코드, 맨 아래에 실행 스크립트랑 관련 논문 놓아줘",
+   "levels": {
+    "top": ["README.md", "paper/qlora.pdf"],
+    "middle": ["eval/EVAL_README.md", "eval/eval_gpt_review.py", "eval/qa_baseline_gpt.py", "examples/guanaco_7B_demo_colab.ipynb", "examples/guanaco_generate.py", "qlora.py", "requirements.txt"],
+    "bottom": ["eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb", "eval/ratings-human/mturk_ui.html", "eval/requirements.txt", "related_work/8bit_optimizers.pdf", "related_work/llm_int8.pdf", "related_work/openassistant_conversations.pdf", "scripts/finetune.sh", "scripts/finetune_guanaco_13b.sh", "scripts/finetune_guanaco_33b.sh", "scripts/finetune_guanaco_65b.sh", "scripts/finetune_guanaco_7b.sh", "scripts/finetune_llama2_guanaco_7b.sh", "scripts/generate.sh"]
+   }
+  },
+  {
+   "id": "codefirst",
+   "text": "qlora.py 핵심 학습 코드를 맨 위에 두고, 그걸 실행하는 스크립트랑 데모 예제를 중간에, 평가랑 관련 논문은 아래로 내려줘",
+   "levels": {
+    "top": ["README.md", "paper/qlora.pdf", "qlora.py"],
+    "middle": ["examples/guanaco_7B_demo_colab.ipynb", "examples/guanaco_generate.py", "requirements.txt", "scripts/finetune.sh", "scripts/finetune_guanaco_13b.sh", "scripts/finetune_guanaco_33b.sh", "scripts/finetune_guanaco_65b.sh", "scripts/finetune_guanaco_7b.sh", "scripts/finetune_llama2_guanaco_7b.sh", "scripts/generate.sh"],
+    "bottom": ["eval/EVAL_README.md", "eval/eval_gpt_review.py", "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb", "eval/qa_baseline_gpt.py", "eval/ratings-human/mturk_ui.html", "eval/requirements.txt", "related_work/8bit_optimizers.pdf", "related_work/llm_int8.pdf", "related_work/openassistant_conversations.pdf"]
+   }
+  }
+ ]
+}

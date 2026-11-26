@@ -1,0 +1,23 @@
+{
+ "project": "micrograd",
+ "preferences": [
+  {
+   "id": "codefirst",
+   "text": "engine.py랑 nn.py 같은 핵심 코드가 맨 위에 오고, 노트북이랑 그림, README는 그 아래로 내려줘",
+   "levels": {
+    "top": ["micrograd/engine.py", "micrograd/nn.py"],
+    "middle": ["README.md", "demo.ipynb", "moon_mlp.png", "test/test_engine.py", "trace_graph.ipynb"],
+    "bottom": ["gout.svg", "micrograd/__init__.py", "puppy.jpg", "setup.py"]
+   }
+  },
+  {
+   "id": "demofirst",
+   "text": "demo.ipynb랑 moon_mlp.png 같은 결과물이 맨 위에 오고, 그걸 만드는 nn.py, engine.py는 아래로 내려줘",
+   "levels": {
+    "top": ["README.md", "demo.ipynb", "moon_mlp.png"],
+    "middle": ["micrograd/engine.py", "micrograd/nn.py", "test/test_engine.py", "trace_graph.ipynb"],
+    "bottom": ["gout.svg", "micrograd/__init__.py", "puppy.jpg", "setup.py"]
+   }
+  }
+ ]
+}

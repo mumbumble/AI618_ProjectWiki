@@ -1,0 +1,53 @@
+{
+ "project": "convnext",
+ "purposes": [
+  {
+   "id": "newcomer",
+   "base": "docs",
+   "text": "이번에 들어온 신입한테 ConvNeXt가 ResNet이랑 뭐가 다른지 설명해줘야 함. 논문에서 말하는 설계 변경점(7x7 depthwise conv, LayerNorm, Layer Scale 같은 것)이 모델 코드 어디에 구현돼 있는지 짚어주고 싶음",
+   "needed": [
+    ["README.md", "models/convnext.py"],
+    ["README.md", "paper/convnext.pdf"],
+    ["models/convnext_isotropic.py", "models/convnext.py"],
+    ["models/convnext.py", "paper/convnext.pdf"]
+   ],
+   "optional": [
+    ["README.md", "models/convnext_isotropic.py"],
+    ["models/convnext.py", "object_detection/mmdet/models/backbones/convnext.py"],
+    ["models/convnext_isotropic.py", "paper/convnext.pdf"],
+    ["paper/convnext.pdf", "related_work/swin_transformer.pdf"]
+   ],
+   "promote": [
+    ["README.md", "models/convnext.py"],
+    ["README.md", "paper/convnext.pdf"]
+   ]
+  },
+  {
+   "id": "finetune",
+   "base": "code",
+   "text": "ImageNet-22K로 사전학습한 모델을 ImageNet-1K로 파인튜닝해서 결과 다시 뽑아보려고 함. 어떤 파일에서 시작해서 어떤 인자들이 쓰이는지, 데이터 경로랑 옵티마이저 설정은 어디서 바뀌는지 알고 싶음",
+   "needed": [
+    ["README.md", "TRAINING.md"],
+    ["TRAINING.md", "main.py"],
+    ["main.py", "datasets.py"],
+    ["main.py", "engine.py"],
+    ["engine.py", "optim_factory.py"],
+    ["main.py", "models/convnext.py"],
+    ["main.py", "optim_factory.py"],
+    ["run_with_submitit.py", "main.py"]
+   ],
+   "optional": [
+    ["INSTALL.md", "datasets.py"],
+    ["README.md", "main.py"],
+    ["TRAINING.md", "engine.py"],
+    ["TRAINING.md", "run_with_submitit.py"],
+    ["engine.py", "utils.py"],
+    ["main.py", "models/convnext_isotropic.py"],
+    ["main.py", "utils.py"]
+   ],
+   "promote": [
+    ["TRAINING.md", "main.py"]
+   ]
+  }
+ ]
+}

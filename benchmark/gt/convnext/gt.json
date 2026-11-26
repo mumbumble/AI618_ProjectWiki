@@ -1326,5 +1326,34 @@
     "models/convnext_isotropic.py"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "main.py",
+   "models/convnext.py",
+   "paper/convnext.pdf"
+  ],
+  "middle": [
+   "INSTALL.md",
+   "TRAINING.md",
+   "datasets.py",
+   "engine.py",
+   "models/convnext_isotropic.py",
+   "object_detection/README.md",
+   "object_detection/mmdet/models/backbones/convnext.py",
+   "optim_factory.py",
+   "run_with_submitit.py",
+   "semantic_segmentation/README.md",
+   "semantic_segmentation/backbone/convnext.py",
+   "utils.py"
+  ],
+  "bottom": [
+   "object_detection/configs/_base_/models/mask_rcnn_convnext_fpn.py",
+   "object_detection/configs/convnext/mask_rcnn_convnext_tiny_patch4_window7_mstrain_480-800_adamw_3x_coco_in1k.py",
+   "related_work/swin_transformer.pdf",
+   "semantic_segmentation/configs/_base_/models/upernet_convnext.py",
+   "semantic_segmentation/configs/convnext/upernet_convnext_tiny_512_160k_ade20k_ss.py"
+  ]
+ }
 }

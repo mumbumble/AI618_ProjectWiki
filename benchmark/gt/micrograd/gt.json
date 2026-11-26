@@ -690,5 +690,24 @@
     "puppy.jpg"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "micrograd/engine.py",
+   "micrograd/nn.py"
+  ],
+  "middle": [
+   "demo.ipynb",
+   "moon_mlp.png",
+   "test/test_engine.py",
+   "trace_graph.ipynb"
+  ],
+  "bottom": [
+   "gout.svg",
+   "micrograd/__init__.py",
+   "puppy.jpg",
+   "setup.py"
+  ]
+ }
 }

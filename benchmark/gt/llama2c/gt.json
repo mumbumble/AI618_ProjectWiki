@@ -1625,5 +1625,34 @@
     "tokenizer.py"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "model.py",
+   "run.c",
+   "train.py"
+  ],
+  "middle": [
+   "Makefile",
+   "doc/stories260K.md",
+   "export.py",
+   "run.ipynb",
+   "runq.c",
+   "sample.py",
+   "test.c",
+   "test_all.py",
+   "tinystories.py",
+   "tokenizer.py",
+   "win.c"
+  ],
+  "bottom": [
+   "assets/llama_cute.jpg",
+   "build_msvc.bat",
+   "configurator.py",
+   "doc/train_llama_tokenizer.md",
+   "requirements.txt",
+   "win.h"
+  ]
+ }
 }

@@ -1,0 +1,69 @@
+{
+ "project": "mock_codereview_xai",
+ "preferences": [
+  {
+   "id": "analysis",
+   "text": "분석 스크립트를 그게 읽는 원자료랑 짝지어서 묶어줘. analyze_survey는 survey_responses랑, analyze_logs는 task_logs랑",
+   "groups": [
+    {
+     "name": "연구 설계·IRB",
+     "members": ["irb/consent_form.md", "irb/protocol.md", "proposal/study_proposal.pdf", "study/interview_guide.md", "study/survey_questions.md", "study/tasks.md"]
+    },
+    {
+     "name": "개요·노트·관련 연구",
+     "members": ["README.md", "notes/meeting.md", "notes/pilot_notes.md", "papers/notes_cho2024_explain_reliance.md"]
+    },
+    {
+     "name": "프로토타입 (ReviewLens)",
+     "members": ["prototype/app.py", "prototype/logger.py", "prototype/ui_spec.md"]
+    },
+    {
+     "name": "결과와 그림",
+     "members": ["results/figures/trust_composite_by_condition.png", "results/findings.md"]
+    },
+    {
+     "name": "과제 로그 분석과 데이터",
+     "members": ["analysis/analyze_logs.py", "data/task_logs.csv"]
+    },
+    {
+     "name": "설문 분석과 응답 데이터",
+     "members": ["analysis/analyze_survey.py", "data/survey_responses.csv"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/lab_snack_budget.md", "reading/coral_reef_bleaching_notes.md"]
+    }
+   ]
+  },
+  {
+   "id": "pipeline",
+   "text": "연구 진행 순서대로 묶어줘. 설계·승인, 파일럿, 본 데이터 수집, 분석, 결과 순서로.",
+   "groups": [
+    {
+     "name": "1. 설계·승인",
+     "members": ["README.md", "irb/consent_form.md", "irb/protocol.md", "papers/notes_cho2024_explain_reliance.md", "proposal/study_proposal.pdf", "study/interview_guide.md", "study/survey_questions.md", "study/tasks.md"]
+    },
+    {
+     "name": "3. 본 데이터 수집",
+     "members": ["data/survey_responses.csv", "data/task_logs.csv", "prototype/app.py", "prototype/logger.py", "prototype/ui_spec.md"]
+    },
+    {
+     "name": "5. 결과",
+     "members": ["notes/meeting.md", "results/figures/trust_composite_by_condition.png", "results/findings.md"]
+    },
+    {
+     "name": "4. 분석",
+     "members": ["analysis/analyze_logs.py", "analysis/analyze_survey.py"]
+    },
+    {
+     "name": "2. 파일럿",
+     "members": ["notes/pilot_notes.md"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/lab_snack_budget.md", "reading/coral_reef_bleaching_notes.md"]
+    }
+   ]
+  }
+ ]
+}

@@ -702,5 +702,26 @@
     "requirements.txt"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "AnnotatedTransformer.ipynb",
+   "README.md",
+   "the_annotated_transformer.py"
+  ],
+  "middle": [
+   "Makefile",
+   "images/ModalNet-19.png",
+   "images/ModalNet-20.png",
+   "images/ModalNet-21.png",
+   "requirements.txt"
+  ],
+  "bottom": [
+   "docs/header-includes.yaml",
+   "docs/tufte.css",
+   "images/aiayn.png",
+   "writeup/acl2018.sty",
+   "writeup/acl_natbib.bst"
+  ]
+ }
 }

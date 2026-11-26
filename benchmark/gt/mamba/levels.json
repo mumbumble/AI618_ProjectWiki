@@ -1,0 +1,23 @@
+{
+ "project": "mamba",
+ "preferences": [
+  {
+   "id": "entry",
+   "text": "사용자가 처음 쓰는 진입점인 README, __init__.py, 모델 파일들을 맨 위에 두고, 커널이랑 Triton 연산은 맨 아래로 내려줘.",
+   "levels": {
+    "top": ["README.md", "mamba_ssm/__init__.py", "mamba_ssm/models/config_mamba.py", "mamba_ssm/models/mixer_seq_simple.py", "mamba_ssm/modules/mamba2.py", "mamba_ssm/modules/mamba_simple.py", "paper/mamba.pdf"],
+    "middle": ["assets/selection.png", "assets/ssd_algorithm.png", "benchmarks/benchmark_generation_mamba_simple.py", "evals/lm_harness_eval.py", "mamba_ssm/modules/block.py", "mamba_ssm/modules/mamba2_simple.py", "mamba_ssm/modules/mha.py", "mamba_ssm/modules/mlp.py", "mamba_ssm/modules/ssd_minimal.py", "mamba_ssm/ops/selective_scan_interface.py", "mamba_ssm/utils/generation.py", "related_work/mamba2_transformers_are_ssms.pdf", "setup.py", "tests/ops/test_selective_scan.py"],
+    "bottom": ["csrc/selective_scan/selective_scan.cpp", "mamba_ssm/ops/triton/layer_norm.py", "mamba_ssm/ops/triton/selective_state_update.py", "mamba_ssm/ops/triton/ssd_combined.py", "mamba_ssm/utils/hf.py", "related_work/rwkv.pdf", "related_work/s5_simplified_state_space.pdf", "tests/test_generation.py", "usage.md"]
+   }
+  },
+  {
+   "id": "kernel",
+   "text": "가장 밑단인 CUDA/Triton 커널이랑 selective scan 인터페이스를 위에 두고, 그걸 쓰는 믹서 레이어, 블록, 모델, 테스트 순서로 아래로 내려가게 해줘.",
+   "levels": {
+    "top": ["README.md", "csrc/selective_scan/selective_scan.cpp", "mamba_ssm/ops/selective_scan_interface.py", "mamba_ssm/ops/triton/layer_norm.py", "mamba_ssm/ops/triton/selective_state_update.py", "mamba_ssm/ops/triton/ssd_combined.py", "paper/mamba.pdf"],
+    "middle": ["assets/selection.png", "assets/ssd_algorithm.png", "benchmarks/benchmark_generation_mamba_simple.py", "evals/lm_harness_eval.py", "mamba_ssm/__init__.py", "mamba_ssm/models/config_mamba.py", "mamba_ssm/models/mixer_seq_simple.py", "mamba_ssm/modules/block.py", "mamba_ssm/modules/mamba2.py", "mamba_ssm/modules/mamba2_simple.py", "mamba_ssm/modules/mamba_simple.py", "mamba_ssm/modules/mha.py", "mamba_ssm/modules/mlp.py", "mamba_ssm/modules/ssd_minimal.py", "mamba_ssm/utils/generation.py", "related_work/mamba2_transformers_are_ssms.pdf", "setup.py"],
+    "bottom": ["mamba_ssm/utils/hf.py", "related_work/rwkv.pdf", "related_work/s5_simplified_state_space.pdf", "tests/ops/test_selective_scan.py", "tests/test_generation.py", "usage.md"]
+   }
+  }
+ ]
+}

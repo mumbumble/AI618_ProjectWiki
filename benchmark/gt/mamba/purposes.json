@@ -1,0 +1,61 @@
+{
+ "project": "mamba",
+ "purposes": [
+  {
+   "id": "ssd",
+   "base": "docs",
+   "text": "스터디에서 Mamba-2의 SSD가 어떻게 동작하는지 발표해야 함. 논문 설명이랑 ssd_minimal.py 구현, 도식 그림이 어떻게 이어지는지 확인하고 싶음",
+   "needed": [
+    ["assets/ssd_algorithm.png", "mamba_ssm/modules/ssd_minimal.py"],
+    ["assets/ssd_algorithm.png", "mamba_ssm/ops/triton/ssd_combined.py"],
+    ["assets/ssd_algorithm.png", "related_work/mamba2_transformers_are_ssms.pdf"],
+    ["mamba_ssm/modules/mamba2.py", "mamba_ssm/modules/ssd_minimal.py"],
+    ["mamba_ssm/modules/ssd_minimal.py", "related_work/mamba2_transformers_are_ssms.pdf"]
+   ],
+   "optional": [
+    ["README.md", "assets/ssd_algorithm.png"],
+    ["README.md", "mamba_ssm/modules/ssd_minimal.py"],
+    ["mamba_ssm/modules/mamba2.py", "related_work/mamba2_transformers_are_ssms.pdf"],
+    ["mamba_ssm/modules/mamba2_simple.py", "mamba_ssm/modules/ssd_minimal.py"],
+    ["mamba_ssm/modules/mamba2_simple.py", "mamba_ssm/ops/triton/ssd_combined.py"],
+    ["mamba_ssm/modules/ssd_minimal.py", "mamba_ssm/ops/triton/ssd_combined.py"],
+    ["related_work/mamba2_transformers_are_ssms.pdf", "paper/mamba.pdf"]
+   ],
+   "promote": [
+    ["assets/ssd_algorithm.png", "mamba_ssm/modules/ssd_minimal.py"],
+    ["assets/ssd_algorithm.png", "mamba_ssm/ops/triton/ssd_combined.py"],
+    ["assets/ssd_algorithm.png", "related_work/mamba2_transformers_are_ssms.pdf"],
+    ["mamba_ssm/modules/ssd_minimal.py", "related_work/mamba2_transformers_are_ssms.pdf"]
+   ]
+  },
+  {
+   "id": "generation",
+   "base": "code",
+   "text": "생성 쪽 코드를 고쳐서 샘플링 옵션을 바꿔볼 예정인데, generation.py 수정하면 벤치마크랑 테스트 중에 어디가 영향받는지 알고 싶음",
+   "needed": [
+    ["benchmarks/benchmark_generation_mamba_simple.py", "mamba_ssm/utils/generation.py"],
+    ["evals/lm_harness_eval.py", "mamba_ssm/utils/generation.py"],
+    ["mamba_ssm/models/mixer_seq_simple.py", "mamba_ssm/utils/generation.py"],
+    ["mamba_ssm/modules/mamba2.py", "mamba_ssm/utils/generation.py"],
+    ["mamba_ssm/modules/mamba_simple.py", "mamba_ssm/utils/generation.py"],
+    ["tests/test_generation.py", "mamba_ssm/utils/generation.py"]
+   ],
+   "optional": [
+    ["benchmarks/benchmark_generation_mamba_simple.py", "mamba_ssm/models/mixer_seq_simple.py"],
+    ["evals/lm_harness_eval.py", "mamba_ssm/models/mixer_seq_simple.py"],
+    ["mamba_ssm/models/mixer_seq_simple.py", "mamba_ssm/utils/hf.py"],
+    ["tests/test_generation.py", "mamba_ssm/models/mixer_seq_simple.py"],
+    ["mamba_ssm/modules/mha.py", "mamba_ssm/utils/generation.py"],
+    ["mamba_ssm/utils/generation.py", "mamba_ssm/utils/hf.py"]
+   ],
+   "promote": [
+    ["benchmarks/benchmark_generation_mamba_simple.py", "mamba_ssm/utils/generation.py"],
+    ["evals/lm_harness_eval.py", "mamba_ssm/utils/generation.py"],
+    ["mamba_ssm/models/mixer_seq_simple.py", "mamba_ssm/utils/generation.py"],
+    ["mamba_ssm/modules/mamba2.py", "mamba_ssm/utils/generation.py"],
+    ["mamba_ssm/modules/mamba_simple.py", "mamba_ssm/utils/generation.py"],
+    ["tests/test_generation.py", "mamba_ssm/utils/generation.py"]
+   ]
+  }
+ ]
+}

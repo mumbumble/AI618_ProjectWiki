@@ -1717,5 +1717,33 @@
     "scratch/old_prototype.py"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "csvdelta/core.py",
+   "docs/design.md"
+  ],
+  "middle": [
+   "CHANGELOG.md",
+   "benchmarks/bench_speed.py",
+   "csvdelta/__init__.py",
+   "csvdelta/cli.py",
+   "csvdelta/io.py",
+   "csvdelta/plugins/excel_reader.py",
+   "docs/api.md",
+   "examples/demo.ipynb",
+   "notes/roadmap.md",
+   "tests/test_core.py",
+   "tests/test_io.py"
+  ],
+  "bottom": [
+   "benchmarks/results.csv",
+   "configs/default.toml",
+   "issues/issue_42.md",
+   "notes/conference_trip.md",
+   "notes/dev_meeting.md",
+   "scratch/old_prototype.py"
+  ]
+ }
 }

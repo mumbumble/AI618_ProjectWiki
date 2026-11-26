@@ -1,0 +1,52 @@
+{
+ "project": "mock_sleep_grades",
+ "purposes": [
+  {
+   "id": "feedback",
+   "base": "docs",
+   "text": "TA 피드백 받아서 보고서 고쳐야 함. 지적된 부분이 보고서 어느 섹션이랑 연결되는지, 그리고 결과 수치(RMSE 6.42, R² 0.41)랑 선행연구 비교가 어떤 노트북이랑 자료에서 나온 건지 확인하고 싶음",
+   "needed": [
+    ["notebooks/02_model.ipynb", "data/clean_student_sleep_survey_2026.csv"],
+    ["report/final_report.md", "notebooks/02_model.ipynb"],
+    ["notes/ta_feedback.md", "references/notes_han2024_sleep_parttime_grades.md"],
+    ["notes/ta_feedback.md", "report/final_report.md"],
+    ["report/final_report.md", "references/notes_han2024_sleep_parttime_grades.md"]
+   ],
+   "optional": [
+    ["report/final_report.md", "assignment/project_spec.pdf"],
+    ["notes/team_meeting.md", "report/final_report.md"],
+    ["report/final_report.md", "report/figures/predicted_vs_actual_grade.png"],
+    ["report/final_report.md", "report/figures/sleep_vs_grade_scatter.png"]
+   ],
+   "promote": [
+    ["notebooks/02_model.ipynb", "data/clean_student_sleep_survey_2026.csv"],
+    ["report/final_report.md", "notebooks/02_model.ipynb"],
+    ["notes/ta_feedback.md", "references/notes_han2024_sleep_parttime_grades.md"],
+    ["notes/ta_feedback.md", "report/final_report.md"]
+   ]
+  },
+  {
+   "id": "rerun",
+   "base": "code",
+   "text": "원본 설문 CSV부터 정제, 모델 LOO-CV까지 처음부터 다시 돌려서 n=28 결과 재현하고 싶음. 어떤 파일을 어떤 순서로 실행해야 하는지, 정제 규칙 바꾸면 어디까지 영향 가는지 알려줘",
+   "needed": [
+    ["notebooks/02_model.ipynb", "data/clean_student_sleep_survey_2026.csv"],
+    ["src/clean_data.py", "data/clean_student_sleep_survey_2026.csv"],
+    ["src/clean_data.py", "data/raw_student_sleep_survey_2026.csv"],
+    ["notebooks/02_model.ipynb", "src/features.py"]
+   ],
+   "optional": [
+    ["README.md", "notebooks/02_model.ipynb"],
+    ["README.md", "src/clean_data.py"],
+    ["data/codebook.md", "data/clean_student_sleep_survey_2026.csv"],
+    ["notebooks/01_eda.ipynb", "data/clean_student_sleep_survey_2026.csv"],
+    ["data/codebook.md", "data/raw_student_sleep_survey_2026.csv"]
+   ],
+   "promote": [
+    ["notebooks/02_model.ipynb", "data/clean_student_sleep_survey_2026.csv"],
+    ["src/clean_data.py", "data/raw_student_sleep_survey_2026.csv"],
+    ["notebooks/02_model.ipynb", "src/features.py"]
+   ]
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "project": "mock_code_summary",
+ "preferences": [
+  {
+   "id": "component",
+   "text": "모델 구성요소별로 묶어줘, 예를 들면 검색기는 sibling_retriever.py랑 관련 문서·설정 같이, 게이트 융합은 reposum_model.py랑 method.md 같이 두는 식으로.",
+   "groups": [
+    {
+     "name": "게이트 융합·모델 구조",
+     "members": ["docs/method.md", "src/reposum_model.py"]
+    },
+    {
+     "name": "데이터·학습·평가",
+     "members": ["configs/base.yaml", "logs/train_2026-09-02.log", "src/data.py", "src/evaluate.py", "src/train.py", "src/utils.py"]
+    },
+    {
+     "name": "검색기 (SiblingRetriever)",
+     "members": ["configs/intra_repo_java.yaml", "docs/related_work.md", "papers/notes_codesibling2022.md", "papers/notes_retrosum2021.md", "src/sibling_retriever.py"]
+    },
+    {
+     "name": "논문·소개·발표",
+     "members": ["README.md", "paper/reposum_draft_v1.pdf", "paper/reposum_draft_v2.pdf", "paper/talk_outline.md", "site/index.html"]
+    },
+    {
+     "name": "회의·아이디어 노트",
+     "members": ["notes/ideas.md", "notes/meeting_2026-03-04.md", "notes/meeting_2026-08-19.md"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/conference_travel_reimbursement.md", "reading/coral_reef_monitoring_reading_list.md"]
+    },
+    {
+     "name": "결과와 그림",
+     "members": ["figures/bleu4_vs_num_retrieved.png", "figures/overview.png", "results/ablation.md", "results/main_results.csv", "src/plot_results.py"]
+    }
+   ]
+  },
+  {
+   "id": "version",
+   "text": "논문 초안 v1이랑 3월 회의록 같은 옛날 자료는 '옛 버전' 그룹으로 따로 빼줘",
+   "groups": [
+    {
+     "name": "결과와 그림",
+     "members": ["figures/bleu4_vs_num_retrieved.png", "figures/overview.png", "results/ablation.md", "results/main_results.csv", "src/plot_results.py"]
+    },
+    {
+     "name": "방법 문서·관련 연구",
+     "members": ["README.md", "docs/method.md", "docs/related_work.md", "papers/notes_codesibling2022.md", "papers/notes_retrosum2021.md"]
+    },
+    {
+     "name": "학습·평가·설정",
+     "members": ["configs/base.yaml", "configs/intra_repo_java.yaml", "logs/train_2026-09-02.log", "src/evaluate.py", "src/train.py"]
+    },
+    {
+     "name": "모델 코드",
+     "members": ["src/data.py", "src/reposum_model.py", "src/sibling_retriever.py", "src/utils.py"]
+    },
+    {
+     "name": "논문·발표·웹",
+     "members": ["paper/reposum_draft_v2.pdf", "paper/talk_outline.md", "site/index.html"]
+    },
+    {
+     "name": "옛 버전",
+     "members": ["notes/meeting_2026-03-04.md", "paper/reposum_draft_v1.pdf"]
+    },
+    {
+     "name": "회의·아이디어 노트",
+     "members": ["notes/ideas.md", "notes/meeting_2026-08-19.md"]
+    },
+    {
+     "name": "관련 없음",
+     "members": ["admin/conference_travel_reimbursement.md", "reading/coral_reef_monitoring_reading_list.md"]
+    }
+   ]
+  }
+ ]
+}

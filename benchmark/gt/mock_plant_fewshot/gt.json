@@ -2969,5 +2969,41 @@
     "reading/protein_folding_reading_list.md"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "docs/method.md",
+   "paper/leafproto_draft_v2.pdf",
+   "src/leafproto_model.py",
+   "src/train.py"
+  ],
+  "middle": [
+   "configs/fewshot_5way.yaml",
+   "docs/related_work.md",
+   "figures/accuracy_vs_shots.png",
+   "figures/overview.png",
+   "notes/meeting_2026-09-17.md",
+   "paper/talk_outline.md",
+   "papers/notes_fastadapt2022.md",
+   "papers/notes_protoclass2019.md",
+   "results/ablation.md",
+   "results/main_results.csv",
+   "site/index.html",
+   "src/data.py",
+   "src/evaluate.py",
+   "src/freq_mix.py"
+  ],
+  "bottom": [
+   "admin/travel_reimbursement_form.md",
+   "configs/base.yaml",
+   "logs/train_2026-10-08.log",
+   "notes/ideas.md",
+   "notes/meeting_2026-03-05.md",
+   "paper/leafproto_draft_v1.pdf",
+   "reading/protein_folding_reading_list.md",
+   "src/plot_results.py",
+   "src/utils.py"
+  ]
+ }
 }

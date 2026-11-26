@@ -1428,5 +1428,35 @@
     "requirements.txt"
    ]
   }
- ]
+ ],
+ "levels": {
+  "top": [
+   "README.md",
+   "paper/qlora.pdf",
+   "qlora.py"
+  ],
+  "middle": [
+   "eval/EVAL_README.md",
+   "eval/eval_gpt_review.py",
+   "eval/qa_baseline_gpt.py",
+   "examples/guanaco_7B_demo_colab.ipynb",
+   "examples/guanaco_generate.py",
+   "requirements.txt",
+   "scripts/finetune_guanaco_65b.sh",
+   "scripts/finetune_guanaco_7b.sh"
+  ],
+  "bottom": [
+   "eval/generations_qualitative_comparison_guanaco65b_vs_gpt35.ipynb",
+   "eval/ratings-human/mturk_ui.html",
+   "eval/requirements.txt",
+   "related_work/8bit_optimizers.pdf",
+   "related_work/llm_int8.pdf",
+   "related_work/openassistant_conversations.pdf",
+   "scripts/finetune.sh",
+   "scripts/finetune_guanaco_13b.sh",
+   "scripts/finetune_guanaco_33b.sh",
+   "scripts/finetune_llama2_guanaco_7b.sh",
+   "scripts/generate.sh"
+  ]
+ }
 }
