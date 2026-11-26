@@ -31,6 +31,8 @@ def load_dotenv() -> None:
 
 def load_config(args) -> Config:
     cfg = Config.load(Path(args.config)) if getattr(args, "config", None) else Config()
+    if args.setup and not args.config and not args.corrector:
+        cfg.corrector = "best-of-n"
     overrides = {"encoder": args.encoder, "clusterer": args.clusterer, "corrector": args.corrector,
                  "llm_model": args.llm_model, "language": args.language, "llm_backend": args.llm_backend}
     for k, v in overrides.items():
@@ -65,10 +67,11 @@ def main(argv=None) -> None:
     b.add_argument("-o", "--out", help="output folder (default: <root>/.projectwiki)")
     b.add_argument("--purpose", help="the user's purpose for this project")
     b.add_argument("--prefs", help="preferences JSON for the clustering stage (see examples/prefs.example.json)")
+    b.add_argument("--setup", action="store_true", help="ask for initial preferences in a browser before building")
     b.add_argument("--config", help="JSON file with Config fields")
     b.add_argument("--encoder", choices=["bge-m3", "tfidf"])
     b.add_argument("--clusterer", help="registered name or package.module:Class")
-    b.add_argument("--corrector", help="registered name or package.module:Class")
+    b.add_argument("--corrector", help="baseline, drift, align, best-of-n (default with --setup), or package.module:Class")
     b.add_argument("--llm-backend", choices=["api", "cli"],
                    help="cli: logged-in Claude Code CLI, no API key (default) / api: ANTHROPIC_API_KEY")
     b.add_argument("--llm-model", help="model for relation judgment and image descriptions")
@@ -108,8 +111,15 @@ def main(argv=None) -> None:
     if args.cmd == "build":
         root = Path(args.root).resolve()
         out = Path(args.out).resolve() if args.out else root / ".projectwiki"
-        result = pipeline.build(root, out, load_config(args), load_prefs(args))
-        show(result["view"], args.open)
+        cfg, prefs = load_config(args), load_prefs(args)
+        if args.setup:
+            from .srcs.setup_server import run_setup
+            if not root.is_dir():
+                p.error(f"project folder does not exist: {root}")
+            run_setup(root, out, cfg, prefs)
+        else:
+            result = pipeline.build(root, out, cfg, prefs)
+            show(result["view"], args.open)
     elif args.cmd == "correct":
         out = Path(args.out).resolve()
         cfg = Config.load(out / "config.json")

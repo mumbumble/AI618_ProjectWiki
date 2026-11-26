@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>위키 설정 · ProjectWiki</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #1e1e1e; --panel: #262626; --rail: #202020; --line: #363636;
+    --text: #dedede; --muted: #a3a3a3; --accent: #b49af4; --chip: #333136;
+    font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); }
+  header {
+    display: flex; align-items: center; gap: 10px; height: 43px; padding: 0 16px;
+    background: var(--rail); border-bottom: 1px solid var(--line);
+  }
+  .brand { color: var(--accent); font-size: 22px; }
+  .wordmark { font-weight: 600; letter-spacing: .2px; }
+  .location { margin-left: 4px; padding-left: 14px; border-left: 1px solid #484848; color: var(--muted); font-size: 12px; }
+  main {
+    width: min(1112px, calc(100% - 80px)); margin: clamp(38px, 7vh, 78px) auto;
+    display: grid; grid-template-columns: minmax(240px, .84fr) minmax(0, 1.32fr);
+    align-items: start; gap: clamp(32px, 5vw, 80px);
+  }
+  .intro { padding-top: 20px; }
+  h1 { margin: 0; color: #f1eff4; font-size: clamp(34px, 3.6vw, 52px); line-height: 1.26; letter-spacing: -.055em; }
+  .intro p { max-width: 34ch; margin: 18px 0 0; color: #b8b5bc; font-size: 15px; line-height: 1.8; word-break: keep-all; }
+  .map {
+    display: block; width: 100%; height: auto; margin: 24px 0 0; aspect-ratio: 4 / 3;
+    background-image: radial-gradient(#403c45 1px, transparent 1px); background-size: 18px 18px;
+    mask-image: radial-gradient(ellipse at center, #000 49%, transparent 76%);
+  }
+  form { min-width: 0; background: var(--panel); border: 1px solid #403e42; border-radius: 12px; }
+  .question { min-width: 0; margin: 0 26px; padding: 22px 0; }
+  .question + .question { border-top: 1px solid var(--line); }
+  label { display: block; margin-bottom: 10px; color: #eeecf0; font-size: 16px; font-weight: 600; }
+  label small { display: inline-block; margin-left: 6px; color: var(--muted); font-size: 12px; font-weight: 400; }
+  textarea {
+    display: block; width: 100%; min-height: 60px; padding: 9px 12px; resize: vertical;
+    border: 1px solid #4a474d; border-radius: 6px; background: var(--bg); color: var(--text); font: inherit;
+  }
+  textarea::placeholder { color: #99959f; }
+  textarea:focus { border-color: var(--accent); }
+  :is(textarea, button):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .examples { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  button { font: inherit; cursor: pointer; }
+  .examples button {
+    padding: 4px 10px; border: 1px solid #49464c; border-radius: 6px;
+    background: var(--chip); color: #d3cfd7; font-size: 12px; line-height: 1.6;
+  }
+  .examples button:hover { background: #403b49; border-color: #746284; }
+  .examples button[data-applied] { background: #493b65; color: #e1d3ff; border-color: #8062ba; }
+  .examples button[data-applied]::before { content: "✓"; margin-right: 4px; }
+  .actions {
+    display: flex; align-items: center; justify-content: flex-end; gap: 16px;
+    padding: 16px 26px; border-top: 1px solid var(--line);
+  }
+  #status { margin: 0 auto 0 0; color: var(--muted); font-size: 13px; }
+  #status:empty { display: none; }
+  button[type=submit] {
+    padding: 9px 18px; border: 1px solid #9475d2; border-radius: 6px;
+    background: #7658b9; color: #fff; font-weight: 600; white-space: nowrap;
+  }
+  button[type=submit]::after { content: "→"; margin-left: 10px; }
+  button[type=submit]:hover { background: #8164c4; }
+  button:disabled { opacity: .65; cursor: wait; }
+  @media (max-width: 800px) {
+    main { width: min(620px, calc(100% - 40px)); grid-template-columns: minmax(0, 1fr); gap: 25px; margin: 28px auto; }
+    .intro { padding: 0; }
+    .intro br, .map { display: none; }
+    .intro p { max-width: none; margin-top: 8px; }
+  }
+  @media (max-width: 500px) {
+    main { width: calc(100% - 28px); }
+    h1 { font-size: 30px; }
+    .question { margin: 0 16px; padding: 18px 0; }
+    textarea { font-size: 16px; }
+    .examples button { min-height: 32px; }
+    .actions { flex-direction: column; align-items: stretch; gap: 8px; padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <span class="brand" aria-hidden="true">◈</span>
+  <span class="wordmark">ProjectWiki</span>
+  <span class="location">위키 설정</span>
+</header>
+<main>
+  <div class="intro">
+    <h1>어떤 위키를 <br>만들까요?</h1>
+    <p>첫 그래프에 반영할 내용을 적거나 예시를 골라 주세요. 비워 둔 항목은 기본 설정을 사용해요.</p>
+    <canvas class="map" width="800" height="600" aria-hidden="true"></canvas>
+  </div>
+  <form method="post" accept-charset="UTF-8">
+    <div class="question">
+      <label for="purpose">이 위키를 어디에 쓰나요?</label>
+      <textarea id="purpose" name="purpose" rows="2" maxlength="1000" placeholder="예: 다음 주 발표에서 프로젝트를 소개하고 싶어요.">__PURPOSE__</textarea>
+      <div class="examples" data-for="purpose" role="group" aria-label="사용 목적 예시">
+        <button type="button">발표 준비</button>
+        <button type="button">팀원에게 인수인계</button>
+        <button type="button">프로젝트 빠르게 이해하기</button>
+      </div>
+    </div>
+    <div class="question">
+      <label for="priority">어떤 자료를 먼저 보고 싶나요? <small>여러 개 선택 가능</small></label>
+      <textarea id="priority" name="priority" rows="2" maxlength="1000" placeholder="예: 실험 결과표와 그래프를 먼저 보고 싶어요.">__PRIORITY__</textarea>
+      <div class="examples" data-for="priority" role="group" aria-label="우선 자료 예시 · 여러 개 선택 가능">
+        <button type="button">실험 결과·그림</button>
+        <button type="button">코드·설정</button>
+        <button type="button">문서·논문</button>
+        <button type="button">회의록·메모</button>
+      </div>
+    </div>
+    <div class="question">
+      <label for="grouping">파일을 어떤 기준으로 묶고 싶나요?</label>
+      <textarea id="grouping" name="grouping" rows="2" maxlength="1000" placeholder="예: 데이터 준비, 학습, 평가 단계별로 묶어 주세요.">__GROUPING__</textarea>
+      <div class="examples" data-for="grouping" role="group" aria-label="파일 그룹화 예시">
+        <button type="button">같은 주제끼리</button>
+        <button type="button">실험이나 작업 단계별</button>
+        <button type="button">기존 폴더대로</button>
+        <button type="button">시스템에 맡기기</button>
+      </div>
+    </div>
+    <div class="actions">
+      <p role="status" id="status"></p>
+      <button type="submit">첫 그래프 만들기</button>
+    </div>
+  </form>
+</main>
+<script>
+  for (const group of document.querySelectorAll(".examples")) {
+    const input = document.getElementById(group.dataset.for);
+    const buttons = [...group.querySelectorAll("button")];
+    const choices = buttons.map(button => button.textContent.trim());
+    function markExamples() {
+      const lines = input.value.trim().split("\n");
+      for (const button of buttons) {
+        button.toggleAttribute("data-applied", lines.includes(button.textContent.trim()));
+      }
+    }
+    for (const button of buttons) {
+      button.onclick = () => {
+        const example = button.textContent.trim();
+        const current = input.value.trim();
+        if (!current || (input.id !== "priority" && choices.includes(current))) {
+          input.value = example;
+        } else if (!current.split("\n").includes(example)) {
+          input.value = (current + "\n" + example).slice(0, input.maxLength);
+        }
+        markExamples();
+        input.focus();
+      };
+    }
+    input.addEventListener("input", markExamples);
+    markExamples();
+  }
+  const form = document.querySelector("form");
+  const submit = form.querySelector("button[type=submit]");
+  const status = document.getElementById("status");
+  form.onsubmit = () => {
+    submit.disabled = true;
+    status.textContent = "첫 그래프를 만드는 중입니다.";
+  };
+  window.addEventListener("pageshow", event => {
+    if (event.persisted) {
+      submit.disabled = false;
+      status.textContent = "";
+    }
+  });
+
+  // A static illustration in the viewer's group colors. The form works independently of the canvas.
+  const pen = document.querySelector(".map").getContext("2d");
+  if (pen) {
+    pen.scale(2, 2);
+    const palette = ["#b49af4", "#83b6c9", "#c7ad77"];
+    const nodes = [
+      [168, 142, 9, 0], [111, 104, 5, 0], [79, 146, 4, 0], [135, 51, 3, 0],
+      [202, 78, 5, 0], [92, 63, 2.5, 0], [217, 32, 2.5, 0],
+      [247, 181, 7, 1], [306, 145, 5, 1], [331, 191, 3, 1], [279, 238, 4, 1], [340, 119, 2.5, 1],
+      [123, 215, 6, 2], [70, 202, 3, 2], [101, 256, 3, 2], [177, 241, 4, 2]
+    ];
+    const links = [[0,1],[0,2],[1,2],[1,3],[1,5],[3,4],[0,4],[4,6],[0,7],[4,8],
+                   [7,8],[7,9],[8,9],[8,11],[7,10],[0,12],[2,13],[12,13],[12,14],[12,15],[15,7]];
+    pen.strokeStyle = "#57525e";
+    for (const [a, b] of links) {
+      pen.beginPath(); pen.moveTo(nodes[a][0], nodes[a][1]); pen.lineTo(nodes[b][0], nodes[b][1]); pen.stroke();
+    }
+    for (const [x, y, radius, color] of nodes) {
+      pen.fillStyle = palette[color];
+      if (radius >= 6) {
+        pen.globalAlpha = .13;
+        pen.beginPath(); pen.arc(x, y, radius + 5, 0, 2 * Math.PI); pen.fill();
+        pen.globalAlpha = 1;
+      }
+      pen.beginPath(); pen.arc(x, y, radius, 0, 2 * Math.PI); pen.fill();
+    }
+  }
+</script>
+</body>
+</html>

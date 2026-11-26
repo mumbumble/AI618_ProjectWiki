@@ -161,7 +161,7 @@ projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 |---|---|
 | `--purpose "..."` | 사용자 목적. 관계 판정에 들어감 |
 | `--prefs prefs.json` | 군집화 선호 입력 (중요 파일, 쌍 평가, 가이드). [예시](examples/prefs.example.json) |
-| `--clusterer` / `--corrector` | 실험 구간 방법. 군집화 `pref`(기본)·`baseline`, 교정 `drift`(기본)·`align`·`baseline`. `패키지.모듈:클래스`도 가능 |
+| `--clusterer` / `--corrector` | 군집화 `pref`(기본)·`baseline`, 교정 `drift`·`align`·`baseline`·`best-of-n`. 일반 빌드의 기본 교정기는 `drift`이고, 별도 설정 없이 `build --setup`으로 시작하면 `best-of-n`이 Drift 강도 3개를 비교합니다. `패키지.모듈:클래스`도 가능 |
 | `--llm-backend cli\|api` | Claude 연결 방식 (기본 `cli`) |
 | `--llm-model` | 관계 판정·그림 설명 모델 (기본 `claude-sonnet-5-5`, 아끼려면 `claude-haiku-5-5`) |
 | `--no-llm` | Claude 단계를 끔 (요약·그림 설명·그룹 이름·관계 판정) |

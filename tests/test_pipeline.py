@@ -10,8 +10,13 @@ from projectwiki.models.clustering import get_clusterer
 from projectwiki.models.visualization import export_obsidian
 from projectwiki.schema import FeedbackEvent, Graph, Preferences
 from projectwiki.srcs.candidates import reference_candidates
+from projectwiki.srcs.feedback import resolve
+from projectwiki.srcs.feedback_changes import feedback_changes
 from projectwiki.srcs.ingest import ingest
+from projectwiki.srcs.initial_preferences import preferences_from_answers
 from projectwiki.srcs.record import Record
+from projectwiki.srcs.text_feedback import FeedbackInputError, interpret, validate_events
+from projectwiki.srcs.wiki_approval import StaleGraphError, approve_wiki
 
 
 @pytest.fixture
@@ -108,10 +113,73 @@ def test_build_with_llm(project, tmp_path):
     assert fake.calls == calls  # second run is fully cached
 
 
+def test_initial_preferences_shape_the_first_view(project, tmp_path):
+    out = tmp_path / "guided"
+    prefs = preferences_from_answers(Preferences(), "발표 준비", "실험 결과·그림, paper.pdf", "기존 폴더대로")
+    result = pipeline.build(project, out, make_cfg(llm=False), prefs)
+    graph = result["graph"]
+    nodes = {n.path: n for n in graph.nodes}
+    assert nodes["src/model.py"].group == nodes["src/train.py"].group != nodes["paper.pdf"].group
+    assert json.loads((out / "prefs.json").read_text(encoding="utf-8"))["purpose"] == "발표 준비"
+
+    first_view = result["view"].read_text(encoding="utf-8")
+    reopened_view = pipeline.view(out).read_text(encoding="utf-8")
+    for html in (first_view, reopened_view):
+        embedded = html.split("const DATA = ", 1)[1].split(";\n", 1)[0]
+        priority = json.loads(embedded)["meta"]["setup"]["files"]
+        assert priority[0] == nodes["paper.pdf"].id
+        assert {nodes["results.csv"].id, nodes["fig.png"].id} <= set(priority)
+        assert nodes["src/train.py"].id not in priority
+
+
+def test_text_feedback_requires_exact_path_for_duplicate_names(project, tmp_path):
+    (project / "src" / "notes.md").write_text("# Other notes", encoding="utf-8")
+    (project / "README.md").write_text("# Demo\nSee [project notes](./notes.md).\n", encoding="utf-8")
+    cfg = make_cfg(llm=False)
+    out = tmp_path / "text_feedback"
+    pipeline.build(project, out, cfg, Preferences())
+    record = Record.load(out)
+    answer = {"question": "", "events": [
+        {"type": "edge_irrelevant", "source": "README.md", "target": "notes.md"},
+    ]}
+    llm = SimpleNamespace(json=lambda *args, **kwargs: answer)
+    edge_ids = {e.id for e in Graph.from_dict(json.loads((out / "graph.json").read_text(encoding="utf-8"))).edges}
+    request = "README.md와 notes.md 연결은 발표에 불필요해요."
+    with pytest.raises(FeedbackInputError, match=r"\./notes\.md, src/notes\.md"):
+        validate_events(interpret(request, record, [], llm, cfg), record, edge_ids, request)
+
+    request = request.replace("notes.md", "./notes.md")
+    events = validate_events(interpret(request, record, [], llm, cfg), record, edge_ids, request)
+    result = pipeline.correct(out, cfg, record=record, new_feedback=events)
+    assert any(e.status == "removed_irrelevant" for e in result["graph"].edges)
+
+
+def test_approval_freezes_the_reviewed_version(project, tmp_path):
+    out = tmp_path / "approval"
+    cfg = make_cfg(llm=False, corrector="drift")
+    original = pipeline.build(project, out, cfg, Preferences())["graph"]
+    feedback = [FeedbackEvent(type="edge_confirm", source="README.md", target="src/train.py")]
+    revised = pipeline.correct(out, cfg, new_feedback=feedback)["graph"]
+    with pytest.raises(StaleGraphError):
+        approve_wiki(out, cfg, original.revision())
+    assert not (out / "approved_wiki").exists()
+
+    result = approve_wiki(out, cfg, revised.revision())
+    frozen = (result / "graph.json").read_bytes()
+    assert frozen == (out / "final_graph.json").read_bytes()
+    assert "<body data-approved>" in (result / "view.html").read_text(encoding="utf-8")
+    assert (result / "wiki" / "README.md.md").is_file()
+
+    pipeline.correct(out, cfg, new_feedback=[FeedbackEvent(
+        type="edge_wrong", source="README.md", target="src/train.py")])
+    assert (out / "final_graph.json").read_bytes() != frozen
+    assert (result / "graph.json").read_bytes() == frozen
+
+
 def test_feedback_and_drift(project, tmp_path):
     out = tmp_path / "out"
     cfg = make_cfg(llm=False, corrector="drift", drift_margin=0.0)
-    pipeline.build(project, out, cfg, Preferences())
+    before = pipeline.build(project, out, cfg, Preferences())["graph"]
     rec = Record.load(out)
     pid = {f.path: f.id for f in rec.files}
     events = [
@@ -135,6 +203,11 @@ def test_feedback_and_drift(project, tmp_path):
     node = next(n for n in final.nodes if n.path == "Makefile")
     assert next(g for g in final.groups if g.id == node.group).name == "빌드"
     assert any(e.correction for e in final.edges)  # drift explained the edges it changed
+    changes = feedback_changes(before, final, resolve(events, rec), cfg.corrector)
+    assert len(changes["direct"]) == 6 and changes["automatic"]
+    direct_pairs = {frozenset(row["files"]) for row in changes["direct"]}
+    assert all(frozenset(row["files"]) not in direct_pairs and row["before"] != row["after"]
+               for row in changes["automatic"])
     # the log persists: a rebuild replays the same edits
     again = pipeline.build(project, out, cfg, Preferences())["graph"]
     assert {e.id: e.status for e in again.edges}[key("paper.pdf", "src/train.py")] == "removed_wrong"

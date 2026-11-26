@@ -28,6 +28,7 @@ from .srcs.enrich import describe_images, summarize
 from .srcs.feedback import merge, read_events, resolve
 from .srcs.finalize import finalize
 from .srcs.ingest import ingest
+from .srcs.initial_preferences import priority_nodes
 from .srcs.llm import Claude
 from .srcs.naming import name_groups
 from .srcs.record import Record, build_record, diff_files
@@ -85,7 +86,11 @@ def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=Non
     groups = get_clusterer(cfg.clusterer, cfg).cluster(record, prefs)  # 2 clustering
     name_groups(groups, record, llm, cfg)
     lap("2 clustering")
-    graph = build_graph(record, groups, cfg, llm, prefs.purpose)  # 3 structure
+    purpose = prefs.purpose
+    for label, key in (("Materials to prioritize", "priority_materials"), ("Requested grouping", "grouping_request")):
+        if answer := prefs.guide.get(key):
+            purpose = f"{purpose}\n{label}: {answer}".lstrip()
+    graph = build_graph(record, groups, cfg, llm, purpose)  # 3 structure
     write_json(out / "graph.json", graph.to_dict())
     lap("3 structure")
     result = correct(out, cfg, record=record, graph=graph)  # 4 preference, final graph, 5 visualization
@@ -121,11 +126,23 @@ def correct(out: Path, cfg: Config, record: Record | None = None, graph: Graph |
     return {"view": view, "graph": final, "feedback": len(feedback)}
 
 
-def render(out: Path, cfg: Config, final: Graph, record: Record, n_feedback: int) -> Path:
+def render(out: Path, cfg: Config, final: Graph, record: Record, n_feedback: int,
+           view_path: Path | None = None) -> Path:
     meta = {"root": record.root, "created": time.strftime("%Y-%m-%d %H:%M:%S"), "encoder": record.encoder_id,
             "clusterer": cfg.clusterer, "corrector": cfg.corrector, "feedback": n_feedback,
+            "revision": final.revision(),
             "llm": f"{cfg.llm_model} / {cfg.llm_small_model}" if cfg.llm else "off"}
-    return write_view(final, record, out / "view.html", meta)
+    prefs_path = out / "prefs.json"
+    if prefs_path.is_file():
+        prefs = Preferences(**json.loads(prefs_path.read_text(encoding="utf-8")))
+        if "priority_materials" in prefs.guide:
+            request = prefs.guide["priority_materials"]
+            meta["setup"] = {"purpose": prefs.purpose, "priority": request,
+                             "files": priority_nodes(final.nodes, request)}
+    comparison = out / "correction.json"
+    if cfg.corrector == "best-of-n" and comparison.is_file():
+        meta["selection"] = json.loads(comparison.read_text(encoding="utf-8")).get("selection")
+    return write_view(final, record, view_path or out / "view.html", meta)
 
 
 def view(out: Path) -> Path:

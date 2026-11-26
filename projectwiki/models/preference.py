@@ -12,13 +12,16 @@ the feedback implies for edges the user did not touch. Register it in CORRECTORS
 from __future__ import annotations
 
 import posixpath
-from dataclasses import dataclass, field
+from collections import Counter
+from dataclasses import dataclass, field, replace
+from math import fsum, isfinite
 from typing import Protocol
 
 import numpy as np
 
 from ..config import Config
-from ..schema import Edge, FeedbackEvent, Graph, edge_key
+from ..schema import VISIBLE_STATUS, Edge, FeedbackEvent, Graph, edge_key
+from ..srcs.finalize import finalize
 from ..srcs.plugins import load_component
 from ..srcs.record import Record
 from .clustering import tree_distance
@@ -35,6 +38,7 @@ class Correction:
     node_groups: dict[str, str | None] = field(default_factory=dict)  # file id -> group id it proposes
     explanations: dict[str, str] = field(default_factory=dict)  # edge id -> reason shown to the user
     notes: list[str] = field(default_factory=list)
+    selection: dict | None = None  # candidate comparison for best-of-n
 
 
 class Corrector(Protocol):
@@ -187,8 +191,74 @@ class AlignCorrector:
         return out
 
 
+def visible_strength(edge: Edge) -> float:
+    """Use zero for a hidden edge and a bounded score for a visible one."""
+    return min(1.0, max(0.0, edge.score)) if edge.status in VISIBLE_STATUS else 0.0
+
+
+class BestOfNCorrector:
+    """Select a drift scale by agreement with smoothed, per-relation feedback preferences."""
+    name = "best-of-n"
+
+    def __init__(self, cfg: Config):
+        self.cfg = cfg
+        self.scales = sorted(set(cfg.best_of_n_scales))
+        if not self.scales or any(not isfinite(s) or s <= 0 for s in self.scales):
+            raise ValueError("best_of_n_scales must contain positive finite drift multipliers")
+        if not isfinite(cfg.best_of_n_prior_weight) or cfg.best_of_n_prior_weight <= 0:
+            raise ValueError("best_of_n_prior_weight must be positive and finite")
+
+    def correct(self, graph: Graph, feedback: list[FeedbackEvent], record: Record) -> Correction:
+        latest = {edge_key(ev.source, ev.target): ev.type for ev in feedback if ev.type.startswith("edge_")}
+        if not any(kind in {"edge_add", "edge_confirm", "edge_irrelevant"} for kind in latest.values()):
+            return Correction(notes=["No approval or purpose-based rejection to generalize."])
+
+        # This reference has all manual edits and the normal display threshold, with no drift.
+        reference = finalize(graph, Correction(), feedback, self.cfg)
+        reference_edges = {e.id: e for e in reference.edges}
+        approvals, rejections = Counter(), Counter()
+        for key, kind in latest.items():
+            if key not in reference_edges:
+                continue
+            relation = reference_edges[key].relation
+            if kind in {"edge_add", "edge_confirm"}:
+                approvals[relation] += 1
+            elif kind == "edge_irrelevant":
+                rejections[relation] += 1
+
+        prior = self.cfg.best_of_n_prior_weight
+        targets = {}
+        for edge in graph.edges:
+            if edge.id in latest or edge.status != "proposed":
+                continue
+            yes, no = approvals[edge.relation], rejections[edge.relation]
+            targets[edge.id] = (prior * visible_strength(reference_edges[edge.id]) + yes) / (prior + yes + no)
+
+        rows = []
+        best_score = -float("inf")
+        for scale in self.scales:
+            config = replace(self.cfg, drift_gain=self.cfg.drift_gain * scale, drift_tau=self.cfg.drift_tau * scale)
+            proposal = DriftCorrector(config).correct(graph, feedback, record)
+            candidate = finalize(graph, proposal, feedback, config)
+            scored = [e for e in candidate.edges if e.id in targets]
+            error = fsum((visible_strength(e) - targets[e.id]) ** 2 for e in scored)
+            score = 100 * (1 - error / len(scored)) if scored else 0.0
+            hidden = sum(reference_edges[e.id].status in VISIBLE_STATUS and e.status not in VISIBLE_STATUS
+                         for e in scored)
+            rows.append({"scale": scale, "score": score if scored else None, "hidden": hidden})
+            if score > best_score:  # scales are ascending, so ties use the weakest drift
+                best_score, winner, selected_scale = score, proposal, scale
+
+        winner.selection = {"scale": selected_scale, "candidates": rows, "scored_edges": len(targets),
+                            "prior_weight": prior, "approvals": sum(approvals.values()),
+                            "rejections": sum(rejections.values())}
+        winner.notes.append(f"Best-of-N selected drift scale {selected_scale:g} from {len(rows)} candidates.")
+        return winner
+
+
 # ---- registry ------------------------------------------------------------------------------------
-CORRECTORS = {"baseline": BaselineCorrector, "drift": DriftCorrector, "align": AlignCorrector}
+CORRECTORS = {"baseline": BaselineCorrector, "drift": DriftCorrector, "align": AlignCorrector,
+              "best-of-n": BestOfNCorrector}
 
 
 def get_corrector(name: str, cfg: Config) -> Corrector:

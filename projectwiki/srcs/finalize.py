@@ -7,10 +7,12 @@ which are facts stated in the files; only the user can remove those.
 from __future__ import annotations
 
 import copy
+from typing import TYPE_CHECKING
 
 from ..config import Config
 from ..schema import STRUCTURAL, Edge, FeedbackEvent, Graph, Group, edge_key
-from ..models.preference import Correction
+if TYPE_CHECKING:
+    from ..models.preference import Correction
 
 
 def finalize(graph: Graph, correction: Correction, feedback: list[FeedbackEvent], cfg: Config) -> Graph:
