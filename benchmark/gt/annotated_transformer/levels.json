@@ -3,7 +3,28 @@
  "preferences": [
   {
    "id": "code",
-   "text": "the_annotated_transformer.py랑 노트북 같은 코드가 맨 위에 오고, 그림이랑 README는 중간, 스타일이나 설정 파일은 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "Makefile",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "README.md",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "images/aiayn.png",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "requirements.txt",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["AnnotatedTransformer.ipynb", "the_annotated_transformer.py"],
     "middle": ["README.md", "images/ModalNet-19.png", "images/ModalNet-20.png", "images/ModalNet-21.png", "images/aiayn.png"],
@@ -12,7 +33,43 @@
   },
   {
    "id": "figures",
-   "text": "모델 구조 그림(ModalNet 이미지들)이 맨 위에 오고, 그걸 설명하는 노트북이랑 코드가 그 아래, 빌드·양식 파일은 맨 아래로 해줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "AnnotatedTransformer.ipynb",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "Makefile",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "images/ModalNet-19.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "images/ModalNet-20.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "images/ModalNet-21.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "requirements.txt",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "the_annotated_transformer.py",
+     "importance": 2
+    }
+   ],
    "levels": {
     "top": ["README.md", "images/ModalNet-19.png", "images/ModalNet-20.png", "images/ModalNet-21.png"],
     "middle": ["AnnotatedTransformer.ipynb", "the_annotated_transformer.py"],

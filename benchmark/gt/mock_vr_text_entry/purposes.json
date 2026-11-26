@@ -22,10 +22,6 @@
     ["README.md", "results/findings.md"],
     ["results/findings.md", "analysis/analyze_survey.py"]
    ],
-   "promote": [
-    ["results/findings.md", "proposal/study_proposal.pdf"],
-    ["notes/meeting.md", "results/findings.md"]
-   ],
    "notes": {
     "analysis/analyze_survey.py|results/figures/likert_means_by_item.png": "그림 출처는 선택",
     "results/figures/likert_means_by_item.png|results/findings.md": "결과 문서의 그림",
@@ -40,7 +36,19 @@
     "README.md|proposal/study_proposal.pdf": "README가 계획서 소개",
     "README.md|results/findings.md": "README가 결과 문서 소개",
     "analysis/analyze_survey.py|results/findings.md": "결정7"
-   }
+   },
+   "corrections": [
+    {
+     "op": "add",
+     "a": "results/findings.md",
+     "b": "proposal/study_proposal.pdf"
+    },
+    {
+     "op": "add",
+     "a": "notes/meeting.md",
+     "b": "results/findings.md"
+    }
+   ]
   },
   {
    "id": "rerun",
@@ -59,10 +67,6 @@
     ["study/tasks.md", "data/task_logs.csv"],
     ["README.md", "analysis/analyze_logs.py"]
    ],
-   "promote": [
-    ["prototype/logger.py", "data/task_logs.csv"],
-    ["prototype/ui_spec.md", "prototype/logger.py"]
-   ],
    "notes": {
     "prototype/app.py|prototype/logger.py": "앱이 로거 사용",
     "data/task_logs.csv|prototype/logger.py": "로거가 로그 생성 → 수정 영향",
@@ -73,7 +77,19 @@
     "notes/pilot_notes.md|prototype/app.py": "파일럿에서 나온 앱 버그 → 수정 대상",
     "README.md|analysis/analyze_logs.py": "README의 분석 실행 방법",
     "prototype/logger.py|prototype/ui_spec.md": "로그 형식 명세 → 로거"
-   }
+   },
+   "corrections": [
+    {
+     "op": "add",
+     "a": "prototype/logger.py",
+     "b": "data/task_logs.csv"
+    },
+    {
+     "op": "add",
+     "a": "prototype/ui_spec.md",
+     "b": "prototype/logger.py"
+    }
+   ]
   }
  ]
 }

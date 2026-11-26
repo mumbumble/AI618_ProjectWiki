@@ -17,8 +17,12 @@
     ["paper/qlora.pdf", "related_work/llm_int8.pdf"],
     ["qlora.py", "related_work/llm_int8.pdf"]
    ],
-   "promote": [
-    ["README.md", "qlora.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "qlora.py"
+    }
    ]
   },
   {
@@ -37,10 +41,22 @@
     ["scripts/generate.sh", "qlora.py"],
     ["requirements.txt", "scripts/finetune_guanaco_7b.sh"]
    ],
-   "promote": [
-    ["README.md", "scripts/finetune_guanaco_7b.sh"],
-    ["scripts/finetune_guanaco_7b.sh", "qlora.py"],
-    ["scripts/finetune_guanaco_7b.sh", "scripts/generate.sh"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "scripts/finetune_guanaco_7b.sh"
+    },
+    {
+     "op": "add",
+     "a": "scripts/finetune_guanaco_7b.sh",
+     "b": "qlora.py"
+    },
+    {
+     "op": "add",
+     "a": "scripts/finetune_guanaco_7b.sh",
+     "b": "scripts/generate.sh"
+    }
    ]
   }
  ]

@@ -3,7 +3,31 @@
  "preferences": [
   {
    "id": "stage",
-   "text": "파일들을 작업 순서대로 묶어줘, 데이터 준비 → 학습 → 모델 내보내기 → C로 추론 → 테스트 이런 식으로",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "테스트"
+    },
+    {
+     "op": "add_group",
+     "name": "모델 내보내기"
+    },
+    {
+     "op": "move",
+     "file": "test.c",
+     "to": "테스트"
+    },
+    {
+     "op": "move",
+     "file": "test_all.py",
+     "to": "테스트"
+    },
+    {
+     "op": "move",
+     "file": "export.py",
+     "to": "모델 내보내기"
+    }
+   ],
    "groups": [
     {
      "name": "문서와 예제",
@@ -37,7 +61,27 @@
   },
   {
    "id": "platform",
-   "text": "윈도우 때문에 있는 파일들(win.c, win.h, build_msvc.bat)은 따로 한 그룹으로 빼줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "윈도우 지원"
+    },
+    {
+     "op": "move",
+     "file": "build_msvc.bat",
+     "to": "윈도우 지원"
+    },
+    {
+     "op": "move",
+     "file": "win.c",
+     "to": "윈도우 지원"
+    },
+    {
+     "op": "move",
+     "file": "win.h",
+     "to": "윈도우 지원"
+    }
+   ],
    "groups": [
     {
      "name": "모델과 학습",

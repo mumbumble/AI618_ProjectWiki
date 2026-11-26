@@ -17,10 +17,22 @@
     ["notebooks/02_model.ipynb", "data/clean_seoul_bike_2025.csv"],
     ["report/final_report.md", "notebooks/01_eda.ipynb"]
    ],
-   "promote": [
-    ["notebooks/02_model.ipynb", "report/figures/pred_vs_actual.png"],
-    ["report/final_report.md", "notebooks/02_model.ipynb"],
-    ["notes/ta_feedback.md", "report/final_report.md"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "notebooks/02_model.ipynb",
+     "b": "report/figures/pred_vs_actual.png"
+    },
+    {
+     "op": "add",
+     "a": "report/final_report.md",
+     "b": "notebooks/02_model.ipynb"
+    },
+    {
+     "op": "add",
+     "a": "notes/ta_feedback.md",
+     "b": "report/final_report.md"
+    }
    ]
   },
   {
@@ -40,10 +52,22 @@
     ["notes/team_meeting.md", "src/clean_data.py"],
     ["notes/team_meeting.md", "src/features.py"]
    ],
-   "promote": [
-    ["notebooks/02_model.ipynb", "data/clean_seoul_bike_2025.csv"],
-    ["src/clean_data.py", "data/raw_seoul_bike_2025.csv"],
-    ["notebooks/02_model.ipynb", "src/features.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "notebooks/02_model.ipynb",
+     "b": "data/clean_seoul_bike_2025.csv"
+    },
+    {
+     "op": "add",
+     "a": "src/clean_data.py",
+     "b": "data/raw_seoul_bike_2025.csv"
+    },
+    {
+     "op": "add",
+     "a": "notebooks/02_model.ipynb",
+     "b": "src/features.py"
+    }
    ]
   }
  ]

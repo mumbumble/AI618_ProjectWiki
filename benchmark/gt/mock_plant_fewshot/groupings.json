@@ -3,7 +3,50 @@
  "preferences": [
   {
    "id": "component",
-   "text": "FreqMix, 코사인 헤드, 일관성 손실 같은 방법 구성요소별로 묶어서, 각각 구현 코드(src)랑 설정, ablation 결과가 같이 있게 해줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "FreqMix 증강"
+    },
+    {
+     "op": "add_group",
+     "name": "코사인 프로토타입 헤드"
+    },
+    {
+     "op": "add_group",
+     "name": "일관성 손실"
+    },
+    {
+     "op": "move",
+     "file": "configs/base.yaml",
+     "to": "FreqMix 증강"
+    },
+    {
+     "op": "move",
+     "file": "results/ablation.md",
+     "to": "FreqMix 증강"
+    },
+    {
+     "op": "move",
+     "file": "src/freq_mix.py",
+     "to": "FreqMix 증강"
+    },
+    {
+     "op": "move",
+     "file": "configs/fewshot_5way.yaml",
+     "to": "코사인 프로토타입 헤드"
+    },
+    {
+     "op": "move",
+     "file": "src/leafproto_model.py",
+     "to": "코사인 프로토타입 헤드"
+    },
+    {
+     "op": "move",
+     "file": "src/train.py",
+     "to": "일관성 손실"
+    }
+   ],
    "groups": [
     {
      "name": "방법 문서·관련 연구",
@@ -49,7 +92,17 @@
   },
   {
    "id": "versions",
-   "text": "논문 초안 v1은 옛날 버전이니까 따로 빼고, 최신 초안 v2랑 발표 아웃라인, 웹페이지는 '현재 발표 자료'로 묶어줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "이전 초안"
+    },
+    {
+     "op": "move",
+     "file": "paper/leafproto_draft_v1.pdf",
+     "to": "이전 초안"
+    }
+   ],
    "groups": [
     {
      "name": "모델·학습 코드",

@@ -3,7 +3,27 @@
  "preferences": [
   {
    "id": "stage",
-   "text": "작업 순서대로 묶어줘, 원본 데이터 → 정제 코드 → EDA → 모델링 → 보고서 이런 식으로",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "EDA 단계"
+    },
+    {
+     "op": "move",
+     "file": "data/clean_seoul_bike_2025.csv",
+     "to": "데이터 정제 코드"
+    },
+    {
+     "op": "move",
+     "file": "src/features.py",
+     "to": "EDA·모델링 노트북"
+    },
+    {
+     "op": "move",
+     "file": "notebooks/01_eda.ipynb",
+     "to": "EDA 단계"
+    }
+   ],
    "groups": [
     {
      "name": "보고서와 그림",
@@ -41,7 +61,18 @@
   },
   {
    "id": "feedback",
-   "text": "TA 피드백이랑 회의록은 그걸 반영한 보고서 파일이랑 같이 묶어줘",
+   "corrections": [
+    {
+     "op": "move",
+     "file": "notes/ta_feedback.md",
+     "to": "보고서와 그림"
+    },
+    {
+     "op": "move",
+     "file": "notes/team_meeting.md",
+     "to": "보고서와 그림"
+    }
+   ],
    "groups": [
     {
      "name": "보고서와 피드백·회의록",

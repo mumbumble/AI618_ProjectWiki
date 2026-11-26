@@ -22,9 +22,17 @@
     ["notes/meeting_2026-08-19.md", "results/main_results.csv"],
     ["site/index.html", "paper/reposum_draft_v2.pdf"]
    ],
-   "promote": [
-    ["results/ablation.md", "paper/reposum_draft_v2.pdf"],
-    ["results/main_results.csv", "paper/reposum_draft_v2.pdf"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "results/ablation.md",
+     "b": "paper/reposum_draft_v2.pdf"
+    },
+    {
+     "op": "add",
+     "a": "results/main_results.csv",
+     "b": "paper/reposum_draft_v2.pdf"
+    }
    ]
   },
   {
@@ -51,12 +59,32 @@
     ["src/evaluate.py", "src/utils.py"],
     ["src/train.py", "src/utils.py"]
    ],
-   "promote": [
-    ["configs/intra_repo_java.yaml", "src/train.py"],
-    ["src/evaluate.py", "results/main_results.csv"],
-    ["src/train.py", "src/data.py"],
-    ["src/evaluate.py", "src/reposum_model.py"],
-    ["src/train.py", "src/reposum_model.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "configs/intra_repo_java.yaml",
+     "b": "src/train.py"
+    },
+    {
+     "op": "add",
+     "a": "src/evaluate.py",
+     "b": "results/main_results.csv"
+    },
+    {
+     "op": "add",
+     "a": "src/train.py",
+     "b": "src/data.py"
+    },
+    {
+     "op": "add",
+     "a": "src/evaluate.py",
+     "b": "src/reposum_model.py"
+    },
+    {
+     "op": "add",
+     "a": "src/train.py",
+     "b": "src/reposum_model.py"
+    }
    ]
   }
  ]

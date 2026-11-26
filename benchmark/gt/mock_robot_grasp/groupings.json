@@ -3,7 +3,41 @@
  "preferences": [
   {
    "id": "component",
-   "text": "SRS, CAR, 범위 커리큘럼 같은 방법 구성요소별로 묶어서, 각각 설명 문서랑 구현 코드(src/contact_reward.py, src/data.py 등), 설정이 한곳에 모이게 해줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "평가·공용 코드"
+    },
+    {
+     "op": "add_group",
+     "name": "SRS 구조화 랜덤화"
+    },
+    {
+     "op": "move",
+     "file": "src/train.py",
+     "to": "설정 및 학습 로그"
+    },
+    {
+     "op": "move",
+     "file": "notes/meeting_2026-03-09.md",
+     "to": "모델·학습 코드"
+    },
+    {
+     "op": "move",
+     "file": "src/evaluate.py",
+     "to": "평가·공용 코드"
+    },
+    {
+     "op": "move",
+     "file": "src/utils.py",
+     "to": "평가·공용 코드"
+    },
+    {
+     "op": "move",
+     "file": "src/data.py",
+     "to": "SRS 구조화 랜덤화"
+    }
+   ],
    "groups": [
     {
      "name": "논문·관련 연구",
@@ -45,7 +79,26 @@
   },
   {
    "id": "version",
-   "text": "논문 draft v1이랑 v2를 따로 묶어서 옛 버전이랑 최신 버전을 구분해줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "논문 이전 버전 (v1)"
+    },
+    {
+     "op": "add_group",
+     "name": "논문 최신 버전 (v2)"
+    },
+    {
+     "op": "move",
+     "file": "paper/graspdr_draft_v1.pdf",
+     "to": "논문 이전 버전 (v1)"
+    },
+    {
+     "op": "move",
+     "file": "paper/graspdr_draft_v2.pdf",
+     "to": "논문 최신 버전 (v2)"
+    }
+   ],
    "groups": [
     {
      "name": "모델·학습 코드",

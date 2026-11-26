@@ -17,10 +17,22 @@
     ["mingpt.jpg", "mingpt/model.py"],
     ["tests/test_huggingface_import.py", "mingpt/bpe.py"]
    ],
-   "promote": [
-    ["README.md", "mingpt/bpe.py"],
-    ["README.md", "mingpt/model.py"],
-    ["mingpt/bpe.py", "mingpt/model.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "mingpt/bpe.py"
+    },
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "mingpt/model.py"
+    },
+    {
+     "op": "add",
+     "a": "mingpt/bpe.py",
+     "b": "mingpt/model.py"
+    }
    ]
   },
   {
@@ -45,11 +57,27 @@
     ["projects/chargpt/chargpt.py", "mingpt/utils.py"],
     ["projects/adder/adder.py", "projects/adder/readme.md"]
    ],
-   "promote": [
-    ["demo.ipynb", "mingpt/trainer.py"],
-    ["projects/adder/adder.py", "mingpt/trainer.py"],
-    ["projects/chargpt/chargpt.py", "mingpt/trainer.py"],
-    ["projects/adder/adder.py", "mingpt/utils.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "demo.ipynb",
+     "b": "mingpt/trainer.py"
+    },
+    {
+     "op": "add",
+     "a": "projects/adder/adder.py",
+     "b": "mingpt/trainer.py"
+    },
+    {
+     "op": "add",
+     "a": "projects/chargpt/chargpt.py",
+     "b": "mingpt/trainer.py"
+    },
+    {
+     "op": "add",
+     "a": "projects/adder/adder.py",
+     "b": "mingpt/utils.py"
+    }
    ]
   }
  ]

@@ -3,7 +3,35 @@
  "preferences": [
   {
    "id": "layers",
-   "text": "코어 알고리즘(core.py)이랑 파일 읽기/쓰기(io.py), 플러그인을 계층별로 따로 묶고, CLI는 또 따로 빼줘.",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "코어 알고리즘"
+    },
+    {
+     "op": "add_group",
+     "name": "파일 읽기/쓰기"
+    },
+    {
+     "op": "add_group",
+     "name": "플러그인"
+    },
+    {
+     "op": "move",
+     "file": "trackslim/core.py",
+     "to": "코어 알고리즘"
+    },
+    {
+     "op": "move",
+     "file": "trackslim/io.py",
+     "to": "파일 읽기/쓰기"
+    },
+    {
+     "op": "move",
+     "file": "trackslim/plugins/elevation_guard.py",
+     "to": "플러그인"
+    }
+   ],
    "groups": [
     {
      "name": "문서와 예제",
@@ -49,7 +77,32 @@
   },
   {
    "id": "bugfix",
-   "text": "이슈 #37이랑 관련된 파일들, 그러니까 이슈 문서, 회의록, io.py, test_io.py, CHANGELOG를 한 그룹으로 묶어줘.",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "이슈·회의·로드맵 (새 그룹)"
+    },
+    {
+     "op": "move",
+     "file": "CHANGELOG.md",
+     "to": "이슈·회의·로드맵"
+    },
+    {
+     "op": "move",
+     "file": "tests/test_io.py",
+     "to": "이슈·회의·로드맵"
+    },
+    {
+     "op": "move",
+     "file": "trackslim/io.py",
+     "to": "이슈·회의·로드맵"
+    },
+    {
+     "op": "move",
+     "file": "notes/roadmap.md",
+     "to": "이슈·회의·로드맵 (새 그룹)"
+    }
+   ],
    "groups": [
     {
      "name": "이슈 #37 관련",

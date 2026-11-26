@@ -3,7 +3,63 @@
  "preferences": [
   {
    "id": "usecase",
-   "text": "튜토리얼 노트북을 함수 피팅, 분류, PDE, 물리 같은 적용 분야별로 나눠서 묶어줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "함수 피팅·연속 학습"
+    },
+    {
+     "op": "add_group",
+     "name": "해석·컴파일러"
+    },
+    {
+     "op": "add_group",
+     "name": "PDE 풀이"
+    },
+    {
+     "op": "add_group",
+     "name": "물리 응용"
+    },
+    {
+     "op": "add_group",
+     "name": "분류"
+    },
+    {
+     "op": "move",
+     "file": "tutorials/Example/Example_1_function_fitting.ipynb",
+     "to": "함수 피팅·연속 학습"
+    },
+    {
+     "op": "move",
+     "file": "tutorials/Example/Example_8_continual_learning.ipynb",
+     "to": "함수 피팅·연속 학습"
+    },
+    {
+     "op": "move",
+     "file": "tutorials/Interp/Interp_3_KAN_Compiler.ipynb",
+     "to": "해석·컴파일러"
+    },
+    {
+     "op": "move",
+     "file": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+     "to": "해석·컴파일러"
+    },
+    {
+     "op": "move",
+     "file": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+     "to": "PDE 풀이"
+    },
+    {
+     "op": "move",
+     "file": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+     "to": "물리 응용"
+    },
+    {
+     "op": "move",
+     "file": "tutorials/Example/Example_4_classfication.ipynb",
+     "to": "분류"
+    }
+   ],
    "groups": [
     {
      "name": "KAN 핵심 모델 코드",
@@ -49,7 +105,51 @@
   },
   {
    "id": "pipeline",
-   "text": "kan 코드를 스플라인·레이어 같은 기초 계산, 모델 본체, 가지치기·심볼릭·컴파일러 같은 해석 도구 순서로 단계별로 묶어줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "기초 계산 (스플라인·레이어)"
+    },
+    {
+     "op": "add_group",
+     "name": "모델 본체"
+    },
+    {
+     "op": "move",
+     "file": "kan/KANLayer.py",
+     "to": "기초 계산 (스플라인·레이어)"
+    },
+    {
+     "op": "move",
+     "file": "kan/LBFGS.py",
+     "to": "기초 계산 (스플라인·레이어)"
+    },
+    {
+     "op": "move",
+     "file": "kan/spline.py",
+     "to": "기초 계산 (스플라인·레이어)"
+    },
+    {
+     "op": "move",
+     "file": "kan/utils.py",
+     "to": "기초 계산 (스플라인·레이어)"
+    },
+    {
+     "op": "move",
+     "file": "kan/MLP.py",
+     "to": "모델 본체"
+    },
+    {
+     "op": "move",
+     "file": "kan/MultKAN.py",
+     "to": "모델 본체"
+    },
+    {
+     "op": "move",
+     "file": "kan/__init__.py",
+     "to": "모델 본체"
+    }
+   ],
    "groups": [
     {
      "name": "튜토리얼 노트북",

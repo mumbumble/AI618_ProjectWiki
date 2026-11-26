@@ -20,11 +20,27 @@
     ["README.md", "trackslim/plugins/elevation_guard.py"],
     ["docs/api.md", "trackslim/__init__.py"]
    ],
-   "promote": [
-    ["docs/api.md", "trackslim/core.py"],
-    ["notes/roadmap.md", "docs/design.md"],
-    ["docs/design.md", "trackslim/io.py"],
-    ["docs/design.md", "trackslim/plugins/elevation_guard.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "docs/api.md",
+     "b": "trackslim/core.py"
+    },
+    {
+     "op": "add",
+     "a": "notes/roadmap.md",
+     "b": "docs/design.md"
+    },
+    {
+     "op": "add",
+     "a": "docs/design.md",
+     "b": "trackslim/io.py"
+    },
+    {
+     "op": "add",
+     "a": "docs/design.md",
+     "b": "trackslim/plugins/elevation_guard.py"
+    }
    ]
   },
   {
@@ -45,12 +61,32 @@
     ["tests/test_io.py", "trackslim/__init__.py"],
     ["trackslim/cli.py", "trackslim/io.py"]
    ],
-   "promote": [
-    ["docs/api.md", "trackslim/io.py"],
-    ["docs/design.md", "trackslim/io.py"],
-    ["tests/test_io.py", "issues/issue_37.md"],
-    ["issues/issue_37.md", "trackslim/io.py"],
-    ["tests/test_io.py", "trackslim/io.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "docs/api.md",
+     "b": "trackslim/io.py"
+    },
+    {
+     "op": "add",
+     "a": "docs/design.md",
+     "b": "trackslim/io.py"
+    },
+    {
+     "op": "add",
+     "a": "tests/test_io.py",
+     "b": "issues/issue_37.md"
+    },
+    {
+     "op": "add",
+     "a": "issues/issue_37.md",
+     "b": "trackslim/io.py"
+    },
+    {
+     "op": "add",
+     "a": "tests/test_io.py",
+     "b": "trackslim/io.py"
+    }
    ]
   }
  ]

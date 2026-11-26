@@ -20,8 +20,12 @@
     ["docs/design.md", "csvdelta/io.py"],
     ["notes/roadmap.md", "docs/design.md"]
    ],
-   "promote": [
-    ["docs/design.md", "csvdelta/core.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "docs/design.md",
+     "b": "csvdelta/core.py"
+    }
    ]
   },
   {
@@ -43,10 +47,22 @@
     ["docs/api.md", "csvdelta/io.py"],
     ["docs/design.md", "csvdelta/io.py"]
    ],
-   "promote": [
-    ["issues/issue_42.md", "csvdelta/io.py"],
-    ["tests/test_io.py", "csvdelta/io.py"],
-    ["tests/test_io.py", "issues/issue_42.md"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "issues/issue_42.md",
+     "b": "csvdelta/io.py"
+    },
+    {
+     "op": "add",
+     "a": "tests/test_io.py",
+     "b": "csvdelta/io.py"
+    },
+    {
+     "op": "add",
+     "a": "tests/test_io.py",
+     "b": "issues/issue_42.md"
+    }
    ]
   }
  ]

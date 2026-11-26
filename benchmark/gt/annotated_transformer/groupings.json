@@ -3,7 +3,36 @@
  "preferences": [
   {
    "id": "pipeline",
-   "text": "빌드 과정 순서대로 묶어줘, 소스 .py → 노트북 변환 → HTML 문서 만드는 데 쓰이는 파일들(Makefile, docs 스타일, 노트북)끼리 한 그룹으로",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "문서 및 README (새 그룹)"
+    },
+    {
+     "op": "move",
+     "file": "AnnotatedTransformer.ipynb",
+     "to": "문서 및 README"
+    },
+    {
+     "op": "move",
+     "file": "Makefile",
+     "to": "문서 및 README"
+    },
+    {
+     "op": "move",
+     "file": "the_annotated_transformer.py",
+     "to": "문서 및 README"
+    },
+    {
+     "op": "move",
+     "file": "README.md",
+     "to": "문서 및 README (새 그룹)"
+    },
+    {
+     "op": "delete_group",
+     "name": "모델 구현 코드"
+    }
+   ],
    "groups": [
     {
      "name": "빌드 파이프라인",
@@ -29,7 +58,22 @@
   },
   {
    "id": "components",
-   "text": "어텐션 그림이랑 그걸 구현한 코드는 같이 묶어줘, ModalNet 이미지들은 the_annotated_transformer.py 옆에 두고 aiayn.png는 따로 빼고",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "논문 저자 이미지"
+    },
+    {
+     "op": "move",
+     "file": "the_annotated_transformer.py",
+     "to": "아키텍처 그림"
+    },
+    {
+     "op": "move",
+     "file": "images/aiayn.png",
+     "to": "논문 저자 이미지"
+    }
+   ],
    "groups": [
     {
      "name": "어텐션 그림과 구현 코드",

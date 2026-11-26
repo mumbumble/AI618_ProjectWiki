@@ -3,7 +3,23 @@
  "preferences": [
   {
    "id": "results",
-   "text": "최종 보고서랑 그림 같은 결과물을 맨 위에 두고, 노트북이랑 코드는 가운데, 원본 데이터는 맨 아래로 내려줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "notebooks/02_model.ipynb",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "report/figures/predicted_vs_actual_grade.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "report/figures/sleep_vs_grade_scatter.png",
+     "importance": 3
+    }
+   ],
    "levels": {
     "top": ["README.md", "report/figures/predicted_vs_actual_grade.png", "report/figures/sleep_vs_grade_scatter.png", "report/final_report.md"],
     "middle": ["assignment/project_spec.pdf", "data/clean_student_sleep_survey_2026.csv", "data/codebook.md", "notebooks/01_eda.ipynb", "notebooks/02_model.ipynb", "notes/ta_feedback.md", "notes/team_meeting.md", "references/notes_han2024_sleep_parttime_grades.md", "src/clean_data.py", "src/features.py"],
@@ -12,7 +28,18 @@
   },
   {
    "id": "spec",
-   "text": "과제 명세서(project_spec.pdf)랑 README처럼 요구사항 정하는 문서를 맨 위에 올리고, 그걸 따라 만든 코드와 데이터는 아래에 둬.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "assignment/project_spec.pdf",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "notebooks/02_model.ipynb",
+     "importance": 2
+    }
+   ],
    "levels": {
     "top": ["README.md", "assignment/project_spec.pdf", "report/final_report.md"],
     "middle": ["data/clean_student_sleep_survey_2026.csv", "data/codebook.md", "notebooks/01_eda.ipynb", "notebooks/02_model.ipynb", "notes/ta_feedback.md", "notes/team_meeting.md", "references/notes_han2024_sleep_parttime_grades.md", "report/figures/predicted_vs_actual_grade.png", "report/figures/sleep_vs_grade_scatter.png", "src/clean_data.py", "src/features.py"],

@@ -27,7 +27,7 @@ from projectwiki.models.preference import CORRECTORS  # noqa: E402
 from projectwiki.schema import Graph  # noqa: E402
 from graph_metrics import (aggregate, evaluate, group_scores, level_order_accuracy, markdown_table,  # noqa: E402
                            partition_ari)
-from gt_format import (GroundTruth, check_groupings, check_level_prefs, check_purposes, level_map,  # noqa: E402
+from gt_format import (GroundTruth, check_groupings, describe_corrections, check_level_prefs, check_purposes, level_map,  # noqa: E402
                        load_preferences, load_purposes, purpose_view)
 from projectwiki.srcs.record import Record  # noqa: E402
 from feedback_sim import PERSONAS, curve_svg, simulate  # noqa: E402
@@ -66,7 +66,7 @@ def preference_section(names: list[str], gts: dict, graphs: dict) -> str:
             vals = {"project": partition_ari(gt.groups, p["groups"]),
                     **{s: group_scores(graphs[s][n], view)["group_ari"] if n in graphs[s] else None for s in SYSTEMS}}
             g_vals.setdefault(tag, []).append(vals)
-            g_rows.append(f"| {n} | {p['id']} | {p['text']} | {len(p['groups'])} | {num(vals['project'])} | "
+            g_rows.append(f"| {n} | {p['id']} | {describe_corrections(p['corrections'])} | {len(p['groups'])} | {num(vals['project'])} | "
                           + " | ".join(num(vals[s]) for s in SYSTEMS) + " |")
         default = level_map(gt.levels)
         for p in load_preferences(d, "levels"):
@@ -75,12 +75,13 @@ def preference_section(names: list[str], gts: dict, graphs: dict) -> str:
             vals = {"default": level_order_accuracy(default, lv) if default else None, "moved": moved / len(lv) if lv else None}
             l_vals.setdefault(tag, []).append(vals)
             c = {k: len(p["levels"].get(k, [])) for k in ("top", "middle", "bottom")}
-            l_rows.append(f"| {n} | {p['id']} | {p['text']} | {c['top']} / {c['middle']} / {c['bottom']} | "
+            l_rows.append(f"| {n} | {p['id']} | {describe_corrections(p['corrections'])} | {c['top']} / {c['middle']} / {c['bottom']} | "
                           f"{num(vals['moved'], True)} | {num(vals['default'], True)} |")
     if not g_rows and not l_rows:
         return ""
     out = ["\n## Preferences: grouping and level\n",
-           "Each preference is a pair: the user's preference in words (the input) and the map it should produce (the output). "
+           "Each grouping or level preference is a pair: the user's corrections in the viewer (the input) and the map they "
+           "should produce (the output). "
            "Link preferences are the purposes below. Group ARI compares a grouping with the preference's groups (1 = the same "
            "grouping); the graphs were built without the preference. Level order is `graph_metrics.level_order_accuracy` of the "
            "default levels (gt.json) against the preference's levels: 100% = the preference changes nothing, 50% = unrelated.\n"]
@@ -90,14 +91,14 @@ def preference_section(names: list[str], gts: dict, graphs: dict) -> str:
         for tag, vs in g_vals.items():
             out.append(f"| {tag} | {len(vs)} | {num(mean(v['project'] for v in vs))} | "
                        + " | ".join(num(mean(v[s] for v in vs)) for s in SYSTEMS) + " |")
-        out.append("\n<details><summary>every grouping preference</summary>\n\n| project | id | preference | groups | ARI: project groups | "
+        out.append("\n<details><summary>every grouping preference</summary>\n\n| project | id | corrections | groups | ARI: project groups | "
                    + " | ".join(f"ARI: {s}" for s in SYSTEMS) + " |\n|---|---|---|---:|---:|"
                    + "---:|" * len(SYSTEMS) + "\n" + "\n".join(g_rows) + "\n\n</details>\n")
     if l_rows:
         out.append("| level preferences | n | files whose level changes | level order vs default |\n|---|---:|---:|---:|")
         for tag, vs in l_vals.items():
             out.append(f"| {tag} | {len(vs)} | {num(mean(v['moved'] for v in vs), True)} | {num(mean(v['default'] for v in vs), True)} |")
-        out.append("\n<details><summary>every level preference</summary>\n\n| project | id | preference | top / middle / bottom | "
+        out.append("\n<details><summary>every level preference</summary>\n\n| project | id | corrections | top / middle / bottom | "
                    "files moved | level order vs default |\n|---|---|---|---|---:|---:|\n"
                    + "\n".join(l_rows) + "\n\n</details>\n")
     out.append("No system draws levels yet, so there is no level score for the systems; a view without levels scores 50%.\n")

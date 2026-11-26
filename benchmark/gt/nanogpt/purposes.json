@@ -16,8 +16,12 @@
     ["train.py", "model.py"],
     ["train.py", "transformer_sizing.ipynb"]
    ],
-   "promote": [
-    ["bench.py", "transformer_sizing.ipynb"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "bench.py",
+     "b": "transformer_sizing.ipynb"
+    }
    ]
   },
   {
@@ -41,11 +45,27 @@
     ["configurator.py", "train.py"],
     ["data/shakespeare_char/prepare.py", "data/shakespeare_char/readme.md"]
    ],
-   "promote": [
-    ["config/train_shakespeare_char.py", "data/shakespeare_char/prepare.py"],
-    ["config/train_shakespeare_char.py", "train.py"],
-    ["data/shakespeare_char/prepare.py", "sample.py"],
-    ["data/shakespeare_char/prepare.py", "train.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "config/train_shakespeare_char.py",
+     "b": "data/shakespeare_char/prepare.py"
+    },
+    {
+     "op": "add",
+     "a": "config/train_shakespeare_char.py",
+     "b": "train.py"
+    },
+    {
+     "op": "add",
+     "a": "data/shakespeare_char/prepare.py",
+     "b": "sample.py"
+    },
+    {
+     "op": "add",
+     "a": "data/shakespeare_char/prepare.py",
+     "b": "train.py"
+    }
    ]
   }
  ]
