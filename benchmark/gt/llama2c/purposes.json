@@ -20,10 +20,22 @@
     ["export.py", "tokenizer.py"],
     ["test.c", "tokenizer.py"]
    ],
-   "promote": [
-    ["doc/stories260K.md", "tokenizer.py"],
-    ["doc/train_llama_tokenizer.md", "tinystories.py"],
-    ["doc/train_llama_tokenizer.md", "tokenizer.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "doc/stories260K.md",
+     "b": "tokenizer.py"
+    },
+    {
+     "op": "add",
+     "a": "doc/train_llama_tokenizer.md",
+     "b": "tinystories.py"
+    },
+    {
+     "op": "add",
+     "a": "doc/train_llama_tokenizer.md",
+     "b": "tokenizer.py"
+    }
    ]
   },
   {
@@ -44,8 +56,12 @@
     ["model.py", "runq.c"],
     ["runq.c", "win.h"]
    ],
-   "promote": [
-    ["runq.c", "test.c"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "runq.c",
+     "b": "test.c"
+    }
    ]
   }
  ]

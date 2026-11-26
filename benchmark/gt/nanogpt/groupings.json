@@ -3,7 +3,37 @@
  "preferences": [
   {
    "id": "dataset",
-   "text": "셰익스피어 관련 파일끼리, OpenWebText 관련 파일끼리 묶어줘. 데이터 준비 스크립트랑 그 데이터로 돌리는 config도 같이 넣어서.",
+   "corrections": [
+    {
+     "op": "move",
+     "file": "config/finetune_shakespeare.py",
+     "to": "데이터 준비"
+    },
+    {
+     "op": "move",
+     "file": "config/train_shakespeare_char.py",
+     "to": "데이터 준비"
+    },
+    {
+     "op": "move",
+     "file": "config/train_gpt2.py",
+     "to": "평가 설정 (config)"
+    },
+    {
+     "op": "move",
+     "file": "data/openwebtext/prepare.py",
+     "to": "평가 설정 (config)"
+    },
+    {
+     "op": "move",
+     "file": "data/openwebtext/readme.md",
+     "to": "평가 설정 (config)"
+    },
+    {
+     "op": "delete_group",
+     "name": "학습 설정 (config)"
+    }
+   ],
    "groups": [
     {
      "name": "셰익스피어 데이터·설정",
@@ -29,7 +59,36 @@
   },
   {
    "id": "stage",
-   "text": "작업 순서대로 묶어줘. 데이터 준비 → 학습 → 평가 → 샘플링 순으로, 각 단계에 쓰는 코드랑 config를 같이 놓고.",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "4. 샘플링"
+    },
+    {
+     "op": "move",
+     "file": "config/finetune_shakespeare.py",
+     "to": "모델·학습 코드"
+    },
+    {
+     "op": "move",
+     "file": "config/train_gpt2.py",
+     "to": "모델·학습 코드"
+    },
+    {
+     "op": "move",
+     "file": "config/train_shakespeare_char.py",
+     "to": "모델·학습 코드"
+    },
+    {
+     "op": "move",
+     "file": "sample.py",
+     "to": "4. 샘플링"
+    },
+    {
+     "op": "delete_group",
+     "name": "학습 설정 (config)"
+    }
+   ],
    "groups": [
     {
      "name": "2. 학습 코드·설정",

@@ -18,11 +18,27 @@
     ["report/final_report.md", "report/figures/predicted_vs_actual_grade.png"],
     ["report/final_report.md", "report/figures/sleep_vs_grade_scatter.png"]
    ],
-   "promote": [
-    ["notebooks/02_model.ipynb", "data/clean_student_sleep_survey_2026.csv"],
-    ["report/final_report.md", "notebooks/02_model.ipynb"],
-    ["notes/ta_feedback.md", "references/notes_han2024_sleep_parttime_grades.md"],
-    ["notes/ta_feedback.md", "report/final_report.md"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "notebooks/02_model.ipynb",
+     "b": "data/clean_student_sleep_survey_2026.csv"
+    },
+    {
+     "op": "add",
+     "a": "report/final_report.md",
+     "b": "notebooks/02_model.ipynb"
+    },
+    {
+     "op": "add",
+     "a": "notes/ta_feedback.md",
+     "b": "references/notes_han2024_sleep_parttime_grades.md"
+    },
+    {
+     "op": "add",
+     "a": "notes/ta_feedback.md",
+     "b": "report/final_report.md"
+    }
    ]
   },
   {
@@ -42,10 +58,22 @@
     ["notebooks/01_eda.ipynb", "data/clean_student_sleep_survey_2026.csv"],
     ["data/codebook.md", "data/raw_student_sleep_survey_2026.csv"]
    ],
-   "promote": [
-    ["notebooks/02_model.ipynb", "data/clean_student_sleep_survey_2026.csv"],
-    ["src/clean_data.py", "data/raw_student_sleep_survey_2026.csv"],
-    ["notebooks/02_model.ipynb", "src/features.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "notebooks/02_model.ipynb",
+     "b": "data/clean_student_sleep_survey_2026.csv"
+    },
+    {
+     "op": "add",
+     "a": "src/clean_data.py",
+     "b": "data/raw_student_sleep_survey_2026.csv"
+    },
+    {
+     "op": "add",
+     "a": "notebooks/02_model.ipynb",
+     "b": "src/features.py"
+    }
    ]
   }
  ]

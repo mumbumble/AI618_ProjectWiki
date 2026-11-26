@@ -117,11 +117,14 @@ class GroundTruth:
 
 
 # ---- preference ground truth --------------------------------------------------------------------
-# Each file: {"project", <key>: [{"id", "text", <output>}]}. `text` is the user's
-# preference (the input); the output is what the map should show for it.
+# groupings.json and levels.json: {"project", "preferences": [{"id", "corrections", <output>}]}. The input is the
+# corrections (structured viewer edits, below), the output is what the map should show after them.
+# purposes.json: {"project", "purposes": [{"id", "base", "text", <output>, "corrections"}]}. `text` is the purpose
+# (the pipeline's --purpose input, the user's intent); the corrections are the link edits it implies.
+# Every record also has "corrections" (below): the viewer edits that give the output from the default ground truth.
 # purposes.json, key "purposes": also "base" (the side the purpose starts from: code | docs), output "needed" and
-#   "optional" ([[a, b]] ground-truth pairs), "promote" (the needed pairs that are weak by default: the links this
-#   preference changes; every other link keeps its default state) and, for the teammate's hand labels, "notes" {pair_key: why}.
+#   "optional" ([[a, b]] ground-truth pairs; the needed links become key links, every other link keeps its default
+#   state) and, for the teammate's hand labels, "notes" {pair_key: why}.
 # groupings.json, key "preferences": output "groups" [{"name", "members"}], every project file once.
 # levels.json, key "preferences": output "levels" {"top", "middle", "bottom": [paths]}, every project file once.
 LEVEL_VALUE = {"top": 3, "middle": 2, "bottom": 1}
@@ -169,44 +172,45 @@ def check_groups(files: set[str], groups: list[dict], who: str) -> list[str]:
             + [f"{who}: {m} is in no group" for m in sorted(files - set(members))])
 
 
-def check_ids(prefs: list[dict]) -> list[str]:
+def check_ids(prefs: list[dict], text: bool = False) -> list[str]:
+    """Ids present and distinct; with text=True (purposes) also a non-empty text."""
     problems, ids = [], set()
     for p in prefs:
         pid = p.get("id")
         if not pid or pid in ids:
             problems.append(f"preference id missing or repeated: {pid!r}")
         ids.add(pid)
-        if not p.get("text", "").strip():
+        if text and not p.get("text", "").strip():
             problems.append(f"{pid}: empty text")
     return problems
 
 
 def check_purposes(gt: GroundTruth, purposes: list[dict]) -> list[str]:
-    """Problems in a project's purposes: unknown pairs, a pair both needed and optional, a `promote` list that is not
-    exactly the needed links that are weak by default, bad ids or text."""
-    edges, problems = gt.edge_by_key, check_ids(purposes)
+    """Problems in a project's purposes: unknown pairs, a pair both needed and optional, corrections that do not give
+    the purpose's links, bad ids or text."""
+    edges, problems = gt.edge_by_key, check_ids(purposes, text=True)
     for p in purposes:
         pid = p.get("id")
         needed = {pair_key(a, b) for a, b in p.get("needed", [])}
         optional = {pair_key(a, b) for a, b in p.get("optional", [])}
         problems += [f"{pid}: {k} is not a ground-truth edge" for k in sorted((needed | optional) - edges.keys())]
         problems += [f"{pid}: {k} is both needed and optional" for k in sorted(needed & optional)]
-        if "promote" in p:
-            promote = {pair_key(a, b) for a, b in p["promote"]}
-            weak_needed = {k for k in needed if k in edges and not edges[k].required}
-            problems += [f"{pid}: promote should be the needed links that are weak by default"] if promote != weak_needed else []
+    if not problems:
+        problems += check_corrections(gt, "purposes", purposes)
     return problems
 
 
 def check_groupings(gt: GroundTruth, prefs: list[dict]) -> list[str]:
     files = project_files(gt)
-    return check_ids(prefs) + [x for p in prefs for x in check_groups(files, p.get("groups", []), str(p.get("id")))]
+    problems = check_ids(prefs) + [x for p in prefs for x in check_groups(files, p.get("groups", []), str(p.get("id")))]
+    return problems or check_corrections(gt, "groupings", prefs)
 
 
 def check_level_prefs(gt: GroundTruth, prefs: list[dict]) -> list[str]:
     files = project_files(gt)
     problems = check_ids(prefs) + [x for p in prefs for x in check_levels(files, p.get("levels", {}), str(p.get("id")))]
-    return problems + (check_levels(files, gt.levels, "default levels") if gt.levels else [])
+    problems += check_levels(files, gt.levels, "default levels") if gt.levels else []
+    return problems or check_corrections(gt, "levels", prefs)
 
 
 def purpose_view(gt: GroundTruth, purpose: dict) -> GroundTruth:
@@ -215,3 +219,156 @@ def purpose_view(gt: GroundTruth, purpose: dict) -> GroundTruth:
     dropped. The same shape as feedback_sim.persona_view, so every metric applies."""
     needed = {pair_key(a, b) for a, b in purpose.get("needed", [])}
     return replace(gt, edges=[replace(e, required=e.required or e.key in needed) for e in gt.edges])
+
+
+# ---- structured corrections ---------------------------------------------------------------------
+# Each preference also holds "corrections": the edits a user makes in the viewer to turn the default ground truth into
+# the preference's output (the input format chosen at the 2026-11-26 meeting; the sentence stays as the user's intent).
+# - grouping: {"op": "move", "file", "to"} / {"op": "add_group", "name"} / {"op": "delete_group", "name"} (an empty group)
+# - link: {"op": "add", "a", "b"} (a weak link becomes a key link) / {"op": "delete", "a", "b"} /
+#   {"op": "change", "a", "b", "to": [a2, b2]}. Only "add" occurs so far: link preferences raise links, never drop them.
+# - level: {"op": "set_level", "file", "importance": 3 | 2 | 1} (3 = top, 2 = middle, 1 = bottom)
+# The apply_* functions replay them on the default; check_corrections verifies they give the preference's output.
+IMPORTANCE_LEVEL = {v: k for k, v in LEVEL_VALUE.items()}
+
+
+def partition(groups: list[dict]) -> frozenset:
+    return frozenset(frozenset(g["members"]) for g in groups)
+
+
+def grouping_corrections(default: list[dict], groups: list[dict]) -> list[dict]:
+    """Few edits from the default groups to `groups`: each preference group continues the default group it shares the
+    most files with (each default group once, the same name breaking ties); the others are added; files not already
+    there move; emptied default groups are deleted."""
+    home = {m: g["name"] for g in default for m in g["members"]}
+    overlaps = sorted(((len(set(p["members"]) & set(d["members"])), p["name"] == d["name"], -i, -j)
+                       for i, p in enumerate(groups) for j, d in enumerate(default)), reverse=True)
+    keep, used = {}, set()
+    for size, _, i, j in overlaps:  # most shared files first; on a tie the group that kept its name
+        if size and -i not in keep and -j not in used:
+            keep[-i] = default[-j]["name"]
+            used.add(-j)
+    taken = {d["name"] for d in default}
+    name, ops = {}, []
+    for i, g in enumerate(groups):
+        if i in keep:
+            name[i] = keep[i]
+        else:
+            name[i] = g["name"] if g["name"] not in taken else f"{g['name']} (새 그룹)"
+            taken.add(name[i])
+            ops.append({"op": "add_group", "name": name[i]})
+    ops += [{"op": "move", "file": m, "to": name[i]} for i, g in enumerate(groups) for m in sorted(g["members"])
+            if home.get(m) != name[i]]
+    return ops + [{"op": "delete_group", "name": d["name"]} for j, d in enumerate(default) if j not in used]
+
+
+def apply_grouping(default: list[dict], ops: list[dict]) -> list[dict]:
+    groups = {g["name"]: list(g["members"]) for g in default}
+    for o in ops:
+        if o["op"] == "add_group":
+            if o["name"] in groups:
+                raise ValueError(f"add_group: {o['name']} exists")
+            groups[o["name"]] = []
+        elif o["op"] == "move":
+            if o["to"] not in groups:
+                raise ValueError(f"move: no group {o['to']}")
+            for members in groups.values():
+                if o["file"] in members:
+                    members.remove(o["file"])
+            groups[o["to"]].append(o["file"])
+        elif o["op"] == "delete_group":
+            if groups.get(o["name"]) is None or groups[o["name"]]:
+                raise ValueError(f"delete_group: {o['name']} is missing or not empty")
+            del groups[o["name"]]
+        else:
+            raise ValueError(f"unknown grouping op {o['op']!r}")
+    return [{"name": n, "members": sorted(ms)} for n, ms in groups.items()]
+
+
+def link_corrections(gt: GroundTruth, needed: list[list[str]]) -> list[dict]:
+    """A link preference raises the needed links that are weak by default; nothing else changes."""
+    edges = gt.edge_by_key
+    return [{"op": "add", "a": a, "b": b} for a, b in needed if not edges[pair_key(a, b)].required]
+
+
+def apply_links(gt: GroundTruth, ops: list[dict]) -> GroundTruth:
+    edges = dict(gt.edge_by_key)
+    for o in ops:
+        k = pair_key(o["a"], o["b"])
+        if k not in edges:
+            raise ValueError(f"{o['op']}: {k} is not a ground-truth edge")
+        if o["op"] == "add":
+            edges[k] = replace(edges[k], required=True)
+        elif o["op"] == "delete":
+            del edges[k]
+        elif o["op"] == "change":
+            a2, b2 = o["to"]
+            edges.pop(k)
+            edges[pair_key(a2, b2)] = replace(gt.edge_by_key[k], a=a2, b=b2, required=True)
+        else:
+            raise ValueError(f"unknown link op {o['op']!r}")
+    return replace(gt, edges=list(edges.values()))
+
+
+def level_corrections(default: dict, levels: dict) -> list[dict]:
+    before, after = level_map(default), level_map(levels)
+    return [{"op": "set_level", "file": f, "importance": after[f]} for f in sorted(after) if after[f] != before.get(f)]
+
+
+def apply_levels(default: dict, ops: list[dict]) -> dict:
+    value = level_map(default)
+    for o in ops:
+        if o["op"] != "set_level" or o["importance"] not in IMPORTANCE_LEVEL or o["file"] not in value:
+            raise ValueError(f"bad level correction {o}")
+        value[o["file"]] = o["importance"]
+    return {k: sorted(f for f, v in value.items() if v == LEVEL_VALUE[k]) for k in LEVEL_VALUE}
+
+
+def check_corrections(gt: GroundTruth, kind: str, prefs: list[dict]) -> list[str]:
+    """Each preference's corrections, replayed on the default ground truth, give exactly its output."""
+    problems = []
+    for p in prefs:
+        pid, ops = p.get("id"), p.get("corrections")
+        if ops is None:
+            problems.append(f"{pid}: no corrections")
+            continue
+        try:
+            if kind == "groupings":
+                ok = partition(apply_grouping(gt.groups, ops)) == partition(p["groups"])
+            elif kind == "levels":
+                ok = level_map(apply_levels(gt.levels, ops)) == level_map(p["levels"])
+            else:
+                weak = {e.key for e in gt.edges if not e.required}
+                ok = (all(pair_key(o["a"], o["b"]) in weak for o in ops if o["op"] == "add")
+                      and {e.key for e in apply_links(gt, ops).edges if e.required}
+                      == {e.key for e in purpose_view(gt, p).edges if e.required})
+        except (ValueError, KeyError) as err:
+            problems.append(f"{pid}: corrections do not apply: {err}")
+            continue
+        if not ok:
+            problems.append(f"{pid}: corrections do not give the preference's output")
+    return problems
+
+
+def describe_corrections(ops: list[dict], limit: int = 4) -> str:
+    """Short Korean summary of corrections, for tables and captions."""
+    name = lambda f: f.rsplit("/", 1)[-1]  # noqa: E731
+    words = []
+    for o in ops:
+        if o["op"] == "move":
+            words.append(f"{name(o['file'])} → {o['to']}")
+        elif o["op"] == "add_group":
+            words.append(f"새 그룹 '{o['name']}'")
+        elif o["op"] == "delete_group":
+            words.append(f"그룹 '{o['name']}' 삭제")
+        elif o["op"] == "set_level":
+            words.append(f"{name(o['file'])} 중요도 {o['importance']}")
+        elif o["op"] == "add":
+            words.append(f"{name(o['a'])}–{name(o['b'])} 핵심으로")
+        elif o["op"] == "delete":
+            words.append(f"{name(o['a'])}–{name(o['b'])} 삭제")
+        elif o["op"] == "change":
+            words.append(f"{name(o['a'])}–{name(o['b'])} 변경")
+    if not words:
+        return "교정 없음"
+    return " · ".join(words[:limit]) + (f" 외 {len(words) - limit}개" if len(words) > limit else "")

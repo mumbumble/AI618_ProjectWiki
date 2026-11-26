@@ -3,7 +3,48 @@
  "preferences": [
   {
    "id": "foundation",
-   "text": "spline.py나 utils.py처럼 다른 파일이 가져다 쓰는 기초 코드를 맨 아래에 두고, 그걸 쓰는 MultKAN이랑 튜토리얼을 위로 올려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "kan/utils.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "tutorials/API_demo/API_1_indexing.ipynb",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "tutorials/Example/Example_1_function_fitting.ipynb",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "tutorials/Example/Example_4_classfication.ipynb",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "tutorials/Example/Example_6_PDE_interpretation.ipynb",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "tutorials/Example/Example_8_continual_learning.ipynb",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "tutorials/Interp/Interp_4_feature_attribution.ipynb",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "tutorials/Physics/Physics_1_Lagrangian.ipynb",
+     "importance": 2
+    }
+   ],
    "levels": {
     "top": ["README.md", "hellokan.ipynb", "kan/MultKAN.py", "paper/kan.pdf", "tutorials/Example/Example_1_function_fitting.ipynb"],
     "middle": ["docs/index.rst", "docs/intro.rst", "docs/kan.rst", "kan/KANLayer.py", "kan/Symbolic_KANLayer.py", "kan/__init__.py", "kan/compiler.py", "related_work/kan2_meets_science.pdf", "setup.py", "tutorials/API_demo/API_1_indexing.ipynb", "tutorials/API_demo/API_7_pruning.ipynb", "tutorials/Example/Example_4_classfication.ipynb", "tutorials/Example/Example_6_PDE_interpretation.ipynb", "tutorials/Example/Example_8_continual_learning.ipynb", "tutorials/Interp/Interp_3_KAN_Compiler.ipynb", "tutorials/Interp/Interp_4_feature_attribution.ipynb", "tutorials/Physics/Physics_1_Lagrangian.ipynb"],
@@ -12,7 +53,53 @@
   },
   {
    "id": "entry",
-   "text": "README랑 hellokan.ipynb처럼 처음 보는 입문 자료를 맨 위에 두고, 세부 API 코드와 논문은 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "docs/kan.rst",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "kan/KANLayer.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "kan/MultKAN.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "kan/Symbolic_KANLayer.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "kan/__init__.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "kan/compiler.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "kan/utils.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "paper/kan.pdf",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "related_work/kan2_meets_science.pdf",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["README.md", "hellokan.ipynb"],
     "middle": ["docs/index.rst", "docs/intro.rst", "kan/MultKAN.py", "setup.py", "tutorials/API_demo/API_7_pruning.ipynb", "tutorials/Example/Example_1_function_fitting.ipynb", "tutorials/Interp/Interp_3_KAN_Compiler.ipynb"],

@@ -3,7 +3,17 @@
  "preferences": [
   {
    "id": "stage",
-   "text": "파일들을 작업 순서대로 묶어줘, 원본 데이터 → 정제 코드 → 정제된 데이터 → 분석 노트북 → 최종 보고서 이렇게 단계별로 보이게.",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "3. 정제된 데이터"
+    },
+    {
+     "op": "move",
+     "file": "data/clean_student_sleep_survey_2026.csv",
+     "to": "3. 정제된 데이터"
+    }
+   ],
    "groups": [
     {
      "name": "5. 최종 보고서와 그림",
@@ -37,7 +47,22 @@
   },
   {
    "id": "feedback",
-   "text": "TA 피드백이랑 팀 회의록은 그 내용이 반영된 최종 보고서랑 결과 그림 옆에 같이 묶어줘.",
+   "corrections": [
+    {
+     "op": "move",
+     "file": "notes/ta_feedback.md",
+     "to": "보고서와 그림"
+    },
+    {
+     "op": "move",
+     "file": "notes/team_meeting.md",
+     "to": "보고서와 그림"
+    },
+    {
+     "op": "delete_group",
+     "name": "회의·피드백 노트"
+    }
+   ],
    "groups": [
     {
      "name": "보고서, 그림, 피드백",

@@ -12,7 +12,7 @@
    "optional": [
     ["README.md", "mnist_forward_forward/README.md"]
    ],
-   "promote": []
+   "corrections": []
   },
   {
    "id": "hogwild",
@@ -27,7 +27,7 @@
     ["mnist_hogwild/README.md", "mnist_hogwild/requirements.txt"],
     ["mnist_hogwild/main.py", "mnist_hogwild/requirements.txt"]
    ],
-   "promote": []
+   "corrections": []
   }
  ]
 }

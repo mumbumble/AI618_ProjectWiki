@@ -3,7 +3,53 @@
  "preferences": [
   {
    "id": "docsfirst",
-   "text": "README나 INSTALL, TRAINING 같은 문서랑 논문을 맨 위에 두고 코드는 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "INSTALL.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "TRAINING.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "main.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "models/convnext.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "object_detection/README.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "optim_factory.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "related_work/swin_transformer.pdf",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "semantic_segmentation/README.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "utils.py",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["INSTALL.md", "README.md", "TRAINING.md", "object_detection/README.md", "paper/convnext.pdf", "semantic_segmentation/README.md"],
     "middle": ["datasets.py", "engine.py", "main.py", "models/convnext.py", "models/convnext_isotropic.py", "object_detection/mmdet/models/backbones/convnext.py", "related_work/swin_transformer.pdf", "run_with_submitit.py", "semantic_segmentation/backbone/convnext.py"],
@@ -12,7 +58,43 @@
   },
   {
    "id": "entrypoint",
-   "text": "main.py랑 run_with_submitit.py 같은 실행 진입점을 위에 두고, 모델 정의랑 유틸은 아래에 놓아줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "models/convnext.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "models/convnext_isotropic.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "object_detection/mmdet/models/backbones/convnext.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "optim_factory.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "run_with_submitit.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "semantic_segmentation/backbone/convnext.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "utils.py",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["README.md", "main.py", "paper/convnext.pdf", "run_with_submitit.py"],
     "middle": ["INSTALL.md", "TRAINING.md", "datasets.py", "engine.py", "object_detection/README.md", "semantic_segmentation/README.md"],

@@ -18,9 +18,17 @@
     ["AnnotatedTransformer.ipynb", "the_annotated_transformer.py"],
     ["images/ModalNet-19.png", "the_annotated_transformer.py"]
    ],
-   "promote": [
-    ["images/ModalNet-20.png", "the_annotated_transformer.py"],
-    ["images/ModalNet-21.png", "the_annotated_transformer.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "images/ModalNet-20.png",
+     "b": "the_annotated_transformer.py"
+    },
+    {
+     "op": "add",
+     "a": "images/ModalNet-21.png",
+     "b": "the_annotated_transformer.py"
+    }
    ]
   },
   {
@@ -40,8 +48,12 @@
     ["Makefile", "docs/tufte.css"],
     ["requirements.txt", "the_annotated_transformer.py"]
    ],
-   "promote": [
-    ["Makefile", "the_annotated_transformer.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "Makefile",
+     "b": "the_annotated_transformer.py"
+    }
    ]
   }
  ]

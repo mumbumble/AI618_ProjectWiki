@@ -3,7 +3,33 @@
  "preferences": [
   {
    "id": "perf",
-   "text": "벤치마크 결과랑 성능 수치(results.csv, 변경 이력)를 맨 위에 올리고 코드랑 문서는 그 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "CHANGELOG.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "README.md",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "benchmarks/results.csv",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "csvdelta/core.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "docs/design.md",
+     "importance": 2
+    }
+   ],
    "levels": {
     "top": ["CHANGELOG.md", "benchmarks/results.csv"],
     "middle": ["README.md", "benchmarks/bench_speed.py", "csvdelta/__init__.py", "csvdelta/cli.py", "csvdelta/core.py", "csvdelta/io.py", "csvdelta/plugins/excel_reader.py", "docs/api.md", "docs/design.md", "examples/demo.ipynb", "notes/roadmap.md", "tests/test_core.py", "tests/test_io.py"],
@@ -12,7 +38,33 @@
   },
   {
    "id": "api",
-   "text": "사용자가 직접 쓰는 README, API 문서, CLI를 위쪽에 두고 내부 구현 코드(core, io)랑 테스트는 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "csvdelta/cli.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "csvdelta/core.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "docs/api.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "tests/test_core.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "tests/test_io.py",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["README.md", "csvdelta/cli.py", "docs/api.md", "docs/design.md"],
     "middle": ["CHANGELOG.md", "benchmarks/bench_speed.py", "csvdelta/__init__.py", "csvdelta/core.py", "csvdelta/io.py", "csvdelta/plugins/excel_reader.py", "examples/demo.ipynb", "notes/roadmap.md"],

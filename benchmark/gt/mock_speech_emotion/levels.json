@@ -3,7 +3,28 @@
  "preferences": [
   {
    "id": "results",
-   "text": "결과표랑 그림, ablation 같은 결과물을 맨 위에 올려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "figures/overview.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "figures/unweighted_accuracy_vs_snr_db.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "results/ablation.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "results/main_results.csv",
+     "importance": 3
+    }
+   ],
    "levels": {
     "top": ["README.md", "docs/method.md", "figures/overview.png", "figures/unweighted_accuracy_vs_snr_db.png", "paper/prosody_ser_draft_v2.pdf", "results/ablation.md", "results/main_results.csv", "src/prosody_ser_model.py"],
     "middle": ["configs/bilingual_6class.yaml", "docs/related_work.md", "notes/meeting_2026-08-27.md", "paper/talk_outline.md", "site/index.html", "src/data.py", "src/evaluate.py", "src/prosody_attention.py", "src/train.py"],
@@ -12,7 +33,53 @@
   },
   {
    "id": "code",
-   "text": "모델 코드 구조(src)를 위에 두고 논문이랑 노트는 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "docs/related_work.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "notes/meeting_2026-08-27.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "paper/prosody_ser_draft_v2.pdf",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "src/data.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "src/evaluate.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "src/plot_results.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "src/prosody_attention.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "src/train.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "src/utils.py",
+     "importance": 2
+    }
+   ],
    "levels": {
     "top": ["README.md", "docs/method.md", "src/data.py", "src/evaluate.py", "src/prosody_attention.py", "src/prosody_ser_model.py", "src/train.py"],
     "middle": ["configs/bilingual_6class.yaml", "figures/overview.png", "figures/unweighted_accuracy_vs_snr_db.png", "paper/talk_outline.md", "results/ablation.md", "results/main_results.csv", "site/index.html", "src/plot_results.py", "src/utils.py"],

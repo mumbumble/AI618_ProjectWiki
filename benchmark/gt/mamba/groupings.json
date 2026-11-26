@@ -3,7 +3,32 @@
  "preferences": [
   {
    "id": "version",
-   "text": "Mamba-1이랑 Mamba-2 관련 파일끼리 따로 묶어줘. mamba_simple, selective_scan 쪽은 1세대, mamba2, ssd 쪽은 2세대로 나눠서 보고 싶어.",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "Mamba-1 (1세대)"
+    },
+    {
+     "op": "move",
+     "file": "mamba_ssm/ops/triton/ssd_combined.py",
+     "to": "Mamba 믹서 레이어"
+    },
+    {
+     "op": "move",
+     "file": "csrc/selective_scan/selective_scan.cpp",
+     "to": "Mamba-1 (1세대)"
+    },
+    {
+     "op": "move",
+     "file": "mamba_ssm/modules/mamba_simple.py",
+     "to": "Mamba-1 (1세대)"
+    },
+    {
+     "op": "move",
+     "file": "mamba_ssm/ops/selective_scan_interface.py",
+     "to": "Mamba-1 (1세대)"
+    }
+   ],
    "groups": [
     {
      "name": "모델 구성·블록 조립",
@@ -37,7 +62,52 @@
   },
   {
    "id": "implement",
-   "text": "논문이랑 도식은 그걸 구현한 코드 옆에 붙여줘. 예를 들면 selection.png는 selective_scan 코드랑, ssd_algorithm.png랑 Transformers are SSMs 논문은 ssd_minimal이랑 같이 묶어줘.",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "Mamba-1 선택적 스캔·논문"
+    },
+    {
+     "op": "move",
+     "file": "assets/ssd_algorithm.png",
+     "to": "Mamba 믹서 레이어"
+    },
+    {
+     "op": "move",
+     "file": "mamba_ssm/ops/triton/ssd_combined.py",
+     "to": "Mamba 믹서 레이어"
+    },
+    {
+     "op": "move",
+     "file": "related_work/mamba2_transformers_are_ssms.pdf",
+     "to": "Mamba 믹서 레이어"
+    },
+    {
+     "op": "move",
+     "file": "assets/selection.png",
+     "to": "Mamba-1 선택적 스캔·논문"
+    },
+    {
+     "op": "move",
+     "file": "csrc/selective_scan/selective_scan.cpp",
+     "to": "Mamba-1 선택적 스캔·논문"
+    },
+    {
+     "op": "move",
+     "file": "mamba_ssm/modules/mamba_simple.py",
+     "to": "Mamba-1 선택적 스캔·논문"
+    },
+    {
+     "op": "move",
+     "file": "mamba_ssm/ops/selective_scan_interface.py",
+     "to": "Mamba-1 선택적 스캔·논문"
+    },
+    {
+     "op": "move",
+     "file": "paper/mamba.pdf",
+     "to": "Mamba-1 선택적 스캔·논문"
+    }
+   ],
    "groups": [
     {
      "name": "Mamba-2 SSD·논문",

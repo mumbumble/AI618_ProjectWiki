@@ -3,7 +3,43 @@
  "preferences": [
   {
    "id": "results",
-   "text": "결과랑 그림(main_results, ablation, 그래프)을 맨 위에 두고, 코드랑 설정은 중간, 회의록이나 읽기 노트는 아래로 내려줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "configs/base.yaml",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "figures/bleu4_vs_num_retrieved.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "figures/overview.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "results/ablation.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "results/main_results.csv",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "src/reposum_model.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "src/utils.py",
+     "importance": 2
+    }
+   ],
    "levels": {
     "top": ["README.md", "docs/method.md", "figures/bleu4_vs_num_retrieved.png", "figures/overview.png", "paper/reposum_draft_v2.pdf", "results/ablation.md", "results/main_results.csv"],
     "middle": ["configs/base.yaml", "configs/intra_repo_java.yaml", "docs/related_work.md", "paper/talk_outline.md", "site/index.html", "src/data.py", "src/evaluate.py", "src/plot_results.py", "src/reposum_model.py", "src/sibling_retriever.py", "src/train.py", "src/utils.py"],
@@ -12,7 +48,33 @@
   },
   {
    "id": "code",
-   "text": "모델 코드 구조(reposum_model, sibling_retriever, data)를 맨 위에 두고, 논문이랑 문서, 노트는 그 아래에 놔줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "README.md",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "docs/method.md",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "paper/reposum_draft_v2.pdf",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "src/data.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "src/sibling_retriever.py",
+     "importance": 3
+    }
+   ],
    "levels": {
     "top": ["src/data.py", "src/reposum_model.py", "src/sibling_retriever.py"],
     "middle": ["README.md", "configs/intra_repo_java.yaml", "docs/method.md", "docs/related_work.md", "figures/bleu4_vs_num_retrieved.png", "figures/overview.png", "paper/reposum_draft_v2.pdf", "paper/talk_outline.md", "results/ablation.md", "results/main_results.csv", "site/index.html", "src/evaluate.py", "src/plot_results.py", "src/train.py"],

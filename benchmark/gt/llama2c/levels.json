@@ -3,7 +3,78 @@
  "preferences": [
   {
    "id": "entry",
-   "text": "README랑 run.ipynb처럼 처음 보는 사람이 읽는 문서를 맨 위에 두고, 실제 코드는 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "Makefile",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "doc/train_llama_tokenizer.md",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "export.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "model.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "run.c",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "run.ipynb",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "runq.c",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "sample.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "test.c",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "test_all.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "tinystories.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "tokenizer.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "train.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "win.c",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["README.md", "run.ipynb"],
     "middle": ["doc/stories260K.md", "doc/train_llama_tokenizer.md", "model.py", "run.c"],
@@ -12,7 +83,43 @@
   },
   {
    "id": "core",
-   "text": "model.py랑 run.c 같은 핵심 모델 구현을 위에 놓고, 빌드 파일이나 테스트, 문서는 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "Makefile",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "README.md",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "doc/stories260K.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "run.ipynb",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "test.c",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "test_all.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "win.c",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["model.py", "run.c", "train.py"],
     "middle": ["README.md", "export.py", "runq.c", "sample.py", "tinystories.py", "tokenizer.py"],

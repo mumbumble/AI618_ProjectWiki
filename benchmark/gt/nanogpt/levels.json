@@ -3,7 +3,43 @@
  "preferences": [
   {
    "id": "entry",
-   "text": "train.py랑 sample.py 같은 실행 스크립트를 맨 위에 두고, model.py는 그 밑, 데이터 준비랑 config는 맨 아래로 내려줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "config/finetune_shakespeare.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "config/train_gpt2.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "config/train_shakespeare_char.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "data/openwebtext/prepare.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "data/shakespeare_char/prepare.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "model.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "sample.py",
+     "importance": 3
+    }
+   ],
    "levels": {
     "top": ["README.md", "sample.py", "train.py"],
     "middle": ["assets/gpt2_124M_loss.png", "bench.py", "configurator.py", "model.py", "scaling_laws.ipynb", "transformer_sizing.ipynb"],
@@ -12,7 +48,63 @@
   },
   {
    "id": "analysis",
-   "text": "손실 그래프랑 분석 노트북처럼 결과나 분석 쪽을 위에 올리고, 코드랑 config는 아래로 내려줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "assets/gpt2_124M_loss.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "config/finetune_shakespeare.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "config/train_gpt2.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "config/train_shakespeare_char.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "configurator.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "data/openwebtext/prepare.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "data/shakespeare_char/prepare.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "model.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "scaling_laws.ipynb",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "train.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "transformer_sizing.ipynb",
+     "importance": 3
+    }
+   ],
    "levels": {
     "top": ["README.md", "assets/gpt2_124M_loss.png", "scaling_laws.ipynb", "transformer_sizing.ipynb"],
     "middle": ["bench.py", "model.py", "sample.py", "train.py"],

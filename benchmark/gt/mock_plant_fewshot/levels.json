@@ -3,7 +3,58 @@
  "preferences": [
   {
    "id": "results",
-   "text": "결과표랑 그래프(main_results, ablation, figures)가 맨 위에 오고 그 아래에 코드랑 설정, 로그가 오게 해줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "configs/base.yaml",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "figures/accuracy_vs_shots.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "figures/overview.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "logs/train_2026-10-08.log",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "results/ablation.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "results/main_results.csv",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "src/leafproto_model.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "src/plot_results.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "src/train.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "src/utils.py",
+     "importance": 2
+    }
+   ],
    "levels": {
     "top": ["README.md", "docs/method.md", "figures/accuracy_vs_shots.png", "figures/overview.png", "paper/leafproto_draft_v2.pdf", "results/ablation.md", "results/main_results.csv"],
     "middle": ["configs/base.yaml", "configs/fewshot_5way.yaml", "docs/related_work.md", "logs/train_2026-10-08.log", "notes/meeting_2026-09-17.md", "paper/talk_outline.md", "papers/notes_fastadapt2022.md", "papers/notes_protoclass2019.md", "site/index.html", "src/data.py", "src/evaluate.py", "src/freq_mix.py", "src/leafproto_model.py", "src/plot_results.py", "src/train.py", "src/utils.py"],
@@ -12,7 +63,48 @@
   },
   {
    "id": "paper",
-   "text": "논문 초안 v2랑 그 안에서 인용한 관련 연구 노트(ProtoClass, FastAdapt)를 위에 두고, 코드랑 설정은 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "configs/fewshot_5way.yaml",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "papers/notes_fastadapt2022.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "papers/notes_protoclass2019.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "src/data.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "src/evaluate.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "src/freq_mix.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "src/leafproto_model.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "src/train.py",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["README.md", "docs/method.md", "paper/leafproto_draft_v2.pdf", "papers/notes_fastadapt2022.md", "papers/notes_protoclass2019.md"],
     "middle": ["docs/related_work.md", "figures/accuracy_vs_shots.png", "figures/overview.png", "notes/meeting_2026-09-17.md", "paper/talk_outline.md", "results/ablation.md", "results/main_results.csv", "site/index.html"],

@@ -3,7 +3,36 @@
  "preferences": [
   {
    "id": "module",
-   "text": "core, io, cli, 엑셀 플러그인 같은 코드는 모듈별로 쪼개서 각각 그 모듈을 테스트하는 파일(test_core, test_io)이랑 같이 묶어줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "엑셀 플러그인"
+    },
+    {
+     "op": "add_group",
+     "name": "패키지 진입점"
+    },
+    {
+     "op": "move",
+     "file": "tests/test_core.py",
+     "to": "핵심 라이브러리 코드"
+    },
+    {
+     "op": "move",
+     "file": "csvdelta/io.py",
+     "to": "테스트"
+    },
+    {
+     "op": "move",
+     "file": "csvdelta/plugins/excel_reader.py",
+     "to": "엑셀 플러그인"
+    },
+    {
+     "op": "move",
+     "file": "csvdelta/__init__.py",
+     "to": "패키지 진입점"
+    }
+   ],
    "groups": [
     {
      "name": "문서와 예제",
@@ -45,7 +74,32 @@
   },
   {
    "id": "bug42",
-   "text": "issue 42 BOM 버그는 이슈 글이랑 고친 io 코드, 회귀 테스트, 회의록 내용까지 한 그룹으로 모아줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "이슈 42 BOM 버그"
+    },
+    {
+     "op": "move",
+     "file": "csvdelta/io.py",
+     "to": "이슈 42 BOM 버그"
+    },
+    {
+     "op": "move",
+     "file": "issues/issue_42.md",
+     "to": "이슈 42 BOM 버그"
+    },
+    {
+     "op": "move",
+     "file": "notes/dev_meeting.md",
+     "to": "이슈 42 BOM 버그"
+    },
+    {
+     "op": "move",
+     "file": "tests/test_io.py",
+     "to": "이슈 42 BOM 버그"
+    }
+   ],
    "groups": [
     {
      "name": "문서와 예제",

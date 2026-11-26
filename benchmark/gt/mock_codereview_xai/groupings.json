@@ -3,7 +3,18 @@
  "preferences": [
   {
    "id": "analysis",
-   "text": "분석 스크립트를 그게 읽는 원자료랑 짝지어서 묶어줘. analyze_survey는 survey_responses랑, analyze_logs는 task_logs랑",
+   "corrections": [
+    {
+     "op": "move",
+     "file": "data/task_logs.csv",
+     "to": "분석 스크립트"
+    },
+    {
+     "op": "move",
+     "file": "analysis/analyze_survey.py",
+     "to": "원자료 데이터"
+    }
+   ],
    "groups": [
     {
      "name": "연구 설계·IRB",
@@ -37,7 +48,37 @@
   },
   {
    "id": "pipeline",
-   "text": "연구 진행 순서대로 묶어줘. 설계·승인, 파일럿, 본 데이터 수집, 분석, 결과 순서로.",
+   "corrections": [
+    {
+     "op": "move",
+     "file": "README.md",
+     "to": "연구 설계·IRB"
+    },
+    {
+     "op": "move",
+     "file": "papers/notes_cho2024_explain_reliance.md",
+     "to": "연구 설계·IRB"
+    },
+    {
+     "op": "move",
+     "file": "data/survey_responses.csv",
+     "to": "프로토타입 (ReviewLens)"
+    },
+    {
+     "op": "move",
+     "file": "data/task_logs.csv",
+     "to": "프로토타입 (ReviewLens)"
+    },
+    {
+     "op": "move",
+     "file": "notes/meeting.md",
+     "to": "결과와 그림"
+    },
+    {
+     "op": "delete_group",
+     "name": "원자료 데이터"
+    }
+   ],
    "groups": [
     {
      "name": "1. 설계·승인",

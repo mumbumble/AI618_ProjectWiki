@@ -16,11 +16,27 @@
    "optional": [
     ["notes/meeting.md", "results/findings.md"]
    ],
-   "promote": [
-    ["analysis/analyze_survey.py", "data/survey_responses.csv"],
-    ["results/findings.md", "analysis/analyze_survey.py"],
-    ["analysis/analyze_survey.py", "study/survey_questions.md"],
-    ["study/survey_questions.md", "data/survey_responses.csv"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "analysis/analyze_survey.py",
+     "b": "data/survey_responses.csv"
+    },
+    {
+     "op": "add",
+     "a": "results/findings.md",
+     "b": "analysis/analyze_survey.py"
+    },
+    {
+     "op": "add",
+     "a": "analysis/analyze_survey.py",
+     "b": "study/survey_questions.md"
+    },
+    {
+     "op": "add",
+     "a": "study/survey_questions.md",
+     "b": "data/survey_responses.csv"
+    }
    ]
   },
   {
@@ -38,8 +54,12 @@
     ["prototype/ui_spec.md", "prototype/app.py"],
     ["prototype/ui_spec.md", "prototype/logger.py"]
    ],
-   "promote": [
-    ["prototype/logger.py", "data/task_logs.csv"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "prototype/logger.py",
+     "b": "data/task_logs.csv"
+    }
    ]
   }
  ]

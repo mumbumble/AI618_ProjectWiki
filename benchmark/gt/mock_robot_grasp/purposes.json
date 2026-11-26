@@ -17,10 +17,22 @@
     ["notes/meeting_2026-08-24.md", "paper/graspdr_draft_v2.pdf"],
     ["results/ablation.md", "paper/graspdr_draft_v2.pdf"]
    ],
-   "promote": [
-    ["src/contact_reward.py", "docs/method.md"],
-    ["notes/meeting_2026-08-24.md", "results/ablation.md"],
-    ["notes/meeting_2026-08-24.md", "results/main_results.csv"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "src/contact_reward.py",
+     "b": "docs/method.md"
+    },
+    {
+     "op": "add",
+     "a": "notes/meeting_2026-08-24.md",
+     "b": "results/ablation.md"
+    },
+    {
+     "op": "add",
+     "a": "notes/meeting_2026-08-24.md",
+     "b": "results/main_results.csv"
+    }
    ]
   },
   {
@@ -44,9 +56,17 @@
     ["results/main_results.csv", "paper/graspdr_draft_v2.pdf"],
     ["src/evaluate.py", "src/graspdr_policy.py"]
    ],
-   "promote": [
-    ["src/train.py", "configs/sdr_contact_panda.yaml"],
-    ["src/evaluate.py", "results/main_results.csv"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "src/train.py",
+     "b": "configs/sdr_contact_panda.yaml"
+    },
+    {
+     "op": "add",
+     "a": "src/evaluate.py",
+     "b": "results/main_results.csv"
+    }
    ]
   }
  ]

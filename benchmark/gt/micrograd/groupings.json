@@ -3,7 +3,26 @@
  "preferences": [
   {
    "id": "layers",
-   "text": "엔진이랑 신경망 코드를 따로 묶어줘, engine.py는 자동미분 쪽이고 nn.py는 뉴런/레이어/MLP 쪽으로 나눠서 보고 싶어",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "신경망 (뉴런/레이어/MLP)"
+    },
+    {
+     "op": "add_group",
+     "name": "자동미분 엔진"
+    },
+    {
+     "op": "move",
+     "file": "micrograd/nn.py",
+     "to": "신경망 (뉴런/레이어/MLP)"
+    },
+    {
+     "op": "move",
+     "file": "micrograd/engine.py",
+     "to": "자동미분 엔진"
+    }
+   ],
    "groups": [
     {
      "name": "결과 및 그림",
@@ -41,7 +60,13 @@
   },
   {
    "id": "verify",
-   "text": "engine.py랑 그걸 검증하는 test_engine.py를 한 그룹으로 묶고, 그림이나 노트북은 따로 빼줘",
+   "corrections": [
+    {
+     "op": "move",
+     "file": "micrograd/engine.py",
+     "to": "테스트"
+    }
+   ],
    "groups": [
     {
      "name": "결과 및 그림",

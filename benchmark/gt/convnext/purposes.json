@@ -17,9 +17,17 @@
     ["models/convnext_isotropic.py", "paper/convnext.pdf"],
     ["paper/convnext.pdf", "related_work/swin_transformer.pdf"]
    ],
-   "promote": [
-    ["README.md", "models/convnext.py"],
-    ["README.md", "paper/convnext.pdf"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "models/convnext.py"
+    },
+    {
+     "op": "add",
+     "a": "README.md",
+     "b": "paper/convnext.pdf"
+    }
    ]
   },
   {
@@ -45,8 +53,12 @@
     ["main.py", "models/convnext_isotropic.py"],
     ["main.py", "utils.py"]
    ],
-   "promote": [
-    ["TRAINING.md", "main.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "TRAINING.md",
+     "b": "main.py"
+    }
    ]
   }
  ]

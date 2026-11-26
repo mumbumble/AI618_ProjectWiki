@@ -3,7 +3,48 @@
  "preferences": [
   {
    "id": "entry",
-   "text": "각 예제의 main.py 같은 실행 진입점을 맨 위에 두고 README랑 requirements는 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "README.md",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "mnist/README.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mnist_forward_forward/README.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mnist_forward_forward/main.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "mnist_hogwild/README.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mnist_hogwild/main.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "mnist_rnn/README.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mnist_rnn/main.py",
+     "importance": 3
+    }
+   ],
    "levels": {
     "top": ["mnist/main.py", "mnist_forward_forward/main.py", "mnist_hogwild/main.py", "mnist_rnn/main.py"],
     "middle": ["README.md", "mnist_hogwild/train.py"],
@@ -12,7 +53,33 @@
   },
   {
    "id": "overview",
-   "text": "저장소 전체 README를 맨 위에 두고, 그 아래에 각 예제 폴더의 README, 그 아래에 코드랑 requirements 순으로 놔줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "mnist/main.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mnist_forward_forward/main.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mnist_hogwild/main.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mnist_hogwild/train.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mnist_rnn/main.py",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["README.md"],
     "middle": ["mnist/README.md", "mnist_forward_forward/README.md", "mnist_hogwild/README.md", "mnist_rnn/README.md"],

@@ -3,7 +3,33 @@
  "preferences": [
   {
    "id": "results",
-   "text": "결과 요약이랑 그래프를 맨 위에 두고, 분석 스크립트랑 원자료는 그 아래, 설계 문서는 맨 아래로 내려줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "irb/protocol.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "proposal/study_proposal.pdf",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "results/figures/trust_composite_by_condition.png",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "study/survey_questions.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "study/tasks.md",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["README.md", "prototype/app.py", "results/figures/trust_composite_by_condition.png", "results/findings.md"],
     "middle": ["analysis/analyze_logs.py", "analysis/analyze_survey.py", "data/survey_responses.csv", "data/task_logs.csv", "notes/meeting.md", "prototype/logger.py", "prototype/ui_spec.md"],
@@ -12,7 +38,28 @@
   },
   {
    "id": "design",
-   "text": "연구 설계 문서(프로토콜, 제안서, 과제 명세)를 제일 위에 두고, 프로토타입 코드랑 데이터, 결과가 그 밑으로 가게 해줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "irb/protocol.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "prototype/app.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "results/findings.md",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "study/tasks.md",
+     "importance": 3
+    }
+   ],
    "levels": {
     "top": ["README.md", "irb/protocol.md", "proposal/study_proposal.pdf", "study/tasks.md"],
     "middle": ["analysis/analyze_logs.py", "analysis/analyze_survey.py", "data/survey_responses.csv", "data/task_logs.csv", "notes/meeting.md", "prototype/app.py", "prototype/logger.py", "prototype/ui_spec.md", "results/figures/trust_composite_by_condition.png", "results/findings.md", "study/survey_questions.md"],

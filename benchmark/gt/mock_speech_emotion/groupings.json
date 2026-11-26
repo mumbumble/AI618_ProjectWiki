@@ -3,7 +3,22 @@
  "preferences": [
   {
    "id": "stage",
-   "text": "작업 순서대로 묶어줘, 데이터 → 모델 → 학습·평가 → 결과 → 논문 이런 식으로",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "모델 구현"
+    },
+    {
+     "op": "move",
+     "file": "src/prosody_attention.py",
+     "to": "모델 구현"
+    },
+    {
+     "op": "move",
+     "file": "src/prosody_ser_model.py",
+     "to": "모델 구현"
+    }
+   ],
    "groups": [
     {
      "name": "문서·논문·발표",
@@ -41,7 +56,17 @@
   },
   {
    "id": "version",
-   "text": "논문 초안 v1 같은 옛날 버전은 따로 한 그룹으로 빼줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "이전 버전 초안"
+    },
+    {
+     "op": "move",
+     "file": "paper/prosody_ser_draft_v1.pdf",
+     "to": "이전 버전 초안"
+    }
+   ],
    "groups": [
     {
      "name": "문서·논문·발표",

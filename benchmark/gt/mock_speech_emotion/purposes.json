@@ -21,11 +21,27 @@
     ["notes/meeting_2026-08-27.md", "results/ablation.md"],
     ["notes/meeting_2026-08-27.md", "results/main_results.csv"]
    ],
-   "promote": [
-    ["paper/talk_outline.md", "figures/unweighted_accuracy_vs_snr_db.png"],
-    ["results/ablation.md", "paper/prosody_ser_draft_v2.pdf"],
-    ["results/main_results.csv", "paper/prosody_ser_draft_v2.pdf"],
-    ["src/evaluate.py", "results/main_results.csv"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "paper/talk_outline.md",
+     "b": "figures/unweighted_accuracy_vs_snr_db.png"
+    },
+    {
+     "op": "add",
+     "a": "results/ablation.md",
+     "b": "paper/prosody_ser_draft_v2.pdf"
+    },
+    {
+     "op": "add",
+     "a": "results/main_results.csv",
+     "b": "paper/prosody_ser_draft_v2.pdf"
+    },
+    {
+     "op": "add",
+     "a": "src/evaluate.py",
+     "b": "results/main_results.csv"
+    }
    ]
   },
   {
@@ -50,10 +66,22 @@
     ["src/evaluate.py", "src/data.py"],
     ["src/train.py", "src/data.py"]
    ],
-   "promote": [
-    ["src/evaluate.py", "results/main_results.csv"],
-    ["src/evaluate.py", "src/prosody_ser_model.py"],
-    ["src/train.py", "src/prosody_ser_model.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "src/evaluate.py",
+     "b": "results/main_results.csv"
+    },
+    {
+     "op": "add",
+     "a": "src/evaluate.py",
+     "b": "src/prosody_ser_model.py"
+    },
+    {
+     "op": "add",
+     "a": "src/train.py",
+     "b": "src/prosody_ser_model.py"
+    }
    ]
   }
  ]

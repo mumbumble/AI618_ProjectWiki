@@ -3,7 +3,66 @@
  "preferences": [
   {
    "id": "filetype",
-   "text": "폴더 상관없이 README 문서끼리, 실행 코드끼리, requirements 파일끼리 따로 묶어줘",
+   "corrections": [
+    {
+     "op": "move",
+     "file": "README.md",
+     "to": "Forward-Forward 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist/README.md",
+     "to": "Forward-Forward 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist_hogwild/README.md",
+     "to": "Forward-Forward 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist_rnn/README.md",
+     "to": "Forward-Forward 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist/main.py",
+     "to": "Hogwild 병렬 학습 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist_forward_forward/main.py",
+     "to": "Hogwild 병렬 학습 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist_rnn/main.py",
+     "to": "Hogwild 병렬 학습 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist/requirements.txt",
+     "to": "RNN 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist_forward_forward/requirements.txt",
+     "to": "RNN 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist_hogwild/requirements.txt",
+     "to": "RNN 예제"
+    },
+    {
+     "op": "delete_group",
+     "name": "기본 CNN 예제"
+    },
+    {
+     "op": "delete_group",
+     "name": "저장소 개요 문서"
+    }
+   ],
    "groups": [
     {
      "name": "README 문서",
@@ -21,7 +80,27 @@
   },
   {
    "id": "algorithm",
-   "text": "모델 방식별로 다시 묶어줘. CNN이랑 RNN은 역전파 방식, Forward-Forward는 따로, Hogwild는 병렬 학습 쪽으로 나눠줘",
+   "corrections": [
+    {
+     "op": "move",
+     "file": "mnist/README.md",
+     "to": "RNN 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist/main.py",
+     "to": "RNN 예제"
+    },
+    {
+     "op": "move",
+     "file": "mnist/requirements.txt",
+     "to": "RNN 예제"
+    },
+    {
+     "op": "delete_group",
+     "name": "기본 CNN 예제"
+    }
+   ],
    "groups": [
     {
      "name": "역전파 방식 (CNN·RNN)",

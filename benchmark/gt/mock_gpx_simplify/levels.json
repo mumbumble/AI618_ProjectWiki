@@ -3,7 +3,53 @@
  "preferences": [
   {
    "id": "codefirst",
-   "text": "코드 구조가 맨 위에 오고, 테스트랑 문서, 회의록 같은 건 아래로 내려줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "CHANGELOG.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "README.md",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "docs/design.md",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "examples/demo.ipynb",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "notes/roadmap.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "trackslim/__init__.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "trackslim/cli.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "trackslim/io.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "trackslim/plugins/elevation_guard.py",
+     "importance": 3
+    }
+   ],
    "levels": {
     "top": ["trackslim/__init__.py", "trackslim/cli.py", "trackslim/core.py", "trackslim/io.py", "trackslim/plugins/elevation_guard.py"],
     "middle": ["README.md", "benchmarks/bench_speed.py", "docs/api.md", "docs/design.md", "tests/test_core.py", "tests/test_io.py"],
@@ -12,7 +58,18 @@
   },
   {
    "id": "roadmap",
-   "text": "로드맵이랑 설계 문서를 맨 위에 두고, 그 아래에 그걸 구현하는 코드가 오게 해줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "notes/roadmap.md",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "trackslim/core.py",
+     "importance": 2
+    }
+   ],
    "levels": {
     "top": ["README.md", "docs/design.md", "notes/roadmap.md"],
     "middle": ["CHANGELOG.md", "benchmarks/bench_speed.py", "docs/api.md", "examples/demo.ipynb", "tests/test_core.py", "tests/test_io.py", "trackslim/__init__.py", "trackslim/cli.py", "trackslim/core.py", "trackslim/io.py", "trackslim/plugins/elevation_guard.py"],

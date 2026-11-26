@@ -12,7 +12,8 @@ from projectwiki import pipeline  # noqa: E402
 from projectwiki.schema import Edge, Evidence, Graph, Node, Preferences  # noqa: E402
 from graph_metrics import aggregate, evaluate, group_scores, level_order_accuracy, partition_ari  # noqa: E402
 from gt_format import (GroundTruth, GTEdge, category, check_groupings, check_level_prefs, check_purposes,  # noqa: E402
-                       level_map, load_preferences, pair_key, project_files, purpose_view)
+                       level_map, load_preferences, pair_key, project_files, purpose_view,
+                       apply_grouping, apply_levels, grouping_corrections, level_corrections, partition)
 from projectwiki.srcs.record import Record  # noqa: E402
 from feedback_sim import persona_view, simulate  # noqa: E402
 from test_pipeline import make_cfg, project  # noqa: E402,F401  (pytest fixture)
@@ -137,7 +138,7 @@ def test_purpose_view():
                                          GTEdge("p.pdf", "r.md", "supports", required=False)],
                      negatives=[{"a": "a.py", "b": "x.md"}])
     purpose = {"id": "talk", "text": "results for a talk", "needed": [["r.md", "p.pdf"]], "optional": [["a.py", "r.md"]],
-               "promote": [["p.pdf", "r.md"]]}
+               "corrections": [{"op": "add", "a": "r.md", "b": "p.pdf"}]}
     assert check_purposes(gt, [purpose]) == []
     view = purpose_view(gt, purpose)
     edges = view.edge_by_key
@@ -145,8 +146,8 @@ def test_purpose_view():
     assert edges[pair_key("a.py", "r.md")].required and edges[pair_key("a.py", "b.py")].required  # the rest: unchanged
     assert len(view.edges) == 3 and view.negative_keys == gt.negative_keys  # nothing dropped, nothing added
     assert not gt.edge_by_key[pair_key("p.pdf", "r.md")].required  # the input is left unchanged
-    assert check_purposes(gt, [dict(purpose, promote=[])]) != []  # promote must be the weak needed links
-    bad = dict(purpose, needed=[["a.py", "zzz.py"]], optional=[["a.py", "zzz.py"]], promote=[])
+    assert check_purposes(gt, [dict(purpose, corrections=[])]) != []  # the corrections must raise the weak needed link
+    bad = dict(purpose, needed=[["a.py", "zzz.py"]], optional=[["a.py", "zzz.py"]], corrections=[])
     assert len(check_purposes(gt, [bad, bad])) == 5  # per copy: unknown pair, needed and optional; plus repeated id
 
 
@@ -175,7 +176,10 @@ def test_groupings_and_levels():
     grouping = {"id": "stage", "text": "group by stage",
                 "groups": [{"name": "talk", "members": ["b.py", "r.md", "p.pdf"]}, {"name": "rest", "members": ["a.py"]}]}
     level = {"id": "results", "text": "results on top", "levels": {"top": ["r.md"], "middle": ["b.py"], "bottom": ["a.py", "p.pdf"]}}
+    grouping["corrections"] = grouping_corrections(groups, grouping["groups"])
+    level["corrections"] = level_corrections(default, level["levels"])
     assert check_groupings(gt, [grouping]) == [] and check_level_prefs(gt, [level]) == []
+    assert check_groupings(gt, [dict(grouping, corrections=[])]) != []  # corrections must give the output
     assert level_map(level["levels"]) == {"r.md": 3, "b.py": 2, "a.py": 1, "p.pdf": 1}
     assert partition_ari(groups, groups) == 1.0 and partition_ari(groups, grouping["groups"]) < 1.0
     lv = level_map(level["levels"])
@@ -192,3 +196,17 @@ def test_groupings_and_levels():
         assert any(text in p for p in problems), text
     gt_missing = GroundTruth(project="t", groups=groups, levels={"top": ["a.py"]})
     assert any("default levels" in p for p in check_level_prefs(gt_missing, []))
+
+
+def test_corrections_replay():
+    """Grouping and level corrections: computed from a default and an output, replayed, they give the output back."""
+    default = [{"name": "code", "members": ["a.py", "b.py", "c.py"]}, {"name": "docs", "members": ["r.md", "n.md"]}]
+    wanted = [{"name": "core", "members": ["a.py"]}, {"name": "rest", "members": ["b.py", "c.py", "r.md", "n.md"]}]
+    ops = grouping_corrections(default, wanted)
+    assert partition(apply_grouping(default, ops)) == partition(wanted)
+    assert [o["op"] for o in ops].count("move") == 3 and ops[-1] == {"op": "delete_group", "name": "docs"}
+    levels = {"top": ["a.py"], "middle": ["r.md"], "bottom": ["b.py"]}
+    target = {"top": ["r.md"], "middle": ["a.py"], "bottom": ["b.py"]}
+    ops = level_corrections(levels, target)
+    assert ops == [{"op": "set_level", "file": "a.py", "importance": 2}, {"op": "set_level", "file": "r.md", "importance": 3}]
+    assert apply_levels(levels, ops) == target

@@ -3,7 +3,13 @@
  "preferences": [
   {
    "id": "codefirst",
-   "text": "engine.py랑 nn.py 같은 핵심 코드가 맨 위에 오고, 노트북이랑 그림, README는 그 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "README.md",
+     "importance": 2
+    }
+   ],
    "levels": {
     "top": ["micrograd/engine.py", "micrograd/nn.py"],
     "middle": ["README.md", "demo.ipynb", "moon_mlp.png", "test/test_engine.py", "trace_graph.ipynb"],
@@ -12,7 +18,28 @@
   },
   {
    "id": "demofirst",
-   "text": "demo.ipynb랑 moon_mlp.png 같은 결과물이 맨 위에 오고, 그걸 만드는 nn.py, engine.py는 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "demo.ipynb",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "micrograd/engine.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "micrograd/nn.py",
+     "importance": 2
+    },
+    {
+     "op": "set_level",
+     "file": "moon_mlp.png",
+     "importance": 3
+    }
+   ],
    "levels": {
     "top": ["README.md", "demo.ipynb", "moon_mlp.png"],
     "middle": ["micrograd/engine.py", "micrograd/nn.py", "test/test_engine.py", "trace_graph.ipynb"],

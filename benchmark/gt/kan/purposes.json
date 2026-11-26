@@ -18,8 +18,12 @@
     ["hellokan.ipynb", "kan/MultKAN.py"],
     ["paper/kan.pdf", "related_work/kan_or_mlp_fairer_comparison.pdf"]
    ],
-   "promote": [
-    ["hellokan.ipynb", "paper/kan.pdf"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "hellokan.ipynb",
+     "b": "paper/kan.pdf"
+    }
    ]
   },
   {
@@ -48,15 +52,47 @@
     ["kan/MultKAN.py", "kan/utils.py"],
     ["kan/experiment.py", "tutorials/API_demo/API_7_pruning.ipynb"]
    ],
-   "promote": [
-    ["kan/MultKAN.py", "tutorials/API_demo/API_1_indexing.ipynb"],
-    ["kan/MultKAN.py", "tutorials/API_demo/API_7_pruning.ipynb"],
-    ["kan/MultKAN.py", "tutorials/Example/Example_1_function_fitting.ipynb"],
-    ["kan/MultKAN.py", "tutorials/Example/Example_4_classfication.ipynb"],
-    ["kan/MultKAN.py", "tutorials/Example/Example_6_PDE_interpretation.ipynb"],
-    ["kan/MultKAN.py", "tutorials/Example/Example_8_continual_learning.ipynb"],
-    ["kan/MultKAN.py", "tutorials/Interp/Interp_4_feature_attribution.ipynb"],
-    ["kan/MultKAN.py", "tutorials/Physics/Physics_1_Lagrangian.ipynb"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "kan/MultKAN.py",
+     "b": "tutorials/API_demo/API_1_indexing.ipynb"
+    },
+    {
+     "op": "add",
+     "a": "kan/MultKAN.py",
+     "b": "tutorials/API_demo/API_7_pruning.ipynb"
+    },
+    {
+     "op": "add",
+     "a": "kan/MultKAN.py",
+     "b": "tutorials/Example/Example_1_function_fitting.ipynb"
+    },
+    {
+     "op": "add",
+     "a": "kan/MultKAN.py",
+     "b": "tutorials/Example/Example_4_classfication.ipynb"
+    },
+    {
+     "op": "add",
+     "a": "kan/MultKAN.py",
+     "b": "tutorials/Example/Example_6_PDE_interpretation.ipynb"
+    },
+    {
+     "op": "add",
+     "a": "kan/MultKAN.py",
+     "b": "tutorials/Example/Example_8_continual_learning.ipynb"
+    },
+    {
+     "op": "add",
+     "a": "kan/MultKAN.py",
+     "b": "tutorials/Interp/Interp_4_feature_attribution.ipynb"
+    },
+    {
+     "op": "add",
+     "a": "kan/MultKAN.py",
+     "b": "tutorials/Physics/Physics_1_Lagrangian.ipynb"
+    }
    ]
   }
  ]

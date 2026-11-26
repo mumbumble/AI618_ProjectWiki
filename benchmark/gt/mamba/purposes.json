@@ -21,11 +21,27 @@
     ["mamba_ssm/modules/ssd_minimal.py", "mamba_ssm/ops/triton/ssd_combined.py"],
     ["related_work/mamba2_transformers_are_ssms.pdf", "paper/mamba.pdf"]
    ],
-   "promote": [
-    ["assets/ssd_algorithm.png", "mamba_ssm/modules/ssd_minimal.py"],
-    ["assets/ssd_algorithm.png", "mamba_ssm/ops/triton/ssd_combined.py"],
-    ["assets/ssd_algorithm.png", "related_work/mamba2_transformers_are_ssms.pdf"],
-    ["mamba_ssm/modules/ssd_minimal.py", "related_work/mamba2_transformers_are_ssms.pdf"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "assets/ssd_algorithm.png",
+     "b": "mamba_ssm/modules/ssd_minimal.py"
+    },
+    {
+     "op": "add",
+     "a": "assets/ssd_algorithm.png",
+     "b": "mamba_ssm/ops/triton/ssd_combined.py"
+    },
+    {
+     "op": "add",
+     "a": "assets/ssd_algorithm.png",
+     "b": "related_work/mamba2_transformers_are_ssms.pdf"
+    },
+    {
+     "op": "add",
+     "a": "mamba_ssm/modules/ssd_minimal.py",
+     "b": "related_work/mamba2_transformers_are_ssms.pdf"
+    }
    ]
   },
   {
@@ -48,13 +64,37 @@
     ["mamba_ssm/modules/mha.py", "mamba_ssm/utils/generation.py"],
     ["mamba_ssm/utils/generation.py", "mamba_ssm/utils/hf.py"]
    ],
-   "promote": [
-    ["benchmarks/benchmark_generation_mamba_simple.py", "mamba_ssm/utils/generation.py"],
-    ["evals/lm_harness_eval.py", "mamba_ssm/utils/generation.py"],
-    ["mamba_ssm/models/mixer_seq_simple.py", "mamba_ssm/utils/generation.py"],
-    ["mamba_ssm/modules/mamba2.py", "mamba_ssm/utils/generation.py"],
-    ["mamba_ssm/modules/mamba_simple.py", "mamba_ssm/utils/generation.py"],
-    ["tests/test_generation.py", "mamba_ssm/utils/generation.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "benchmarks/benchmark_generation_mamba_simple.py",
+     "b": "mamba_ssm/utils/generation.py"
+    },
+    {
+     "op": "add",
+     "a": "evals/lm_harness_eval.py",
+     "b": "mamba_ssm/utils/generation.py"
+    },
+    {
+     "op": "add",
+     "a": "mamba_ssm/models/mixer_seq_simple.py",
+     "b": "mamba_ssm/utils/generation.py"
+    },
+    {
+     "op": "add",
+     "a": "mamba_ssm/modules/mamba2.py",
+     "b": "mamba_ssm/utils/generation.py"
+    },
+    {
+     "op": "add",
+     "a": "mamba_ssm/modules/mamba_simple.py",
+     "b": "mamba_ssm/utils/generation.py"
+    },
+    {
+     "op": "add",
+     "a": "tests/test_generation.py",
+     "b": "mamba_ssm/utils/generation.py"
+    }
    ]
   }
  ]

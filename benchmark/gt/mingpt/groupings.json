@@ -3,7 +3,27 @@
  "preferences": [
   {
    "id": "project",
-   "text": "adder 관련 파일(adder.py, readme)이랑 chargpt 관련 파일(chargpt.py, readme)을 프로젝트별로 묶어줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "chargpt 프로젝트"
+    },
+    {
+     "op": "move",
+     "file": "projects/adder/readme.md",
+     "to": "데모 프로젝트 스크립트"
+    },
+    {
+     "op": "move",
+     "file": "projects/chargpt/chargpt.py",
+     "to": "chargpt 프로젝트"
+    },
+    {
+     "op": "move",
+     "file": "projects/chargpt/readme.md",
+     "to": "chargpt 프로젝트"
+    }
+   ],
    "groups": [
     {
      "name": "핵심 모델 코드",
@@ -33,7 +53,35 @@
   },
   {
    "id": "pipeline",
-   "text": "토크나이저(bpe.py), 모델(model.py), 학습(trainer.py)처럼 데이터가 흘러가는 순서대로 나눠서 묶어줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "1단계 토크나이저"
+    },
+    {
+     "op": "add_group",
+     "name": "2단계 모델"
+    },
+    {
+     "op": "add_group",
+     "name": "3단계 학습"
+    },
+    {
+     "op": "move",
+     "file": "mingpt/bpe.py",
+     "to": "1단계 토크나이저"
+    },
+    {
+     "op": "move",
+     "file": "mingpt/model.py",
+     "to": "2단계 모델"
+    },
+    {
+     "op": "move",
+     "file": "mingpt/trainer.py",
+     "to": "3단계 학습"
+    }
+   ],
    "groups": [
     {
      "name": "문서 (README)",

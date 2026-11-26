@@ -6,6 +6,7 @@
 
 - 파일마다 요약과 역할이 붙고, 파일끼리의 관계에는 양쪽 원문 근거가 달립니다.
 - 사용자가 고친 내용(승인·거절·추가·그룹 이동)은 파일이 바뀌어 다시 생성해도 유지되고, 이후 제안에도 반영됩니다.
+- `build --setup`으로 시작하면 브라우저 한 화면에서 끝까지 진행합니다: 목적·우선할 자료·묶는 방식 입력 → 그래프 확인과 교정 → 최종 승인(그래프·뷰어·Markdown 위키를 한 버전으로 고정).
 - 파이프라인은 11/05 팀 회의에서 정했습니다. 군집화와 선호도 반영은 **실험 구간(🧪)** 이라 각자 방법을 끼워 넣어 비교합니다.
 
 ## 파이프라인
@@ -28,7 +29,7 @@ flowchart LR
 | 1 인코딩 | [`encoder.py`](projectwiki/models/encoder.py) | 근거 조각과 파일 요약을 벡터로 (캐시) | **bge-m3** |
 | 2 군집화 🧪 | [`clustering.py`](projectwiki/models/clustering.py) | 파일 → 그룹, 사용자 선호 반영 | `pref`: 중요 파일·쌍 1–5 평가·객관식 가이드 (회의안) / `baseline`: 선호 미반영 |
 | 3 구조 생성 | [`structure.py`](projectwiki/models/structure.py) | 후보 연결 → 근거 쌍 선택 → 관계·방향·직접/추론 판정, 인용 검증 | **bge-reranker-v2-m3**, **Claude Sonnet 5.5** |
-| 4 선호도 반영 🧪 | [`preference.py`](projectwiki/models/preference.py) | 사용자 피드백을 건드리지 않은 연결에 일반화 | `drift`: 커널 끌림/밀어냄 (회의 4안) / `align`: Bradley–Terry 선호 정렬 (회의 1안) / `baseline` |
+| 4 선호도 반영 🧪 | [`preference.py`](projectwiki/models/preference.py) | 사용자 피드백을 건드리지 않은 연결에 일반화 | `drift`: 커널 끌림/밀어냄 (회의 4안) / `align`: Bradley–Terry 선호 정렬 (회의 1안) / `best-of-n`: Drift 강도 3개 중 피드백에 가장 맞는 것 선택 / `baseline` |
 | 5 시각화 | [`visualization.py`](projectwiki/models/visualization.py) | 뷰어(근거 보기·교정·피드백 내보내기), Obsidian 볼트 | vis-network |
 
 흰 상자는 모델 단계 사이의 데이터 준비이고 [`projectwiki/srcs/`](projectwiki/srcs)가 맡습니다.
@@ -36,6 +37,9 @@ flowchart LR
 - **파일 입력**: `ingest.py`, `parsers.py`. PDF·Markdown·Python·Jupyter·텍스트·SVG를 근거 조각으로 나누고 import·링크를 뽑습니다.
 - **프로젝트 레코드**: `enrich.py`, `record.py`. Claude가 그림 설명과 파일 요약·역할을 쓰고(Sonnet·Haiku 5.5), 변경을 감지합니다.
 - **최종 그래프**: `finalize.py`. 교정 제안에 사용자의 직접 편집을 항상 우선해서 매번 다시 적용합니다.
+- **사전 선호 입력**: `setup_server.py`, `setup_form.html`, `initial_preferences.py`. 브라우저 폼(목적, 우선할 자료, 묶는 방식)의 답을 선호로 바꾸고, 만든 그래프를 같은 주소에서 보여 주며 피드백을 바로 반영합니다.
+- **글로 쓴 교정 요청**: `text_feedback.py`. 자연어 요청을 검증된 피드백 이벤트로 바꿉니다.
+- **피드백 결과·승인**: `feedback_changes.py`는 방금 본 그래프와 비교해 바뀐 점을 요약하고, `wiki_approval.py`는 최종 승인 때 그래프·뷰어·Markdown 위키를 `approved_wiki/`에 고정합니다.
 
 폴더마다 파일별 역할을 적은 `README.md`가 있습니다. 구현 상세는 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), 방법 추가 절차는 [CONTRIBUTING.md](CONTRIBUTING.md)에 있습니다.
 
@@ -46,10 +50,24 @@ flowchart LR
 - [x] Claude 연결: 구독 계정(Claude Code CLI)과 API 키 둘 다
 - [x] 단계별 확인 리포트 (`projectwiki report`)
 - [x] 정량 평가 벤치마크: 프로젝트 20개의 정답 그래프와 평가 코드 ([benchmark/](benchmark/README.md))
+- [x] 사전 선호 입력 화면(`build --setup`), 교정 강도 자동 선택(`best-of-n`), 최종 승인과 Markdown 위키 내보내기
+- [x] 사용자 스터디 페이지 ([user_study/](user_study/README.md))
+- [x] 교정 정답: 그룹·연결·level 120쌍, 입력은 뷰어 조작(`corrections`), 출력은 교정 후 지도 ([benchmark/](benchmark/README.md))
 - [ ] 정렬도 측정: 사용자 관계도 ↔ AI 지도의 Gromov–Wasserstein 거리 (4안)
 - [ ] 뷰어 이미지 썸네일 (1안 ⑥)
-- [ ] 그룹·프로젝트 위키 페이지 생성
-- [ ] 유저 스터디용 과제·로그 수집
+
+11/26 회의에서 정한 다음 할 일:
+
+- [ ] 교정은 텍스트 대신 조작으로 입력
+  - 그룹: 이동·추가·삭제
+  - 연결: 추가·삭제·변경 (삭제 이유는 '필요 없음'과 '목적에 안 맞음' 둘)
+  - level: 중요도 1·2·3
+- [ ] 사전 선호 입력: 비슷한 파일 쌍 몇 개를 보여 주고, 사용자가 원하는 묶음 방향을 고르게 하기
+- [ ] 화면은 3D보다 2D 중심: 2D 그래프와 그룹 카드를 한 화면에 합쳐 전환 없이 그룹이 보이게 하고, 확대할수록 그룹 → 파일 → 세부 연결 순으로 자세히
+- [ ] 리포트용 정량 수치 (주말 확정 목표). 보여 줄 것은 세 가지
+  - A. 기존 정리 방식·그래프 방법보다 낫다
+  - B. 사용자 의도(예: 실험 결과 정리, 이번 주 미팅 준비)에 맞게 만들어진다
+  - C. 교정이 잘 반영된다
 
 ## 설치
 
@@ -149,6 +167,9 @@ projectwiki correct runs/sample --feedback ~/Downloads/feedback.jsonl --open
 # 본인 프로젝트 폴더 (출력은 기본으로 <폴더>/.projectwiki)
 projectwiki build ~/my_project --purpose "다음 주 발표 준비"
 
+# 브라우저에서 사전 선호(목적·우선할 자료·묶는 방식)를 입력한 뒤 빌드하고, 같은 화면에서 교정·최종 승인
+projectwiki build ~/my_project --setup
+
 # 대조군
 projectwiki build ~/my_project -o runs/base --clusterer baseline --corrector baseline
 
@@ -161,6 +182,7 @@ projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 |---|---|
 | `--purpose "..."` | 사용자 목적. 관계 판정에 들어감 |
 | `--prefs prefs.json` | 군집화 선호 입력 (중요 파일, 쌍 평가, 가이드). [예시](examples/prefs.example.json) |
+| `--setup` | 빌드 전에 브라우저 폼으로 사전 선호를 받음. 교정기는 기본으로 `best-of-n` |
 | `--clusterer` / `--corrector` | 군집화 `pref`(기본)·`baseline`, 교정 `drift`·`align`·`baseline`·`best-of-n`. 일반 빌드의 기본 교정기는 `drift`이고, 별도 설정 없이 `build --setup`으로 시작하면 `best-of-n`이 Drift 강도 3개를 비교합니다. `패키지.모듈:클래스`도 가능 |
 | `--llm-backend cli\|api` | Claude 연결 방식 (기본 `cli`) |
 | `--llm-model` | 관계 판정·그림 설명 모델 (기본 `claude-sonnet-5-5`, 아끼려면 `claude-haiku-5-5`) |
@@ -177,14 +199,16 @@ projectwiki obsidian runs/sample vault/      # Obsidian 볼트로 내보내기
 
 브라우저로 바로 엽니다. vis-network를 CDN에서 받으므로 인터넷이 필요합니다.
 
+- **보기**: 2D / 3D(높이 = 중요도) / 그룹 카드
 - **그래프 표시**
   - 노드 색: 그룹, 노드 모양: 파일 형식
   - 실선: 직접 근거, 점선: 추론
   - 파란 굵은 선: 승인, 초록 선: 사용자가 추가한 연결
-- **노드 클릭**: 요약, 내용 미리보기, 연결 목록을 봅니다. 다른 그룹으로 옮기거나 그룹에서 뺄 수 있습니다.
+- **노드 클릭**: 요약, 내용 미리보기, 연결 목록을 봅니다. 다른 그룹으로 옮기거나(이동) 그룹에서 뺄 수 있습니다.
 - **연결 클릭**: 관계, 양쪽 원문 인용, 교정 반영 이유를 봅니다. **맞는 연결 / 잘못된 연결 / 목적상 불필요**로 표시합니다.
 - **연결 추가**: 두 노드를 차례로 누르고 관계 이름을 적습니다 (예: "발표에 함께 쓸 자료").
-- **피드백 내보내기**: `feedback.jsonl 내보내기`로 받은 파일을 `projectwiki correct`에 넘깁니다.
+- **피드백 저장**: `피드백 파일 저장`으로 받은 `feedback.jsonl`을 `projectwiki correct`에 넘깁니다.
+- **`--setup`으로 연 화면**: `피드백 반영하기`로 바로 반영되고, `최종 승인`으로 그래프·뷰어·위키를 고정합니다.
 
 ### 출력 폴더
 
@@ -196,6 +220,7 @@ runs/sample/
   correction.json      ④ 선호도 반영 결과     final_graph.json   최종 그래프
   view.html            뷰어              stages.html        단계별 확인 리포트 (report)
   run_info.json        변경 감지·단계별 시간  cache/        임베딩·Claude 응답 캐시
+  prefs.json           사전 선호 (--setup)   approved_wiki/     최종 승인한 그래프·뷰어·Markdown 위키
 ```
 
 ## 프로젝트 구조
@@ -214,6 +239,9 @@ AI618_ProjectWiki/
 │   │   ├── enrich.py · record.py       그림 설명·요약 → 프로젝트 레코드
 │   │   ├── candidates.py · naming.py   후보 연결, 그룹 이름
 │   │   ├── finalize.py · feedback.py   최종 그래프, 피드백 로그
+│   │   ├── setup_server.py · setup_form.html · initial_preferences.py   사전 선호 입력 (--setup)
+│   │   ├── text_feedback.py · feedback_changes.py   글로 쓴 교정 요청, 바뀐 점 요약
+│   │   ├── wiki_approval.py            최종 승인과 위키 고정
 │   │   ├── llm.py · claude_cli.py      Claude (API · 구독 CLI)
 │   │   ├── report.py · doctor.py       단계별 리포트, 환경 점검
 │   │   └── plugins.py · view_template.html
@@ -221,7 +249,8 @@ AI618_ProjectWiki/
 │   ├── cli.py                build / correct / view / report / obsidian / doctor
 │   ├── config.py             모든 설정값
 │   └── schema.py             단계 사이 데이터 형식
-├── benchmark/                정량 평가: 정답 그래프(gt/), 평가 코드(eval/), 정답 지도, 설명 문서
+├── benchmark/                정량 평가: 정답 그래프와 교정 정답(gt/), 평가 코드(eval/), 정답 지도, 설명 문서
+├── user_study/               사용자 스터디 페이지와 만드는 스크립트
 ├── examples/                 예제 프로젝트 폴더, prefs·feedback 예시
 ├── scripts/                  setup.sh · setup.ps1 · download_models.py · make_sample_assets.py
 ├── tests/                    pytest (GPU·API 키 없이 실행)
@@ -238,16 +267,20 @@ pytest -q
 
 TF-IDF 인코더와 가짜 Claude 클라이언트를 쓰므로 GPU와 API 키가 없어도 됩니다. push하면 GitHub Actions에서도 돕니다.
 
-## 현재 상태 (2026-11-05)
+## 현재 상태
+
+2026-11-26 main 기준으로 테스트 26개(`tests/`, `benchmark/eval/`)가 통과합니다. 아래 표는 11/05에 실제 폴더로 확인한 결과입니다.
+
+### 2026-11-05 확인
 
 | 확인 항목 | 결과 |
 |---|---|
-| 테스트 8개 (가짜 Claude·가짜 CLI 포함) | 통과 |
+| 테스트 (가짜 Claude·가짜 CLI 포함) | 통과 |
 | 예제 폴더, `--llm-backend cli` (Sonnet 판정 + Haiku 요약) | 파일 14개 요약·그림 설명, 연결 33개 모두 관계·라벨·검증된 인용. 52회 호출, 3분 20초 |
 | AI618 프로젝트 폴더 (파일 133개), `--llm-backend cli --llm-model claude-haiku-5-5` | 근거 조각 1008개, 이미지 45개 설명, 그룹 14개(선호 입력 반영), 후보 437개 판정(16개 탈락). 579회 호출, 21분 30초 |
 | 같은 폴더에 예시 피드백 9개 | `drift` 숨김 35·강화 37, `align` 숨김 8·강화 5, 직접 편집 9/9 유지 |
 | 증분 갱신 (폴더 복사본에서 파일 1개 수정, 1개 추가) | 변경 2건 감지, 새로 인코딩한 조각 2개, 직접 편집 9/9 유지 |
-| 아직 없는 것 | 정렬도 측정(Gromov–Wasserstein), 뷰어 이미지 썸네일, 위키 페이지 생성 |
+| 당시 없던 것 | 정렬도 측정(Gromov–Wasserstein), 뷰어 이미지 썸네일, 위키 페이지 생성(이후 최종 승인 때 내보내기로 추가) |
 
 `projectwiki report <출력폴더>`로 같은 확인을 직접 할 수 있습니다. 구독(CLI) 방식은 호출마다 CLI 기본 프롬프트가 붙어서 사용량이 API보다 큽니다. AI618 폴더 실행의 API 환산 금액은 $19.6이었고, 구독 한도에서 차감됐습니다.
 

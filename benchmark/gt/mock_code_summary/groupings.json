@@ -3,7 +3,38 @@
  "preferences": [
   {
    "id": "component",
-   "text": "모델 구성요소별로 묶어줘, 예를 들면 검색기는 sibling_retriever.py랑 관련 문서·설정 같이, 게이트 융합은 reposum_model.py랑 method.md 같이 두는 식으로.",
+   "corrections": [
+    {
+     "op": "move",
+     "file": "docs/method.md",
+     "to": "모델 코드"
+    },
+    {
+     "op": "move",
+     "file": "src/data.py",
+     "to": "학습·평가·설정"
+    },
+    {
+     "op": "move",
+     "file": "src/utils.py",
+     "to": "학습·평가·설정"
+    },
+    {
+     "op": "move",
+     "file": "configs/intra_repo_java.yaml",
+     "to": "방법 문서·관련 연구"
+    },
+    {
+     "op": "move",
+     "file": "src/sibling_retriever.py",
+     "to": "방법 문서·관련 연구"
+    },
+    {
+     "op": "move",
+     "file": "README.md",
+     "to": "논문·발표·웹"
+    }
+   ],
    "groups": [
     {
      "name": "게이트 융합·모델 구조",
@@ -37,7 +68,22 @@
   },
   {
    "id": "version",
-   "text": "논문 초안 v1이랑 3월 회의록 같은 옛날 자료는 '옛 버전' 그룹으로 따로 빼줘",
+   "corrections": [
+    {
+     "op": "add_group",
+     "name": "옛 버전"
+    },
+    {
+     "op": "move",
+     "file": "notes/meeting_2026-03-04.md",
+     "to": "옛 버전"
+    },
+    {
+     "op": "move",
+     "file": "paper/reposum_draft_v1.pdf",
+     "to": "옛 버전"
+    }
+   ],
    "groups": [
     {
      "name": "결과와 그림",

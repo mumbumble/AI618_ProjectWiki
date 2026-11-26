@@ -3,7 +3,33 @@
  "preferences": [
   {
    "id": "results",
-   "text": "결과랑 그림(findings.md, likert 그래프)을 맨 위에 두고, 분석 스크립트와 데이터는 중간, 프로토타입이랑 IRB 문서는 아래로 내려줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "irb/protocol.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "prototype/app.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "prototype/logger.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "prototype/ui_spec.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "results/figures/likert_means_by_item.png",
+     "importance": 3
+    }
+   ],
    "levels": {
     "top": ["README.md", "proposal/study_proposal.pdf", "results/figures/likert_means_by_item.png", "results/findings.md"],
     "middle": ["analysis/analyze_logs.py", "analysis/analyze_survey.py", "data/survey_responses.csv", "data/task_logs.csv", "notes/meeting.md", "notes/pilot_notes.md", "study/survey_questions.md", "study/tasks.md"],
@@ -12,7 +38,23 @@
   },
   {
    "id": "code",
-   "text": "프로토타입 코드랑 로거를 맨 위에 두고, 그 밑에 과제·설문 설계 문서, 맨 아래에 회의록이랑 논문 노트를 놔줘.",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "notes/meeting.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "prototype/logger.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "study/interview_guide.md",
+     "importance": 2
+    }
+   ],
    "levels": {
     "top": ["README.md", "proposal/study_proposal.pdf", "prototype/app.py", "prototype/logger.py", "results/findings.md"],
     "middle": ["analysis/analyze_logs.py", "analysis/analyze_survey.py", "data/survey_responses.csv", "data/task_logs.csv", "irb/protocol.md", "notes/pilot_notes.md", "prototype/ui_spec.md", "results/figures/likert_means_by_item.png", "study/interview_guide.md", "study/survey_questions.md", "study/tasks.md"],

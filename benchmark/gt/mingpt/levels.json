@@ -3,7 +3,38 @@
  "preferences": [
   {
    "id": "core",
-   "text": "model.py, trainer.py, bpe.py 같은 핵심 코드를 맨 위에 두고 데모나 노트북, 문서는 아래로 내려줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "README.md",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "demo.ipynb",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "generate.ipynb",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mingpt/bpe.py",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "projects/adder/adder.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "projects/chargpt/chargpt.py",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["mingpt/bpe.py", "mingpt/model.py", "mingpt/trainer.py"],
     "middle": ["mingpt/utils.py", "tests/test_huggingface_import.py"],
@@ -12,7 +43,33 @@
   },
   {
    "id": "entry",
-   "text": "README.md랑 데모 노트북처럼 처음 보는 진입 파일을 위에 두고, 그걸 뒷받침하는 mingpt 내부 코드는 아래에 둬줘",
+   "corrections": [
+    {
+     "op": "set_level",
+     "file": "demo.ipynb",
+     "importance": 3
+    },
+    {
+     "op": "set_level",
+     "file": "mingpt/bpe.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mingpt/model.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mingpt/trainer.py",
+     "importance": 1
+    },
+    {
+     "op": "set_level",
+     "file": "mingpt/utils.py",
+     "importance": 1
+    }
+   ],
    "levels": {
     "top": ["README.md", "demo.ipynb"],
     "middle": ["generate.ipynb", "projects/adder/adder.py", "projects/chargpt/chargpt.py", "tests/test_huggingface_import.py"],

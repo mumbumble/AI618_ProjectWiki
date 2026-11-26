@@ -15,10 +15,22 @@
     ["README.md", "micrograd/engine.py"],
     ["demo.ipynb", "micrograd/engine.py"]
    ],
-   "promote": [
-    ["gout.svg", "micrograd/engine.py"],
-    ["gout.svg", "trace_graph.ipynb"],
-    ["trace_graph.ipynb", "micrograd/engine.py"]
+   "corrections": [
+    {
+     "op": "add",
+     "a": "gout.svg",
+     "b": "micrograd/engine.py"
+    },
+    {
+     "op": "add",
+     "a": "gout.svg",
+     "b": "trace_graph.ipynb"
+    },
+    {
+     "op": "add",
+     "a": "trace_graph.ipynb",
+     "b": "micrograd/engine.py"
+    }
    ]
   },
   {
@@ -35,7 +47,7 @@
     ["trace_graph.ipynb", "micrograd/engine.py"],
     ["micrograd/nn.py", "test/test_engine.py"]
    ],
-   "promote": []
+   "corrections": []
   }
  ]
 }
