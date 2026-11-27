@@ -12,6 +12,20 @@
 <style>
 /*CSS*/
 /* ---- v2 ---- */
+.toolbar:has(.fchip) .breadcrumb{display:none}
+.fchip{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;color:#fff;background:#2c2b31;border:1px solid var(--line2);border-radius:7px;padding:4px 10px}
+.fchip::before{content:"";width:14px;height:11px;border-radius:2px;background:#d9b45a;box-shadow:inset 0 3px 0 #b8933f}
+.tabsbox .tablbl{font-size:13px;color:var(--sub);margin:0 2px 0 -4px}
+.gfold{display:inline-block;margin-left:10px;font-size:13px;font-weight:500;color:var(--muted);vertical-align:3px}
+.intent .sit{display:block;font-size:12.5px!important;line-height:1.5;color:#d6d6d6;margin:2px 0 3px}
+.tourbub .intent .sit{font-size:13.5px!important;color:#e0e0e0}
+.isit{margin:4px 0 10px;font-size:14px;line-height:1.6;color:#e6e6e6}
+.chg3 .ans{display:block;color:#fff;font-weight:600;margin:1px 0 3px}
+.icmp{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0 10px;table-layout:fixed}
+.icmp th,.icmp td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top;line-height:1.45;word-break:keep-all}
+.icmp tbody th{width:84px;color:var(--muted);font-weight:600;background:#232326} .icmp thead th{color:var(--sub);background:#232326}
+.icmp .on{background:#2a3a2f;color:#fff} .icmp thead th.on{color:#bff0cf}
+.t2why .say{min-height:0!important;color:#f0f0f0} .t2why .hint{margin:6px 0 0}
 #hback{margin-left:14px;padding:3px 10px;font-size:12.5px} #hback[hidden]{display:none}
 .graph-caption strong#gcap{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
 .ik{display:inline-block;font-size:12px;font-weight:700;color:#173022;background:#8fd6a8;border-radius:5px;padding:2px 8px;margin-right:9px;vertical-align:3px}
@@ -281,6 +295,65 @@ details.rep{margin:10px 0} details.rep>summary{cursor:pointer;font-weight:600;fo
 .addhint{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:var(--warnsoft);color:var(--warn);border:1px solid #6b5230;border-radius:16px;padding:4px 14px;font-size:12.5px;z-index:4}
 .legendv2{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin-top:4px}
 .legendv2 i{display:inline-block;width:18px;height:0;border-top:3px solid;vertical-align:middle;margin-right:5px}
+.todo.guide{padding:15px 16px;border:2px solid #9d82ee;box-shadow:0 0 0 3px rgba(157,130,238,.14),0 8px 22px rgba(0,0,0,.3)}
+.todo.guide .th{font-size:13.5px;font-weight:700;margin-bottom:10px}
+.todo.guide .tcur{min-height:168px} .todo.guide .gm{font-size:15.5px;line-height:1.66}
+.todo.guide .ga{font-size:14.5px;line-height:1.6;margin-top:10px;padding-top:10px}
+.cmp2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.cmp2>div{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#232129}
+.cmp2>div.on{border-color:#ffa940}
+.cmp2 b{display:block;margin-bottom:6px;font-size:14px} .cmp2 span{display:block;font-size:13px;color:var(--sub);line-height:1.55;margin-top:4px}
+.page:has(.introp){align-items:center}
+.page>.paper.introp{width:min(700px,100%);max-width:700px;height:min(680px,calc(100vh - 80px));display:flex;flex-direction:column}
+.introp .ibody{flex:1;min-height:0;overflow:auto;padding-right:6px}
+.introp .pnav{flex:none}
+.introp #pnext2{min-width:124px} .introp .plan em{display:inline;margin-right:8px} .introp .plan>div{padding:9px 14px}
+.introp .nmhint{font-size:12.5px;color:var(--muted);margin-top:6px}
+.tourbub.center{width:min(820px,calc(100vw - 32px))}
+.tourbub.center.wide{width:min(1140px,calc(100vw - 32px))}
+.tourbub.center.xwide{width:min(1280px,calc(100vw - 24px))}
+.tourbub.center .tt{font-size:16.5px} .tourbub .tt p.big{font-size:18px;line-height:1.7} .tourbub.center h3{font-size:26px}
+.tourbub .tf .tap{font-size:12.5px;color:var(--muted)}
+.tourblk.tapnext{cursor:pointer}
+#ttabs.locked button:not([aria-pressed=true]){opacity:.4}
+.sh2{font-size:13px;font-weight:700;color:#cbb8ff;margin-bottom:8px}
+.t1in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,9fr);gap:18px;margin-top:4px}
+.t1in .fbox{border:1px solid var(--line);background:#26252b;border-radius:12px;padding:16px}
+.t1in .fbox p{font-size:15px;color:#eee;line-height:1.6;margin:10px 0}
+.dchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px} .dchips span{font-size:12.5px;font-family:ui-monospace,Consolas,monospace;color:#ddd;background:#1d1c21;border:1px solid var(--line);border-radius:6px;padding:3px 8px}
+.k3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.k3>div{border:1px solid #4a4060;background:#26252b;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.k3 b{font-size:16px;color:#fff} .k3 svg,.i2 svg{background:#1d1c21;border-radius:8px;display:block}
+.k3 span{font-size:14px;line-height:1.55;color:#dcdcdc}
+.i2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0 12px}
+.i2>div{border:1px solid var(--line);background:#26252b;border-radius:12px;padding:14px 16px}
+.i2 svg{height:190px} .i2 b{font-size:17px;color:#fff;display:block} .i2 .sit{display:block;font-size:14.5px;color:#ddd;line-height:1.6;margin:6px 0 10px}
+.rev3 span{font-size:14.5px}
+.tourbub.center.xwide{min-height:min(640px,calc(100vh - 40px));display:flex;flex-direction:column} .tourbub.center.xwide .tt{flex:1}
+.t1in{align-items:stretch} .t1in>.fbox{display:flex;flex-direction:column}
+.gbox .k3{flex:1} .gbox .k3>div{justify-content:flex-start}
+.ik.prac{background:#f2c46b;color:#3a2a08}
+.dkind{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:3px 11px 3px 9px;border-radius:12px;margin:2px 0 8px;border:1px solid}
+.dkind i{font-style:normal;font-size:13px;line-height:1}
+.dkind.file{color:#9fd0f0;border-color:#3f6f8f;background:#1f2e38} .dkind.edge{color:#d4c2ff;border-color:#6b5aa0;background:#2d2740}
+.dkind.group{color:#a8e3bd;border-color:#3f7a55;background:#1f3127} .dkind.fb{color:#ffc77a;border-color:#8a6430;background:#33291b}
+.inspector{transition:box-shadow .2s} .inspector[data-kind=file]{box-shadow:inset 3px 0 0 #4f8fbf} .inspector[data-kind=edge]{box-shadow:inset 3px 0 0 #8a70d6}
+.inspector[data-kind=group]{box-shadow:inset 3px 0 0 #4f9a6c} .inspector[data-kind=fb]{box-shadow:inset 3px 0 0 #c48a3c}
+.learned{margin:12px 0 4px;padding:12px 14px;border:1.5px solid #6fa07f;background:#1f2c24;border-radius:10px}
+.learned .lk{font-size:13px;font-weight:800;color:#a8e3bd;margin-bottom:6px} .learned p{margin:0;font-size:14.5px;line-height:1.6;color:#f0f0f0}
+.learned .hint{display:block;margin-top:6px} .learned .dis{padding:6px 0 0}
+.inspector{width:var(--dw,460px)}
+.checkpt.big .cl{grid-template-columns:70px 1fr;font-size:15px;line-height:1.6;color:#f3f3f3;margin:6px 0} .checkpt.big .cl b{color:#ffcf8a;font-weight:700}
+.fixbar .leave{margin:8px 0 2px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub)}
+.nextis{margin:10px 0 4px}
+.navfoot{flex:none;border-top:1px solid var(--line);padding:12px 20px;background:#2b2a2f;box-shadow:0 -8px 18px #0005;display:flex;flex-direction:column;gap:8px}
+.navfoot[hidden]{display:none} .navfoot .err{min-height:0;margin:0} .navfoot .err:empty,.navfoot .hint:empty{display:none} .navfoot .hint{margin:0}
+.navfoot .pinfoot{display:flex;flex-direction:column;gap:8px}
+.fixbar{top:auto!important;bottom:-20px;box-shadow:0 -8px 16px #0006!important}
+.dkind.intent{color:#a8e3bd;border-color:#3f7a55;background:#1f3127} .inspector[data-kind=intent]{box-shadow:inset 3px 0 0 #4f9a6c}
+.ipre{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.ipre>div{border:1px solid var(--line);background:#26252b;border-radius:10px;padding:10px 14px}
+.ipre b{display:block;font-size:12.5px;color:var(--muted);font-weight:600;margin-bottom:3px} .ipre span{font-size:15px;color:#fff;line-height:1.5}
 </style>
 </head>
 <body>
@@ -337,8 +410,8 @@ function mountPdf(root,c){const f=root.querySelector("iframe[data-pdf]");if(!f||
  f.src=URL.createObjectURL(new Blob([u],{type:"application/pdf"}))}
 
 /* ---------- flow, log, resume ---------- */
-const FLOW=[{id:"intro",name:"시작"},{id:"t1",name:"과제 1"},{id:"practice",name:"도구 연습"},
- {id:"t2a",name:"과제 2 (의도)"},{id:"t2b",name:"과제 2 (고치기)"},{id:"survey",name:"마지막 질문"},{id:"end",name:"끝"}];
+const FLOW=[{id:"intro",name:"시작"},{id:"t1",name:"과제 1"},{id:"t2a",name:"과제 2"},
+ {id:"practice",name:"피드백 연습"},{id:"t2b",name:"과제 3"},{id:"survey",name:"마지막 질문"},{id:"end",name:"끝"}];
 let step=0;
 const LOG={v:2,started:new Date().toISOString(),steps:{},feedback:[],hand:D.hand.length>0,
  pid:"P-"+[...crypto.getRandomValues(new Uint8Array(4))].map(b=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[b%31]).join("")};
@@ -375,7 +448,7 @@ addEventListener("beforeunload",e=>{if(step>0&&LOG.sent!="ok"){e.preventDefault(
 /* ---------- questions ---------- */
 function qHtml(x,n){
  const body=x.t=="scale"?`<div class="scale">${[1,2,3,4,5,6,7].map(i=>`<label><input type="radio" name="${x.k}" value="${i}">${i}</label>`).join("")}</div>
-   <div class="scale-ends"><span>${esc((x.ends||[])[0]||"전혀 그렇지 않다")}</span><span>${esc((x.ends||[])[1]||"매우 그렇다")}</span></div>`
+   <div class="scale-ends"><span>${esc((x.ends||[])[0]||"전혀 아니다")}</span><span>${esc((x.ends||[])[1]||"매우 그렇다")}</span></div>`
   :x.t=="text"?`<textarea id="s_${x.k}" placeholder="${esc(x.ph||"")}"></textarea>`
   :`<div class="opts">${x.o.map(o=>`<label><input type="${x.t=="check"?"checkbox":"radio"}" name="${x.k}" value="${esc(o)}">${esc(o)}</label>`).join("")}</div>`;
  return `<div class="q"><b>${n}. ${esc(x.q)}</b>${body}</div>`;
@@ -415,22 +488,22 @@ function intro(){
    ${innerWidth<1100?`<div class="warnbox">지금 창이 좁습니다. 창을 최대로 키우거나 PC에서 열어 주세요.</div>`:""}
    <div class="plan">
     <div><b>1</b><span><em>과제 1</em>같은 연구 폴더를 세 가지 방식으로 정리한 그래프를 보고, 어느 쪽이 파악하기 좋은지 평가합니다.</span></div>
-    <div><b>2</b><span><em>도구 연습</em>그중 한 도구로 작은 폴더에서 그래프를 보고 피드백을 주는 법을 따라 해 봅니다.</span></div>
-    <div><b>3</b><span><em>과제 2</em>정리 의도를 알려 주면 그래프가 어떻게 바뀌는지 보고, 표시된 두 곳에 피드백을 줍니다.</span></div>
+    <div><b>2</b><span><em>과제 2</em>그중 한 도구에 정리 의도를 알려 주면 그래프가 어떻게 바뀌는지 봅니다.</span></div>
+    <div><b>3</b><span><em>과제 3</em>같은 그래프의 연결에 피드백을 주고 결과를 봅니다. 시작 전에 버튼 쓰는 법을 짧게 연습합니다.</span></div>
     <div><b>4</b><span><em>마무리</em>짧은 질문에 답하면 끝납니다.</span></div></div>
-   <p class="hint">처음 보는 폴더라 내용을 잘 몰라도 괜찮습니다. 단계마다 짧은 설명이 먼저 나오고, 할 일은 화면 왼쪽에 하나씩 나옵니다.</p>`,
+   <p class="hint">처음 보는 폴더라 내용을 잘 몰라도 괜찮습니다. 단계마다 짧은 설명이 먼저 나오고, 진행하는 동안에는 왼쪽 위 안내 상자에 지금 볼 것이 나옵니다.</p>`,
   ()=>`<h2>연구 참여 안내</h2><p class="lead2">시작하기 전에 한 번 읽어 주세요.</p>${consentHtml()}`,
   ()=>`<h2>참가자 정보</h2><p class="lead2">간단한 정보만 받습니다.</p>
-   <div class="q"><b>이름 또는 닉네임</b><input id="nm" class="tin" autocomplete="nickname" placeholder="예: 준" value="${esc(A.name||"")}"></div>
+   <div class="q"><b>이름 또는 닉네임 <span class="hint">(선택)</span></b><input id="nm" class="tin" autocomplete="nickname" value="${esc(A.name||"")}"><div class="nmhint">비워 두면 참가자 번호 ${LOG.pid}로 기록됩니다.</div></div>
    ${PROFILE.map((x,i)=>qHtml(x,i+1)).join("")}
    <label class="check" style="margin-top:14px"><input type="checkbox" id="c1">앞 장의 안내를 읽었고, 스터디 참여와 정보 수집·이용에 동의합니다.</label><div class="err" id="err"></div>`];
  const show=()=>{
-  $("app").innerHTML=`<div class="page"><div class="paper introp">${pages[pg]()}
+  $("app").innerHTML=`<div class="page"><div class="paper introp"><div class="ibody">${pages[pg]()}</div>
    <div class="pnav"><span class="pdots2">${pages.map((x,i)=>`<i class="${i==pg?"on":""}"></i>`).join("")}</span>${pg?`<button class="ghost" id="pprev">← 이전</button>`:""}<button class="primary" id="pnext2">${pg<2?"다음 →":"시작하기"}</button></div></div></div>`;
   $("app").oninput=$("app").onchange=()=>{if($("err"))$("err").textContent="";if($("nm"))A.name=$("nm").value};
   if($("pprev"))$("pprev").onclick=()=>{pg--;show()};
   $("pnext2").onclick=()=>{if(pg<2){pg++;show();return}
-   const nm=$("nm").value.trim();if(!nm)return $("err").textContent="이름이나 닉네임을 적어 주세요.";
+   const nm=$("nm").value.trim()||LOG.pid;
    const r=qRead(PROFILE,1);if(r.err)return $("err").textContent=r.err;
    if(!$("c1").checked)return $("err").textContent="동의에 체크해야 시작할 수 있습니다.";
    LOG.who={name:nm};delete LOG.introDraft;LOG.profile=r.A;LOG.consent={at:new Date().toISOString(),delete_by:STUDY.delete_by};go(1)}};
@@ -463,7 +536,7 @@ function workspace(o){
   <main><div class="toolbar"><div class="breadcrumb">${esc(P.name)} / <strong id="crumb">${esc(o.crumb||"전체 그래프")}</strong></div><div class="tools" id="tools">${o.tools||""}</div></div>
    <div id="graphwrap"><div id="net"></div><div class="graph-caption"><strong id="gcap">프로젝트의 연결 지도</strong><span id="graphStats"></span><div class="gdesc" id="gdesc" hidden></div><div class="legendv2" id="gleg"></div></div>
     <div class="graph-controls"><button id="zout" title="축소">−</button><button id="zin" title="확대">+</button><button id="zfit">전체 보기</button></div></div></main>
-  <div id="vsplit" title="끌어서 폭 조절"></div><aside class="inspector"><div class="pane-title ptabs" id="ptabs"><span>내용과 근거</span></div><div class="inspector-scroll" id="iscroll"><div id="detail"></div></div><div class="qpane" id="qpane" hidden><div class="qscroll" id="qscroll"></div><div class="qfoot" id="qfoot"></div></div></aside>
+  <div id="vsplit" title="끌어서 폭 조절"></div><aside class="inspector"><div class="pane-title ptabs" id="ptabs"><span>내용과 근거</span></div><div class="inspector-scroll" id="iscroll"><div id="detail"></div></div><div class="qpane" id="qpane" hidden><div class="qscroll" id="qscroll"></div><div class="qfoot" id="qfoot"></div></div><div class="navfoot" id="navfoot" hidden></div></aside>
  </div><div class="narrow" id="narrow" ${innerWidth<1100?"":"hidden"}>창이 좁아 일부가 가려질 수 있습니다. 브라우저 창을 최대로 키워 주세요.</div><footer><span id="meta"></span><span id="sessionStatus"></span></footer>`;
  $("search").oninput=()=>{V.q=$("search").value.trim().toLowerCase();tree();if(!V.q){stick(null);return}
   stick({hn:new Set(V.g.nodes.filter(n=>n.path.toLowerCase().includes(V.q)).map(n=>n.id)),he:new Set()})};
@@ -477,9 +550,9 @@ function workspace(o){
  o.bindTools&&o.bindTools();
 }
 function cardPad(){}
-/* parts marked .pinfoot (the next / submit buttons) go to a bar fixed at the bottom of the task pane, so they never scroll out of sight */
-function card(title,mini,html,bind){$("btitle").textContent=title;const s=$("exs").scrollTop;$("sidebody").innerHTML=html;const f=$("taskfoot");f.innerHTML="";
- $("sidebody").querySelectorAll(".pinfoot").forEach(x=>f.appendChild(x));f.hidden=!f.children.length;bind&&bind(document.querySelector(".taskpane"));$("exs").scrollTop=s;setTimeout(applyNudge,0)}
+/* parts marked .pinfoot (the next buttons) go to one bar at the bottom of the right column, where the question buttons also are */
+function card(title,mini,html,bind){$("btitle").textContent=title;const s=$("exs").scrollTop;$("sidebody").innerHTML=html;const f=$("navfoot");f.innerHTML="";
+ $("sidebody").querySelectorAll(".pinfoot").forEach(x=>f.appendChild(x));f.hidden=!f.children.length;bind&&bind(document);$("exs").scrollTop=s;setTimeout(applyNudge,0)}
 /* graph data */
 function setGraph(g){
  V.g=g;V.node={};g.nodes.forEach(n=>V.node[n.id]=n);V.E={};g.edges.forEach(e=>V.E[e.id]=e);
@@ -497,7 +570,9 @@ function nodeStyle(n,dg){
 function edgeStyle(e){
  /* strength tiers only mean something for ProjectWiki scores; the comparison graphs draw every link the same */
  const s=V.stick,hot=s&&s.he.has(e.id),dim=s&&!hot,t=(V.g.meta||{}).method=="ours"?tier(+e.score):1.6,d=V.diff[e.id];
- let col=t==1.6?"#77718a":[C.lo,C.mid,C.hi][t],w=t==1.6?1.6:[1,1.5,2.6][t],dash=e.direct?false:[5,5];
+ let col=t==1.6?"#77718a":[C.lo,C.mid,"#a49dc2"][t],w=t==1.6?1.6:[.6,1.1,3.4][t],dash=e.direct?false:[5,5];
+ /* ProjectWiki: strong links thick and bright, weak ones hairlines; links read from content are fine dashes */
+ if(t!=1.6&&!e.direct){w=t==2?1.8:.7;dash=[2,4];if(t<2)col=mix(col,C.bg,.25)}
  if(d=="up"){col=C.up;w=3.6;dash=false}else if(d=="down"){col=C.down;w=1;dash=[2,4]}
  else if(d=="auto"){col="#ffa940";w=4.8;dash=false}else if(d=="direct"){col="#c4a8ff";w=4.8;dash=false}
  let hide=!shown(e),label="";
@@ -526,13 +601,14 @@ function draw(opt={}){
  const at=opt.pos||seed;
  const nodes=g.nodes.map(n=>Object.assign({id:n.id,label:base(n.path),title:n.path+(n.summary?" · "+n.summary:"")},nodeStyle(n,dg),at[n.id]?{x:at[n.id].x,y:at[n.id].y}:{}));
  const edges=g.edges.map(e=>Object.assign({id:e.id,from:e.source,to:e.target},edgeStyle(e)));
- g.groups.forEach(gr=>{const m=gr.members.filter(x=>V.node[x]);m.forEach((a,i)=>m.slice(i+1).forEach(b=>edges.push({id:"g:"+a+"|"+b,from:a,to:b,hidden:true,length:75})))});
+ const roomy=(g.meta||{}).method=="ours";
+ g.groups.forEach(gr=>{const m=gr.members.filter(x=>V.node[x]);m.forEach((a,i)=>m.slice(i+1).forEach(b=>edges.push({id:"g:"+a+"|"+b,from:a,to:b,hidden:true,length:roomy?95:75})))});
  const grouped=g.groups.length>0;
  if(net)net.destroy();
  NS=new vis.DataSet(nodes);ES=new vis.DataSet(edges);
  net=new vis.Network($("net"),{nodes:NS,edges:ES},{layout:{randomSeed:7},
   interaction:{hover:true,tooltipDelay:200,selectConnectedEdges:false,hoverConnectedEdges:false},
-  physics:opt.fixed?false:{solver:"barnesHut",barnesHut:grouped?{gravitationalConstant:-8500,centralGravity:.3,springLength:210,springConstant:.02,avoidOverlap:1}
+  physics:opt.fixed?false:{solver:"barnesHut",barnesHut:grouped?{gravitationalConstant:roomy?-10500:-8500,centralGravity:.3,springLength:roomy?250:210,springConstant:.02,avoidOverlap:1}
    :{gravitationalConstant:-3600,centralGravity:1,springLength:140,springConstant:.05,avoidOverlap:1},
    stabilization:opt.live?false:{iterations:600}},
   edges:{smooth:{type:"continuous"},selectionWidth:1,hoverWidth:1}});
@@ -541,7 +617,7 @@ function draw(opt={}){
   return this.edgeType.getDistanceToEdge(this.from.x,this.from.y,this.to.x,this.to.y,r.left,r.top)<Math.max(10,9/(net?net.getScale():1))}}
  /* every deferred step checks that this network is still the one on screen (switching tabs quickly used to stop the next layout half way) */
  const me=net,mine=()=>net===me;
- const done=()=>{if(!mine())return;net.setOptions({physics:false});V.pos=net.getPositions();if(!opt.nofit)fitView();opt.then&&opt.then()};
+ const done=()=>{if(!mine())return;net.setOptions({physics:false});V.pos=net.getPositions();if(!opt.nofit)fitView();net.redraw();[80,400].forEach(ms=>setTimeout(()=>{if(mine())net.redraw()},ms));opt.then&&opt.then()};
  if(opt.fixed)setTimeout(done,0);
  else if(opt.live){fitView();setTimeout(()=>{if(!mine())return;net.setOptions({physics:false});const to=pack(net.getPositions());tween(to,700,done)},1800)}
  else net.once("stabilizationIterationsDone",()=>{if(!mine())return;net.setOptions({physics:false});spread();const to=pack(net.getPositions());if(to)NS.update(Object.entries(to).map(([id,p])=>({id,x:p.x,y:p.y})));done()});
@@ -549,19 +625,21 @@ function draw(opt={}){
  net.on("hoverNode",p=>{const s=neighbours(p.node);V.hover=1;stickTmp(s)});net.on("blurNode",()=>stickTmp(null));
  net.on("hoverEdge",p=>{if(p.edge.startsWith("g:"))return;const e=V.E[p.edge];stickTmp({hn:new Set([e.source,e.target]),he:new Set([e.id])})});net.on("blurEdge",()=>stickTmp(null));
  const nearest=pt=>{let best=null,bd=Infinity;Object.entries(net.body.edges).forEach(([id,E])=>{if(!E.connected||E.options.hidden||id.startsWith("g:"))return;
-  const d=E.edgeType.getDistanceToEdge(E.from.x,E.from.y,E.to.x,E.to.y,pt.x,pt.y);if(d<bd){bd=d;best=id}});return bd<Math.max(14,15/net.getScale())?best:null};
+  const d=E.edgeType.getDistanceToEdge(E.from.x,E.from.y,E.to.x,E.to.y,pt.x,pt.y);if(d<bd){bd=d;best=id}});return bd<Math.max(4,7/net.getScale())?best:null};
+ const inGroup=pt=>{const hit=(V.grect||[]).filter(r=>pt.x>=r.x1&&pt.x<=r.x2&&pt.y>=r.y1&&pt.y<=r.y2);hit.sort((a,b)=>(a.x2-a.x1)*(a.y2-a.y1)-(b.x2-b.x1)*(b.y2-b.y1));return hit.length?hit[0].id:null};
  const nearNode=pt=>{const P=net.getPositions();let b=null,bd=Infinity;for(const id in P){const d=Math.hypot(P[id].x-pt.x,P[id].y-pt.y);if(d<bd){bd=d;b=id}}return bd<Math.max(16,14/net.getScale())+8?b:null};
- net.on("click",p=>{if(V.addFrom!==undefined&&p.nodes.length){pickAdd(p.nodes[0]);return}if(p.nodes.length){openFile(p.nodes[0]);return}const nn=nearNode(p.pointer.canvas);if(nn){openFile(nn);return}const j=nearest(p.pointer.canvas);if(j)openEdge(j);else if(V.sel||V.stick)home()});
+ net.on("click",p=>{if(V.addFrom!==undefined&&p.nodes.length){pickAdd(p.nodes[0]);return}if(p.nodes.length){openFile(p.nodes[0]);return}const nn=nearNode(p.pointer.canvas);if(nn){openFile(nn);return}const j=nearest(p.pointer.canvas);if(j){openEdge(j);return}const gi=inGroup(p.pointer.canvas);if(gi!=null)openGroup(gi);else if(V.sel||V.stick)home()});
  stats();
 }
 let tmpS=null;function stickTmp(s){const keep=V.stick;if(s){V.stick=s;V.hov=true;restyle();V.hov=false;V.stick=keep}else restyle()}
 /* group regions: every group is a tinted box with its name, so groups read at a glance without a separate card view */
 function regions(ctx){
- if(!V||!V.g.groups.length)return;const P=net.getPositions(),sc=Math.max(.5,net.getScale());
+ if(!V)return;V.grect=[];if(!V.g.groups.length)return;const P=net.getPositions(),sc=Math.max(.5,net.getScale());
  V.g.groups.forEach((gr,gi)=>{const m=gr.members.filter(x=>P[x]);if(!m.length)return;const sel=V.sel&&V.sel.k=="g"&&V.sel.id==gr.id;
   const lw=i=>(V.lw&&V.lw[i]||90)/2;
   ctx.font="600 15px Segoe UI, Malgun Gothic, sans-serif";
   const x1=Math.min(...m.map(i=>P[i].x-lw(i)))-12,x2=Math.max(Math.max(...m.map(i=>P[i].x+lw(i)))+12,x1+ctx.measureText(gr.name).width+16),y1=Math.min(...m.map(i=>P[i].y))-34,y2=Math.max(...m.map(i=>P[i].y))+30;
+  V.grect.push({id:gr.id,x1,y1:y1-24,x2,y2});
   const c=gcolor(gr.id),rgb=[1,3,5].map(k=>parseInt(c.slice(k,k+2),16)).join(",");
   ctx.save();ctx.fillStyle=`rgba(${rgb},${sel?.12:.06})`;ctx.strokeStyle=`rgba(${rgb},${sel?.9:.38})`;ctx.lineWidth=(sel?2:1.2)/sc;
   ctx.beginPath();ctx.roundRect(x1,y1,x2-x1,y2-y1,12);ctx.fill();ctx.stroke();
@@ -651,11 +729,13 @@ function tree(){
  $("fileTree").querySelectorAll(".file").forEach(b=>{const p=b.dataset.p;b.onclick=()=>{openFile(p);revealNode(p)};b.onmouseenter=()=>stickTmp(neighbours(p));b.onmouseleave=()=>stickTmp(null)});
 }
 /* ---------- inspector ---------- */
-function home(){V.sel=null;stick(null);legend();if(net){net.unselectAll();net.redraw()}
+function home(){V.sel=null;stick(null);legend();if(net){net.unselectAll();net.redraw()}const ins=document.querySelector(".inspector");if(ins)ins.dataset.kind="";
  if(V.o.home){$("detail").innerHTML=V.o.home();bindDetail();return}
  $("detail").innerHTML=`<div class="empty-state"><div class="empty-symbol" aria-hidden="true">⌘</div><h2>점이나 선을 눌러 보세요</h2>
-  <p>점(파일)을 누르면 요약과 내용이, 선(연결)을 누르면 두 파일의 관계와 근거가 이곳에 나옵니다.</p>${V.g.groups.length?`<p class="hint">색 영역은 그룹입니다. 왼쪽 ‘그룹’ 목록을 누르면 그룹 설명이 나옵니다.</p>`:""}</div>`}
+  <p>점(파일)을 누르면 요약과 내용이, 선(연결)을 누르면 두 파일의 관계와 근거가 이곳에 나옵니다.</p>${V.g.groups.length?`<p class="hint">색 영역은 그룹입니다. 색 영역의 빈 곳을 누르면 그룹 설명이 나옵니다.</p>`:""}</div>`}
 const back=()=>`<a class="back" id="back">‹ 처음으로</a>`;
+const KIND={intent:["◎","적용할 의도"],file:["●","파일"],edge:["—","연결"],group:["▢","그룹"],fb:["✎","피드백 결과"]};
+function kindHead(k){const x=document.querySelector(".inspector");if(x)x.dataset.kind=k;return `<div><span class="dkind ${k}"><i>${KIND[k][0]}</i>${KIND[k][1]}</span></div>`}
 function bindDetail(){const r=$("detail"),b=$("back");if(b)b.onclick=home;
  r.querySelectorAll("[data-f]").forEach(x=>{const p=x.dataset.f;x.onclick=()=>{openFile(p);revealNode(p)};x.onmouseenter=()=>stickTmp(neighbours(p));x.onmouseleave=()=>stickTmp(null)});
  r.querySelectorAll("[data-e]").forEach(x=>{const k=x.dataset.e;x.onclick=()=>V.E[k]&&openEdge(k);x.onmouseenter=()=>{const e=V.E[k];e&&stickTmp({hn:new Set([e.source,e.target]),he:new Set([k])})};x.onmouseleave=()=>stickTmp(null)});
@@ -667,7 +747,7 @@ function groupBadge(n){if(n.group==null||!(n.group in V.gi))return "";const gr=V
 function openFile(p){
  const n=V.node[p];if(!n)return;qAway();V.sel={k:"f",id:p};log("open",p);tree();legend();stick(neighbours(p));
  const es=V.g.edges.filter(e=>shown(e)&&(e.source==p||e.target==p)),c=V.P.content[p];
- $("detail").innerHTML=back()+`<h2>${esc(base(p))}</h2><div class="path">${esc(p)}</div>
+ $("detail").innerHTML=back()+kindHead("file")+`<h2>${esc(base(p))}</h2><div class="path">${esc(p)}</div>
   <div class="row"><span class="badge">${esc((ext(p)||"file").toUpperCase())}</span>${groupBadge(n)}${V.prio.has(p)?`<span class="badge user">먼저 볼 파일</span>`:""}</div>
   ${n.summary?`<h3>요약</h3><div>${esc(n.summary)}</div>`:""}
   <h3>연결 ${es.length}개</h3>${es.map(e=>{const o=e.source==p?e.target:e.source;return `<button class="edge-link" data-e="${esc(e.id)}"><span>${arrowOf(e,p)} ${esc(base(o))} <span class="hint">· ${esc(REL[e.relation]||e.relation)}${e.direct?"":" (추론)"}</span></span></button>`}).join("")||`<p class="hint">이어진 파일이 없습니다.</p>`}
@@ -683,19 +763,19 @@ function edgeHtml(e){
    ${e.origin=="user"?`<span class="badge user">사용자 추가</span>`:""}${shown(e)?"":`<span class="badge removed">${esc(STATUS[e.status]||e.status)}</span>`}
    ${e.status=="confirmed"?`<span class="badge user">필요한 연결로 표시됨</span>`:""}</div>
   ${e.label?`<div class="explain">${esc(e.label)}</div>`:""}
-  ${e.correction?`<h3>고친 내용 반영</h3><div>${esc(e.correction)}</div>`:""}
+  ${e.correction?`<h3>피드백 반영</h3><div>${esc(e.correction)}</div>`:""}
   <h3>근거</h3>${(e.evidence||[]).map(v=>`<div class="path">${esc(base(v.file_id||""))}${v.locator?" · "+esc(v.locator):""}</div><blockquote>${esc(v.quote)}</blockquote>`).join("")||`<p class="hint">${e.reason=="similar"?"두 파일의 내용(단어)이 비슷해서 이은 연결입니다. 따로 적힌 근거는 없습니다.":"근거 없음"}</p>`}
   <h3>이어진 두 파일</h3>${fileLink(a.path,a.summary)}${fileLink(b.path,b.summary)}`;
 }
 function openEdge(k){
  const e=V.E[k];if(!e)return;qAway();V.sel={k:"e",id:k};log("edge",k);legend();stick({hn:new Set([e.source,e.target]),he:new Set([k])});
- $("detail").innerHTML=back()+edgeHtml(e);bindDetail();V.canFix&&bindEdgeFix(e);$("iscroll").scrollTop=0;
+ $("detail").innerHTML=back()+kindHead("edge")+edgeHtml(e);bindDetail();V.canFix&&bindEdgeFix(e);$("iscroll").scrollTop=0;
  if(net)net.selectEdges([k]);V.o.onOpen&&V.o.onOpen("edge",k);setTimeout(applyNudge,0);
 }
 function openGroup(gid){
  const gr=V.g.groups[V.gi[gid]];if(!gr)return;if(V.sel&&V.sel.k=="g"&&V.sel.id==gid){log("group_off",gid);home();return}qAway();V.sel={k:"g",id:gid};log("group",gid);legend();stick(groupSet(gid));if(net)net.redraw();
  const cnt={};V.g.edges.forEach(e=>{if(!shown(e))return;const ga=V.node[e.source].group,gb=V.node[e.target].group;if(ga==gid&&gb!=gid&&gb!=null)cnt[gb]=(cnt[gb]||0)+1;if(gb==gid&&ga!=gid&&ga!=null)cnt[ga]=(cnt[ga]||0)+1});
- $("detail").innerHTML=back()+`<h2>${esc(gr.name)}</h2><div class="row"><span class="badge" style="background:${gcolor(gid)};color:#fff">그룹</span><span class="badge">파일 ${gr.members.length}개</span>${gr.origin=="user"?`<span class="badge user">사용자가 만든 그룹</span>`:""}</div>
+ $("detail").innerHTML=back()+kindHead("group")+`<h2>${esc(gr.name)}</h2><div class="row"><span class="badge" style="background:${gcolor(gid)};color:#fff">그룹</span><span class="badge">파일 ${gr.members.length}개</span>${gr.origin=="user"?`<span class="badge user">사용자가 만든 그룹</span>`:""}</div>
   <div>${esc(gr.description||"")}</div><h3>안에 있는 파일</h3>${gr.members.map(p=>fileLink(p,(V.node[p]||{}).summary)).join("")}
   <h3>다른 그룹과의 연결</h3>${Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(([og,c])=>`<button class="edge-link" data-g="${esc(og)}"><span class="dot" style="background:${gcolor(og)};align-self:center"></span><span>${esc(V.g.groups[V.gi[og]].name)} <span class="hint">· 연결 ${c}개</span></span></button>`).join("")||`<p class="hint">다른 그룹과 이어진 연결이 없습니다.</p>`}`;
  bindDetail();$("iscroll").scrollTop=0;V.o.onOpen&&V.o.onOpen("group",gid);
@@ -706,7 +786,7 @@ function edgeFixHtml(e){
  return `<div class="fixbar"><div class="fh">이 연결에 대한 피드백 <span>고르면 바로 그래프에 반영됩니다</span></div>
   <div class="fb3"><button data-t="edge_confirm">필요한 연결</button><button data-t="edge_wrong">틀린 연결</button><button data-t="edge_irrelevant">지금은 불필요</button>
    <small>필요해요 (흐린 선은 다시 굵게)</small><small>사실과 달라요</small><small>관련은 있지만 지금은 필요 없어요</small></div>
-  <button class="linkish" id="fxMore">관계 이름이나 방향 바꾸기 ▾</button>
+  ${V.o.fixExtra?V.o.fixExtra(e):""}<button class="linkish" id="fxMore">관계 이름이나 방향 바꾸기 ▾</button>
   <div class="fixmore" id="fxBox" hidden>
    <div class="line"><span class="hint" style="width:74px">관계 바꾸기</span><select id="fxRel">${rels.map(r=>`<option value="${r}" ${r==e.relation?"selected":""}>${esc(REL[r])}</option>`).join("")}</select><input id="fxNote" placeholder="관계 설명 (선택)"><button class="sm" id="fxRelGo">적용</button></div>
    ${dir?`<div class="line"><span class="hint" style="width:74px">방향 바꾸기</span><button class="sm" id="fxFlip">${esc(base(e.target))} → ${esc(base(e.source))} 로</button></div>`:""}
@@ -720,7 +800,7 @@ function bindEdgeFix(e){
  $("fxToGo").onclick=()=>pushMany([{type:"edge_wrong",source:e.source,target:e.target},{type:"edge_add",source:e.source,target:$("fxTo").value,relation:e.relation}]);
 }
 function nodeFixHtml(n){
- return `<div class="fixpanel"><h3>이 파일 고치기</h3><div class="fixmore"><div class="line"><span class="hint" style="width:74px">그룹 옮기기</span><select id="nxG">${V.g.groups.map(gr=>`<option value="${esc(gr.id)}" ${gr.id==n.group?"selected":""}>${esc(gr.name)}</option>`).join("")}<option value="__new">새 그룹…</option></select>
+ return `<div class="fixpanel"><h3>이 파일에 피드백</h3><div class="fixmore"><div class="line"><span class="hint" style="width:74px">그룹 옮기기</span><select id="nxG">${V.g.groups.map(gr=>`<option value="${esc(gr.id)}" ${gr.id==n.group?"selected":""}>${esc(gr.name)}</option>`).join("")}<option value="__new">새 그룹…</option></select>
   <input id="nxNew" placeholder="새 그룹 이름" hidden><button class="sm" id="nxGo">옮기기</button></div>
   ${n.group!=null?`<div class="line"><span class="hint" style="width:74px"></span><button class="sm" id="nxOut">그룹에서 빼기</button></div>`:""}
   <div class="line"><span class="hint" style="width:74px">연결 추가</span><button class="sm" id="nxAdd">이 파일에서 다른 파일로 잇기</button></div></div></div>`}
@@ -757,7 +837,7 @@ function reportFor(ev){
  if(V.o.corr&&ev.type!="edge_add"&&ev.type.startsWith("edge_")){
   const c=Object.values(V.o.corr).find(c=>ekey(...c.edge)==ekey(ev.source,ev.target));
   if(c&&c.options[ev.type]&&!V.events.some(x=>x._issue==c)){ev._issue=c;return clone(c.options[ev.type].report)}}
- return {direct:directRows(ev),automatic:[],corrector:"직접 고친 것만 반영",applied:1};
+ return {direct:directRows(ev),automatic:[],corrector:"피드백을 준 연결만 반영",applied:1};
 }
 function applyRows(rep){
  const mark={};
@@ -809,12 +889,13 @@ function repRows(rows,kind,dis){return rows.length?`<div class="chgs">${rows.map
    ${r.reason?`<div class="why">${esc(r.reason)}</div>`:""}${k?`<button class="linkish" data-e="${esc(k)}">이 연결 자세히 보기</button>`:""}</div></details>
   ${dis&&k?`<label class="dis"><input type="checkbox" data-dis="${esc(k)}" ${V.dis&&V.dis.has(k)?"checked":""}>동의하지 않음</label>`:""}</div>`}).join("")}</div>`:`<p class="hint">같이 바뀐 연결은 없습니다.</p>`}
 function showReport(rep,ev){
- qAway();const dis=!!V.o.disagree;
- $("detail").innerHTML=back()+`<h2>피드백을 반영했습니다</h2>
-  <div class="chsum"><div class="cs direct"><b>${rep.direct.length}</b><span>내가 고친 연결</span></div><div class="cs auto"><b>${rep.automatic.length}</b><span>같이 바뀐 연결</span></div></div>
+ qAway();const dis=!!V.o.disagree,solo=!!V.o.solo;
+ $("detail").innerHTML=back()+kindHead("fb")+`<h2>피드백을 반영했습니다</h2>
+  ${solo?"":`<div class="chsum"><div class="cs direct"><b>${rep.direct.length}</b><span>피드백을 준 연결</span></div><div class="cs auto"><b>${rep.automatic.length}</b><span>같이 바뀐 연결</span></div></div>`}
   <div class="seerow"><button class="sm" id="seeChg">그래프에서 다시 보기</button><button class="sm ghost" id="seeAll">전체 그래프 보기</button></div>
-  <div class="rh direct">내가 고친 것</div>${repRows(rep.direct,"direct",false)}
-  <div class="rh auto">같이 바뀐 연결 <span>눌러서 이유 보기</span></div>${repRows(rep.automatic,"auto",dis)}
+  <div class="rh direct">피드백을 준 연결</div>${repRows(rep.direct,"direct",false)}
+  ${!solo&&rep.learned?`<div class="learned"><div class="lk">이렇게 이해했습니다</div><p>${esc(rep.learned)}</p><span class="hint">피드백 하나에서 선호를 읽고, 비슷한 연결에도 같이 적용했습니다.</span>${dis?`<label class="dis"><input type="checkbox" data-dis="learned:${esc(ekey(ev.source,ev.target))}" ${V.dis&&V.dis.has("learned:"+ekey(ev.source,ev.target))?"checked":""}>이렇게 이해한 것에 동의하지 않음</label>`:""}</div>`:""}
+  ${solo?"":`<div class="rh auto">같이 바뀐 연결 <span>눌러서 이유 보기</span></div>${repRows(rep.automatic,"auto",dis)}`}
   ${rep.note?`<div class="repnote">${esc(rep.note)}</div>`:""}`;
  bindDetail();$("iscroll").scrollTop=0;$("seeChg").onclick=()=>{log("see_changes");showChanged(rep)};$("seeAll").onclick=()=>{log("see_all");fitView(true)};
  $("detail").querySelectorAll("[data-dis]").forEach(x=>x.onchange=()=>{V.dis=V.dis||new Set();if(x.checked)V.dis.add(x.dataset.dis);else V.dis.delete(x.dataset.dis);log("disagree",[x.dataset.dis,x.checked]);if(V.o.disagree){S().disagree=[...V.dis];persist()}});
@@ -830,19 +911,20 @@ function tourShow(){
  tourClear();const t=TOUR;if(!t)return;const s=t.steps[t.i];
  if(!s){TOUR=null;log("tour_done");t.done&&t.done();return}
  const els=s.el?[...document.querySelectorAll(s.el)]:[],el=els[0],hl=document.createElement("div"),bub=document.createElement("div");
- hl.className="tourhl"+(el?"":" full");bub.className="tourbub"+(el?"":" center")+(s.wide?" wide":"");
+ hl.className="tourhl"+(el?"":" full");bub.className="tourbub"+(el?"":" center")+(s.wide||s.xwide?" wide":"")+(s.xwide?" xwide":"");
  bub.innerHTML=`${s.k?`<div class="tk">${s.k}</div>`:`<div class="tk">화면 안내 ${t.i} / ${t.steps.length-1}</div>`}${s.title?`<h3>${s.title}</h3>`:""}<div class="tt">${s.text}</div>
-  <div class="tf">${s.wait?`<span class="do">${s.waitText||"직접 해 보면 다음으로 넘어갑니다."}</span>`:`<span></span><button class="primary" id="tnext">${s.btn||"다음"}</button>`}</div>`;
+  <div class="tf">${s.wait?`<span class="do">${s.waitText||"직접 해 보면 다음으로 넘어갑니다."}</span>`:`<span class="tap">${el?"아무 곳이나 눌러도 넘어갑니다":""}</span><button class="primary" id="tnext">${s.btn||"다음"}</button>`}</div>`;
  /* four transparent blockers around the ringed element: only the ringed part (and the bubble) can be clicked */
- const blk=[0,1,2,3].map(()=>{const b=document.createElement("div");b.className="tourblk";return b});
+ const blk=[0,1,2,3,4].map(()=>{const b=document.createElement("div");b.className="tourblk";return b});
  document.body.append(hl,...blk,bub);
+ if(el&&!s.wait)blk.forEach(b=>{b.classList.add("tapnext");b.onclick=tourNext});
  const place=()=>{const W=innerWidth,H=innerHeight;
   if(!el){Object.assign(blk[0].style,{left:0,top:0,width:W+"px",height:H+"px"});return}
   /* several selectors ring the box around all of them */
   const rs=els.map(x=>x.getBoundingClientRect()),r={left:Math.min(...rs.map(q=>q.left)),top:Math.min(...rs.map(q=>q.top)),right:Math.max(...rs.map(q=>q.right)),bottom:Math.max(...rs.map(q=>q.bottom))};r.width=r.right-r.left;r.height=r.bottom-r.top;const p=6;
   Object.assign(hl.style,{left:r.left-p+"px",top:r.top-p+"px",width:r.width+2*p+"px",height:r.height+2*p+"px"});
   const L=r.left-p,T=r.top-p,R=r.right+p,B=r.bottom+p;
-  [[0,0,W,T],[0,B,W,H-B],[0,T,L,B-T],[R,T,W-R,B-T]].forEach(([x,y,w,h],i)=>Object.assign(blk[i].style,{left:x+"px",top:y+"px",width:Math.max(0,w)+"px",height:Math.max(0,h)+"px"}));
+  [[0,0,W,T],[0,B,W,H-B],[0,T,L,B-T],[R,T,W-R,B-T],s.wait?[0,0,0,0]:[L,T,R-L,B-T]].forEach(([x,y,w,h],i)=>Object.assign(blk[i].style,{left:x+"px",top:y+"px",width:Math.max(0,w)+"px",height:Math.max(0,h)+"px"}));
   const bw=bub.offsetWidth,bh=bub.offsetHeight;let x,y;
   if(s.side=="right"){x=r.right+18;y=r.top+20}else if(s.side=="left"){x=r.left-bw-18;y=r.top+20}
   else if(s.side=="inside"){x=r.left+(r.width-bw)/2;y=r.top+70}
@@ -888,72 +970,67 @@ function qtab(on){if(!V.q)return;V.qOpen=on;$("qpane").hidden=!on;$("iscroll").h
 function qclose(){if(!V||!$("ptabs"))return;V.q=null;V.qOpen=false;$("ptabs").innerHTML=`<span>내용과 근거</span>`;$("qpane").hidden=true;$("iscroll").hidden=false}
 function qAway(){if(V&&V.q&&V.qOpen)qtab(false)}
 
-/* ---------- practice (after task 1, so the tool is not familiar before the comparison) ----------
-   a link -> a group -> what the three kinds of feedback do (one card) -> each of them once on its own marked link.
-   The three tries show the difference that matters in task 2: "필요한 연결" and "지금은 불필요" also move links of the
-   same kind, "틀린 연결" changes only the one link. */
-const PSTEPS=[
- {k:"edge",do:["ProjectWiki는 연결마다 관계와 근거를 붙여 둡니다. 선이 굵을수록 중요하다고 본 연결이고, 화살표는 방향입니다.","선을 하나 누르면 오른쪽에 관계와 근거가 나옵니다."],why:"화살표는 ‘A가 B를 사용함’처럼 관계의 방향입니다. 굵은 선은 중요하다고 본 연결이고, 가늘고 흐릴수록 덜 중요하다고 본 연결입니다. 점선은 파일에 직접 적혀 있지 않아 내용을 보고 추론한 연결입니다."},
- {k:"group",do:["색으로 칠한 영역이 그룹입니다. 프로젝트 안에서 하는 일이 비슷한 파일끼리 묶었습니다.","왼쪽 아래 그룹 목록에서 하나를 누르면 설명이 나옵니다. 같은 그룹을 한 번 더 누르면 전체 그래프로 돌아옵니다."],why:"그룹을 누르면 그룹 설명, 안에 든 파일, 다른 그룹과 몇 개로 이어졌는지가 오른쪽에 나옵니다."},
- {k:"fbi",do:["다음은 연결에 피드백을 주는 방법입니다. 그래프가 틀렸거나 지금 하는 일과 맞지 않을 때 쓰고, 과제 2에서 가장 많이 쓰게 됩니다.",`<button class="sm primary" id="fbgo">피드백 설명 보기</button>`],why:"깜빡이는 선 세 개로 피드백 세 가지를 하나씩 해 봅니다."},
- {k:"fixA",t:"edge_confirm"},{k:"fixB",t:"edge_irrelevant"},{k:"fixC",t:"edge_wrong"}];
+/* ---------- feedback practice, right before task 3 ----------
+   what the three feedback buttons are for (opening card) -> each of them once on its own marked link of a small folder.
+   Here a feedback changes only the link it is given on. That related links move with it is task 3's own question. */
+const PSTEPS=[{k:"fixA",t:"any"}];
 function pfixDo(x){const e=V.E[V.pt[x.k]],nm=e?`${stem(e.source)} → ${stem(e.target)}`:"",lv=e?TIER[tier(+e.score)]:"";
- return x.k=="fixA"?[`깜빡이는 선(${nm})은 지금 ‘${lv}’로 표시돼 있습니다. 이 연결이 하는 일에 꼭 필요하다고 가정해 보세요.`,"선을 누르고 오른쪽 위에서 [필요한 연결]을 고르세요."]
+ if(x.t=="any")return [`깜빡이는 선(${nm})을 누르고, 오른쪽 아래 세 버튼 중 하나를 골라 보세요. 어느 것을 골라도 괜찮습니다.`,"버튼을 누르면 선이 바로 바뀝니다."];
+ return x.k=="fixA"?[`깜빡이는 선(${nm})은 지금 ‘${lv}’로 표시돼 있습니다. 지금 하는 일에 꼭 필요한 연결이라고 가정해 보세요.`,"선을 누르고 오른쪽 아래에서 [필요한 연결]을 고르세요."]
   :x.k=="fixB"?[`이번 선(${nm})은 ‘${lv}’로 표시돼 있습니다. 관련은 있지만 지금 하는 일에는 필요 없다고 가정해 보세요.`,"선을 누르고 [지금은 불필요]를 고르세요."]
-  :[`마지막 선(${nm})은 시스템이 잘못 이은 연결이라고 가정해 보세요. 앞의 두 번과 결과가 어떻게 다른지 봐 주세요.`,"선을 누르고 [틀린 연결]을 고르세요."]}
-/* three marked links and a prepared result for each kind of feedback on them, built from the practice graph itself */
+  :[`마지막 선(${nm})은 두 파일이 실제로는 이런 관계가 아닌데 잘못 이어졌다고 가정해 보세요.`,"선을 누르고 [틀린 연결]을 고르세요."]}
+/* three marked links, far from each other, and a prepared result for each kind of feedback on them */
 function practiceCorr(){
- const E=V.g.edges.filter(shown),same=(e,f)=>E.filter(x=>x.id!=e.id&&x.relation==e.relation&&f(x));
- const A=E.find(e=>tier(+e.score)<2&&same(e,x=>tier(+x.score)<2).length>=2)||E[0];
- const B=E.find(e=>e.id!=A.id&&tier(+e.score)==2&&e.relation!=A.relation&&same(e,()=>true).length>=2)||E.find(e=>e.id!=A.id);
- const Cc=E.find(e=>e.id!=A.id&&e.id!=B.id&&!e.direct&&e.relation!=A.relation&&e.relation!=B.relation)||E.find(e=>e.id!=A.id&&e.id!=B.id);
- V.pt={fixA:A.id,fixB:B.id,fixC:Cc.id};const tg=new Set(Object.values(V.pt));
- const row=(e,ch,reason,action)=>({files:[e.source,e.target],before:st(e),after:Object.assign(st(e),ch),reason:reason||"",action:action||""});
- const sh=(e,x)=>[x.source,x.target].some(n=>n==e.source||n==e.target)?1:0,kind=e=>REL[e.relation]||e.relation;
+ const E=V.g.edges.filter(shown),apart=(e,xs)=>xs.every(x=>![x.source,x.target].some(n=>n==e.source||n==e.target));
+ const A=E.find(e=>tier(+e.score)<2)||E[0];
+ const B=E.find(e=>e.id!=A.id&&tier(+e.score)==2&&apart(e,[A]))||E.find(e=>e.id!=A.id);
+ const Cc=E.find(e=>e.id!=A.id&&e.id!=B.id&&!e.direct&&apart(e,[A,B]))||E.find(e=>e.id!=A.id&&e.id!=B.id&&apart(e,[A,B]))||E.find(e=>e.id!=A.id&&e.id!=B.id);
+ V.pt={fixA:A.id,fixB:B.id,fixC:Cc.id};
+ const row=(e,ch,action)=>({files:[e.source,e.target],before:st(e),after:Object.assign(st(e),ch),reason:"",action});
  const mk=e=>({edge:[e.source,e.target],options:{
-  edge_confirm:{report:{direct:[row(e,{status:"confirmed",score:Math.max(+e.score,1)},"",FBT.edge_confirm)],
-   automatic:same(e,x=>tier(+x.score)<2&&!tg.has(x.id)).sort((x,y)=>sh(e,y)-sh(e,x)).slice(0,3).map(x=>row(x,{score:.85},`필요하다고 한 연결과 같은 종류(${kind(e)})라서 조금 더 굵게 했습니다.`))}},
-  edge_irrelevant:{report:{direct:[row(e,{status:"removed_irrelevant",visible:VIS.has("removed_irrelevant")},"",FBT.edge_irrelevant)],
-   automatic:same(e,x=>!tg.has(x.id)).sort((x,y)=>sh(e,y)-sh(e,x)).slice(0,3).map(x=>row(x,{score:+Math.max(.2,+x.score-.35).toFixed(2)},`불필요하다고 한 연결과 같은 종류(${kind(e)})라서 조금 흐리게 했습니다.`))}},
-  edge_wrong:{report:{direct:[row(e,{status:"removed_wrong",visible:VIS.has("removed_wrong")},"",FBT.edge_wrong)],automatic:[]}}}});
+  edge_confirm:{report:{direct:[row(e,{status:"confirmed",score:Math.max(+e.score,1)},FBT.edge_confirm)],automatic:[]}},
+  edge_irrelevant:{report:{direct:[row(e,{status:"removed_irrelevant",visible:VIS.has("removed_irrelevant")},FBT.edge_irrelevant)],automatic:[]}},
+  edge_wrong:{report:{direct:[row(e,{status:"removed_wrong",visible:VIS.has("removed_wrong")},FBT.edge_wrong)],automatic:[]}}}});
  return {pa:mk(A),pb:mk(B),pc:mk(Cc)};
 }
-function fixWhy(ev,rep){const n=rep.automatic.length;
- if(ev.type=="edge_confirm")return n?`고른 선이 굵어졌고, 같은 종류의 연결 ${n}개도 조금 굵어졌습니다. 같이 바뀐 연결은 그래프에 주황색으로, 바뀐 이유는 오른쪽에 나옵니다.`:"고른 선이 굵어졌습니다. 같은 종류의 다른 연결은 없어서 이 선만 바뀌었습니다.";
- if(ev.type=="edge_irrelevant")return n?`고른 선은 지우지 않고 흐리게 숨겼고, 같은 종류의 연결 ${n}개도 조금 흐려졌습니다. 첫 번째와 반대 방향으로 같이 바뀐 셈입니다.`:"고른 선을 지우지 않고 흐리게 숨겼습니다.";
- if(ev.type=="edge_wrong")return "이번에는 고른 선만 숨겨지고 다른 연결은 그대로입니다. 사실이 틀린 건 그 연결 하나의 문제라서, 같은 종류의 연결까지 바꾸지 않습니다.";
- return "고친 내용이 그래프에 반영됐습니다."}
-/* what the three kinds do, drawn: the top line is the one chosen, the two below are links of the same kind */
-function fbSvg(t){const L=(x,y,c,w,d,o)=>`<line x1="${x+8}" y1="${y}" x2="${x+92}" y2="${y}" stroke="${c}" stroke-width="${w}" ${d?`stroke-dasharray="${d}"`:""} opacity="${o||1}" stroke-linecap="round"/><circle cx="${x+5}" cy="${y}" r="4.5" fill="#9a97a6"/><circle cx="${x+95}" cy="${y}" r="4.5" fill="#9a97a6"/>`;
- const g="#77718a",pre=L(0,16,g,2.4)+L(0,44,g,2.4)+L(0,68,g,2.4);
- const post=t=="edge_confirm"?L(140,16,"#c4a8ff",6)+L(140,44,"#ffa940",4)+L(140,68,"#ffa940",4)
-  :t=="edge_irrelevant"?L(140,16,"#c4a8ff",2,"4 4",.55)+L(140,44,"#ffa940",1.4,"6 4",.8)+L(140,68,"#ffa940",1.4,"6 4",.8)
-  :L(140,16,"#c4a8ff",2,"4 4",.45)+`<text x="190" y="21" fill="#ff8f8f" font-size="15" text-anchor="middle" font-weight="700">×</text>`+L(140,44,g,2.4)+L(140,68,g,2.4);
- return `<svg viewBox="0 0 240 84" width="100%" height="84" aria-hidden="true">${pre}<text x="120" y="47" fill="#8a8a96" font-size="16" text-anchor="middle">→</text>${post}</svg>`}
-function fbIntro(){
- const col=(t,when,what)=>`<div><b>${FBN[t]}</b>${fbSvg(t)}<span class="w">${when}</span><span>${what}</span></div>`;
- tour([{el:null,wide:true,k:"도구 연습",title:"연결에 피드백 주기",btn:"해 보기",text:`<p class="big">선을 누르면 오른쪽 위에 피드백 버튼 세 개가 있습니다. 어떤 것을 고르느냐에 따라 고른 선만 바뀌기도 하고, 같은 종류의 연결이 같이 바뀌기도 합니다.</p>
-  <div class="fbcols">${col("edge_confirm","지금 하는 일에 필요한 연결일 때","이 선이 굵어지고, 같은 종류의 연결도 조금 굵어집니다.")}${col("edge_irrelevant","관련은 있지만 지금은 필요 없을 때","이 선은 지우지 않고 흐리게 숨기고, 같은 종류의 연결도 조금 흐려집니다.")}${col("edge_wrong","연결 자체가 사실과 다를 때","이 선만 숨기고, 다른 연결은 그대로 둡니다.")}</div>
-  <p class="hint">그림에서 맨 위 선이 고른 선이고, 아래 두 선은 같은 종류의 연결입니다. 이제 깜빡이는 선 세 개로 하나씩 해 봅니다.</p>`}],()=>{pdone("fbi")})}
+function fixWhy(ev){
+ if(ev.type=="edge_confirm")return "고른 선이 가장 굵은 선으로 바뀌었습니다. 오른쪽에는 이 연결이 어떻게 바뀌었는지가 정리돼 있습니다.";
+ if(ev.type=="edge_irrelevant")return "고른 선을 지우지 않고 흐린 점선으로 숨겼습니다. ‘이번 일에는 쓰지 않는다’는 뜻이라 연결 자체는 남아 있습니다.";
+ if(ev.type=="edge_wrong")return "고른 선이 숨겨졌습니다. 겉보기는 [지금은 불필요]와 비슷하지만, 이번에는 ‘두 파일이 실제로 이런 관계가 아니다’라고 기록됩니다.";
+ return "피드백을 반영했습니다."}
+/* what the three kinds do, drawn. spread: also draw two links of the same kind under the chosen one (task 2) */
+function fbSvg(t,spread){const L=(x,y,c,w,d,o)=>`<line x1="${x+8}" y1="${y}" x2="${x+92}" y2="${y}" stroke="${c}" stroke-width="${w}" ${d?`stroke-dasharray="${d}"`:""} opacity="${o||1}" stroke-linecap="round"/><circle cx="${x+5}" cy="${y}" r="4.5" fill="#9a97a6"/><circle cx="${x+95}" cy="${y}" r="4.5" fill="#9a97a6"/>`;
+ const g="#77718a",X=y=>`<text x="190" y="${y+5}" fill="#ff8f8f" font-size="15" text-anchor="middle" font-weight="700">×</text>`;
+ const top=y=>t=="edge_confirm"?L(140,y,"#c4a8ff",6):t=="edge_irrelevant"?L(140,y,"#c4a8ff",2,"4 4",.55):L(140,y,"#c4a8ff",2,"4 4",.45)+X(y);
+ if(!spread)return `<svg viewBox="0 0 240 40" width="100%" height="40" aria-hidden="true">${L(0,20,g,2.4)}<text x="120" y="25" fill="#8a8a96" font-size="16" text-anchor="middle">→</text>${top(20)}</svg>`;
+ const pre=L(0,16,g,2.4)+L(0,44,g,2.4)+L(0,68,g,2.4);
+ const rest=t=="edge_confirm"?L(140,44,"#ffa940",4)+L(140,68,"#ffa940",4):t=="edge_irrelevant"?L(140,44,"#ffa940",1.4,"6 4",.8)+L(140,68,"#ffa940",1.4,"6 4",.8):L(140,44,g,2.4)+L(140,68,g,2.4);
+ return `<svg viewBox="0 0 240 84" width="100%" height="84" aria-hidden="true">${pre}<text x="120" y="47" fill="#8a8a96" font-size="16" text-anchor="middle">→</text>${top(16)}${rest}</svg>`}
 const FBN={edge_confirm:"필요한 연결",edge_irrelevant:"지금은 불필요",edge_wrong:"틀린 연결"};
-document.addEventListener("click",e=>{if(e.target.closest("#fbgo")&&V&&!TOUR)fbIntro()});
+const FBW={edge_confirm:"지금 하는 일에 꼭 필요한 연결일 때",edge_irrelevant:"관련은 있지만 지금은 필요 없을 때",edge_wrong:"두 파일이 실제로 그런 관계가 아닐 때"};
+/* practice vs task 3 in one picture: only the pressed link, or the pressed link and two of the same kind */
+function cmpSvg(spread){const L=(y,c,w)=>`<line x1="18" y1="${y}" x2="128" y2="${y}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/><circle cx="13" cy="${y}" r="5" fill="#9a97a6"/><circle cx="133" cy="${y}" r="5" fill="#9a97a6"/>`;
+ const T=(y,s,c)=>`<text x="148" y="${y+5}" fill="${c}" font-size="13" style="font-family:inherit">${s}</text>`;
+ return `<svg viewBox="0 0 290 92" width="100%" height="92" aria-hidden="true">${L(16,"#c4a8ff",6)}${T(16,"누른 선","#c4a8ff")}${spread?L(50,"#ffa940",4)+L(78,"#ffa940",4)+T(64,"비슷한 연결도 바뀜","#ffa940"):L(50,"#77718a",2.4)+L(78,"#77718a",2.4)+T(64,"그대로","#8a8a96")}</svg>`}
+function fbCols(spread,what){return `<div class="fbcols">${["edge_confirm","edge_irrelevant","edge_wrong"].map(t=>`<div><b>${FBN[t]}</b>${fbSvg(t,spread)}<span class="w">${FBW[t]}</span><span>${what[t]}</span></div>`).join("")}</div>`}
 function practice(){
  const P=D.projects[D.practice],s=S();
- workspace({proj:D.practice,canFix:true,crumb:"연습",onOpen:k=>pdone(k),
-  onEvent:(ev,rep)=>{const cur=PSTEPS.find(x=>!V.pdone.has(x.k));if(!cur||!cur.t)return;V.pulse.clear();pdone(cur.k,fixWhy(ev,rep))}});
+ workspace({proj:D.practice,canFix:true,solo:true,crumb:"피드백 연습",onOpen:k=>pdone(k),
+  onEvent:(ev,rep)=>{const cur=PSTEPS.find(x=>!V.pdone.has(x.k));if(!cur||!cur.t)return;V.pulse.clear();pdone(cur.k,fixWhy(ev))}});
  setGraph(clone(P.graphs.ours));V.pdone=new Set();V.o.corr=practiceCorr();
  V.pulseT=setInterval(()=>{V.pulseOn=!V.pulseOn;if(V.pulse.size)restyle()},600);
- draw();home();pcard();
- const lab=LBL[LOG.order.t1.indexOf("ours")];
- if(!s.toured)intro1("도구 연습","ProjectWiki 연습",`<p class="big">과제 2에서는 과제 1의 정리 ${lab}였던 ProjectWiki를 씁니다. 그 전에 작은 폴더에서 그래프를 보는 법과 연결에 피드백을 주는 법을 연습합니다.</p>
-  <p class="hint">연습 폴더: ${esc(P.intro.who)}</p>`,"시작하기",()=>{s.toured=true});
+ draw();home();pcard();$("gcap").innerHTML=`<span class="ik prac">연습</span>연습용 폴더`;
+ if(!s.toured)tour([{el:null,wide:true,k:"과제 3 준비",title:"피드백 버튼 연습",btn:"해 보기",text:`<p class="big">틀렸거나 지금 일과 맞지 않는 연결이 보이면, 선을 누르고 오른쪽 아래 버튼으로 피드백을 줍니다. 버튼은 세 개입니다.</p>
+  ${fbCols(false,{edge_confirm:"선이 가장 굵어집니다.",edge_irrelevant:"선을 지우지 않고 흐리게 숨깁니다.",edge_wrong:"선을 숨기고, 잘못 이은 연결로 기록합니다."})}
+  <p>작은 연습 폴더에서 깜빡이는 선 하나에 버튼을 한 번 눌러 봅니다.</p>
+  <p class="hint">연습 폴더: ${esc(P.intro.who)}</p>`}],()=>{s.toured=true});
 }
 function pdone(k,why){if(!PSTEPS.some(x=>x.k==k)||V.pdone.has(k))return;V.pdone.add(k);V.lastWhy=why||PSTEPS.find(x=>x.k==k).why;log("pstep",k);pcard()}
 function pcard(){
  const cur=PSTEPS.find(x=>!V.pdone.has(x.k));V.pulse.clear();if(cur&&cur.t)V.pulse.add(V.pt[cur.k]);restyle();
- card("도구 연습","",`<div class="sidebox">${todo([...PSTEPS.map(x=>[...(x.t?pfixDo(x):x.do),V.pdone.has(x.k),x.k=="group"?"#secG":x.k=="fbi"?"#fbgo":x.t?`.fb3 button[data-t="${x.t}"]`:null]),["연습은 여기까지입니다. 과제 2에서도 같은 방법으로 그래프를 보고 고칩니다.","본 과제로 가려면 아래 [과제 2로]를 누르세요.",false,"#pnext"]])}</div>
-  <div class="sidebox whybox"><div class="sh">방금 본 것</div><p class="say ${V.lastWhy?"":"muted"}">${esc(V.lastWhy||"안내대로 눌러 보면 방금 본 것이 무엇인지 여기에 짧게 설명이 나옵니다.")}</p></div>
-  <div class="pinfoot"><button class="primary wide" id="pnext">과제 2로 →</button></div>`,
+ card("피드백 연습","",`<div class="sidebox">${todo([...PSTEPS.map(x=>[...(x.t?pfixDo(x):x.do),V.pdone.has(x.k),x.t?".fb3":null]),["연습은 이것으로 끝입니다. 과제 3에서는 과제 2의 그래프에 같은 버튼으로 피드백을 줍니다.","준비가 되셨으면 오른쪽 아래 [과제 3으로]를 눌러 주세요.",false,"#pnext"]])}</div>
+  <div class="sidebox whybox"><div class="sh">방금 바뀐 것</div><p class="say ${V.lastWhy?"":"muted"}">${esc(V.lastWhy||"버튼을 누르면 선이 어떻게 바뀌었는지 여기에 짧게 나옵니다.")}</p></div>
+  <div class="pinfoot"><button class="primary wide" id="pnext">과제 3으로 →</button></div>`,
   r=>{r.querySelector("#pnext").onclick=()=>{LOG.steps.practice.done=[...V.pdone];go(step+1)}});
 }
 
@@ -961,41 +1038,65 @@ function pcard(){
    short orientation (where things are, no clicking on any one organisation) -> look at A, B, C in turn, each with the
    same two little actions and a factual one-line description of how it links and groups -> rate the three side by side
    (tabs still work) -> pick one and say why -> reveal. Time per organisation is only recorded. */
-const T1R=[["glance","한눈에 구조가 보인다"],["why","파일이 왜 이어졌는지 알 수 있다"],["trust","믿고 쓸 수 있겠다"],["use","내 연구 폴더에도 쓰고 싶다"]];
+const T1R=[["grasp","이 폴더가 무엇을 하는 프로젝트이고 어떻게 짜여 있는지 이해된다"],["link","파일들이 서로 어떻게 이어져 있는지 알 수 있다"],["start","이 폴더를 이어받는다면 무엇부터 봐야 할지 알 수 있다"]];
 const LBL=["A","B","C"];
 /* what each organisation does, said the same way for all three (names stay hidden until the end) */
 const T1DESC={
  obsidian:["한 파일 안에 다른 파일의 이름이나 링크가 적혀 있으면 이었습니다.","같은 폴더에 있는 파일끼리 묶었습니다.","어느 파일에 어떻게 적혀 있었는지"],
  similar:["내용에 같은 단어가 많이 나오는 파일끼리 이었습니다.","자주 쓰는 단어가 비슷한 파일끼리 묶었습니다.","두 파일에 함께 나오는 단어"],
  ours:["두 파일이 어떤 관계인지(사용, 생성, 설명 등) 판단해서 이었습니다.","프로젝트에서 하는 역할이 비슷한 파일끼리 묶었습니다.","관계와 그 근거가 된 문장"]};
+const MN=[[30,30],[86,22],[40,94],[114,80],[170,30],[178,96]],MC=["#8f7ad6","#5fa8b8","#c9a14a"];
+function miniBase(groups,edges,opt={}){
+ const box=g=>{const xs=g.map(i=>MN[i][0]),ys=g.map(i=>MN[i][1]);return [Math.min(...xs)-15,Math.min(...ys)-14,Math.max(...xs)-Math.min(...xs)+30,Math.max(...ys)-Math.min(...ys)+28]};
+ const id="mk"+Math.random().toString(36).slice(2,7);
+ const G=groups.map((g,i)=>{const [x,y,w,h]=box(g);return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${MC[i%3]}" fill-opacity=".14" stroke="${MC[i%3]}" stroke-opacity=".55"/>`}).join("");
+ const E=edges.map(([a,b,k])=>{const [x1,y1]=MN[a],[x2,y2]=MN[b],st=k=="dash"?`stroke="#8d8a9a" stroke-width="1.4" stroke-dasharray="4 3"`:k=="arrow"?`stroke="#c9c2e0" stroke-width="1.8" marker-end="url(#${id})"`:k=="up"?`stroke="#6fd49a" stroke-width="4"`:k=="down"?`stroke="#6d6a78" stroke-width="1.2" stroke-dasharray="3 4" opacity=".6"`:`stroke="#a9a5b8" stroke-width="1.8"`;
+  const dx=x2-x1,dy=y2-y1,l=Math.hypot(dx,dy),s=k=="arrow"?8/l:0;return `<line x1="${x1}" y1="${y1}" x2="${x2-dx*s}" y2="${y2-dy*s}" ${st} stroke-linecap="round"/>`}).join("");
+ const N=MN.map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${(opt.big||[]).includes(i)?8.5:5}" fill="${(opt.big||[]).includes(i)?"#fff":"#bdb9cb"}"/>`).join("");
+ return `<svg viewBox="0 0 210 124" width="100%" aria-hidden="true"><defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z" fill="#c9c2e0"/></marker></defs>${G}${E}${N}</svg>`}
+const MINI={obsidian:[[[0,1],[2,3],[4,5]],[[0,1],[1,4]]],
+ similar:[[[0,1],[2],[3,4,5]],[[0,2,"dash"],[1,3,"dash"],[3,4,"dash"],[1,4,"dash"],[2,3,"dash"],[0,1,"dash"],[4,5,"dash"]]],
+ ours:[[[0,2],[1,3],[4,5]],[[0,1,"arrow"],[2,3,"arrow"],[1,4,"arrow"],[3,5,"arrow"],[0,2,"arrow"]]]};
+function miniSvg(m){return miniBase(...MINI[m])}
+const MINI_E=[[0,1],[1,3],[3,5],[4,5],[2,0],[1,4],[2,3]];
+const MINI_I={handover:{up:["0-1","1-3","2-0"],big:[0,1]},talk:{up:["3-5","4-5","1-4"],big:[5,4]}};
+function miniIntent(id){const x=MINI_I[id]||MINI_I.handover;return miniBase([],MINI_E.map(([a,b])=>[a,b,x.up.includes(a+"-"+b)?"up":"down"]),{big:x.big})}
 function t1(){
  const P=D.projects[D.main],order=LOG.order.t1,s=S();
  ["rate","dwell","rdwell","visits","seen"].forEach(k=>s[k]=s[k]||{});
  order.forEach(m=>{s.rate[m]=s.rate[m]||{};s.dwell[m]=s.dwell[m]||0;s.rdwell[m]=s.rdwell[m]||0;s.visits[m]=s.visits[m]||0;s.seen[m]=s.seen[m]||{}});
  workspace({proj:D.main,crumb:"정리 비교",onOpen:k=>{if(V.phase=="visit"&&(k=="file"||k=="edge")&&!s.seen[V.tab][k]){s.seen[V.tab][k]=true;t1card()}},
-  tools:`<div class="tabsbox"><span class="tablbl">정리 바꾸기</span><div class="ttabs big" id="ttabs">${order.map((m,i)=>`<button data-m="${m}">정리 ${LBL[i]}</button>`).join("")}</div></div>`,
-  bindTools:()=>document.querySelectorAll("#ttabs button").forEach(b=>b.onclick=()=>{if(V.free&&b.dataset.m!=V.tab)V.freeSw=true;tab(b.dataset.m,true)})});
- V.cache={};V.phase=s.phase||"visit";V.free=!!s.free;tab(order[0]);
+  tools:`<div class="tabsbox"><span class="fchip" title="${esc(P.intro.who)}">${esc(P.name)}</span><span class="tablbl">폴더의</span><div class="ttabs big" id="ttabs">${order.map((m,i)=>`<button data-m="${m}">정리 ${LBL[i]}</button>`).join("")}</div></div>`,
+  bindTools:()=>document.querySelectorAll("#ttabs button").forEach(b=>b.onclick=()=>{
+   if(!V.free&&V.phase=="visit"&&b.dataset.m!=order[0]){const g=$("guide");if(g){g.classList.remove("fresh");void g.offsetWidth;g.classList.add("fresh")}const w=$("t1lock");if(w)w.textContent=`정리 ${LBL[0]}를 먼저 본 뒤에 ${LBL[1]}, ${LBL[2]}로 넘어갑니다.`;log("tab_locked",b.dataset.m);return}
+   if(V.free&&b.dataset.m!=V.tab)V.freeSw=true;tab(b.dataset.m,true)})});
+ V.cache={};V.phase=s.phase||"visit";V.free=true;tab(order[0]);
  TIMER=setInterval(()=>{if(document.hidden||TOUR||!V||!V.tab)return;(V.phase=="visit"?s.dwell:s.rdwell)[V.tab]++},1000);
  if(!s.toured)tour([
-  {el:null,k:"과제 1",title:"정리 방식 비교",btn:"다음",
-   text:`<p class="big">연구실에 새로 들어와서 선배의 연구 폴더를 넘겨받았다고 생각해 주세요. 이 폴더를 세 가지 방식으로 정리한 그래프를 하나씩 살펴보고, 폴더를 파악하는 데 어느 쪽이 더 도움이 되는지 평가해 주세요.</p>
-    <div class="abc"><span>정리 A</span><span>정리 B</span><span>정리 C</span><em>→</em><span class="go">비교·평가</span></div>
-    ${folderHtml(P)}<p class="hint">폴더 내용을 자세히 몰라도 됩니다. 이 설명은 왼쪽 ‘이 폴더’에서 다시 볼 수 있습니다.</p>`},
+  {el:null,xwide:true,k:"과제 1",title:"정리 방식 비교",btn:"다음",
+   text:`<p class="big">연구실에 새로 들어와 선배의 연구 폴더를 넘겨받았다고 생각해 주세요. 이 폴더를 세 가지 방식으로 정리한 그래프를 차례로 보고, 폴더를 파악하는 데 어느 쪽이 더 도움이 되는지 평가합니다.</p>
+    <div class="t1in"><div class="fbox"><div class="sh2">넘겨받은 폴더</div><span class="fchip">${esc(P.name)}</span><p>${esc(P.intro.short||P.intro.who)}</p>${flowHtml(P)}<div class="dchips">${P.intro.dirs.map(([d])=>`<span>${esc(d)}</span>`).join("")}</div></div>
+     <div class="fbox gbox"><div class="sh2">이 폴더를 정리한 세 가지 그래프</div><div class="k3">${order.map((m,i)=>`<div><b>정리 ${LBL[i]}</b>${miniSvg(m)}<span>${esc(T1DESC[m][0])}</span></div>`).join("")}</div></div></div>`},
+  {el:".taskpane",side:"right",title:"왼쪽: 안내와 목록",text:"맨 위 안내 상자에 지금 볼 것이 짧게 나옵니다. 참고용이라 그대로 따르지 않아도 됩니다. 그 아래에는 그룹 목록과 폴더의 파일 목록이 있습니다."},
   {el:"#guide",side:"right",title:"안내",text:"단계마다 무엇을 보면 되는지와 다음으로 넘어가는 방법이 여기에 나옵니다. 지난 안내는 ‹ › 로 다시 볼 수 있습니다."},
-  {el:"#ttabs",title:"정리 바꾸기",text:"정리 A, B, C는 여기서 바꿉니다. 정리 A부터 봅니다.",btn:"시작하기"}
+  {el:"main",side:"inside",title:"가운데: 그래프",text:"점은 파일, 선은 파일 사이의 관계, 색 영역은 묶음입니다. 점, 선, 색 영역을 누르면 오른쪽에 내용이 나옵니다."},
+  {el:"#ttabs,#gdesc",side:"inside",title:"정리 A, B, C",text:"위쪽 탭으로 정리 A, B, C를 바꿉니다. 그 아래 상자에는 지금 보는 정리가 선을 어떻게 잇고 파일을 어떻게 묶었는지 적혀 있습니다. 정리 A부터 봅니다."},
+  {el:".inspector",side:"left",title:"오른쪽: 내용과 버튼",text:"점, 선, 색 영역을 누르면 여기에 내용이 나옵니다. 질문도 이 자리에 열리고, 다음으로 넘어가는 버튼은 늘 오른쪽 아래에 있습니다.",btn:"시작하기"}
  ],()=>{s.toured=true});
 }
 function tab(m,user){
  if(V.tab==m)return;if(V.tab&&net){if(!(V.shots||{})[V.tab])t1shot(V.tab);V.cache[V.tab]={pos:net.getPositions(),lw:V.lw}}
+ const keep=V.sel&&V.sel.k=="f"?V.sel.id:null;
  V.tab=m;log("tab",m);S().visits[m]++;const g=clone(D.projects[D.main].graphs[m]);V.sel=null;V.stick=null;setGraph(g);
- const c=V.cache[m];if(c){V.lw=c.lw;draw({pos:c.pos,fixed:true})}else{V.lw=null;draw({then:()=>setTimeout(()=>t1shot(m),350)})}
+ /* the file looked at a moment ago stays open, so the same file can be found in the next organisation */
+ const carry=()=>{if(keep&&V.tab==m&&V.node[keep]&&!V.sel){openFile(keep);revealNode(keep);log("carry",keep)}};
+ const c=V.cache[m];if(c){V.lw=c.lw;draw({pos:c.pos,fixed:true});setTimeout(carry,60)}else{V.lw=null;draw({then:()=>{setTimeout(()=>t1shot(m),350);setTimeout(carry,420)}})}
  document.querySelectorAll("#ttabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m==m));
  const d=T1DESC[m];$("gcap").textContent=`정리 ${LBL[LOG.order.t1.indexOf(m)]}`;
  /* how this organisation was made, pinned to the graph it describes */
  $("gdesc").innerHTML=`<div><b>선</b><span>${d[0]}</span></div><div><b>색 묶음</b><span>${d[1]}</span></div><div><b>선을 누르면</b><span>${d[2]}이 나옵니다.</span></div>`;$("gdesc").hidden=false;
  $("gleg").innerHTML=`<span><i style="border-color:${C.hi}"></i>연결</span><span><i style="border-color:${C.mid};border-top-style:dashed"></i>추론한 연결</span><span>→ 관계 방향</span>`;
- home();t1card();
+ if(!keep)home();t1card();
 }
 function folderHtml(P){return `<div class="fold"><div class="fk">어떤 폴더인가요?</div><div class="fw">${esc(P.intro.short||P.intro.who)}</div>${flowHtml(P)}</div>`}
 function folderSec(){const P=D.projects[D.main];return `<details class="side-sec" id="secP"><summary>이 폴더</summary><div class="foldside">${esc(P.intro.who)}${flowHtml(P)}${dirsHtml(P)}</div></details>`}
@@ -1006,34 +1107,27 @@ function t1shot(m){try{const c=net&&net.canvas.frame.canvas;if(!c||!V||V.tab!=m)
  /* crop to the drawn graph and put it on the page background */
  const P=net.getPositions(),ids=Object.keys(P);if(!ids.length)return;const k=c.width/c.clientWidth,pad=26;
  const pts=ids.map(i=>net.canvasToDOM(P[i])),x1=Math.max(0,Math.min(...pts.map(p=>p.x))-pad-40),x2=Math.min(c.clientWidth,Math.max(...pts.map(p=>p.x))+pad+40),y1=Math.max(0,Math.min(...pts.map(p=>p.y))-pad-20),y2=Math.min(c.clientHeight,Math.max(...pts.map(p=>p.y))+pad);
- const o=document.createElement("canvas");o.width=480;o.height=360;const g=o.getContext("2d");g.fillStyle="#1e1e1e";g.fillRect(0,0,480,360);
- const sw=(x2-x1)*k,sh=(y2-y1)*k,sc=Math.min(480/sw,360/sh);g.drawImage(c,x1*k,y1*k,sw,sh,(480-sw*sc)/2,(360-sh*sc)/2,sw*sc,sh*sc);
+ const o=document.createElement("canvas");o.width=720;o.height=540;const g=o.getContext("2d");g.fillStyle="#1e1e1e";g.fillRect(0,0,720,540);
+ const sw=(x2-x1)*k,sh=(y2-y1)*k,sc=Math.min(720/sw,540/sh);g.drawImage(c,x1*k,y1*k,sw,sh,(720-sw*sc)/2,(540-sh*sc)/2,sw*sc,sh*sc);
  (V.shots||(V.shots={}))[m]=o.toDataURL("image/jpeg",.85)}catch(e){}}
 function t1card(){
  const s=S(),o=LOG.order.t1;s.phase=V.phase;s.free=!!V.free;persist();
+ const tt=$("ttabs");if(tt)tt.classList.toggle("locked",V.phase=="visit"&&!V.free&&o.indexOf(V.tab)==0);
  if(V.gph!=V.phase){V.gph=V.phase;const g=$("secG");if(g)g.open=V.phase=="visit"}
  if(V.phase=="visit"){
-  qclose();const m=V.tab,i=o.indexOf(m),sn=s.seen[m];
-  /* only the first organisation walks through the clicks; after that the participant looks around freely */
-  if(!V.free&&i==0){
-   card(`정리 ${LBL[0]} 살펴보기`,"",`<div class="sidebox">${todo([[`정리 ${LBL[0]}는 폴더 안 파일을 점으로, 파일 사이의 관계를 선으로 그린 그래프입니다.`,"점을 누르면 오른쪽에 파일 요약과 내용이 나옵니다.",sn.file],
-    ["선은 두 파일이 관련 있다고 본 곳입니다. 비교할 때는 왜 이었는지가 납득되는지도 봐 주세요.","선을 누르면 오른쪽에 이어진 이유가 나옵니다.",sn.edge],
-    ["그래프를 보면서 폴더가 어떻게 짜여 있는지 감이 오는지 살펴보세요. 이 정리를 만든 방식은 그래프 왼쪽 위에 적혀 있습니다.",`다 봤으면 아래 [정리 ${LBL[1]} 보기]로 넘어가세요.`,false]])}</div>
-    ${folderSec()}<div class="pinfoot"><button class="primary wide" id="vnext">정리 ${LBL[1]} 보기 →</button></div>`,
-    r=>{r.querySelector("#vnext").onclick=()=>{V.free=true;tab(o[1],true)}});return}
-  V.free=true;
-  card("세 정리 둘러보기","",`<div class="sidebox">${todo([[`${LBL[1]}와 ${LBL[2]}도 ${LBL[0]}처럼 점과 선을 눌러 보면서 살펴보세요. 위쪽 탭으로 세 정리를 오갈 수 있습니다.`,"충분히 봤으면 아래 [평가로 넘어가기]를 누르세요.",false]])}</div>
+  qclose();V.free=true;
+  card("세 정리 둘러보기","",`<div class="sidebox">${todo([[`정리 ${LBL.join(", ")}는 같은 폴더를 서로 다른 방식으로 정리한 그래프입니다. 위쪽 탭으로 오가며 편하게 살펴보세요. 점, 선, 색 영역을 누르면 오른쪽에 내용이 나오고, 각 정리를 만든 방식은 그래프 왼쪽 위에 적혀 있습니다.`,"다 보셨으면 오른쪽 아래 [평가로 넘어가기]를 눌러 주세요.",false]])}</div>
    ${folderSec()}<div class="pinfoot"><p class="hint" id="t1warn"></p><button class="primary wide" id="vnext">평가로 넘어가기 →</button></div>`,
    r=>{r.querySelector("#vnext").onclick=()=>{const miss=o.filter(x=>!s.visits[x]);
-    if(miss.length&&!V.warned){V.warned=true;$("t1warn").textContent=`정리 ${miss.map(x=>LBL[o.indexOf(x)]).join(", ")}는 아직 열어 보지 않았습니다. 그래도 넘어가려면 한 번 더 누르세요.`;return}
+    if(miss.length&&!V.warned){V.warned=true;$("t1warn").textContent=`정리 ${miss.map(x=>LBL[o.indexOf(x)]).join(", ")}는 아직 열어 보지 않았습니다. 그래도 넘어가시려면 한 번 더 눌러 주세요.`;return}
     s.skipped=miss;V.phase="rate";log("phase","rate");t1card()}});return}
  /* rating and choosing: the questions take the wide right column; the left keeps the checklist and the switch between organisations */
  const a=s.answer||{},rated=T1R.every(([k])=>o.every(m=>s.rate[m][k]));
  card("세 정리 비교","",`<div class="sidebox">${todo([["문항마다 세 정리에 각각 1~7점을 매겨 주세요. 기억이 잘 안 나면 정리를 바꿔 다시 봐도 됩니다.","문항은 오른쪽 [질문]에 있습니다.",rated,"#tQ"],
     ["마지막으로 가장 도움이 될 것 같은 정리 하나와 그 이유를 적어 주세요.","오른쪽 질문의 두 번째 장입니다.",V.phase=="choose"&&!!a.best,"#tQ"],
-    ["제출하면 세 정리를 각각 어떻게 만들었는지 알려 드립니다.","다 적었으면 오른쪽 아래 [제출]을 누르세요.",false,"#tQ"]])}</div>
+    ["제출하면 세 정리를 각각 어떻게 만들었는지 알려 드립니다.","다 적으셨으면 오른쪽 아래 [제출]을 눌러 주세요.",false,"#tQ"]])}</div>
   <div class="sidebox"><div class="sh">정리 다시 보기</div>${tabsHtml()}<p class="hint" style="margin-top:8px">파일이나 선을 누르면 오른쪽이 내용으로 바뀌고, 위쪽 [질문]을 누르면 돌아옵니다.</p></div>
-  <div class="pinfoot"><button class="ghost" id="rback">← 다시 살펴보기</button></div>`,
+  <button class="ghost sm" id="rback" style="margin:2px 0 0 8px">← 둘러보기로 돌아가기</button>`,
   r=>{bindTabs(r);r.querySelector("#rback").onclick=()=>{V.phase="visit";t1card()}});
  if(V.phase=="rate"){
   const row=(m,k)=>`<div class="r3row"><span>정리 ${LBL[o.indexOf(m)]}</span><span class="b" data-m="${m}" data-k="${k}">${[1,2,3,4,5,6,7].map(i=>`<button class="sm ${s.rate[m][k]==i?"on":""}" data-v="${i}">${i}</button>`).join("")}</span></div>`;
@@ -1054,7 +1148,7 @@ function t1card(){
    r.querySelector("#csub").onclick=()=>{keep();if(!s.answer.best)return $("cerr").textContent="하나를 골라 주세요.";
     if(!s.answer.why)return $("cerr").textContent="이유를 적어 주세요.";if(!s.answer.desc)return $("cerr").textContent="폴더 소개를 적어 주세요.";
     t1shot(V.tab);persist();const sh=V.shots||{};
-    tour([{el:null,wide:true,k:"과제 1",title:"과제 1을 마쳤습니다",btn:"다음으로",text:`<p>세 정리는 아래 방식으로 만들었습니다. 과제 2에서는 정리 ${LBL[o.indexOf("ours")]}였던 ProjectWiki를 직접 써 봅니다. 그 전에 작은 폴더로 사용법을 연습합니다.</p>
+    tour([{el:null,xwide:true,k:"과제 1",title:"과제 1을 마쳤습니다",btn:"다음으로",text:`<p>세 정리는 아래 방식으로 만들었습니다. 과제 2와 3에서는 정리 ${LBL[o.indexOf("ours")]}였던 ProjectWiki를 직접 써 봅니다.</p>
      <div class="rev3">${o.map((m,i)=>{const [nm,...rest]=D.methods[m].split(":");return `<div class="${m=="ours"?"ours":""}">${sh[m]?`<img src="${sh[m]}" alt="">`:`<div class="noimg">열어 보지 않은 정리</div>`}<div class="rl">정리 ${LBL[i]}</div><b>${esc(nm)}</b>${rest.join(":").trim().split(/(?<=다\.)\s*/).filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join("")}</div>`}).join("")}</div>`}],()=>go(step+1))}});
 }
 
@@ -1069,151 +1163,203 @@ function t2a(){
  workspace({proj:D.main,crumb:"의도 적용",home:t2aHome,edgeExtra:t2aExtra,
   onOpen:(k,id)=>{if(k=="edge"&&V.diff[id]=="up"&&!V.sawUp){V.sawUp=true;t2aCard()}},
   tools:`<div class="ttabs big" id="ba" hidden><button data-v="0">적용 전</button><button data-v="1" aria-pressed="true">적용 후</button></div>`,
-  bindTools:()=>document.querySelectorAll("#ba button").forEach(b=>b.onclick=()=>beforeAfter(b.dataset.v=="1"))});
+  bindTools:()=>{}});
  V.base=clone(P.graphs.ours);setGraph(clone(V.base));V.k=Math.min(S().k||0,LOG.order.intents.length-1);V.applied=false;V.lay={};
  draw({then:()=>{V.lay.base=net.getPositions()}});home();t2aCard();
  $("gleg").innerHTML=LEG_BASE();$("gcap").textContent="의도 적용 전 (원래 그래프)";
  if(!S().toured)tour([
-  {el:null,k:"과제 2",title:"의도 반영",btn:"시작하기",
-   text:`<p class="big">같은 폴더라도 무엇을 하려는지에 따라 필요한 연결이 달라집니다. ProjectWiki는 그 의도를 반영해 그래프를 다시 그립니다.</p>
-    <p>아래 두 의도를 차례로 적용해 봅니다. 의도에 대한 답은 미리 정해 두었으니, 그래프가 어떻게 바뀌는지만 보시면 됩니다.</p>
-    <div class="intents">${LOG.order.intents.map((id,i)=>`<div class="intent"><span class="n">${i+1}</span><div><b>${esc(D.intents[id].label)}</b></div></div>`).join("")}</div>`},
+  {el:null,xwide:true,k:"과제 2",title:"의도 반영",btn:"시작하기",
+   text:`<p class="big">같은 폴더라도 무엇을 하려는지에 따라 필요한 연결이 달라집니다. ProjectWiki는 쓰는 사람의 의도를 받아 그래프를 다시 그립니다.</p>
+    <p>과제 1의 정리 ${LBL[LOG.order.t1.indexOf("ours")]}였던 그래프에 아래 두 의도를 차례로 적용해 봅니다. 의도는 미리 정해 두었으니 그래프가 어떻게 바뀌는지만 보시면 됩니다.</p>
+    <div class="i2">${LOG.order.intents.map((id,i)=>`<div><b>${i+1}. ${esc(D.intents[id].label)}</b><span class="sit">${esc(sitOf(D.intents[id]))}</span>${miniIntent(id)}</div>`).join("")}</div>
+    <p class="hint">그림은 예시입니다. 초록색 굵은 선은 그 의도에 필요한 연결, 큰 점은 먼저 볼 파일입니다.</p>`},
  ],()=>{S().toured=true});
 }
 function curIntent(){return D.intents[LOG.order.intents[V.k]]}
+/* the situation behind each intent, in the participant's words */
+const SIT={handover:"다음 학기부터 후배가 이 코드를 이어받습니다. 후배가 학습과 평가를 직접 다시 돌려 볼 수 있게 넘겨주려고 합니다.",
+ talk:"이번 주 랩미팅에서 지금까지 나온 결과를 발표합니다. 발표에 넣을 표와 그림이 어느 코드와 결과 파일에서 나왔는지 확인하려고 합니다."};
+const sitOf=it=>SIT[it.id]||it.setup.purpose;
+const prevIntent=()=>V.k>0?D.intents[LOG.order.intents[V.k-1]]:null;
+/* which graph is on screen: "base" (before any intent), "prev" (the first intent, while on the second) or "cur" */
+function viewIntent(){return V.view=="cur"?curIntent():V.view=="prev"?prevIntent():null}
+function baButtons(){const p=prevIntent(),b=[["base","적용 전"]].concat(p?[["prev",`첫 번째 의도`],["cur","두 번째 의도"]]:[["cur","적용 후"]]);
+ $("ba").innerHTML=b.map(([v,l])=>`<button data-v="${v}" aria-pressed="${V.view==v}">${l}</button>`).join("");
+ $("ba").querySelectorAll("button").forEach(x=>x.onclick=()=>t2view(x.dataset.v))}
+function t2view(v){if(!V.applied||V.view==v)return;V.view=v;V.showAfter=v=="cur";log("toggle",v);
+ if(v=="base"&&!V.sawBefore){V.sawBefore=true;t2aCard()}if(v=="prev"&&!V.sawPrev){V.sawPrev=true;t2aCard()}
+ const it=viewIntent();morph(clone(it?it.graph:V.base),it?{key:it.id,diff:diffOf(V.base,it.graph),prio:new Set(it.priority_files)}:{key:"base",prio:new Set()});
+ $("gleg").innerHTML=it?LEG_INTENT():LEG_BASE();if(it)capIntent(it.label);else $("gcap").textContent="의도 적용 전 (원래 그래프)";
+ $("ba").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v==v));home()}
+function beforeAfter(after){t2view(after?"cur":"base")}
 function t2aCard(){
- const it=curIntent(),a=S().intents[it.id]||(S().intents[it.id]={}),n=LOG.order.intents.length,last=V.k==n-1;persist();
+ const it=curIntent(),n=LOG.order.intents.length,last=V.k==n-1,order=LOG.order.intents;persist();
+ const Q=S().q2||(S().q2={});
  const form=`<div class="setupq">${[["이 위키를 어디에 쓰나요?",it.setup.purpose],["어떤 자료를 먼저 보고 싶나요?",it.setup.priority],["파일을 어떤 기준으로 묶고 싶나요?",it.setup.grouping]]
   .map(([q,v])=>`<div><span>${q}</span><div class="a">${esc(v)}</div></div>`).join("")}</div>`;
- const answered=!!(a.fit&&a.change),order=LOG.order.intents;
- const cards=order.map((id,i)=>`<div class="intent ${i==V.k?"on":i<V.k?"done":""}"><span class="n">${i<V.k?"✓":i+1}</span><div><b>${esc(D.intents[id].label)}</b><span>${i<V.k?"다 봤음":i==V.k?(V.applied?"지금 보는 중":"이제 적용할 차례"):"다음 차례"}</span></div></div>`).join("");
- card(`과제 2: 그래프 의도 (${V.k+1}/${n})`,"",`<div class="sidebox">${todo(V.k==0?[["ProjectWiki는 쓰는 사람이 무엇을 하려는지 먼저 묻고, 그 답에 맞춰 그래프를 다시 그립니다. 이번에 적용할 의도와 답은 아래 카드에 있습니다.","아래 [이 의도로 적용하기]를 누르면 적용됩니다.",V.applied,"#apply"],
-    ["이 의도에 필요한 연결은 초록색으로 굵어지고, 필요 없는 연결은 흐려집니다. 먼저 볼 파일은 크게 표시됩니다.","초록 선을 누르면 왜 필요한지 나옵니다. 위쪽 [적용 전 / 적용 후]로 원래 그래프와 비교할 수 있습니다.",!!V.sawUp],
-    ["그래프가 이 의도에 맞게 바뀌었는지 생각해 보세요.","답은 오른쪽 [질문]에 적습니다.",answered,"#tQ"],
-    [last?"다음 단계에서는 그래프를 직접 고쳐 봅니다.":"다음 의도에서는 같은 폴더가 또 다르게 그려집니다.",`넘어가려면 오른쪽 아래 [${last?"다음 단계로":"두 번째 의도로"}]를 누르세요.`,false,"#tQ"]]
-   :[["두 번째 의도는 목적이 다릅니다.","아래 [이 의도로 적용하기]를 누르면 적용됩니다.",V.applied,"#apply"],
-    ["두 번째 의도를 적용했습니다. 첫 번째 의도 때와 무엇이 달라졌는지 살펴보세요.","답은 오른쪽 [질문]에 적습니다. 위쪽 [적용 전 / 적용 후]로 원래 그래프와도 비교할 수 있습니다.",answered,"#tQ"],
-    [last?"다음 단계에서는 그래프를 직접 고쳐 봅니다.":"다음 의도로 넘어갑니다.",`넘어가려면 오른쪽 아래 [${last?"다음 단계로":"두 번째 의도로"}]를 누르세요.`,false,"#tQ"]])}</div>
+ const ok=()=>order.every((id,i)=>Q["fit"+i])&&Q.diff&&Q.change,answered=!!ok();
+ const cards=order.map((id,i)=>`<div class="intent ${i==V.k?"on":i<V.k?"done":""}"><span class="n">${i<V.k?"✓":i+1}</span><div><b>${esc(D.intents[id].label)}</b>${i==V.k?`<span class="sit">${esc(sitOf(D.intents[id]))}</span>`:""}</div></div>`).join("");
+ if(answered)V.looked=true;
+ const items=!last?[["ProjectWiki는 쓰는 사람이 무엇을 하려는지 먼저 묻고, 그 답에 맞춰 그래프를 다시 그립니다. 이번에 적용할 의도와 그 답은 오른쪽에 있습니다.","오른쪽 아래 [이 의도로 적용하기]를 누르면 적용됩니다.",V.applied,"#apply"],
+    ["이 의도에 필요한 연결은 초록색으로 굵어지고, 필요 없는 연결은 흐려집니다. 먼저 볼 파일은 크게 표시됩니다. 초록 선을 누르면 왜 필요한지 나오고, 위쪽 [적용 전 / 적용 후]로 원래 그래프와 비교할 수 있습니다.","충분히 보셨으면 오른쪽 아래 [두 번째 의도로]를 눌러 주세요.",false]]
+  :[["두 번째 의도는 목적이 다릅니다. 적용할 의도와 그 답은 오른쪽에 있습니다.","오른쪽 아래 [이 의도로 적용하기]를 누르면 적용됩니다.",V.applied,"#apply"],
+    [`이번에는 ‘${esc(it.label)}’ 의도입니다. 먼저 볼 자료와 묶는 기준이 첫 번째 의도와 다릅니다. 위쪽 탭으로 첫 번째 의도의 그래프와 오가며 무엇이 달라졌는지 살펴보세요.`,"충분히 보셨으면 오른쪽 아래 [질문으로 넘어가기]를 눌러 주세요.",!!V.looked],
+    ["두 의도에 대한 질문을 오른쪽에 모았습니다. 답하는 동안에도 위쪽 탭으로 두 그래프를 다시 볼 수 있습니다.","",answered,"#tQ"],
+    ["다음은 짧은 피드백 연습과 과제 3입니다.","다 답하셨으면 오른쪽 아래 [다음 단계로]를 눌러 주세요.",false,"#tQ"]];
+ const foot=!V.applied?`<button class="primary wide" id="apply">이 의도로 적용하기</button>`:!last?`<button class="primary wide" id="nexti">두 번째 의도로 →</button>`:!V.looked?`<button class="primary wide" id="looked">질문으로 넘어가기 →</button>`:"";
+ card(`과제 2: 의도 반영 (${V.k+1}/${n})`,"",`<div class="sidebox">${todo(items)}</div>
   <div class="sidebox"><div class="sh">그래프 의도 두 가지</div><div class="intents">${cards}</div>
    <details class="setupd"><summary>‘${esc(it.label)}’ 의도의 설정 보기</summary>${form}</details></div>
-  ${V.applied?"":`<div class="pinfoot"><button class="primary wide" id="apply">이 의도로 적용하기</button></div>`}`,
-  r=>{const ap=r.querySelector("#apply");if(ap)ap.onclick=applyIntent});
- if(!V.applied){qclose();return}
- /* the questions open by themselves once the participant has looked at the change both ways */
- const autoOpen=false;
- qsheet("t2a"+V.k,`<div class="qintro">‘${esc(it.label)}’ 의도를 적용한 결과에 대해 답해 주세요. 위쪽 <b>[적용 전 / 적용 후]</b>를 오가며 다시 봐도 됩니다.</div>
-  ${scaleHtml("fit","그래프가 이 의도에 맞게 바뀌었다",a)}${choiceHtml("chg","가장 눈에 띈 변화는?",CHANGES,a.change)}
-  <div class="qblk"><div class="qh">한 줄 소감 <span class="hint">(선택)</span></div><textarea id="inote" class="short">${esc(a.note||"")}</textarea></div>`,
-  `<div class="err" id="ierr"></div><button class="primary wide" id="inext">${last?"다음 단계로 →":"두 번째 의도로 →"}</button>`,
-  r=>{bindScales(r,a,()=>{$("ierr").textContent="";if(a.fit&&a.change)t2aCard()});
-   r.querySelectorAll("input[name=chg]").forEach(x=>x.onchange=()=>{a.change=x.value;$("ierr").textContent="";if(a.fit)t2aCard()});r.querySelector("#inote").oninput=e=>a.note=e.target.value;
-   r.querySelector("#inext").onclick=()=>{if(!a.fit)return $("ierr").textContent="1~7 중 하나를 골라 주세요.";if(!a.change)return $("ierr").textContent="가장 눈에 띈 변화를 골라 주세요.";
-    a.sec=Math.round((Date.now()-V.t0)/1000);a.sawUp=!!V.sawUp;a.sawBefore=!!V.sawBefore;persist();if(last){go(step+1);return}
-    V.k++;S().k=V.k;V.sawUp=V.sawBefore=V.qAuto=false;qclose();applyIntent();$("exs").scrollTop=0}},
-  {open:autoOpen,dlabel:"바뀐 내용"});
- if(autoOpen)qtab(true);
+  ${foot?`<div class="pinfoot">${foot}</div>`:""}`,
+  r=>{const ap=r.querySelector("#apply");if(ap)ap.onclick=applyIntent;
+   const lk=r.querySelector("#looked");if(lk)lk.onclick=()=>{V.looked=true;log("looked",Math.round((Date.now()-V.t0)/1000));t2aCard()};
+   const nx=r.querySelector("#nexti");if(nx)nx.onclick=()=>{const a=S().intents[it.id]||(S().intents[it.id]={});a.sec=Math.round((Date.now()-V.t0)/1000);a.sawUp=!!V.sawUp;a.sawBefore=!!V.sawBefore;
+    V.k++;S().k=V.k;V.sawUp=V.sawBefore=V.looked=false;persist();qclose();applyIntent();$("exs").scrollTop=0}});
+ /* one sheet for both intents, once the participant has looked at the second one */
+ if(!last||!V.applied||!V.looked){qclose();return}
+ qsheet("t2a",`<div class="qintro">두 의도를 적용한 결과에 대해 답해 주세요. 위쪽 <b>[첫 번째 의도 / 두 번째 의도]</b>로 두 그래프를 다시 볼 수 있습니다.</div>
+  ${order.map((id,i)=>scaleHtml("fit"+i,`‘${D.intents[id].label}’ 의도에 맞게 그래프가 바뀌었다`,Q)).join("")}
+  ${scaleHtml("diff","두 의도에 따라 그래프가 분명히 다르게 바뀌었다",Q)}${choiceHtml("chg","가장 눈에 띈 변화는?",CHANGES,Q.change)}
+  <div class="qblk"><div class="qh">한 줄 소감 <span class="hint">(선택)</span></div><textarea id="inote" class="short">${esc(Q.note||"")}</textarea></div>`,
+  `<div class="err" id="ierr"></div><button class="primary wide" id="inext">다음 단계로 →</button>`,
+  r=>{bindScales(r,Q,()=>{$("ierr").textContent="";persist();if(ok())t2aCard()});
+   r.querySelectorAll("input[name=chg]").forEach(x=>x.onchange=()=>{Q.change=x.value;$("ierr").textContent="";persist();if(ok())t2aCard()});r.querySelector("#inote").oninput=e=>Q.note=e.target.value;
+   r.querySelector("#inext").onclick=()=>{if(!order.every((id,i)=>Q["fit"+i])||!Q.diff)return $("ierr").textContent="1~7 문항에 모두 답해 주세요.";if(!Q.change)return $("ierr").textContent="가장 눈에 띈 변화를 골라 주세요.";
+    order.forEach((id,i)=>{(S().intents[id]=S().intents[id]||{}).fit=Q["fit"+i]});
+    const a=S().intents[it.id];a.sec=Math.round((Date.now()-V.t0)/1000);a.sawUp=!!V.sawUp;a.sawBefore=!!V.sawBefore;a.sawPrev=!!V.sawPrev;persist();go(step+1)}},
+  {open:true,dlabel:"바뀐 내용"});
 }
 function applyIntent(){
  const it=curIntent();V.t0=Date.now();log("apply",it.id);
- V.after=clone(it.graph);V.moved=moved(V.base,V.after);V.applied=true;V.showAfter=true;
+ V.after=clone(it.graph);V.moved=moved(V.base,V.after);V.applied=true;V.showAfter=true;V.view="cur";
  morph(clone(V.after),{key:it.id,diff:diffOf(V.base,V.after),prio:new Set(it.priority_files),then:()=>{if(!V.sel)home()}});
- $("ba").hidden=false;document.querySelectorAll("#ba button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v=="1"));
+ $("ba").hidden=false;baButtons();
  $("gleg").innerHTML=LEG_INTENT();capIntent(it.label);home();t2aCard();
 }
-function beforeAfter(after){if(!V.applied||V.showAfter==after)return;V.showAfter=after;log("toggle",after?"after":"before");
- const it=curIntent();if(!after&&!V.sawBefore){V.sawBefore=true;t2aCard()}
- morph(clone(after?V.after:V.base),after?{key:it.id,diff:diffOf(V.base,V.after),prio:new Set(it.priority_files)}:{key:"base",prio:new Set()});
- $("gleg").innerHTML=after?LEG_INTENT():LEG_BASE();if(after)capIntent(it.label);else $("gcap").textContent="의도 적용 전 (원래 그래프)";
- document.querySelectorAll("#ba button").forEach(b=>b.setAttribute("aria-pressed",(b.dataset.v=="1")==after));home()}
 function t2aHome(){
- if(!V.applied)return `<div class="empty-state"><div class="empty-symbol">⌘</div><h2>아직 의도를 적용하지 않은 그래프입니다</h2><p>왼쪽 맨 아래 [이 의도로 적용하기]를 누르면 그래프가 바뀌고, 무엇이 바뀌었는지 여기에 정리됩니다.</p></div>`;
- if(!V.showAfter)return `<div class="empty-state"><h2>적용 전 그래프</h2><p>위쪽 [적용 후]를 누르면 의도를 적용한 그래프로 돌아갑니다.</p></div>`;
- const it=curIntent(),d=diffOf(V.base,V.after),up=Object.keys(d).filter(k=>d[k]=="up"),down=Object.keys(d).filter(k=>d[k]=="down"),E=V.E;
+ if(!V.applied){const it=curIntent();return kindHead("intent")+`<h2>${esc(it.label)}</h2><p class="isit">${esc(sitOf(it))}</p>
+  <div class="ipre">${[["이 위키를 어디에 쓰나요?",it.setup.purpose],["어떤 자료를 먼저 보고 싶나요?",it.setup.priority],["파일을 어떤 기준으로 묶고 싶나요?",it.setup.grouping]].map(([q,a])=>`<div><b>${q}</b><span>${esc(a)}</span></div>`).join("")}</div>
+  <p class="hint">ProjectWiki가 쓰는 사람에게 묻는 세 질문과, 이번 의도에서 미리 정해 둔 답입니다. 오른쪽 아래 [이 의도로 적용하기]를 누르면 이 답에 맞춰 그래프가 바뀌고, 바뀐 내용이 여기에 정리됩니다.</p>`}
+ if(V.view=="base")return `<div class="empty-state"><h2>적용 전 그래프</h2><p>위쪽 탭을 누르면 의도를 적용한 그래프로 돌아갑니다.</p></div>`;
+ const it=viewIntent(),g=it.graph,d=diffOf(V.base,g),up=Object.keys(d).filter(k=>d[k]=="up"),down=Object.keys(d).filter(k=>d[k]=="down"),E=V.E,mv=moved(V.base,g).length;
  const row=k=>E[k]?`<button class="edge-link" data-e="${esc(k)}"><span>${esc(pairName(E[k]))}${it.why[k]?` <span class="hint">· ${esc(it.why[k])}</span>`:""}</span></button>`:"";
- return `<h2>‘${esc(it.label)}’ 의도를 적용했습니다</h2><div class="pnum" style="margin:8px 0 4px"><span><i style="background:${C.up}"></i>굵어진 연결 <b>${up.length}</b></span><span><i style="background:${C.down}"></i>흐려진 연결 <b>${down.length}</b></span></div>
-  <div class="chg3"><div><b>이 위키를 어디에 쓰나요?</b>필요한 연결 ${up.length}개를 굵게, 필요 없는 연결 ${down.length}개를 흐리게 했습니다. 지운 연결은 없습니다.</div>
-  <div><b>어떤 자료를 먼저 보고 싶나요?</b>먼저 볼 파일 ${it.priority_files.length}개를 크게 표시했습니다.</div>
-  <div><b>파일을 어떤 기준으로 묶고 싶나요?</b>그룹을 ${V.base.groups.length}개에서 ${V.after.groups.length}개로 다시 묶었습니다. 그룹이 바뀐 파일은 ${V.moved.length}개입니다.</div></div>
+ const p=prevIntent(),other=V.view=="prev"?curIntent():p;
+ const cmp=other?(()=>{const a=V.view=="prev"?it:other,b=V.view=="prev"?other:it,sum=x=>{const dd=diffOf(V.base,x.graph);return {up:Object.values(dd).filter(v=>v=="up").length,g:x.graph.groups.length}};
+  const sa=sum(a),sb=sum(b),cell=(x,s,on)=>`<td class="${on?"on":""}">${x}</td>`,on1=V.view=="prev",on2=V.view=="cur";
+  return `<table class="icmp"><thead><tr><th></th><th class="${on1?"on":""}">${esc(a.label)}</th><th class="${on2?"on":""}">${esc(b.label)}</th></tr></thead><tbody>
+   <tr><th>어디에 쓰나요?</th>${cell(esc(a.setup.purpose),0,on1)}${cell(esc(b.setup.purpose),0,on2)}</tr>
+   <tr><th>먼저 볼 파일</th>${cell(a.priority_files.map(f=>esc(stem(f))).join(", "),0,on1)}${cell(b.priority_files.map(f=>esc(stem(f))).join(", "),0,on2)}</tr>
+   <tr><th>묶는 기준</th>${cell(esc(a.setup.grouping),0,on1)}${cell(esc(b.setup.grouping),0,on2)}</tr>
+   <tr><th>굵어진 연결</th>${cell(sa.up+"개",0,on1)}${cell(sb.up+"개",0,on2)}</tr>
+   <tr><th>그룹</th>${cell(sa.g+"개",0,on1)}${cell(sb.g+"개",0,on2)}</tr></tbody></table>`})():"";
+ return `<h2>‘${esc(it.label)}’ 의도를 적용했습니다</h2><p class="isit">${esc(sitOf(it))}</p>
+  ${cmp?`<h3>두 의도 비교</h3>${cmp}`:""}
+  <div class="chg3"><div><b>이 위키를 어디에 쓰나요?</b><span class="ans">${esc(it.setup.purpose)}</span>필요한 연결 ${up.length}개를 굵게, 필요 없는 연결 ${down.length}개를 흐리게 했습니다. 지운 연결은 없습니다.</div>
+  <div><b>어떤 자료를 먼저 보고 싶나요?</b><span class="ans">${esc(it.setup.priority)}</span>먼저 볼 파일 ${it.priority_files.length}개를 크게 표시했습니다.</div>
+  <div><b>파일을 어떤 기준으로 묶고 싶나요?</b><span class="ans">${esc(it.setup.grouping)}</span>그룹을 ${V.base.groups.length}개에서 ${g.groups.length}개로 다시 묶었습니다. 그룹이 바뀐 파일은 ${mv}개입니다.</div></div>
   <h3>굵어진 연결 ${up.length}개</h3>${up.map(row).join("")||`<p class="hint">없음</p>`}
   <h3>먼저 볼 파일</h3>${it.priority_files.map(p=>fileLink(p)).join("")}
-  <h3>새 그룹</h3>${V.after.groups.map(g=>`<button class="edge-link" data-g="${esc(g.id)}"><span class="dot" style="background:${gcolor(g.id)};align-self:center"></span><span>${esc(g.name)} <span class="hint">· ${g.members.length}개</span></span></button>`).join("")}
+  <h3>새 그룹</h3>${g.groups.map(x=>`<button class="edge-link" data-g="${esc(x.id)}"><span class="dot" style="background:${gcolor(x.id)};align-self:center"></span><span>${esc(x.name)} <span class="hint">· ${x.members.length}개</span></span></button>`).join("")}
   <details style="margin-top:14px"><summary class="hint">흐려진 연결 ${down.length}개 보기</summary>${down.map(row).join("")}</details>`;
 }
-function t2aExtra(e){const d=V.diff[e.id],it=V.applied&&V.showAfter?curIntent():null;if(!it||!d)return "";const why=it.why[e.id];
+function t2aExtra(e){const d=V.diff[e.id],it=V.applied?viewIntent():null;if(!it||!d)return "";const why=it.why[e.id];
  return `<div class="pstat ${d=="up"?"s3":""}"><div class="pk">‘${esc(it.label)}’ 의도로 ${d=="up"?"굵게 올림":"흐리게 내림"}</div>
   <div class="pw">${why?esc(why):d=="up"?"이 의도에 필요한 연결":"이 의도에는 필요 없는 연결"}</div>
   <div class="ps">${d=="up"?(why?"이 의도에 필요한 연결이라 굵게 올렸습니다.":""):"지우지는 않고 흐리게만 했습니다."}</div></div>`}
 
 /* ---------- task 2-2: fix two planted mistakes and watch the rest follow ---------- */
-const T2R=[["c_fit","내가 고친 내용이 그래프에 제대로 반영됐다"],["c_side","같이 바뀐 연결들이 납득이 됐다"],["c_trust","다음에도 이 도구에 고칠 내용을 맡길 수 있겠다"]];
+const T2R=[["c_fit","내가 준 피드백이 그래프에 제대로 반영됐다"],["c_side","같이 바뀐 연결들이 납득됐다"],["c_trust","다음에도 피드백으로 그래프를 바로잡을 수 있겠다"]];
 function t2b(){
  const it=D.intents.handover,s=S();s.issues=s.issues||{};s.rate=s.rate||{};
- workspace({proj:D.main,crumb:"고치기",canFix:true,corr:D.corrections,disagree:true,home:t2bHome,edgeExtra:t2bNote,
-  onOpen:(k,id)=>{if(k=="edge"&&Object.values(D.corrections).some(c=>ekey(...c.edge)==id)&&!V.opened){V.opened=true;t2bCard()}},
+ workspace({proj:D.main,crumb:"피드백",canFix:true,corr:D.corrections,disagree:true,home:t2bHome,edgeExtra:t2bNote,fixExtra:t2bLeave,
+  onOpen:(k,id)=>{if(k!="edge")return;const cid=Object.keys(D.corrections).find(x=>ekey(...D.corrections[x].edge)==id);if(!cid)return;
+   $("detail").querySelectorAll("[data-leave]").forEach(b=>b.onclick=()=>leaveIssue(b.dataset.leave));if(!V.opened){V.opened=true;t2bCard()}},
   onEvent:(ev,rep)=>{(s.evs=s.evs||[]).push(Object.fromEntries(Object.entries(ev).filter(([k])=>k[0]!="_")));const c=ev._issue;if(c){const id=Object.keys(D.corrections).find(k=>D.corrections[k]==c);s.issues[id]={type:ev.type,action:rep.direct[0].action,auto:rep.automatic.length};V.pulse.delete(ekey(...c.edge))}
-   V.fixed=true;$("ba").hidden=false;document.querySelectorAll("#ba button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v=="1"));V.showAfter=true;t2bCard()},
-  tools:`<div class="ttabs big" id="ba" hidden><button data-v="0">고치기 전</button><button data-v="1" aria-pressed="true">고친 후</button></div>`,
+   s.why=t2bWhy(ev,rep,c);
+   if(!V.replay&&!s.tipped&&rep.automatic.length){s.tipped=true;setTimeout(()=>{if(V&&!TOUR&&document.querySelector(".rh.auto"))tour([{el:".learned,.rh.auto,.rh.auto+.chgs",side:"left",k:"과제 3",title:"함께 바뀐 연결",btn:"확인",
+    text:`위의 초록 상자는 방금 피드백을 이렇게 이해했다는 뜻이고, 주황색 연결 ${rep.automatic.length}개는 그 이해에 맞춰 함께 바뀐 것입니다. 눌러 보면 연결마다 이유가 나옵니다. 납득되지 않으면 [동의하지 않음]을 체크해 주세요.`}])},1500)}
+   V.fixed=true;$("ba").hidden=false;document.querySelectorAll("#ba button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v=="1"));V.showAfter=true;pulseNext();t2bCard();
+   const nx=nextIssue();if(!V.replay&&nx){const sr=document.querySelector("#detail .seerow");if(sr){sr.insertAdjacentHTML("afterend",`<button class="primary wide nextis" id="nextIs">다음 확인할 곳 보기 →</button>`);$("nextIs").onclick=()=>showIssue(nx)}}},
+  tools:`<div class="ttabs big" id="ba" hidden><button data-v="0">피드백 전</button><button data-v="1" aria-pressed="true">피드백 후</button></div>`,
   bindTools:()=>document.querySelectorAll("#ba button").forEach(b=>b.onclick=()=>fixToggle(b.dataset.v=="1"))});
- V.start=clone(it.graph);setGraph(clone(V.start));V.prio=new Set(it.priority_files);V.dis=new Set(s.disagree||[]);
- Object.values(D.corrections).forEach(c=>V.pulse.add(ekey(...c.edge)));
+ V.start=clone(it.graph);V.dis=new Set(s.disagree||[]);
+ if(s.applied){setGraph(clone(V.start));V.prio=new Set(it.priority_files)}else{setGraph(clone(D.projects[D.main].graphs.ours));V.prio=new Set();V.canFix=false}
  V.pulseT=setInterval(()=>{V.pulseOn=!V.pulseOn;if(V.pulse.size)restyle()},600);
  const replay=()=>{if(!s.evs||!s.evs.length||V.replayed)return;V.replayed=true;V.replay=true;s.evs.forEach(ev=>push(clone(ev),true));V.replay=false;
   V.fixed=true;V.showAfter=true;$("ba").hidden=false;Object.keys(D.corrections).forEach(id=>{if(s.issues[id])V.pulse.delete(ekey(...D.corrections[id].edge))});V.diff={};restyle();t2bCard()};
- draw({then:replay});home();t2bCard();capIntent(it.label);
- $("gleg").innerHTML=`<span><i style="border-color:#ff8f6b"></i>확인할 곳</span><span><i style="border-color:${C.accent}"></i>내가 고친 연결</span><span><i style="border-color:#ffa940"></i>같이 굵어짐</span><span><i style="border-color:#ffa940;border-top-style:dashed"></i>같이 흐려짐</span>`;
- if(!s.toured)intro1("과제 2","그래프 고치기",`<p class="big">‘${esc(it.label)}’ 의도의 그래프에서 확인해 볼 연결 두 곳을 보고, 고칠지 그대로 둘지 정해 주세요.</p>
-  <p>연습 때처럼 피드백을 주면 같은 종류의 연결이 같이 바뀌기도 합니다. 그렇게 같이 바뀐 것이 납득되는지도 봐 주세요.</p>`,"시작하기",()=>{s.toured=true});
+ draw({then:()=>{replay();pulseNext()}});home();t2bCard();
+ if(s.applied){capIntent(it.label);$("gleg").innerHTML=LEG3()}else{$("gleg").innerHTML=LEG_BASE();$("gcap").textContent="의도 적용 전 (원래 그래프)"}
+ if(!s.toured)tour([{el:null,wide:true,k:"과제 3",title:"피드백 주기",btn:"시작하기",text:`<p class="big">과제 2에서 ‘${esc(it.label)}’ 의도를 넣어 그래프를 바꿔 봤습니다. 의도대로 바뀐 그래프에도 마음에 들지 않는 곳이 있을 수 있습니다. 이번에는 그런 곳에 피드백을 줘서 그래프를 바로잡아 봅니다.</p>
+  <p>먼저 의도를 다시 적용한 뒤, 확인해 볼 곳 두 군데를 차례로 보여 드립니다. 곳마다 피드백을 줄지 그대로 둘지 정해 주세요.</p>
+  <p>버튼은 연습 때와 같지만, 바뀌는 범위가 다릅니다.</p>
+  <div class="cmp2"><div><b>연습</b>${cmpSvg(false)}<span>누른 선만 바뀌었습니다.</span></div>
+   <div class="on"><b>과제 3</b>${cmpSvg(true)}<span>누른 선과 같은 종류의 연결도 함께 바뀝니다. 함께 바뀐 연결은 주황색입니다.</span></div></div>
+  <p>[필요한 연결]은 비슷한 연결을 조금 굵게, [지금은 불필요]는 조금 흐리게 바꿉니다. [틀린 연결]은 누른 선만 바꿉니다.</p>
+  <p class="hint">함께 바뀐 연결이 납득되는지가 이 과제의 질문입니다.</p>`}],()=>{s.toured=true});
 }
 function capIntent(l){$("gcap").innerHTML=`<span class="ik">의도</span>${esc(l)}`}
 function issueName(c){return `${base(c.edge[0])} – ${base(c.edge[1])}`}
 function t2bNote(e){const c=Object.values(D.corrections).find(c=>ekey(...c.edge)==e.id);if(!c||V.events.some(x=>x._issue==c))return "";const h=c.hint;
- return `<div class="checkpt"><div class="ck">확인할 점</div><div class="cl"><b>이 연결의 뜻</b><span>${esc(h.meaning)}</span></div><div class="cl"><b>지금 상태</b><span>${esc(h.state)}</span></div><div class="cl"><b>생각해 볼 것</b><span>${esc(h.ask)}</span></div></div>`}
-function t2bHome(){return `<div class="empty-state"><div class="empty-symbol">⌘</div><h2>깜빡이는 선을 눌러 보세요</h2><p>왼쪽 ‘표시된 두 곳’의 [보기]를 눌러도 됩니다.</p></div>`}
+ const n=Math.max(...Object.values(c.options).map(o=>o.report.automatic.length));
+ return `<div class="checkpt big"><div class="ck">확인할 점</div><div class="cl"><b>이 연결은</b><span>${esc(h.meaning)}</span></div><div class="cl"><b>지금은</b><span>${esc(h.state)}</span></div>${n?`<div class="cl"><b>같은 종류</b><span>‘${esc(c.kind)}’ 연결이 ${n}개 더 있습니다. 어떤 피드백을 고르느냐에 따라 이 연결들도 같이 바뀝니다.</span></div>`:""}<div class="cask">${esc(h.ask)}</div></div>`}
+/* "leave it" sits in the feedback bar, next to the three buttons */
+function t2bLeave(e){const id=Object.keys(D.corrections).find(k=>ekey(...D.corrections[k].edge)==e.id);if(!id||S().issues[id])return "";return `<div class="leave">고칠 필요가 없다고 보면 <button class="sm ghost" data-leave="${id}">그대로 두기</button></div>`}
+/* one or two sentences on what the feedback just did, kept on the left while the participant looks at the graph */
+function t2bWhy(ev,rep,c){const n=rep.automatic.length,k=c&&c.kind?`‘${c.kind}’`:"같은 종류의",nm="확인할 연결";
+ const dn=rep.automatic.filter(r=>!r.after.visible).length;
+ if(ev.type=="edge_confirm")return n?`${nm}을 필요한 연결로 표시했습니다. ${k} 연결 ${n}개도 같이 굵어졌습니다.`:`${nm}을 필요한 연결로 표시했습니다. 같이 바뀐 연결은 없습니다.`;
+ if(ev.type=="edge_irrelevant")return n?`${nm}을 지금은 불필요한 연결로 숨겼습니다. ${k} 연결 ${n}개도 같이 ${dn==n?"숨겨졌습니다":"흐려졌습니다"}.`:`${nm}을 지금은 불필요한 연결로 숨겼습니다. 같이 바뀐 연결은 없습니다.`;
+ if(ev.type=="edge_wrong")return `${nm}을 틀린 연결로 숨겼습니다. 틀린 연결은 그 연결만의 문제라서 다른 연결은 바뀌지 않았습니다.`;
+ return "피드백을 반영했습니다."}
+function t2bHome(){if(!S().applied)return `<div class="empty-state"><div class="empty-symbol">⌘</div><h2>아직 의도를 적용하지 않은 그래프입니다</h2><p>오른쪽 아래 [의도 적용하기]를 누르면 과제 2에서 본 것처럼 그래프가 바뀝니다.</p></div>`;
+ return `<div class="empty-state"><div class="empty-symbol">⌘</div><h2>깜빡이는 선을 눌러 보세요</h2><p>확인할 곳은 한 번에 하나씩 깜빡입니다.</p></div>`}
+const LEG3=()=>`<span><i style="border-color:#ff8f6b"></i>확인할 곳</span><span><i style="border-color:${C.accent}"></i>피드백을 준 연결</span><span><i style="border-color:#ffa940"></i>같이 굵어짐</span><span><i style="border-color:#ffa940;border-top-style:dashed"></i>같이 흐려짐</span>`;
+const nextIssue=()=>Object.keys(D.corrections).find(id=>!S().issues[id]);
+function pulseNext(){if(!V)return;V.pulse.clear();const id=nextIssue();if(id&&S().applied)V.pulse.add(ekey(...D.corrections[id].edge));restyle()}
+function showIssue(id){const c=D.corrections[id];if(!V.showAfter&&V.fixed)fixToggle(true);openEdge(ekey(...c.edge));const e=V.E[ekey(...c.edge)];
+ const A=net.getPosition(e.source),B=net.getPosition(e.target);net.moveTo({position:{x:(A.x+B.x)/2,y:(A.y+B.y)/2},scale:Math.max(net.getScale(),.8),animation:{duration:500,easingFunction:"easeInOutQuad"}})}
+function leaveIssue(id){const s=S();if(s.issues[id])return;s.issues[id]={type:"none",action:"그대로 둠",auto:0};log("leave",id);persist();pulseNext();t2bCard();const nx=nextIssue();if(nx)showIssue(nx);else home()}
+function applyT3(){const s=S(),it=D.intents.handover;if(s.applied)return;s.applied=true;log("apply3");persist();V.canFix=true;home();
+ morph(clone(it.graph),{key:"handover",diff:diffOf(D.projects[D.main].graphs.ours,it.graph),prio:new Set(it.priority_files),then:()=>{capIntent(it.label);$("gleg").innerHTML=LEG3();if(!V.sel)home();
+  setTimeout(()=>{if(!V)return;for(const k in V.diff)if(V.diff[k]=="up"||V.diff[k]=="down")delete V.diff[k];pulseNext()},2200)}});t2bCard()}
 function fixToggle(after){if(!V.fixed||V.showAfter==after)return;V.showAfter=after;log("toggle",after?"after":"before");
  if(!after){V.keep={g:V.g,diff:V.diff};setGraph(clone(V.start));V.diff={};V.canFix=false}else{setGraph(V.keep.g);V.diff=V.keep.diff;V.canFix=true}
  restyle();document.querySelectorAll("#ba button").forEach(b=>b.setAttribute("aria-pressed",(b.dataset.v=="1")==after));home()}
 function t2bCard(){
- const s=S(),ids=Object.keys(D.corrections),n=ids.filter(id=>s.issues[id]).length,all=n==ids.length;
+ const s=S(),ids=Object.keys(D.corrections),n=ids.filter(id=>s.issues[id]).length,all=n==ids.length,rated=T2R.every(([k])=>s.rate[k]);
+ if(rated)V.qgo=true;
  const lab={edge_confirm:"필요한 연결로 표시",edge_wrong:"틀린 연결로 표시",edge_irrelevant:"지금은 불필요로 표시",none:"그대로 둠"};
  const list=`<div class="issues">${ids.map((id,i)=>{const c=D.corrections[id],x=s.issues[id];return `<div class="issue ${x?"done":""}"><span class="n">${x?"✓":i+1}</span><span class="nm">${esc(issueName(c))}</span>
-  <span class="stt">${x?esc(lab[x.type]||x.action)+(x.auto?`, 같이 바뀐 연결 ${x.auto}건`:""):"아직 안 봄"}</span><button class="sm" data-show="${id}">보기</button>${x?"":`<button class="sm ghost" data-leave="${id}">그대로 두기</button>`}</div>`}).join("")}</div>`;
- card("과제 2: 고치기","",`<div class="sidebox">${todo([["시스템이 만든 그래프는 틀릴 수 있습니다. 확인해 볼 만한 연결 두 곳을 주황색으로 표시해 두었습니다.","아래 ‘표시된 두 곳’에서 [보기]를 누르면 그 연결이 열립니다.",!!V.opened||n>0,".issue:not(.done) [data-show]"],
-    ["오른쪽 ‘확인할 점’을 읽고, 이 의도에 맞게 피드백을 골라 주세요. 고칠 필요가 없다고 생각하면 그대로 둬도 됩니다.","피드백은 오른쪽 위 버튼으로 줍니다. 그대로 두려면 왼쪽 [그대로 두기]를 누르세요.",n>0,".fixbar"],
-    ["피드백을 주면 같은 종류의 연결이 같이 바뀌기도 합니다. 같이 바뀐 연결이 납득되는지 봐 주세요.","두 번째 곳도 [보기]로 열어 확인해 주세요.",all,".issue:not(.done) [data-show]"],
-    ["고친 결과가 그래프에 잘 반영됐는지 생각해 보세요. 위쪽 [고치기 전 / 고친 후]로 비교할 수 있습니다.","답은 오른쪽 [질문]에 적습니다.",T2R.every(([k])=>s.rate[k]),"#tQ"],
-    ["이제 마지막 설문만 남았습니다.","넘어가려면 오른쪽 아래 [마지막 질문으로]를 누르세요.",false,"#tQ"]])}</div>
-  <div class="sidebox"><div class="sh">표시된 두 곳</div>${list}${V.fixed?`<p class="hint" style="margin-top:8px">같이 바뀐 연결 중 동의하지 않는 것은 오른쪽 목록에서 체크해 주세요.</p>`:""}</div>`,
-  bindIssues);
- if(!all){qclose();return}
- qsheet("t2b",`<div class="qintro">두 곳을 모두 확인했습니다. <b>고친 결과</b>에 대해 답해 주세요. 바뀐 내용은 위쪽 [내용과 근거]에서 다시 볼 수 있습니다.</div>
+  <span class="stt">${x?esc(lab[x.type]||x.action)+(x.auto?`, 같이 바뀐 연결 ${x.auto}건`:""):s.applied&&id==nextIssue()?"지금 깜빡이는 선":"다음 차례"}</span></div>`}).join("")}</div>`;
+ card("과제 3: 피드백","",`<div class="sidebox">${todo([["과제 2에서 본 원래 그래프입니다. 먼저 ‘후배에게 코드 인수인계’ 의도를 다시 적용합니다.","오른쪽 아래 [의도 적용하기]를 눌러 주세요.",!!s.applied,"#apply3"],
+    ["의도에 맞게 그래프가 바뀌었습니다. 그런데 의도와 맞지 않아 보이는 연결이 있습니다. 깜빡이는 선을 눌러 오른쪽 ‘확인할 점’을 읽어 주세요.","오른쪽 아래 버튼으로 피드백을 주거나, 고칠 필요가 없으면 [그대로 두기]를 눌러 주세요.",n>0],
+    ["피드백을 주면 같은 종류의 연결도 같이 바뀝니다. 같이 바뀐 연결이 납득되는지 봐 주세요.","남은 한 곳도 깜빡이는 선을 눌러 확인해 주세요.",all],
+    ["두 곳을 모두 확인했습니다. 위쪽 [피드백 전 / 피드백 후]로 결과를 비교해 볼 수 있습니다.","충분히 보셨으면 오른쪽 아래 [질문으로 넘어가기]를 눌러 주세요.",!!V.qgo],
+    ["오른쪽 [질문]에 답해 주세요. 이제 마지막 설문만 남았습니다.","다 답하셨으면 오른쪽 아래 [마지막 질문으로]를 눌러 주세요.",false,"#tQ"]])}</div>
+  <div class="sidebox"><div class="sh">확인할 곳 두 군데</div>${list}</div>
+  ${s.why?`<div class="sidebox whybox t2why"><div class="sh">방금 바뀐 것</div><p class="say">${esc(s.why)}</p><p class="hint">같이 바뀐 연결 중 동의하지 않는 것은 오른쪽 목록에서 체크해 주세요.</p></div>`:""}
+  ${!s.applied?`<div class="pinfoot"><button class="primary wide" id="apply3">의도 적용하기</button></div>`:all&&!V.qgo?`<div class="pinfoot"><button class="primary wide" id="qgo">질문으로 넘어가기 →</button></div>`:""}`,
+  r=>{const ap=r.querySelector("#apply3");if(ap)ap.onclick=applyT3;const q=r.querySelector("#qgo");if(q)q.onclick=()=>{V.qgo=true;log("qgo");t2bCard()}});
+ if(!all||!V.qgo){qclose();return}
+ qsheet("t2b",`<div class="qintro">두 곳을 모두 확인했습니다. <b>피드백 결과</b>에 대해 답해 주세요. 바뀐 내용은 위쪽 [내용과 근거]에서 다시 볼 수 있습니다.</div>
   ${T2R.map(([k,q])=>scaleHtml(k,q,s.rate)).join("")}<div class="qblk"><div class="qh">한 줄 소감 <span class="hint">(선택)</span></div><textarea id="cnote" class="short">${esc(s.note||"")}</textarea></div>`,
   `<div class="err" id="cerr"></div><button class="primary wide" id="cdone">마지막 질문으로 →</button>`,
-  r=>{bindScales(r,s.rate,()=>{$("cerr").textContent="";if(T2R.every(([k])=>s.rate[k]))t2bCard()});r.querySelector("#cnote").oninput=e=>s.note=e.target.value;
+  r=>{bindScales(r,s.rate,()=>{$("cerr").textContent="";persist()});r.querySelector("#cnote").oninput=e=>s.note=e.target.value;
    r.querySelector("#cdone").onclick=()=>{if(!T2R.every(([k])=>s.rate[k]))return $("cerr").textContent="세 문항에 모두 답해 주세요.";s.disagree=[...V.dis];s.events=V.events.length;persist();go(step+1)}},
-  {open:false});
-}
-function bindIssues(r){
- r.querySelectorAll("[data-show]").forEach(b=>b.onclick=()=>{const c=D.corrections[b.dataset.show];if(!V.showAfter&&V.fixed)fixToggle(true);openEdge(ekey(...c.edge));const e=V.E[ekey(...c.edge)];
-  const A=net.getPosition(e.source),B=net.getPosition(e.target);net.moveTo({position:{x:(A.x+B.x)/2,y:(A.y+B.y)/2},scale:Math.max(net.getScale(),.8),animation:{duration:500,easingFunction:"easeInOutQuad"}})});
- r.querySelectorAll("[data-leave]").forEach(b=>b.onclick=()=>{const id=b.dataset.leave;S().issues[id]={type:"none",action:"그대로 둠",auto:0};log("leave",id);V.pulse.delete(ekey(...D.corrections[id].edge));restyle();t2bCard()});
+  {open:true});
 }
 
 /* ---------- survey and end ---------- */
 const SURVEY=[
- {k:"A",sec:0,t:"scale",q:"과제 1에서 ProjectWiki의 정리는 다른 두 방식과 비교해, 처음 보는 폴더를 이해하는 데 얼마나 도움이 됐나요?",ends:["훨씬 덜 됐다","훨씬 더 됐다"]},
- {k:"B",sec:1,t:"scale",q:"과제 2에서 알려 준 의도가 그래프에 잘 반영됐다"},
- {k:"C",t:"scale",q:"과제 2에서 고친 내용이 그래프 전체에 잘 반영됐다"},
- {k:"easy",t:"scale",q:"그래프를 보고 고치는 일이 어렵지 않았다"},
- {k:"reuse",sec:2,t:"scale",q:"비슷한 도구가 있다면 내 프로젝트에 쓰겠다"},
+ {k:"easy",t:"scale",q:"그래프를 살펴보고 피드백을 주는 일이 어렵지 않았다"},
+ {k:"reuse",t:"scale",q:"비슷한 도구가 있다면 내 프로젝트에 쓰겠다"},
  {k:"good",t:"text",q:"가장 좋았던 점 (선택)",ph:"예: 의도를 바꾸니 같은 폴더가 다르게 정리되는 게 바로 보였다"},
- {k:"bad",t:"text",q:"가장 불편하거나 헷갈렸던 점 (선택)",ph:"예: 같이 바뀐 연결이 왜 바뀌었는지 잘 모르겠다"},
- {k:"when",t:"text",q:"이런 도구를 쓰고 싶은 상황이 있다면 (선택)",ph:"예: 졸업하는 선배의 폴더를 넘겨받을 때"}];
-const SVSEC=[["과제 1","세 가지 정리 비교"],["과제 2","의도 반영과 고치기"],["전체","돌아보며"]];
+ {k:"bad",t:"text",q:"가장 불편하거나 헷갈렸던 점 (선택)",ph:"예: 같이 바뀐 연결이 왜 바뀌었는지 잘 모르겠다"}];
 function survey(){
  const need=SURVEY.filter(x=>x.t!="text").length;
  $("app").innerHTML=`<div class="page"><div class="paper sv"><div class="eyebrow">마지막 단계</div><h2>전체를 돌아보며 답해 주세요</h2>
-  <p class="lead2">질문은 ${SURVEY.length}개이고, 6~8번은 떠오르는 것이 있을 때만 적어 주시면 됩니다. 제출하면 과제 기록과 함께 저장됩니다.</p>
- ${SURVEY.map((x,i)=>(x.sec!=null?`<div class="svh"><span>${SVSEC[x.sec][0]}</span>${SVSEC[x.sec][1]}</div>`:"")+qHtml(x,i+1)).join("")}
+  <p class="lead2">네 가지만 더 여쭙니다. 3, 4번은 떠오르는 것이 있을 때만 적어 주시면 됩니다. 제출하면 과제 기록과 함께 저장됩니다.</p>
+ ${SURVEY.map((x,i)=>qHtml(x,i+1)).join("")}
  <div class="svfoot"><button class="ghost" id="svback">← 이전 단계</button><span class="svcount" id="svc"></span><div class="err" id="err"></div><button class="primary" id="send">제출하기</button></div></div></div>`;
  const cnt=()=>{const n=SURVEY.filter(x=>x.t!="text"&&document.querySelector(`input[name=${x.k}]:checked`)).length;$("svc").textContent=`필수 문항 ${n} / ${need}`;$("svc").classList.toggle("ok",n==need)};cnt();
  const keep=()=>{const A={};SURVEY.forEach(x=>{if(x.t=="text"){A[x.k]=$("s_"+x.k).value;return}const v=[...document.querySelectorAll(`input[name=${x.k}]:checked`)].map(e=>e.value);if(v.length)A[x.k]=x.t=="check"?v:v[0]});S().draft=A;persist()};
@@ -1228,9 +1374,9 @@ function resultValues(){
   level:P.level||"",organize:(P.organize||[]).join(", "),graphtool:P.graphtool||"",t1_order:LOG.order.t1.join(">"),intent_order:LOG.order.intents.join(">")};
  const t1=St.t1||{};Object.keys(D.methods).forEach(m=>{T1R.forEach(([k])=>v[`t1_${m}_${k}`]=((t1.rate||{})[m]||{})[k]??"");v[`t1_${m}_sec`]=(t1.dwell||{})[m]??""});
  const q=t1.answer||{};Object.keys(D.methods).forEach(m=>{v[`t1_${m}_rsec`]=(t1.rdwell||{})[m]??"";v[`t1_${m}_visits`]=(t1.visits||{})[m]??""});v.t1_best=q.best||"";v.t1_why=q.why||"";v.t1_desc=q.desc||"";
- const ia=(St.t2a||{}).intents||{};Object.keys(D.intents).forEach(i=>{const x=ia[i]||{};v[`t2a_${i}_fit`]=x.fit??"";v[`t2a_${i}_change`]=x.change||"";v[`t2a_${i}_note`]=x.note||""});
+ const ia=(St.t2a||{}).intents||{};Object.keys(D.intents).forEach(i=>{const x=ia[i]||{};v[`t2a_${i}_fit`]=x.fit??"";v[`t2a_${i}_sec`]=x.sec??""});const q2=(St.t2a||{}).q2||{};v.t2a_diff=q2.diff??"";v.t2a_change=q2.change||"";v.t2a_note=q2.note||"";
  const b=St.t2b||{};Object.keys(D.corrections).forEach(i=>{const x=(b.issues||{})[i]||{};v[`t2b_${i}`]=x.type||""});
- T2R.forEach(([k])=>v[`t2b_${k}`]=(b.rate||{})[k]??"");v.t2b_disagree=(b.disagree||[]).length;v.t2b_events=b.events??"";v.t2b_note=b.note||"";
+ T2R.forEach(([k])=>v[`t2b_${k}`]=(b.rate||{})[k]??"");v.t2b_disagree=(b.disagree||[]).filter(x=>!x.startsWith("learned:")).length;v.t2b_disagree_learned=(b.disagree||[]).filter(x=>x.startsWith("learned:")).length;v.t2b_events=b.events??"";v.t2b_note=b.note||"";
  SURVEY.forEach(x=>v["s_"+x.k]=A[x.k]??"");return v;
 }
 const rid=()=>LOG.pid+"-"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
@@ -1245,7 +1391,7 @@ function end(){
  const who=(LOG.who||{}).name||"";
  const wait=()=>{$("app").innerHTML=`<div class="page"><div class="paper endp"><div class="spin"></div><h2>결과를 정리하는 중입니다</h2><p class="lead2">잠시만 기다려 주세요.</p></div></div>`};
  const done=msg=>{$("app").innerHTML=`<div class="page"><div class="paper endp"><div class="okmark">✓</div><h2>참여해 주셔서 감사합니다</h2><p class="lead2">${msg}</p>
-   <div class="pidbox"><span>닉네임</span><b>${esc(who)}</b><span class="hint">기록 삭제를 원하시면 스터디를 안내한 연구진에게 이 닉네임을 알려 주세요. (참가자 번호 ${LOG.pid})</span></div>
+   ${!who||who==LOG.pid?`<div class="pidbox"><span>참가자 번호</span><b>${LOG.pid}</b><span class="hint">기록 삭제를 원하시면 스터디를 안내한 연구진에게 이 번호를 알려 주세요.</span></div>`:`<div class="pidbox"><span>닉네임</span><b>${esc(who)}</b><span class="hint">기록 삭제를 원하시면 스터디를 안내한 연구진에게 이 닉네임을 알려 주세요. (참가자 번호 ${LOG.pid})</span></div>`}
    <p class="hint">이제 창을 닫으셔도 됩니다.</p></div></div>`};
  const send=()=>{wait();const t0=Date.now();
   sendResult().then(r=>setTimeout(()=>{LOG.sent=r;

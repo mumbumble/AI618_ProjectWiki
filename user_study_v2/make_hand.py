@@ -61,14 +61,24 @@ PLANT = {
                "hint": {"meaning": "발표 개요(talk_outline.md)에서 정확도 그래프를 발표에 쓴다는 연결입니다.",
                         "state": "지금 굵게(중요하게) 표시되어 있습니다.",
                         "ask": "후배가 학습과 평가를 다시 돌리는 데 이 연결이 필요할까요? 필요하면 [필요한 연결], 필요 없으면 [지금은 불필요]를 고르세요."},
-               "kind": "발표 자료 ↔ 그림·논문"},
+               "kind": "발표 자료 ↔ 그림·논문",
+               "what": ["발표 개요가 논문 초안을 설명하는 연결", "회의록에서 논문 초안을 다룬 연결"],
+               "learned": {"edge_irrelevant": "‘인수인계’에서는 발표·논문 자료끼리 잇는 연결을 중요하지 않게 보셨습니다. 후배가 학습과 평가를 다시 돌리는 데 쓰이지 않는 연결이기 때문입니다.",
+                           "edge_confirm": "‘인수인계’에서도 발표·논문 자료끼리 잇는 연결이 필요하다고 보셨습니다. 후배가 결과가 어디에 쓰였는지도 알아야 한다는 뜻으로 읽었습니다."},
+               "why": {"edge_irrelevant": "학습·평가를 다시 돌리는 데는 쓰이지 않아 흐리게 했습니다.",
+                       "edge_confirm": "같은 기준으로 보면 이 연결도 필요해서 조금 굵게 했습니다."}},
     "issue2": {"edge": ["configs/base.yaml", "src/train.py"], "planted": "down",
                "like": [["configs/base.yaml", "configs/fewshot_5way.yaml"],
                         ["configs/fewshot_5way.yaml", "src/train.py"]],
                "hint": {"meaning": "학습 코드(train.py)가 기본 설정 파일(base.yaml)을 읽어서 학습한다는 연결입니다.",
                         "state": "지금 흐리게(덜 중요하게) 표시되어 있습니다.",
                         "ask": "후배가 학습을 다시 돌리는 데 이 연결이 필요할까요? 필요하면 [필요한 연결], 필요 없으면 [지금은 불필요]를 고르세요."},
-               "kind": "설정 ↔ 학습 코드"},
+               "kind": "설정 ↔ 학습 코드",
+               "what": ["5-way 설정이 기본 설정을 이어받는 연결", "학습 코드가 5-way 설정을 읽는 연결"],
+               "learned": {"edge_confirm": "‘인수인계’에서는 학습 코드와 설정 파일 사이 연결이 중요하다고 보셨습니다. 후배가 학습을 다시 돌리려면 어떤 설정을 읽는지 알아야 하기 때문입니다.",
+                           "edge_irrelevant": "‘인수인계’에서는 학습 코드와 설정 파일 사이 연결이 필요 없다고 보셨습니다."},
+               "why": {"edge_confirm": "학습을 다시 돌릴 때 함께 봐야 하는 설정이라 다시 굵게 했습니다.",
+                       "edge_irrelevant": "같은 기준으로 이 연결도 필요 없다고 보고 숨겼습니다."}},
 }
 
 GROUP_DESC = {
@@ -201,11 +211,15 @@ def corrections(handover: dict) -> dict:
         target = E[key(*p["edge"])]
         like = [E[key(*x)] for x in p["like"]]
 
-        def report(action, after, auto, note=""):
+        def report(action, after, auto, note="", learned=""):
             direct = {"files": [after.get("source", target["source"]), after.get("target", target["target"])],
                       "before": state(target), "after": state({**target, **after}), "reason": after.get("correction", ""),
                       "action": action}
-            return {"direct": [direct], "automatic": auto, "corrector": "best-of-n", "applied": 1, "note": note}
+            return {"direct": [direct], "automatic": auto, "corrector": "best-of-n", "applied": 1, "note": note,
+                    "learned": learned}
+
+        # each like-link gets its own reason: what the link is, then how the learned preference applies to it
+        say = lambda t: [f"{w}입니다. {p['why'][t]}" for w in p["what"]]  # noqa: E731
 
         def moved(e, score=None, status=None, why=""):
             new = {**e, **({"score": score} if score is not None else {}), **({"status": status} if status else {})}
@@ -216,18 +230,18 @@ def corrections(handover: dict) -> dict:
         if p["planted"] == "up":   # raised by mistake: "목적상 불필요" is the expected answer
             o["edge_irrelevant"] = {"events": events("edge_irrelevant"), "report": report(
                 FEEDBACK_TYPES["edge_irrelevant"], {"status": "removed_irrelevant"},
-                [moved(e, 0.3, None, f"방금 고친 연결과 같은 종류({p['kind']})라서 같이 흐리게 했습니다.") for e in like])}
+                [moved(e, 0.3, None, w) for e, w in zip(like, say("edge_irrelevant"))], learned=p["learned"]["edge_irrelevant"])}
             o["edge_confirm"] = {"events": events("edge_confirm", relation=target["relation"]), "report": report(
                 FEEDBACK_TYPES["edge_confirm"], {"status": "confirmed", "score": 1.0},
-                [moved(e, 0.98, None, f"필요하다고 한 연결과 같은 종류({p['kind']})라서 조금 더 굵게 했습니다.") for e in like])}
+                [moved(e, 0.98, None, w) for e, w in zip(like, say("edge_confirm"))], learned=p["learned"]["edge_confirm"])}
         else:                      # faded by mistake: "맞는 연결" is the expected answer
             o["edge_confirm"] = {"events": events("edge_confirm", relation=target["relation"]), "report": report(
                 FEEDBACK_TYPES["edge_confirm"], {"status": "confirmed", "score": 1.0},
-                [moved(e, 0.9, None, f"필요하다고 한 연결과 같은 종류({p['kind']})라서 다시 굵게 했습니다.") for e in like])}
+                [moved(e, 0.9, None, w) for e, w in zip(like, say("edge_confirm"))], learned=p["learned"]["edge_confirm"])}
             o["edge_irrelevant"] = {"events": events("edge_irrelevant"), "report": report(
                 FEEDBACK_TYPES["edge_irrelevant"], {"status": "removed_irrelevant"},
-                [moved(e, None, "removed_by_corrector", f"방금 고친 연결과 같은 종류({p['kind']})라서 같이 숨겼습니다.")
-                 for e in like])}
+                [moved(e, None, "removed_by_corrector", w) for e, w in zip(like, say("edge_irrelevant"))],
+                learned=p["learned"]["edge_irrelevant"])}
         o["edge_wrong"] = {"events": events("edge_wrong"), "report": report(
             FEEDBACK_TYPES["edge_wrong"], {"status": "removed_wrong"}, [],
             "‘틀린 연결’은 그 연결 하나만 고칩니다. 사실이 틀린 경우라서 다른 연결에는 영향을 주지 않습니다.")}
