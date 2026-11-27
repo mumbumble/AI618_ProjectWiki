@@ -48,10 +48,30 @@ header h1 { font-size: 14px; font-weight: 600; margin: 0; letter-spacing: .2px; 
 .file span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .file .file-icon { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 20px; height: 20px; }
 .file .file-icon svg { display: block; width: 19px; height: 19px; }
+body:not([data-approved]) .file-icon { touch-action: none; }
 .file.selected { background: #3a3248; color: #d4bfff; }
 .file-row, .group-row { display: flex; align-items: center; gap: 5px; }
 .file-row .file { flex: 1; min-width: 0; }
+.vault-heading { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+#openMove { flex: none; padding: 2px 6px; font-size: 12px; }
+#groupPickHint { margin: 4px 8px 10px; color: var(--accent); overflow-wrap: anywhere; }
+.explorer[data-pick="file"] :is(.group-heading, #legend),
+.explorer[data-pick="group"] .group-actions,
+.explorer[data-pick="delete"] :is(#openMove, #addGroup),
+.explorer:is([data-pick="group"], [data-pick="delete"]) :is(#fileTree, .search-box, .visibility-switch) { display: none; }
+.explorer[data-pick="file"] .file { cursor: pointer; }
+#legend .item:disabled { cursor: default; color: var(--muted); }
+#legend .item:disabled::after { content: "현재"; font-size: 12px; }
 .file-row.is-hidden .file { opacity: .55; }
+body:not([data-approved]) .file { cursor: grab; }
+body:not([data-approved]) .file:active { cursor: grabbing; }
+.group-label { min-width: 0; overflow-wrap: anywhere; text-align: left; }
+.group-label small { display: block; color: var(--muted); }
+.group-row { min-height: 32px; }
+#dragChip { position: fixed; pointer-events: none; z-index: 99; max-width: 260px; background: #413552; color: #fff;
+  border-radius: 6px; padding: 4px 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.file-dragging { user-select: none; cursor: grabbing; }
+.group-row.drop-target { background: #3a3248; outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 5px; }
 .visibility-switch { position: relative; flex: none; width: 30px; height: 18px; padding: 0; border: 1px solid #65616b; border-radius: 12px; background: #4a474f; vertical-align: middle; }
 .visibility-switch::after { content: ""; position: absolute; width: 12px; height: 12px; left: 2px; top: 2px; border-radius: 50%; background: #e6e3eb; }
 .visibility-switch[aria-checked="true"] { background: #8060bd; border-color: #a88be5; }
@@ -61,6 +81,11 @@ header h1 { font-size: 14px; font-weight: 600; margin: 0; letter-spacing: .2px; 
 .visibility-switch:hover { border-color: var(--accent); }
 .group-row .visibility-switch { margin-right: 4px; }
 .group-row .item { min-width: 0; flex: 1; }
+.group-actions { display: grid; gap: 4px; }
+.group-heading { display: flex; justify-content: space-between; align-items: center; }
+#groupDialog { width: min(350px, 90vw); border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); }
+#groupDialog::backdrop { background: #0008; }
+#groupDialog input { width: 100%; }
 .graph-empty { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; color: var(--muted); pointer-events: none; }
 .graph-empty[hidden] { display: none; }
 #legend .item { display: flex; width: 100%; gap: 8px; align-items: center; text-align: left; padding: 6px 8px; border: 0; background: transparent; }
@@ -81,6 +106,19 @@ main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .options-panel { position: absolute; right: 0; top: 36px; width: 195px; background: var(--panel); padding: 12px; border: 1px solid var(--line); border-radius: 7px; z-index: 5; box-shadow: 0 8px 24px #0006; }
 .options-panel label { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
 #graphwrap { flex: 1; min-height: 200px; position: relative; }
+.edge-guide { flex: none; min-width: 0; padding: 10px 20px; background: #342b42; color: #f1eaff; border-left: 4px solid var(--accent); }
+.edge-guide strong { font-size: 16px; }
+.edge-guide span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #d9cce9; }
+.edge-tools { display: inline-flex; align-items: center; gap: 3px; }
+.edge-tools span { font-size: 12px; color: var(--muted); margin-right: 3px; }
+.tools { flex-wrap: wrap; min-width: 0; }
+#edgeEditor { flex: none; max-height: 38vh; overflow: auto; background: var(--panel); padding: 10px 16px; border-bottom: 1px solid var(--line); }
+#edgeEditor label { display: grid; gap: 2px; font-size: 12px; color: #d5cddc; min-width: 0; }
+#edgeEditor input, #edgeEditor select { box-sizing: border-box; width: 100%; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 4px 6px; }
+#edgeEditor .row { align-items: end; margin: 4px 0; }
+#edgeEditor .row label { flex: 1 1 120px; }
+#edgeEditor [hidden] { display: none; }
+#editError { color: var(--bad); }
 #graph { position: absolute; inset: 0; }
 #graph3d { position: absolute; inset: 0; overflow: hidden; }
 #groupgraph { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; }
@@ -144,8 +182,6 @@ blockquote { margin: 8px 0 16px; padding: 8px 12px; border-left: 2px solid #7762
 #priorityFiles button { text-align: left; overflow-wrap: anywhere; }
 #setupSummary p { margin: 6px 0; overflow-wrap: anywhere; white-space: pre-wrap; }
 button:disabled { opacity: .6; cursor: default; }
-#feedbackText { width: 100%; margin: 4px 0; resize: vertical; padding: 8px; border-radius: 6px;
-  border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; }
 #feedbackStatus { white-space: pre-wrap; overflow-wrap: anywhere; }
 #feedbackChanges { margin: 10px 0; }
 #feedbackChanges details { border-top: 1px solid var(--line); padding: 8px 0; }
@@ -187,23 +223,57 @@ body.hide-explorer .explorer, body.hide-inspector .inspector { display: none; }
     <div class="pane-title">파일 탐색기 <span class="hint" id="fileCount"></span></div>
     <div class="search-box"><input type="search" id="search" placeholder="파일 검색…" aria-label="파일 검색"></div>
     <div class="explorer-scroll">
-      <div class="vault-name" id="vaultName"></div>
+      <div class="vault-heading"><span class="vault-name" id="vaultName"></span><button id="openMove" class="edit-control" aria-pressed="false">그룹 이동</button></div>
+      <p id="groupPickHint" role="status" hidden></p>
       <div id="fileTree" class="file-tree"></div>
-      <div class="section-title">그룹</div><div id="legend"></div>
+      <div class="section-title group-heading">그룹<div class="group-actions edit-control">
+        <button id="addGroup">＋ 그룹 추가</button>
+        <button id="deleteGroup" aria-pressed="false">− 그룹 삭제</button>
+      </div></div><div id="legend"></div>
     </div>
   </section>
   <main>
     <div class="tabbar"><div class="tab"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="9" r="3"/><circle cx="9" cy="19" r="3"/><path d="m9 7 6 1M7 9l1 7m4 1 4-5"/></svg>그래프 뷰</div></div>
     <div class="toolbar"><div class="breadcrumb"><span id="projectName"></span> / <strong>전체 그래프</strong></div><div class="tools">
       <div class="view-mode" role="group" aria-label="그래프 보기"><button id="view2d" aria-pressed="true">2D</button><button id="view3d" aria-pressed="false">3D</button><button id="viewGroups" aria-pressed="false">그룹 카드</button></div>
-      <button id="addMode" class="edit-control">연결 추가</button>
+      <div class="edge-tools edit-control" role="group" aria-label="연결 편집"><span>연결 편집</span>
+        <button id="addMode" aria-pressed="false">추가</button>
+        <button id="editMode" aria-pressed="false">변경</button>
+        <button id="deleteMode" aria-pressed="false">삭제</button>
+      </div>
       <details class="graph-options"><summary>표시 설정</summary><div class="options-panel">
         <label><input type="checkbox" id="showInferred" checked> 추론 연결</label>
         <label><input type="checkbox" id="showLabels"> 관계 이름</label>
         <label><input type="checkbox" id="showHidden"> 숨긴 연결</label>
+        <label for="heightMode">3D 높이 기준</label>
+        <select id="heightMode"><option value="importance">파일 중요도</option><option value="links">연결 계층</option></select>
         <label><input type="checkbox" id="physics" checked> 배치 움직임</label>
       </div></details>
     </div></div>
+    <div id="edgeGuide" class="edge-guide" role="status" aria-atomic="true" hidden>
+      <strong id="edgeGuideStep"></strong><span id="edgeGuideDetail"></span>
+    </div>
+    <form id="edgeEditor" hidden>
+      <label id="edgePicker">편집할 연결 · 그래프에서 선을 클릭하거나 목록에서 선택하세요
+        <select id="editEdge"></select>
+      </label>
+      <div id="edgeFields" hidden>
+        <div id="editPair" class="row">
+          <label>시작 파일<select id="editSource"></select></label>
+          <button type="button" id="swapEnds">방향 반전</button>
+          <label>끝 파일<select id="editTarget"></select></label>
+        </div>
+        <div class="row">
+          <label id="relationField">관계 이름<input id="editRelation" maxlength="1000" placeholder="예: 발표에 함께 쓸 자료"></label>
+          <label id="deleteField">삭제 사유<select id="deleteReason">
+            <option value="">사유 선택</option><option value="edge_wrong">관계가 잘못됨</option>
+            <option value="edge_irrelevant">관련은 있지만 현재 목적에 불필요</option>
+          </select></label>
+        </div>
+      </div>
+      <div class="row"><button type="submit" class="primary" id="queueEdge">연결 변경</button>
+        <button type="button" id="cancelEdit">취소</button><span role="status" id="editError"></span></div>
+    </form>
     <div id="graphwrap"><div id="graph" aria-label="프로젝트 파일 관계 그래프"></div>
       <div id="graph3d" aria-label="프로젝트 파일 관계 3D 그래프" hidden></div>
       <div id="groupgraph" aria-label="그룹 카드 관계 그래프" hidden><div id="groupScene"><svg id="groupLinks" aria-label="그룹 간 연결"></svg><div id="groupCards"></div></div></div>
@@ -225,12 +295,6 @@ body.hide-explorer .explorer, body.hide-inspector .inspector { display: none; }
       <section id="setupSummary" hidden></section>
       <div id="detail"><div class="empty-state"><div class="empty-symbol" aria-hidden="true">⌘</div><h2>연결을 탐색해 보세요</h2><p>파일이나 그래프의 노드를 선택하면 요약과 내용을 볼 수 있습니다.</p><p class="hint">연결을 선택하면 관계의 근거를 확인하고 교정할 수 있습니다.</p></div></div>
       <div class="edit-control feedback-section">
-      <section id="textFeedback" hidden>
-        <h3><label for="feedbackText">어떤 부분을 수정할까요?</label></h3>
-        <textarea id="feedbackText" rows="3" maxlength="1000"
-          placeholder="예: 회의록과 파이프라인 그림은 발표에 필요 없으니 연결을 빼 주세요."></textarea>
-        <p class="hint" id="textFeedbackHint" hidden>자유 텍스트를 사용하려면 Claude를 켜고 실행해 주세요.</p>
-      </section>
       <h3>반영 대기 중인 피드백 <span id="fbCount"></span></h3>
       <div id="fbList"></div>
       <div class="row">
@@ -241,11 +305,6 @@ body.hide-explorer .explorer, body.hide-inspector .inspector { display: none; }
       <p class="hint" id="offlineHint">저장한 파일은 <code>projectwiki correct &lt;출력폴더&gt; --feedback feedback.jsonl</code>로 반영합니다.</p>
       </div>
       <section id="feedbackChanges" aria-label="최근 피드백 반영 결과" hidden></section>
-      <details id="candidateComparison" hidden>
-        <summary></summary>
-        <p class="hint" id="candidateReason"></p>
-        <ul id="candidateScores"></ul>
-      </details>
       <div id="approvalActions" hidden>
         <button id="approveWiki">최종 승인</button>
       </div>
@@ -254,6 +313,13 @@ body.hide-explorer .explorer, body.hide-inspector .inspector { display: none; }
   </aside>
 </div>
 <footer><span id="meta"></span><span id="sessionStatus" role="status" aria-live="polite">탐색 준비 완료</span></footer>
+<span id="dragChip" hidden></span>
+<dialog id="groupDialog" aria-labelledby="groupTitle"><form id="groupForm">
+  <h2 id="groupTitle"></h2>
+  <label id="groupNameLabel">그룹 이름<input id="groupNameInput" maxlength="100" autocomplete="off"></label>
+  <p id="groupMessage" role="status"></p>
+  <div class="row"><button type="button" id="groupCancel">취소</button><button class="primary" id="groupSubmit">그룹 추가</button></div>
+</form></dialog>
 <script>
 const LAST_FEEDBACK = /*__FEEDBACK_RESULT__*/null;
 const DATA = /*__DATA__*/null;
@@ -265,8 +331,8 @@ const PALETTE = ["#b49af4", "#83b6c9", "#c7ad77", "#8bbb9a", "#ce92aa", "#8b9cd1
   "#9c96b9", "#80b8af", "#bc8fbf", "#c6ba8b", "#94b4d5", "#d6a1a1", "#a2b9a0", "#aaa7b3"];
 const SHAPE = {pdf: "square", markdown: "dot", python: "diamond", notebook: "triangle", text: "dot",
   image: "star", media: "triangleDown", other: "dot"};
-const DIRECTED = new Set(["imports", "links_to", "mentions", "implements", "describes", "uses", "produces",
-  "extends", "supports", "contradicts"]);
+const DIRECTED = new Set(DATA.directed_relations);
+const LEVEL_LABEL = {top: "상", middle: "중", bottom: "하"};
 const STORE_KEY = "projectwiki-feedback:" + (LIVE_FEEDBACK ? location.pathname : DATA.meta.run_id);
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const $ = id => document.getElementById(id);
@@ -309,7 +375,8 @@ function fileTypeBadge(n) {
 }
 const edgeKey = (a, b) => a < b ? `${a}|${b}` : `${b}|${a}`;
 
-let events = [];
+let events = [];  // Full edit history, including cancelled edits, for undo and reload.
+let pending = []; // Only changes relative to the graph last received from the server.
 let applying = false;
 if (!APPROVED) {
   try { events = JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); } catch (e) { events = []; }
@@ -325,7 +392,7 @@ const fileVisible = id => !hiddenFiles.has(id);
 function setFileVisibility(ids, visible) {
   ids.forEach(id => { if (visible) hiddenFiles.delete(id); else hiddenFiles.add(id); });
   try { localStorage.setItem(FILTER_KEY, JSON.stringify([...hiddenFiles])); } catch (e) {}
-  if (addFrom && !fileVisible(addFrom)) $("addMode").click();
+  if (addFrom && !fileVisible(addFrom)) closeEdgeEditor();
   network.unselectAll();
   render();
 }
@@ -546,7 +613,7 @@ function leafHeights3D(nodes, edges) {
   const ids = nodes.map(n => n.id), outgoing = new Map(ids.map(id => [id, []]));
   const incoming = new Map(ids.map(id => [id, []]));
   for (const e of edges) {
-    if (!DIRECTED.has(e.relation) || !outgoing.has(e.source) || !outgoing.has(e.target)) continue;
+    if (!(e.user_directed || DIRECTED.has(e.relation)) || !outgoing.has(e.source) || !outgoing.has(e.target)) continue;
     outgoing.get(e.source).push(e.target); incoming.get(e.target).push(e.source);
   }
   const visited = new Set(), order = [];
@@ -607,9 +674,12 @@ function sync3D() {
     return {id: n.id, path: n.path, group: n.group, x: radius * ring * Math.cos(angle), y: radius * y, z: radius * ring * Math.sin(angle)};
   });
   const edges = visibleEdges(), moving = $("physics").checked;
-  const heights = moving ? leafHeights3D(nodes, edges) : null;
+  const importance = $("heightMode").value === "importance";
+  const bands = {top: 65, middle: 0, bottom: -65};
+  const heights = importance ? new Map(nodes.map(n => [n.id, bands[state.nodes.get(n.id).level]]))
+    : moving ? leafHeights3D(nodes, edges) : null;
   for (const n of nodes) {
-    if (moving) { n.fy = heights.get(n.id); n.y = n.fy; n.vy = 0; }
+    if (heights) { n.fy = heights.get(n.id); n.y = n.fy; n.vy = 0; }
     else delete n.fy;
   }
   graph3D.graphData({nodes, links: edges.map(e => ({...e}))});
@@ -733,7 +803,7 @@ async function setGraphMode(mode) {
         })
         .linkLabel(e => esc(REL[e.relation] || e.relation)).linkOpacity(.8)
         .linkWidth(e => selected?.kind === "edge" && selected.id === e.id ? 1.8 : .5)
-        .linkDirectionalArrowLength(e => DIRECTED.has(e.relation) ? 4 : 0)
+        .linkDirectionalArrowLength(e => e.user_directed || DIRECTED.has(e.relation) ? 4 : 0)
         .linkThreeObjectExtend(true).linkThreeObject(e => {
           const label = new SpriteText(REL[e.relation] || e.relation, 3, css("--muted"));
           label.visible = $("showLabels").checked; label.material.depthWrite = false; return label;
@@ -786,38 +856,121 @@ async function setGraphMode(mode) {
   if (mode !== "groups") $("graphStats").textContent = `표시 파일 ${[...state.nodes.keys()].filter(fileVisible).length} / ${state.nodes.size}개 · 표시된 연결 ${visibleEdges().length}개`;
 }
 
-function applyEvents() {
-  state = {
+function replay(edits) {
+  const graph = {
     nodes: new Map(DATA.nodes.map(n => [n.id, {...n}])),
     edges: new Map(DATA.edges.map(e => [e.id, {...e}])),
     groups: new Map(DATA.groups.map(g => [g.id, {...g}])),
   };
-  const userGroups = {};
-  state.groups.forEach(g => { if (g.origin === "user") userGroups[g.name] = g.id; });
-  for (const ev of events) {
+  const userGroups = Object.create(null);
+  graph.groups.forEach(g => { if (g.origin === "user") userGroups[g.name] = g.id; });
+  for (const ev of edits) {
     if (ev.type.startsWith("edge_")) {
       const key = edgeKey(ev.source, ev.target);
-      let e = state.edges.get(key);
+      let e = graph.edges.get(key);
       if (ev.type === "edge_add" || ev.type === "edge_confirm") {
         if (!e) { e = {id: key, source: ev.source, target: ev.target, relation: ev.relation || "user", reason: "user",
-          direct: true, score: 1, label: "", evidence: [], origin: "user", status: "confirmed"}; state.edges.set(key, e); }
+          direct: true, score: 1, label: "", evidence: [], origin: "user", status: "confirmed"}; graph.edges.set(key, e); }
         e.status = "confirmed"; if (ev.relation && ev.type === "edge_add") e.relation = ev.relation; if (ev.note) e.label = ev.note;
+        if (ev.set_direction) {
+          e.source = ev.source; e.target = ev.target; e.user_directed = true;
+        }
       } else if (e) {
         e.status = {edge_confirm: "confirmed", edge_wrong: "removed_wrong", edge_irrelevant: "removed_irrelevant"}[ev.type];
       }
+    } else if (ev.type === "group_add" && !graph.groups.has(ev.group)) {
+      graph.groups.set(ev.group, {id: ev.group, name: ev.note, origin: "user", members: [], description: ""});
+      userGroups[ev.note] = ev.group;
+      groupColor[ev.group] = PALETTE[(graph.groups.size - 1) % PALETTE.length];
+    } else if (ev.type === "group_delete") {
+      const group = graph.groups.get(ev.group);
+      if (group && userGroups[group.name] === ev.group) delete userGroups[group.name];
+      graph.groups.delete(ev.group);
+      graph.nodes.forEach(n => { if (n.group === ev.group) n.group = null; });
+    } else if (ev.type === "node_level" && Object.hasOwn(LEVEL_LABEL, ev.level)) {
+      const node = graph.nodes.get(ev.node);
+      if (node) { node.level = ev.level; node.manual_level = true; }
     } else if (ev.type === "node_move") {
-      let gid = state.groups.has(ev.group) ? ev.group : userGroups[ev.group];
+      if (!graph.nodes.has(ev.node)) continue;
+      let gid = graph.groups.has(ev.group) ? ev.group : userGroups[ev.group];
       if (!gid) {
-        gid = "u" + (Object.keys(userGroups).length + 1);
+        let index = Object.keys(userGroups).length + 1;
+        while (graph.groups.has("u" + index)) index++;
+        gid = "u" + index;
         userGroups[ev.group] = gid;
-        state.groups.set(gid, {id: gid, name: ev.group, members: [], origin: "user", description: ""});
+        graph.groups.set(gid, {id: gid, name: ev.group, members: [], origin: "user", description: ""});
         groupColor[gid] = groupColor[gid] || PALETTE[(DATA.groups.length + Object.keys(userGroups).length) % PALETTE.length];
       }
-      state.nodes.get(ev.node).group = gid;
-    } else if (ev.type === "node_ungroup") {
-      state.nodes.get(ev.node).group = null;
+      graph.nodes.get(ev.node).group = gid;
+    } else if (ev.type === "node_ungroup" && graph.nodes.has(ev.node)) {
+      graph.nodes.get(ev.node).group = null;
     }
   }
+  return graph;
+}
+
+const savedGroups = new Map(DATA.groups.map(g => [g.id, g]));
+const savedEdges = new Map(DATA.edges.map(e => [e.id, e]));
+
+function netChanges(history, draft) {
+  const groups = new Map(), moves = new Map(), levels = new Map(), edges = new Map(), approvals = new Map();
+  for (const edit of history) {
+    if (edit.type.startsWith("group_")) groups.set(edit.group, edit);
+    else if (edit.type === "node_level") levels.set(edit.node, edit);
+    else if (edit.type.startsWith("node_")) moves.set(edit.node, edit);
+    else if (edit.type.startsWith("edge_")) {
+      const key = edgeKey(edit.source, edit.target);
+      edges.set(key, edit);
+      if (edit.type === "edge_confirm") approvals.set(key, edit);
+      if (edit.type === "edge_wrong" || edit.type === "edge_irrelevant") approvals.delete(key);
+    }
+  }
+
+  // Delete first so a newly created group can reuse an old name.
+  const changes = [...groups.values()].filter(e => savedGroups.has(e.group) && !draft.groups.has(e.group));
+  for (const g of draft.groups.values()) {
+    if (!savedGroups.has(g.id)) {
+      changes.push(groups.get(g.id) || {type: "group_add", group: g.id, note: g.name});
+    }
+  }
+  for (const original of DATA.nodes) {
+    const node = draft.nodes.get(original.id);
+    const move = moves.get(node.id);
+    // Deleting an existing group already ungroups its members on the server.
+    const groupAfterDeletes = draft.groups.has(original.group) ? original.group : null;
+    if (node.group !== groupAfterDeletes) {
+      changes.push(node.group ? {...move, type: "node_move", node: node.id, group: node.group}
+        : {type: "node_ungroup", node: node.id, ts: move?.ts});
+    }
+    if (node.level !== original.level) changes.push(levels.get(node.id));
+  }
+
+  for (const [key, edit] of edges) {
+    const original = savedEdges.get(key), edge = draft.edges.get(key);
+    if (!edge) continue;
+    const wasVisible = original && VISIBLE.has(original.status);
+    if (!VISIBLE.has(edge.status)) {
+      if (wasVisible) changes.push(edit);
+      continue;
+    }
+    const samePair = original && original.source === edge.source && original.target === edge.target;
+    if (samePair && original.relation === edge.relation && original.label === edge.label &&
+        (wasVisible || edit.type === "edge_confirm")) {
+      // Editing implicitly confirms an edge. Only an explicit approval survives a round trip.
+      if (original.status !== "confirmed" && approvals.has(key)) changes.push(approvals.get(key));
+      continue;
+    }
+    // A later rename/approval must preserve the direction selected in an earlier edit.
+    changes.push({...edit, type: "edge_add", source: edge.source, target: edge.target,
+      relation: edge.relation, note: edge.label, set_direction: !!edge.user_directed && (!samePair || !wasVisible),
+      editLabel: wasVisible ? "연결 변경" : "연결 추가"});
+  }
+  return changes;
+}
+
+function applyEvents() {
+  pending = events.length ? netChanges(events, replay(events)) : [];
+  state = replay(pending);
   state.groups.forEach(g => g.members = [...state.nodes.values()].filter(n => n.group === g.id).map(n => n.id));
 }
 
@@ -849,12 +1002,17 @@ function edgeView(e) {
   return {id: e.id, from: e.source, to: e.target,
     label: $("showLabels").checked ? (REL[e.relation] || e.relation) : undefined,
     dashes: !e.direct || removed, width: (e.status === "confirmed" || user) ? 3 : 1 + 1.5 * Math.max(0, Math.min(1, e.score)),
-    color: {color, highlight: css("--accent")}, arrows: DIRECTED.has(e.relation) ? {to: {enabled: true, scaleFactor: 0.5}} : undefined,
+    color: {color, highlight: css("--accent")}, arrows: e.user_directed || DIRECTED.has(e.relation) ? {to: {enabled: true, scaleFactor: 0.5}} : undefined,
     font: {size: 10, color: css("--muted"), strokeWidth: 3, strokeColor: css("--bg")}};
 }
 
+const emptyDetail = $("detail").innerHTML;
 function render() {
   applyEvents();
+  if (selected?.kind === "edge" && !state.edges.has(selected.id)) {
+    selected = null;
+    $("detail").innerHTML = emptyDetail;
+  }
   const edges = visibleEdges(), degree = {};
   edges.forEach(e => { degree[e.source] = (degree[e.source] || 0) + 1; degree[e.target] = (degree[e.target] || 0) + 1; });
   nodesDS.update([...state.nodes.values()].map(n => nodeView(n, degree)));
@@ -868,24 +1026,178 @@ function render() {
   if (selected) (selected.kind === "node" ? showNode : selected.kind === "groupEdge" ? showGroupConnection : showEdge)(selected.id);
 }
 
+const explorer = document.querySelector(".explorer");
+let movingFileId = null;
+function setGroupPick(step, fileId = null) {
+  movingFileId = fileId;
+  explorer.dataset.pick = step;
+  const moving = step === "file" || step === "group";
+  const deleting = step === "delete";
+  $("openMove").textContent = moving ? "이동 취소" : "그룹 이동";
+  $("openMove").setAttribute("aria-pressed", String(moving));
+  $("openMove").classList.toggle("active", moving);
+  $("deleteGroup").textContent = deleting ? "삭제 취소" : "− 그룹 삭제";
+  $("deleteGroup").setAttribute("aria-pressed", String(deleting));
+  $("deleteGroup").classList.toggle("active", deleting);
+  $("groupPickHint").hidden = !step;
+  let hint = "";
+  if (deleting) hint = "아래 목록에서 삭제할 그룹을 선택하세요.";
+  if (step === "file") hint = "아래 목록에서 옮길 파일을 선택하세요.";
+  if (step === "group") hint = state.nodes.get(fileId).path + " 파일을 옮길 그룹을 선택하세요.";
+  $("groupPickHint").textContent = hint;
+  renderLegend();
+}
+$("openMove").onclick = () => {
+  if (APPROVED || applying) return;
+  if (explorer.dataset.pick) { setGroupPick(""); return; }
+  closeEdgeEditor();
+  setGroupPick("file");
+};
+
+$("deleteGroup").onclick = () => {
+  if (APPROVED || applying) return;
+  if (explorer.dataset.pick === "delete") { setGroupPick(""); return; }
+  closeEdgeEditor();
+  setGroupPick("delete");
+  $("legend").querySelector(".item")?.focus();
+};
+$("addGroup").onclick = () => editGroup();
+$("groupCancel").onclick = () => $("groupDialog").close();
+function editGroup(group = null) {
+  if (APPROVED || applying) return;
+  const dialog = $("groupDialog"), input = $("groupNameInput"), message = $("groupMessage");
+  $("groupTitle").textContent = group ? "그룹 삭제" : "새 그룹 추가";
+  $("groupSubmit").textContent = group ? "그룹 삭제" : "그룹 추가";
+  $("groupNameLabel").hidden = !!group;
+  input.value = "";
+  message.textContent = group ? `‘${groupName(group.id)}’ 그룹을 삭제하면 파일 ${group.members.length}개가 ‘그룹 없음’으로 이동합니다.` : "";
+  $("groupForm").onsubmit = ev => {
+    ev.preventDefault();
+    if (group) {
+      setGroupPick("");
+      push({type: "group_delete", group: group.id, note: group.name});
+    } else {
+      const name = input.value.trim();
+      if (!name || [...state.groups.values()].some(g => g.name === name) || name === "그룹 없음") {
+        message.textContent = "새 그룹에 사용할 다른 이름을 입력하세요."; input.focus(); return;
+      }
+      const gid = "user-" + crypto.randomUUID();
+      push({type: "group_add", group: gid, note: name});
+    }
+    dialog.close();
+    if (group) ($("deleteGroup").disabled ? $("addGroup") : $("deleteGroup")).focus();
+  };
+  dialog.showModal();
+  (group ? $("groupCancel") : input).focus();
+}
+function groupFolders(g) {
+  const counts = new Map();
+  for (const id of g.members) {
+    const path = state.nodes.get(id).path;
+    const folder = path.includes("/") ? path.split("/")[0] : "루트";
+    counts.set(folder, (counts.get(folder) || 0) + 1);
+  }
+  const folders = [...counts.keys()].sort((a,b) => counts.get(b) - counts.get(a)).slice(0, 2);
+  return folders.length ? `(${folders.join(" + ")})` : "";
+}
 function renderLegend() {
-  const groups = [...state.groups.values()].filter(g => g.members.length);
+  const groups = [...state.groups.values()];
+  const deleting = explorer.dataset.pick === "delete";
+  $("deleteGroup").disabled = !groups.length && !deleting;
   const ungrouped = [...state.nodes.values()].filter(n => !n.group).length;
   $("legend").innerHTML = groups.map(g =>
-    `<div class="group-row"><button class="item" data-g="${esc(g.id)}" title="${esc(g.description)}"><span class="dot" style="background:${groupColor[g.id]}"></span>${esc(g.name)} <span class="hint">${g.members.length}</span></button><button class="visibility-switch" role="switch" aria-checked="true" data-group="${esc(g.id)}" aria-label="${esc(g.name)} 그룹 표시"></button></div>`).join("")
-    + (ungrouped ? `<div class="group-row"><button class="item" data-g=""><span class="dot" style="background:#9aa0a6"></span>그룹 없음 <span class="hint">${ungrouped}</span></button><button class="visibility-switch" role="switch" aria-checked="true" data-group="" aria-label="그룹 없는 파일 표시"></button></div>` : "");
+    `<div class="group-row"><button class="item" data-g="${esc(g.id)}" title="${esc(g.description)}"><span class="dot" style="background:${groupColor[g.id]}"></span><span class="group-label">${esc(g.display_name || g.name)}<small>${esc(groupFolders(g))}</small></span> <span class="hint">${g.members.length}</span></button><button class="visibility-switch" role="switch" aria-checked="true" data-group="${esc(g.id)}" aria-label="${esc(g.name)} 그룹 표시"></button></div>`).join("")
+    + (!deleting && (ungrouped || !APPROVED) ? `<div class="group-row"><button class="item" data-g=""><span class="dot" style="background:#9aa0a6"></span>그룹 없음 <span class="hint">${ungrouped}</span></button><button class="visibility-switch" role="switch" aria-checked="true" data-group="" aria-label="그룹 없는 파일 표시"></button></div>` : "");
   $("legend").querySelectorAll("button[data-group]").forEach(input => {
     const ids = [...state.nodes.values()].filter(n => (n.group || "") === input.dataset.group).map(n => n.id);
     updateVisibilitySwitch(input, ids);
     input.onclick = () => setFileVisibility(ids, input.getAttribute("aria-checked") !== "true");
   });
-  $("legend").querySelectorAll(".item").forEach(el => el.onclick = () => {
-    const ids = [...state.nodes.values()].filter(n => (n.group || "") === el.dataset.g && fileVisible(n.id)).map(n => n.id);
-    focusGraphNodes(ids);
+  $("legend").querySelectorAll(".item").forEach(el => {
+    const group = el.dataset.g;
+    const node = state.nodes.get(movingFileId);
+    el.disabled = !!node && group === (node.group || "");
+    el.onclick = () => {
+      if (deleting) { editGroup(state.groups.get(group)); return; }
+      if (node) {
+        if (APPROVED || applying || el.disabled) return;
+        setGroupPick("");
+        push(group ? {type: "node_move", node: node.id, group} : {type: "node_ungroup", node: node.id});
+        $("sessionStatus").textContent = base(node.path) + " → " + groupName(group);
+        $("openMove").focus();
+        return;
+      }
+      const ids = [...state.nodes.values()].filter(n => (n.group || "") === group && fileVisible(n.id)).map(n => n.id);
+      focusGraphNodes(ids);
+    };
   });
 }
 
 const closedFolders = new Set();
+// Touch starts on the file icon so the rest of the sidebar can still scroll.
+const treePane = $("fileTree");
+let fileDrag = null, scrollFrame = 0, ignoreDragClick = false;
+function trackTarget() {
+  const {x, y, node} = fileDrag;
+  const row = document.elementFromPoint(x, y)?.closest("#legend .group-row");
+  const old = $("legend").querySelector(".drop-target");
+  if (old !== row) old?.classList.remove("drop-target");
+  const group = row?.querySelector(".item").dataset.g;
+  const same = row && group === (node.group || "");
+  row?.classList.toggle("drop-target", !same);
+  const chip = $("dragChip");
+  chip.textContent = row ? (same ? "이미 이 그룹에 있어요" : groupName(group) + "에 놓기") : base(node.path) + " · 그룹에 놓기";
+  chip.style.left = Math.max(0, Math.min(x + 12, innerWidth - chip.offsetWidth)) + "px";
+  chip.style.top = Math.min(y + 14, innerHeight - chip.offsetHeight) + "px";
+  return row;
+}
+function scrollDuringDrag() {
+  if (!fileDrag?.active) return;
+  const pane = treePane.closest(".explorer-scroll"), r = pane.getBoundingClientRect();
+  if (fileDrag.x >= r.left && fileDrag.x <= r.right && fileDrag.y >= r.top && fileDrag.y <= r.bottom) {
+    const step = fileDrag.y > r.bottom - 30 ? 9 : fileDrag.y < r.top + 30 ? -9 : 0;
+    if (step) { pane.scrollTop += step; trackTarget(); }
+  }
+  scrollFrame = requestAnimationFrame(scrollDuringDrag);
+}
+treePane.onpointerdown = ev => {
+  const file = ev.target.closest(".file");
+  if (!file || (ev.pointerType === "touch" && !ev.target.closest(".file-icon")) ||
+      ev.button !== 0 || APPROVED || applying || explorer.dataset.pick || addFrom !== null) return;
+  fileDrag = {id: ev.pointerId, node: state.nodes.get(file.dataset.node), startX: ev.clientX, startY: ev.clientY};
+};
+window.addEventListener("pointermove", ev => {
+  if (fileDrag?.id !== ev.pointerId) return;
+  fileDrag.x = ev.clientX; fileDrag.y = ev.clientY;
+  if (!fileDrag.active) {
+    if (Math.hypot(ev.clientX - fileDrag.startX, ev.clientY - fileDrag.startY) < 5) return;
+    fileDrag.active = true;
+    treePane.setPointerCapture(ev.pointerId);
+    document.body.classList.add("file-dragging"); $("dragChip").hidden = false;
+    scrollFrame = requestAnimationFrame(scrollDuringDrag);
+  }
+  trackTarget();
+});
+function finishFileDrag(ev) {
+  if (!fileDrag || (ev.pointerId !== undefined && ev.pointerId !== fileDrag.id)) return;
+  const {node, active, id} = fileDrag;
+  const row = active && ev.type === "pointerup" && document.elementFromPoint(ev.clientX, ev.clientY)?.closest("#legend .group-row");
+  fileDrag = null;
+  if (!active) return;
+  cancelAnimationFrame(scrollFrame);
+  if (treePane.hasPointerCapture(id)) treePane.releasePointerCapture(id);
+  document.body.classList.remove("file-dragging"); $("dragChip").hidden = true;
+  $("legend").querySelector(".drop-target")?.classList.remove("drop-target");
+  ignoreDragClick = true; setTimeout(() => { ignoreDragClick = false; }, 0);
+  if (!row) return;
+  const group = row.querySelector(".item").dataset.g;
+  if (group !== (node.group || "")) push(group ? {type:"node_move", node:node.id, group} : {type:"node_ungroup", node:node.id});
+}
+treePane.addEventListener("click", ev => { if (ignoreDragClick) ev.stopPropagation(); }, true);
+window.addEventListener("pointerup", finishFileDrag);
+window.addEventListener("pointercancel", finishFileDrag);
+window.addEventListener("blur", finishFileDrag);
+document.addEventListener("keydown", ev => { if (ev.key === "Escape") finishFileDrag(ev); });
 function selectedFolders() {
   const folders = new Set();
   const path = selected?.kind === "node" ? state.nodes.get(selected.id)?.path : null;
@@ -915,7 +1227,7 @@ function renderFiles() {
       const key = prefix + name + "/";
       return `<details data-folder="${esc(key)}"${q || revealed.has(key) || !closedFolders.has(key) ? " open" : ""}><summary>${esc(name)}</summary>${branchHTML(child, key)}</details>`;
     }).join("") + branch.files.sort((a, b) => a.path.localeCompare(b.path)).map(n =>
-      `<div class="file-row${fileVisible(n.id) ? "" : " is-hidden"}"><button class="file${selected?.kind === "node" && selected.id === n.id ? " selected" : ""}" data-node="${esc(n.id)}" title="${esc(n.path)}">${explorerFileIcon(n)}<span>${esc(base(n.path))}</span></button></div>`).join("");
+      `<div class="file-row${fileVisible(n.id) ? "" : " is-hidden"}"><button class="file${selected?.kind === "node" && selected.id === n.id ? " selected" : ""}" draggable="false" data-node="${esc(n.id)}" title="${esc(n.path)}">${explorerFileIcon(n)}<span>${esc(base(n.path))}</span></button></div>`).join("");
   $("fileTree").innerHTML = branchHTML(tree) || '<p class="hint">일치하는 파일이 없습니다.</p>';
   $("fileCount").textContent = q ? `${matches.length} / ${state.nodes.size}` : state.nodes.size;
   $("fileTree").querySelectorAll("details").forEach(el => el.querySelector("summary").onclick = ev => {
@@ -929,6 +1241,16 @@ function renderFiles() {
   });
   $("fileTree").querySelectorAll(".file").forEach(el => el.onclick = () => {
     const id = el.dataset.node;
+    if (explorer.dataset.pick === "file") {
+      setGroupPick("group", id);
+      ($("legend").querySelector(".item:not(:disabled)") || $("openMove")).focus();
+      return;
+    }
+    if (addFrom !== null) {
+      if (!fileVisible(id)) setFileVisibility([id], true);
+      pickEdgeEndpoint(id);
+      return;
+    }
     if (fileVisible(id)) focusGraphNodes([id], true);
     showNode(id);
   });
@@ -961,7 +1283,10 @@ function revealSelection(scrollToFile = false) {
   }
 }
 
-function groupName(gid) { return gid ? (state.groups.get(gid)?.name || gid) : "그룹 없음"; }
+function groupName(gid) {
+  const g = state.groups.get(gid);
+  return g ? [g.display_name || g.name, groupFolders(g)].filter(Boolean).join(" ") : "그룹 없음";
+}
 
 function showNode(id, revealFile = false) {
   const n = state.nodes.get(id); if (!n) return;
@@ -973,28 +1298,26 @@ function showNode(id, revealFile = false) {
   }
   revealSelection(revealFile);
   const edges = visibleEdges().filter(e => e.source === id || e.target === id);
-  const opts = [...state.groups.values()].map(g => `<option value="${esc(g.id)}"${g.id === n.group ? " selected" : ""}>${esc(g.name)}</option>`).join("");
   $("detail").innerHTML = `
     <h2>${esc(base(n.path))}</h2>
     <div class="path">${esc(n.path)}</div>
     <div class="row"><span class="badge">${esc(n.type)}</span>${n.role ? `<span class="badge">${esc(n.role)}</span>` : ""}
       <span class="badge" style="background:${groupColor[n.group] || "#9aa0a6"};color:#fff">${esc(groupName(n.group))}</span></div>
+    <h3>파일 중요도</h3><div class="row" aria-label="파일 중요도">
+      ${Object.entries(LEVEL_LABEL).map(([level, label]) =>
+        `<button class="edit-control${level === n.level ? " active" : ""}" data-level="${level}" aria-pressed="${level === n.level}">${label}</button>`).join("")}
+      <span class="hint">${LEVEL_LABEL[n.level]} · ${n.manual_level ? "직접 지정" : "자동 배정"}</span></div>
     ${n.summary ? `<h3>요약</h3><div>${esc(n.summary)}</div>` : ""}
     ${n.preview ? `<h3>내용 미리보기</h3><div class="preview">${esc(n.preview)}</div>` : ""}
-    <div class="edit-control"><h3>그룹 교정</h3>
-      <div class="row"><select id="moveTo">${opts}<option value="__new">새 그룹…</option></select>
-        <button id="moveBtn">이동</button><button id="ungroupBtn">그룹에서 빼기</button></div>
-    </div>
     <h3>연결 ${edges.length}개</h3>
     ${edges.map(e => { const other = e.source === id ? e.target : e.source;
       return `<button class="edge-link" data-e="${esc(e.id)}">${e.source === id ? "→" : "←"} ${esc(base(state.nodes.get(other).path))} · ${esc(REL[e.relation] || e.relation)}${e.direct ? "" : " (추론)"}</button>`; }).join("")}`;
+  $("detail").querySelectorAll("[data-level]").forEach(button => button.onclick = () => {
+    const level = button.dataset.level;
+    if (level !== n.level) push({type: "node_level", node: id, level});
+    $("detail").querySelector(`[data-level="${level}"]`)?.focus({preventScroll: true});
+  });
   $("detail").querySelectorAll(".edge-link").forEach(el => el.onclick = () => { network.selectEdges([el.dataset.e]); showEdge(el.dataset.e); });
-  $("moveBtn").onclick = () => {
-    let g = $("moveTo").value;
-    if (g === "__new") { g = prompt("새 그룹 이름"); if (!g) return; }
-    push({type: "node_move", node: id, group: g});
-  };
-  $("ungroupBtn").onclick = () => push({type: "node_ungroup", node: id});
 }
 
 function showEdge(id) {
@@ -1016,34 +1339,39 @@ function showEdge(id) {
     <h3>근거</h3>
     ${(e.evidence || []).map(v => `<div class="path">${esc(base(state.nodes.get(v.file_id)?.path || ""))} · ${esc(v.locator)}</div><blockquote>${esc(v.quote)}</blockquote>`).join("") || '<p class="hint">근거 없음</p>'}
     <div class="edit-control"><h3>연결 교정</h3>
-      <div class="row">
-        <button data-t="edge_confirm">맞는 연결</button>
-        <button data-t="edge_wrong">잘못된 연결</button>
-        <button data-t="edge_irrelevant">목적상 불필요</button>
+      <div class="row"><button id="confirmEdge">맞는 연결</button>
+        ${VISIBLE.has(e.status) ? '<button id="openEdgeEditor">연결 편집</button>' : ""}
       </div>
     </div>`;
-  $("detail").querySelectorAll("button[data-t]").forEach(btn => btn.onclick = () => push(btn.dataset.t === "edge_confirm"
-    ? {type: "edge_confirm", source: e.source, target: e.target, relation: e.relation, note: e.label}
-    : {type: btn.dataset.t, source: e.source, target: e.target}));
+  $("confirmEdge").onclick = () => push({type: "edge_confirm", source: e.source, target: e.target, relation: e.relation, note: e.label});
+  if ($("openEdgeEditor")) $("openEdgeEditor").onclick = () => openEdgeEditor("edit", id);
 }
 
-function push(ev) {
+function push(...edits) {
   if (applying || APPROVED) return;
-  ev.ts = new Date().toISOString().slice(0, 19); events.push(ev); save(); render();
+  const ts = new Date().toISOString();
+  for (const edit of edits) events.push({...edit, ts, ...(edits.length > 1 ? {undoGroup: ts} : {})});
+  save(); render();
 }
 
 function describe(ev) {
+  if (ev.type.startsWith("group_")) return `${esc(FB[ev.type])}: ${esc(ev.note || ev.group)}`;
   const p = id => esc(base(state.nodes.get(id)?.path || id));
-  if (ev.type.startsWith("edge_")) return `${esc(FB[ev.type])}: ${p(ev.source)} – ${p(ev.target)}${ev.relation ? " (" + esc(ev.relation) + ")" : ""}`;
+  if (ev.type.startsWith("edge_")) {
+    const label = ev.editLabel || FB[ev.type];
+    return `${esc(label)}: ${p(ev.source)} → ${p(ev.target)}${ev.relation ? " (" + esc(ev.relation) + ")" : ""}`;
+  }
+  if (ev.type === "node_level") return `${p(ev.node)} · 중요도 ${LEVEL_LABEL[ev.level]}`;
   const g = ev.group ? (state.groups.get(ev.group)?.name || ev.group) : "";
   return `${esc(FB[ev.type])}: ${p(ev.node)}${g ? " → " + esc(g) : ""}`;
 }
 function renderFeedback() {
-  $("fbCount").textContent = events.length ? `(${events.length})` : "";
-  $("fbList").innerHTML = events.map(ev => `<div class="fb">${describe(ev)}</div>`).join("") || '<p class="hint">아직 없음</p>';
+  $("fbCount").textContent = pending.length ? `(${pending.length})` : "";
+  $("fbList").innerHTML = pending.map(ev => `<div class="fb">${describe(ev)}</div>`).join("") || '<p class="hint">아직 없음</p>';
   $("undo").disabled = !events.length;
-  $("export").disabled = !events.length;
-  $("sessionStatus").textContent = events.length ? `피드백 ${events.length}개 · 브라우저에 보관됨` : "탐색 준비 완료";
+  $("applyFeedback").disabled = applying || !pending.length;
+  $("export").disabled = !pending.length;
+  $("sessionStatus").textContent = pending.length ? `피드백 ${pending.length}개 · 브라우저에 보관됨` : "탐색 준비 완료";
 }
 
 const projectName = String(DATA.meta.root || "ProjectWiki").replace(/\\/g, "/").replace(/\/$/, "").split("/").pop();
@@ -1052,6 +1380,7 @@ $("projectName").textContent = projectName;
 $("meta").textContent = `${projectName} · 파일 ${DATA.nodes.length} · 연결 ${DATA.edges.filter(e => VISIBLE.has(e.status)).length} · `
   + `${DATA.meta.encoder} · 군집 ${DATA.meta.clusterer} · 교정 ${DATA.meta.corrector}`;
 ["showInferred", "showLabels", "showHidden"].forEach(id => $(id).onchange = render);
+$("heightMode").onchange = () => { if (graphMode === "3d") sync3D(); };
 $("physics").onchange = () => {
   const enabled = $("physics").checked;
   network.setOptions({physics: {enabled: enabled && graphMode === "2d"}});
@@ -1063,9 +1392,15 @@ $("physics").onchange = () => {
     }
   }
 };
-$("undo").onclick = () => { if (!applying) { events.pop(); save(); render(); } };
+$("undo").onclick = () => {
+  if (applying) return;
+  closeEdgeEditor();
+  const group = events.pop()?.undoGroup;
+  while (group && events.at(-1)?.undoGroup === group) events.pop();
+  save(); render();
+};
 $("export").onclick = () => {
-  const blob = new Blob([events.map(e => JSON.stringify(e)).join("\n") + "\n"], {type: "application/jsonl"});
+  const blob = new Blob([pending.map(e => JSON.stringify(e)).join("\n") + "\n"], {type: "application/jsonl"});
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "feedback.jsonl"; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 };
@@ -1076,9 +1411,11 @@ function showFeedbackChanges(report) {
       (state.status === "confirmed" ? "승인됨" : "표시") : "숨김"} · 점수 ${state.score.toFixed(4)}`
     : "연결 없음";
   const list = rows => rows.length ? `<ul class="changeList">${rows.map(row => `<li>
-    <b>${row.files.map(esc).join(" ↔ ")}</b>
+    <b>${row.group_name ? esc(row.group_name) : row.files.map(esc).join(" → ")}</b>
     ${row.action ? `<span class="badge">${esc(row.action)}</span>` : ""}
-    <div>${row.from_group !== undefined
+    ${row.previous_files ? `<div class="hint">이전 방향: ${row.previous_files.map(esc).join(" → ")}</div>` : ""}
+    <div>${row.from_level !== undefined ? `${LEVEL_LABEL[row.from_level]} → ${LEVEL_LABEL[row.to_level]}`
+      : row.group_name ? "" : row.from_group !== undefined
       ? `${esc(row.from_group)} → ${esc(row.to_group)}`
       : `${stateLabel(row.before)} → ${stateLabel(row.after)}`}</div>
     ${row.reason ? `<div class="hint">${esc(row.reason)}</div>` : ""}
@@ -1092,27 +1429,8 @@ function showFeedbackChanges(report) {
 }
 
 if (LAST_FEEDBACK) showFeedbackChanges(LAST_FEEDBACK);
-if (DATA.meta.selection) {
-  const selection = DATA.meta.selection, panel = $("candidateComparison");
-  panel.hidden = false;
-  panel.querySelector("summary").textContent =
-    `후보 ${selection.candidates.length}개 비교 · Drift ${selection.scale}배 선택`;
-  $("candidateReason").textContent = selection.scored_edges
-    ? `직접 지정하지 않은 연결 ${selection.scored_edges}개를 비교했습니다. 같은 관계 유형의 승인·불필요 피드백과 원래 점수로 목표값을 정하고, 각 후보가 목표값에 가까울수록 높은 점수를 줍니다. 동점이면 약한 강도를 선택합니다.`
-    : "점수를 비교할 다른 연결이 없어 가장 약한 강도를 선택했습니다.";
-  for (const row of selection.candidates) {
-    const item = document.createElement("li");
-    const score = row.score === null ? "평가 대상 없음" : `${row.score.toFixed(4)}점`;
-    item.textContent = `${row.scale}배 · ${score} · 추가로 숨긴 연결 ${row.hidden}개${row.scale === selection.scale ? " · 선택됨" : ""}`;
-    $("candidateScores").appendChild(item);
-  }
-}
 if (LIVE_FEEDBACK && !APPROVED) {
-  const input = $("feedbackText"), status = $("feedbackStatus"), apply = $("applyFeedback"), approve = $("approveWiki");
-  const textEnabled = DATA.meta.llm !== "off";
-  $("textFeedback").hidden = false;
-  $("textFeedbackHint").hidden = textEnabled;
-  input.disabled = !textEnabled;
+  const status = $("feedbackStatus"), apply = $("applyFeedback"), approve = $("approveWiki");
   $("export").hidden = $("offlineHint").hidden = true;
   apply.hidden = false;
   $("approvalActions").hidden = false;
@@ -1120,13 +1438,13 @@ if (LIVE_FEEDBACK && !APPROVED) {
     status.textContent = `피드백 ${LAST_FEEDBACK.applied}건을 반영했습니다.`;
   }
   const setBusy = busy => {
-    applying = apply.disabled = approve.disabled = busy;
-    input.disabled = busy || !textEnabled;
+    if (busy && explorer.dataset.pick) setGroupPick("");
+    applying = approve.disabled = busy;
+    apply.disabled = busy || !pending.length;
   };
   apply.onclick = async () => {
-    const request = input.value.trim();
-    if (!request && !events.length) {
-      status.textContent = "수정 요청을 적거나 그래프에서 피드백을 골라 주세요.";
+    if (!pending.length) {
+      status.textContent = "그래프에서 반영할 변경을 먼저 선택해 주세요.";
       return;
     }
     setBusy(true);
@@ -1134,12 +1452,11 @@ if (LIVE_FEEDBACK && !APPROVED) {
     try {
       const response = await fetch(location.pathname + "/feedback", {
         method: "POST", headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({text: request, events})
+        body: JSON.stringify({events: pending, revision: DATA.meta.revision})
       });
       const result = await response.json();
       if (!response.ok) {
         status.textContent = result.message;
-        if (request) input.focus();
         return;
       }
       events = [];
@@ -1152,7 +1469,7 @@ if (LIVE_FEEDBACK && !APPROVED) {
     }
   };
   approve.onclick = async () => {
-    if (events.length || input.value.trim()) {
+    if (pending.length) {
       status.textContent = "반영 대기 중인 요청이 있어요. 먼저 피드백을 반영하거나 지워 주세요.";
       return;
     }
@@ -1176,8 +1493,116 @@ if (LIVE_FEEDBACK && !APPROVED) {
     }
   };
 }
-$("addMode").onclick = () => { addFrom = addFrom === null ? "" : null; $("addMode").classList.toggle("active", addFrom !== null);
-  $("addMode").textContent = addFrom !== null ? "시작 노드 선택…" : "연결 추가"; };
+let editorMode = null;
+const editorButtons = {add: $("addMode"), edit: $("editMode"), delete: $("deleteMode")};
+function setEdgeSelection(source) {
+  addFrom = source;
+  $("edgeGuide").hidden = source === null;
+  if (source === null) return;
+  $("edgeGuideStep").textContent = source
+    ? "2/2 · 끝 노드를 클릭하세요"
+    : "1/2 · 시작 노드를 클릭하세요";
+  const detail = $("edgeGuideDetail");
+  detail.textContent = source
+    ? `선택한 시작 파일: ${base(state.nodes.get(source).path)}`
+    : "그래프나 파일 탐색기에서 연결을 시작할 파일을 선택하세요.";
+  detail.title = source ? state.nodes.get(source).path : "";
+}
+function closeEdgeEditor() {
+  editorMode = null;
+  setEdgeSelection(null);
+  $("edgeEditor").hidden = true;
+  for (const button of Object.values(editorButtons)) {
+    button.classList.remove("active");
+    button.setAttribute("aria-pressed", "false");
+  }
+  $("addMode").textContent = "추가";
+}
+function openEdgeEditor(mode, preferredId) {
+  if (APPROVED || applying) return;
+  if (explorer.dataset.pick) setGroupPick("");
+  const id = preferredId || (editorMode && !($("edgePicker").hidden) && $("editEdge").value)
+    || (selected?.kind === "edge" && selected.id);
+  closeEdgeEditor();
+  editorMode = mode;
+  editorButtons[mode].classList.add("active");
+  editorButtons[mode].setAttribute("aria-pressed", "true");
+  document.body.classList.remove("mobile-inspector", "mobile-explorer");
+  $("editError").textContent = "";
+  $("edgePicker").hidden = mode === "add";
+  if (mode === "add") {
+    $("addMode").textContent = "추가 취소";
+    setEdgeSelection("");
+    return;
+  }
+  const picker = $("editEdge");
+  picker.replaceChildren(new Option("연결 선택", ""));
+  for (const e of state.edges.values()) {
+    if (VISIBLE.has(e.status)) picker.add(new Option(
+      `${state.nodes.get(e.source).path} → ${state.nodes.get(e.target).path} · ${REL[e.relation] || e.relation}`, e.id));
+  }
+  picker.value = id || "";
+  $("edgeEditor").hidden = false;
+  fillEdgeForm(state.edges.get(picker.value));
+}
+function fillEdgeForm(edge) {
+  const removing = editorMode === "delete";
+  $("edgeFields").hidden = !edge;
+  $("queueEdge").disabled = !edge;
+  $("editPair").hidden = $("relationField").hidden = removing;
+  $("deleteField").hidden = !removing;
+  $("queueEdge").textContent = {add: "연결 추가", edit: "연결 변경", delete: "연결 삭제"}[editorMode];
+  $("editError").textContent = $("deleteReason").value = "";
+  if (!edge || removing) return;
+  const options = [...state.nodes.values()].sort((a,b) => a.path.localeCompare(b.path))
+    .map(n => `<option value="${esc(n.id)}">${esc(n.path)}</option>`).join("");
+  $("editSource").innerHTML = $("editTarget").innerHTML = options;
+  $("editSource").value = edge.source;
+  $("editTarget").value = edge.target;
+  $("editRelation").value = edge.relation || "";
+}
+for (const [mode, button] of Object.entries(editorButtons)) {
+  button.onclick = () => editorMode === mode ? closeEdgeEditor() : openEdgeEditor(mode);
+}
+$("cancelEdit").onclick = closeEdgeEditor;
+$("editEdge").onchange = () => fillEdgeForm(state.edges.get($("editEdge").value));
+$("swapEnds").onclick = () => {
+  const source = $("editSource"), target = $("editTarget");
+  [source.value, target.value] = [target.value, source.value];
+};
+$("edgeEditor").onsubmit = ev => {
+  ev.preventDefault();
+  if (!editorMode || applying || APPROVED) return;
+  const old = editorMode === "add" ? null : state.edges.get($("editEdge").value);
+  const error = $("editError");
+  if (editorMode !== "add" && !old) { error.textContent = "연결을 선택하세요."; return; }
+  if (editorMode === "delete") {
+    const type = $("deleteReason").value;
+    if (!type) { error.textContent = "삭제 사유를 선택하세요."; return; }
+    push({type, source: old.source, target: old.target});
+  } else {
+    const source = $("editSource").value, target = $("editTarget").value;
+    const relation = $("editRelation").value.trim() || "user";
+    const key = edgeKey(source, target), other = state.edges.get(key);
+    if (source === target) { error.textContent = "서로 다른 파일을 선택하세요."; return; }
+    if (other && old?.id !== key && VISIBLE.has(other.status)) {
+      error.textContent = "이미 연결된 파일이에요. 기존 연결은 ‘변경’에서 수정하세요."; return;
+    }
+    const directionChanged = !old || old.source !== source || old.target !== target;
+    if (!directionChanged && old.relation === relation) { error.textContent = "변경할 내용을 입력하세요."; return; }
+    const edits = [];
+    if (old && old.id !== key) edits.push({type: "edge_wrong", source: old.source, target: old.target,
+      editLabel: "대상 변경 · 기존 연결 제외"});
+    edits.push({type: "edge_add", source, target, relation, set_direction: directionChanged,
+      editLabel: old ? "연결 변경" : "연결 추가"});
+    push(...edits);
+  }
+  closeEdgeEditor();
+  if (!pending.length) return;
+  $("sessionStatus").textContent = LIVE_FEEDBACK
+    ? "미리보기에 적용했어요. ‘피드백 반영하기’를 누르면 저장돼요."
+    : "미리보기에 적용했어요. 변경 내용을 피드백 파일로 저장할 수 있어요.";
+};
 $("search").oninput = ev => {
   const q = ev.target.value.trim().toLowerCase(); renderFiles();
   if (!q) { network.unselectAll(); highlighted3D.clear(); refresh3DHighlight(); return; }
@@ -1223,14 +1648,23 @@ $("toggleExplorer").onclick = () => togglePane("explorer", "(max-width: 580px)")
 $("toggleInspector").onclick = () => togglePane("inspector", "(max-width: 850px)");
 $("focusSearch").onclick = () => {
   document.body.classList.remove("hide-explorer"); document.body.classList.add("mobile-explorer");
+  if (explorer.dataset.pick === "delete") setGroupPick("");
+  if (explorer.dataset.pick === "group") setGroupPick("file");
   $("toggleExplorer").setAttribute("aria-expanded", "true"); $("search").focus();
 };
 document.addEventListener("keydown", ev => {
   if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === "k") { ev.preventDefault(); $("focusSearch").click(); }
   if (ev.key === "Escape") {
+    if ($("groupDialog").open) return;
+    if (explorer.dataset.pick) {
+      const trigger = explorer.dataset.pick === "delete" ? $("deleteGroup") : $("openMove");
+      setGroupPick("");
+      trigger.focus();
+      return;
+    }
     document.body.classList.remove("mobile-explorer", "mobile-inspector");
     document.querySelector(".graph-options").open = false;
-    if (addFrom !== null) $("addMode").click();
+    closeEdgeEditor();
   }
 });
 
@@ -1256,20 +1690,38 @@ if (setup && (setup.purpose || setup.priority)) {
     button.onclick = () => {
       const id = button.dataset.file;
       if (!fileVisible(id)) setFileVisibility([id], true);
+      if (addFrom !== null) { pickEdgeEndpoint(id); return; }
       focusGraphNodes([id], true);
       showNode(id, true);
     };
   });
 }
+function pickEdgeEndpoint(id) {
+  if (!addFrom) {
+    setEdgeSelection(id);
+    network.selectNodes([id], false);
+    highlighted3D = new Set([id]); refresh3DHighlight();
+    return;
+  }
+  if (id === addFrom) return;
+  const edge = {source: addFrom, target: id};
+  setEdgeSelection(null);
+  $("edgeEditor").hidden = false;
+  document.body.classList.remove("mobile-explorer");
+  fillEdgeForm(edge);
+  $("editRelation").focus();
+}
 function handleGraphClick(p) {
-  if (addFrom !== null && p.nodes.length) {
-    if (!addFrom) { addFrom = p.nodes[0]; $("addMode").textContent = "끝 노드 선택…"; return; }
-    const target = p.nodes[0];
-    if (target !== addFrom) {
-      const relation = prompt("관계 이름 (예: 발표에 함께 쓸 자료)", "");
-      if (relation !== null) push({type: "edge_add", source: addFrom, target, relation: relation || "user"});
+  if (addFrom !== null) {
+    if (p.nodes.length) pickEdgeEndpoint(p.nodes[0]);
+    return;
+  }
+  if ((editorMode === "edit" || editorMode === "delete") && !p.nodes.length && p.edges.length) {
+    const e = state.edges.get(p.edges[0]);
+    if (e && VISIBLE.has(e.status)) {
+      $("editEdge").value = e.id;
+      fillEdgeForm(e);
     }
-    addFrom = null; $("addMode").classList.remove("active"); $("addMode").textContent = "연결 추가";
     return;
   }
   if (p.nodes.length) showNode(p.nodes[0], true);

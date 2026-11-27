@@ -1,4 +1,5 @@
 import json
+from itertools import combinations
 from types import SimpleNamespace
 
 import pymupdf
@@ -8,14 +9,15 @@ from projectwiki import pipeline
 from projectwiki.config import Config
 from projectwiki.models.clustering import get_clusterer
 from projectwiki.models.visualization import export_obsidian
-from projectwiki.schema import FeedbackEvent, Graph, Preferences
+from projectwiki.schema import Edge, FeedbackEvent, Graph, Node, Preferences, edge_key
 from projectwiki.srcs.candidates import reference_candidates
-from projectwiki.srcs.feedback import resolve
+from projectwiki.srcs.feedback import resolve, validate_events
 from projectwiki.srcs.feedback_changes import feedback_changes
 from projectwiki.srcs.ingest import ingest
-from projectwiki.srcs.initial_preferences import preferences_from_answers
+from projectwiki.srcs.levels import assign_levels, final_graph_from_dict
+from projectwiki.srcs.initial_preferences import pair_feedback, preferences_from_answers, similar_file_pairs
 from projectwiki.srcs.record import Record
-from projectwiki.srcs.text_feedback import FeedbackInputError, interpret, validate_events
+
 from projectwiki.srcs.wiki_approval import StaleGraphError, approve_wiki
 
 
@@ -71,6 +73,53 @@ class FakeClaude:
 
 def make_cfg(**kw):
     return Config(encoder="tfidf", reranker="", **kw)
+
+
+def test_pagerank_levels_and_legacy_graphs():
+    nodes = [Node(i, i, "text", i, None) for i in "abc"]
+    edge = Edge("a|b", "a", "b", "similar", "similar", False, 1)
+    graph = Graph(nodes, [], [edge])
+    assign_levels(graph)
+    a, b, c = nodes
+    assert a.pagerank == b.pagerank > c.pagerank
+    assert [n.level for n in nodes] == ["top", "top", "bottom"]
+    edge.user_directed = True
+    assign_levels(graph)
+    assert b.pagerank > a.pagerank == c.pagerank
+    edge.status = "removed_irrelevant"
+    legacy = graph.to_dict()
+    for n in legacy["nodes"]:
+        for field in ("level", "manual_level", "pagerank"):
+            del n[field]
+    loaded = final_graph_from_dict(legacy)
+    assert all(n.level == "middle" and n.pagerank == pytest.approx(1/3) for n in loaded.nodes)
+    assign_levels(Graph([], [], []))
+
+
+def test_manual_level_survives_rebuild_and_approval(project, tmp_path):
+    out = tmp_path / "levels"
+    cfg = make_cfg(llm=False)
+    before = pipeline.build(project, out, cfg, Preferences())["graph"]
+    n = before.nodes[0]
+    level = "bottom" if n.level == "top" else "top"
+    item = {"type": "node_level", "node": n.path, "level": level}
+    record = Record.load(out)
+    with pytest.raises(ValueError):
+        validate_events([{**item, "level": "unknown"}], record, set())
+    edits = validate_events([item], record, set())
+    after = pipeline.correct(out, cfg, new_feedback=edits)["graph"]
+    updated = next(node for node in after.nodes if node.id == n.id)
+    assert updated.level == level and updated.manual_level
+    assert after.edges == before.edges and after.groups == before.groups
+    assert [x for x in after.nodes if x.id != n.id] == [x for x in before.nodes if x.id != n.id]
+    change, = feedback_changes(before, after, edits, cfg.corrector)["direct"]
+    assert (change["from_level"], change["to_level"]) == (n.level, level)
+    rebuilt = pipeline.build(project, out, cfg, Preferences())["graph"]
+    assert rebuilt.to_dict() == after.to_dict()
+    approved = approve_wiki(out, cfg, rebuilt.revision())
+    assert json.loads((approved / "graph.json").read_text(encoding="utf-8")) == after.to_dict()
+    assert any(f"level: {level}\n" in p.read_text(encoding="utf-8")
+               and n.path in p.read_text(encoding="utf-8") for p in (approved / "wiki").glob("*.md"))
 
 
 def test_ingest(project):
@@ -132,26 +181,91 @@ def test_initial_preferences_shape_the_first_view(project, tmp_path):
         assert nodes["src/train.py"].id not in priority
 
 
-def test_text_feedback_requires_exact_path_for_duplicate_names(project, tmp_path):
+def test_structured_feedback_targets_exact_file_with_duplicate_names(project, tmp_path):
     (project / "src" / "notes.md").write_text("# Other notes", encoding="utf-8")
     (project / "README.md").write_text("# Demo\nSee [project notes](./notes.md).\n", encoding="utf-8")
     cfg = make_cfg(llm=False)
     out = tmp_path / "text_feedback"
     pipeline.build(project, out, cfg, Preferences())
     record = Record.load(out)
-    answer = {"question": "", "events": [
-        {"type": "edge_irrelevant", "source": "README.md", "target": "notes.md"},
-    ]}
-    llm = SimpleNamespace(json=lambda *args, **kwargs: answer)
     edge_ids = {e.id for e in Graph.from_dict(json.loads((out / "graph.json").read_text(encoding="utf-8"))).edges}
-    request = "README.md와 notes.md 연결은 발표에 불필요해요."
-    with pytest.raises(FeedbackInputError, match=r"\./notes\.md, src/notes\.md"):
-        validate_events(interpret(request, record, [], llm, cfg), record, edge_ids, request)
-
-    request = request.replace("notes.md", "./notes.md")
-    events = validate_events(interpret(request, record, [], llm, cfg), record, edge_ids, request)
+    events = validate_events([{"type": "edge_irrelevant", "source": "README.md", "target": "notes.md"}], record, edge_ids)
+    assert events[0].target == record.file_by_path["notes.md"].id
     result = pipeline.correct(out, cfg, record=record, new_feedback=events)
     assert any(e.status == "removed_irrelevant" for e in result["graph"].edges)
+
+
+def test_explicit_edge_direction_survives_replay(project, tmp_path):
+    out = tmp_path / "out"
+    cfg = make_cfg(llm=False)
+    graph = pipeline.build(project, out, cfg, Preferences())["graph"]
+    edge = next(e for e in graph.edges if e.relation == "imports")
+    record = Record.load(out)
+    edit = {"type": "edge_add", "source": edge.target, "target": edge.source, "relation": "supports"}
+    existing = {e.id for e in graph.edges}
+    legacy = validate_events([edit], record, existing)
+    renamed = pipeline.correct(out, cfg, new_feedback=legacy)["graph"]
+    assert next(e for e in renamed.edges if e.id == edge.id).source == edge.source
+
+    explicit = validate_events([{**edit, "set_direction": True, "edit_reason": "방향 교정"}], record, existing)
+    pipeline.correct(out, cfg, new_feedback=explicit)
+    rebuilt = pipeline.build(project, out, cfg, Preferences())["graph"]
+    changed = next(e for e in rebuilt.edges if e.id == edge.id)
+    assert (changed.source, changed.target, changed.user_directed) == (edge.target, edge.source, True)
+    row, = feedback_changes(renamed, rebuilt, explicit, cfg.corrector)["direct"]
+    assert row["action"] == "방향 반전" and row["reason"] == "방향 교정"
+    assert row["previous_files"] == row["files"][::-1]
+
+
+@pytest.mark.parametrize("direction", ["", "forward", "reverse"])
+def test_first_view_uses_file_pair_choices(project, tmp_path, direction):
+    out = tmp_path / "out"
+    cfg = make_cfg(llm=False, corrector="best-of-n")
+    prepared = pipeline.prepare_project(project, out, cfg)
+    pairs = similar_file_pairs(prepared.record)
+    assert len(pairs) == len({edge_key(*p) for p in pairs}) == 3
+    record = prepared.record
+    ids = [f.id for f in record.files if any(c.kind != "path" for c in record.file_chunks(f.id))]
+    def similarity(pair):
+        a, b = (record.file_index[i] for i in pair)
+        return float(record.file_emb[a] @ record.file_emb[b])
+
+    assert [similarity(p) for p in pairs] == pytest.approx(sorted(map(similarity, combinations(ids, 2)), reverse=True)[:3])
+    assert not (out / "view.html").exists()
+    assert pair_feedback(pairs, ["skip"] * 3) == []
+    with pytest.raises(ValueError):
+        pair_feedback(pairs, ["invalid"] * 3)
+
+    events = pair_feedback(pairs, ["edge_confirm", "edge_irrelevant", "skip"], [direction, "reverse", "forward"])
+    result = pipeline.build_prepared(prepared, out, cfg, Preferences(), events)
+    a, b = pairs[0]
+    edges = {e.id: e for e in result["graph"].edges}
+    approved = edges[edge_key(a, b)]
+    assert {approved.source, approved.target} == {a, b}
+    assert approved.user_directed == bool(direction) and approved.status == "confirmed"
+    if direction:
+        assert (approved.source, approved.target) == ((b, a) if direction == "reverse" else (a, b))
+    rejected = edges.get(edge_key(*pairs[1]))
+    assert rejected is None or rejected.status == "removed_irrelevant"
+    report = result["initial_changes"]
+    assert len(report["direct"]) == 2 and report["automatic"]
+    assert json.loads((out / "correction.json").read_text(encoding="utf-8"))["selection"]["rejections"] == 1
+    replayed = pipeline.correct(out, cfg)["graph"]
+    assert replayed.to_dict() == result["graph"].to_dict()
+
+
+def test_reject_unproposed_initial_pair(project, tmp_path):
+    out = tmp_path / "out"
+    cfg = make_cfg(llm=False, corrector="best-of-n")
+    prepared = pipeline.prepare_project(project, out, cfg)
+    initial = pipeline.build_prepared(prepared, out, cfg, Preferences())["graph"]
+    existing = {e.id for e in initial.edges}
+    a, b = next((a.id, b.id) for a in initial.nodes for b in initial.nodes
+                if a.id != b.id and edge_key(a.id, b.id) not in existing)
+    result = pipeline.build_prepared(prepared, out, cfg, Preferences(), pair_feedback([(a, b)], ["edge_irrelevant"]))
+    row, = result["initial_changes"]["direct"]
+    assert row["before"] is None and row["after"] is None
+    assert json.loads((out / "correction.json").read_text(encoding="utf-8"))["selection"]["rejections"] == 1
 
 
 def test_approval_freezes_the_reviewed_version(project, tmp_path):
@@ -174,6 +288,27 @@ def test_approval_freezes_the_reviewed_version(project, tmp_path):
         type="edge_wrong", source="README.md", target="src/train.py")])
     assert (out / "final_graph.json").read_bytes() != frozen
     assert (result / "graph.json").read_bytes() == frozen
+
+
+def test_group_lifecycle_preserves_files_and_edges(project, tmp_path):
+    out = tmp_path / "groups"
+    cfg = make_cfg(llm=False, corrector="best-of-n")
+    original = pipeline.build(project, out, cfg, Preferences())["graph"]
+    node = original.nodes[0].id
+    gid = "user-test"
+    def apply(event):
+        return pipeline.correct(out, cfg, new_feedback=[event])["graph"]
+
+    empty = apply(FeedbackEvent(type="group_add", group=gid, note="발표 자료"))
+    assert next(g for g in empty.groups if g.id == gid).members == []
+    moved = apply(FeedbackEvent(type="node_move", node=node, group=gid))
+    assert next(g for g in moved.groups if g.id == gid).members == [node]
+    final = apply(FeedbackEvent(type="group_delete", group=gid, note="발표 자료"))
+    assert all(g.id != gid for g in final.groups)
+    assert next(n for n in final.nodes if n.id == node).group is None
+    assert {n.id for n in final.nodes} == {n.id for n in original.nodes}
+    assert final.edges == original.edges
+    assert pipeline.correct(out, cfg)["graph"] == final
 
 
 def test_feedback_and_drift(project, tmp_path):

@@ -16,11 +16,11 @@ def feedback_changes(before: Graph, after: Graph, events: list[FeedbackEvent], c
     new_edges = {e.id: e for e in after.edges}
     paths = {node.id: node.path for node in after.nodes}
     touched = {edge_key(ev.source, ev.target): ev for ev in events if ev.type.startswith("edge_")}
-    moved = {ev.node: ev for ev in events if ev.type.startswith("node_")}
+    moved = {ev.node: ev for ev in events if ev.type in ("node_move", "node_ungroup")}
 
     def describe_edge(key: str) -> dict:
         old, new = old_edges.get(key), new_edges.get(key)
-        edge = new or old
+        edge = new or old or touched[key]  # a rejected initial pair may have no proposed edge
         return {"files": [paths[edge.source], paths[edge.target]], "before": edge_state(old),
                 "after": edge_state(new), "reason": new.correction if new else ""}
 
@@ -28,12 +28,30 @@ def feedback_changes(before: Graph, after: Graph, events: list[FeedbackEvent], c
     for key, event in touched.items():
         row = describe_edge(key)
         old = old_edges.get(key)
-        row["action"] = ("관계 이름 수정" if event.type == "edge_add" and old and event.relation
-                         and old.relation != event.relation else FEEDBACK_TYPES[event.type])
+        changes = []
+        if event.type == "edge_add" and old and old.status in VISIBLE_STATUS:
+            if event.set_direction and old.source != event.source:
+                changes.append("방향 반전")
+                row["previous_files"] = [paths[old.source], paths[old.target]]
+            if event.relation and old.relation != event.relation:
+                changes.append("관계 이름 수정")
+        row["action"] = " · ".join(changes) or FEEDBACK_TYPES[event.type]
+        if event.edit_reason:
+            row["reason"] = event.edit_reason
         direct.append(row)
 
     old_groups = {group.id: group.name for group in before.groups}
     new_groups = {group.id: group.name for group in after.groups}
+    for ev in events:
+        if ev.type.startswith("group_"):
+            direct.append({"files": [], "group_name": ev.note or old_groups.get(ev.group, ev.group),
+                           "action": FEEDBACK_TYPES[ev.type]})
+    levels = {ev.node for ev in events if ev.type == "node_level"}
+    old_levels = {n.id: n.level for n in before.nodes}
+    for n in after.nodes:
+        if n.id in levels:
+            direct.append({"files": [n.path], "action": FEEDBACK_TYPES["node_level"],
+                           "from_level": old_levels[n.id], "to_level": n.level})
     old_membership = {node.id: node.group for node in before.nodes}
     new_membership = {node.id: node.group for node in after.nodes}
     for node, event in moved.items():

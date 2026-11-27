@@ -14,13 +14,20 @@ STRUCTURAL = ("imports", "links_to")  # facts: only the user can remove them
 # Edge statuses the viewer shows by default; the others are kept for inspection.
 VISIBLE_STATUS = ("proposed", "confirmed")
 
+LEVELS = ("bottom", "middle", "top")
+DIRECTED_RELATIONS = ("imports", "links_to", "mentions", "implements", "describes", "uses", "produces",
+                      "extends", "supports", "contradicts")
+
 FEEDBACK_TYPES = {
+    "node_level": "파일 중요도 변경",
     "edge_add": "빠진 연결 추가",
     "edge_wrong": "잘못된 연결 (사실 오류)",
     "edge_irrelevant": "관련은 있지만 목적상 불필요",
     "edge_confirm": "맞는 연결 (승인)",
     "node_move": "다른 그룹으로 이동",
     "node_ungroup": "그룹에서 빼기",
+    "group_add": "그룹 추가",
+    "group_delete": "그룹 삭제",
 }
 
 
@@ -96,6 +103,7 @@ class Edge:
     # | removed_low_score | llm_rejected
     status: str = "proposed"
     correction: str = ""  # why the preference method (models/preference.py) changed this edge
+    user_directed: bool = False  # user explicitly set source -> target in the editor
 
     @classmethod
     def from_dict(cls, d: dict) -> Edge:
@@ -111,6 +119,9 @@ class Node:
     group: str | None
     role: str = ""
     summary: str = ""
+    level: str = ""
+    manual_level: bool = False
+    pagerank: float = 0.0
 
 
 @dataclass
@@ -120,7 +131,12 @@ class Graph:
     edges: list[Edge]
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        data = asdict(self)
+        # Keep revisions of saved graphs stable until a user explicitly sets a direction.
+        for edge in data["edges"]:
+            if not edge["user_directed"]:
+                del edge["user_directed"]
+        return data
 
     def revision(self) -> str:
         data = json.dumps(self.to_dict(), sort_keys=True, ensure_ascii=False)
@@ -153,3 +169,6 @@ class FeedbackEvent:
     relation: str | None = None  # user's relation name for edge_add
     note: str = ""
     ts: str = ""
+    set_direction: bool = False
+    edit_reason: str = ""
+    level: str | None = None

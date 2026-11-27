@@ -5,7 +5,9 @@ import json
 import logging
 import re
 import secrets
+import subprocess
 import webbrowser
+from dataclasses import replace
 from html import escape
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
@@ -13,33 +15,73 @@ from urllib.parse import parse_qs
 
 from .. import pipeline
 from ..config import Config
-from ..schema import Graph, Preferences
+from ..schema import Preferences
 from .feedback_changes import feedback_changes
-from .initial_preferences import preferences_from_answers
+from .initial_preferences import pair_feedback, similar_file_pairs
+from .levels import final_graph_from_dict
 from .record import Record
-from .text_feedback import FeedbackInputError, interpret, validate_events
+from .setup_questions import codex_questions, pair_evidence
+from .feedback import FeedbackInputError, validate_events
 from .wiki_approval import APPROVED_DIR, StaleGraphError, approve_wiki
 
 
 FORM = Path(__file__).with_name("setup_form.html")
-FIELDS = ("purpose", "priority", "grouping")
 MAX_ANSWER = 1000
 # Browser form encoding can take three ASCII characters per byte of UTF-8.
-MAX_BODY = len(FIELDS) * MAX_ANSWER * 12 + 128
+MAX_BODY = MAX_ANSWER * 12 + 256
 MAX_FEEDBACK_BODY = 256_000
 log = logging.getLogger(__name__)
 
 
-def run_setup(root: Path, out: Path, cfg: Config, prefs: Preferences) -> None:
-    values = {"PURPOSE": prefs.purpose, "PRIORITY": prefs.guide.get("priority_materials", ""),
-              "GROUPING": prefs.guide.get("grouping_request", "")}
-    form = re.sub(r"__(PURPOSE|PRIORITY|GROUPING)__", lambda match: escape(values[match[1]]),
-                  FORM.read_text(encoding="utf-8")).encode("utf-8")
+def pair_questions(cards: list[list[dict]], questions: list[str], summaries: dict[str, str]) -> str:
+    if not cards:
+        return '<p class="question">추천할 파일 쌍이 없습니다. 첫 그래프 만들기를 눌러 주세요.</p>'
+    choices = [("edge_confirm", "함께 보고 싶어요"), ("edge_irrelevant", "이번 목적에는 필요 없어요"), ("skip", "판단하기 어려워요")]
+    html = []
+    for i, (files, question) in enumerate(zip(cards, questions, strict=True)):
+        nodes = []
+        for file in files:
+            path = Path(file["path"])
+            summary = summaries.get(file["path"]) or file["summary"] or "이 파일의 요약을 가져오지 못했어요."
+            nodes.append(f'<div class="file-node"><small>{escape(path.parent.as_posix())}/</small>'
+                         f'<strong>{escape(path.name)}</strong><p>{escape(summary)}</p></div>')
+        options = "".join(
+            f'<label><input type="radio" name="pair{i}" value="{value}"'
+            f'{" checked" if value == "skip" else ""}> {label}</label>' for value, label in choices)
+        a, b = (escape(file["path"]) for file in files)
+        direction = (f'<label class="direction">어느 파일에서 다른 파일로 이어질까요?'
+                     f'<select name="direction{i}"><option value="">방향은 시스템에 맡기기</option>'
+                     f'<option value="forward">{a} → {b}</option>'
+                     f'<option value="reverse">{b} → {a}</option></select></label>')
+        html.append(f'<details class="pair" name="suggestions"><summary id="pair-title-{i}">{escape(question)}</summary>'
+                    f'<div class="pair-content"><div class="sources">'
+                     f'{nodes[0]}<span class="pair-link" aria-hidden="true"></span>{nodes[1]}</div>'
+                     f'<div class="choices" role="radiogroup" aria-labelledby="pair-title-{i}">{options}</div>{direction}</div></details>')
+    return "".join(html)
+
+
+def run_setup(root: Path, out: Path, cfg: Config, prefs: Preferences, use_codex: bool = False) -> None:
     route = "/" + secrets.token_urlsafe(24)
     result: Path | None = None
     failure: Exception | SystemExit | None = None
     last_feedback: dict | None = None
     approved_view = out / APPROVED_DIR / "view.html"
+    prepared = None
+    if not approved_view.is_file():
+        print("연결 후보를 찾기 위해 프로젝트 파일을 읽는 중입니다.", flush=True)
+        prepared = pipeline.prepare_project(root, out, cfg)
+        pairs = similar_file_pairs(prepared.record)
+        fields = ("purpose", *(f"pair{i}" for i in range(len(pairs))))
+        allowed_fields = {*fields, *(f"direction{i}" for i in range(len(pairs)))}
+        cards = pair_evidence(prepared.record, pairs)
+        template = FORM.read_text(encoding="utf-8")
+        values = {"PURPOSE": escape(prefs.purpose),
+                  "ROUTE": route, "STAGE": "purpose", "PAIRS": "", "NOTICE": "", "DISPLAYPURPOSE": "", "PROJECT": escape(root.name),
+                  "COUNT": str(len(prepared.record.files)),
+                  "FILES": "".join(f"<li>{escape(f.path)}</li>" for f in sorted(prepared.record.files, key=lambda f: f.path))}
+        def setup_page(**updates) -> bytes:
+            page_values = {**values, **updates}
+            return re.sub(r"__([A-Z]+)__", lambda m: page_values[m[1]], template).encode("utf-8")
 
     class SetupHandler(BaseHTTPRequestHandler):
         def setup(self) -> None:
@@ -59,11 +101,14 @@ def run_setup(root: Path, out: Path, cfg: Config, prefs: Preferences) -> None:
             self.wfile.write(body)
 
         def do_GET(self) -> None:
+            if self.path in (route + "/purpose", route + "/questions"):
+                self.redirect_to_graph()
+                return
             if self.path == route:
                 if approved_view.is_file():
                     self.respond(approved_view.read_bytes())
                 elif result is None:
-                    self.respond(form)
+                    self.respond(setup_page())
                 else:
                     report = json.dumps(last_feedback, ensure_ascii=False).replace("</", "<\\/").encode("utf-8")
                     page = result.read_bytes().replace(b"<body>", b"<body data-live-feedback>", 1)
@@ -72,7 +117,7 @@ def run_setup(root: Path, out: Path, cfg: Config, prefs: Preferences) -> None:
                 self.send_error(404)
 
         def do_POST(self) -> None:
-            nonlocal result, failure
+            nonlocal result, failure, prepared, last_feedback
             if self.path == route + "/feedback":
                 if approved_view.is_file():
                     self.feedback_response(409, message="이미 최종 승인된 위키예요.")
@@ -84,7 +129,7 @@ def run_setup(root: Path, out: Path, cfg: Config, prefs: Preferences) -> None:
             if self.path == route + "/approve" and (result is not None or approved_view.is_file()):
                 self.approve()
                 return
-            if self.path != route:
+            if self.path not in (route, route + "/questions", route + "/purpose"):
                 self.send_error(404)
                 return
             if result is not None or approved_view.is_file():
@@ -97,16 +142,41 @@ def run_setup(root: Path, out: Path, cfg: Config, prefs: Preferences) -> None:
                 if self.headers.get_content_type() != "application/x-www-form-urlencoded":
                     raise ValueError("invalid form type")
                 data = parse_qs(self.rfile.read(length).decode("ascii"), encoding="utf-8", errors="strict",
-                                keep_blank_values=True, max_num_fields=len(FIELDS))
-                if set(data) != set(FIELDS) or any(len(v) != 1 or len(v[0]) > MAX_ANSWER for v in data.values()):
+                                keep_blank_values=True, max_num_fields=len(allowed_fields))
+                expected = fields if self.path == route else ("purpose",)
+                if (not set(expected) <= set(data) <= allowed_fields
+                        or any(len(v) != 1 or len(v[0]) > MAX_ANSWER for v in data.values())):
                     raise ValueError("invalid answers")
-                answers = [data[field][0].strip() for field in FIELDS]
+                purpose = data["purpose"][0].strip() or "프로젝트 이해"
+                if self.path != route:
+                    if self.path.endswith("/purpose"):
+                        self.respond(setup_page(PURPOSE=escape(purpose)))
+                        return
+                    questions = [f"‘{purpose}’ 위키에서 {Path(a['path']).name}와 {Path(b['path']).name}를 함께 볼까요?"
+                                 for a, b in cards]
+                    notice = ""
+                    summaries = {}
+                    if use_codex and cards:
+                        try:
+                            questions, summaries = codex_questions(purpose, cards)
+                            notice = "질문을 눌러 두 파일을 살펴보고 답을 골라 주세요."
+                        except (ValueError, OSError, subprocess.TimeoutExpired) as exc:
+                            log.warning("Codex setup questions unavailable: %s", exc)
+                            notice = "Codex 응답을 받지 못해 기본 질문을 표시했어요."
+                    self.respond(setup_page(PURPOSE=escape(purpose), STAGE="pairs", PAIRS=pair_questions(cards, questions, summaries),
+                                            DISPLAYPURPOSE=escape(purpose), NOTICE=notice))
+                    return
+                initial = pair_feedback(pairs, [data[f"pair{i}"][0] for i in range(len(pairs))],
+                                        [data.get(f"direction{i}", [""])[0] for i in range(len(pairs))])
             except (ValueError, TimeoutError):
                 self.send_error(400, "Invalid setup form")
                 return
 
             try:
-                result = pipeline.build(root, out, cfg, preferences_from_answers(prefs, *answers))["view"]
+                built = pipeline.build_prepared(prepared, out, cfg, replace(prefs, purpose=purpose), initial)
+                result = built["view"]
+                last_feedback = built.get("initial_changes")
+                prepared = None
             except (Exception, SystemExit) as exc:
                 failure = exc
                 self.respond("<p>그래프를 만들지 못했습니다. 실행한 터미널에서 오류를 확인해 주세요.</p>".encode("utf-8"),
@@ -156,30 +226,33 @@ def run_setup(root: Path, out: Path, cfg: Config, prefs: Preferences) -> None:
             nonlocal last_feedback
             try:
                 data = self.read_json(MAX_FEEDBACK_BODY)
-                items, request = data.get("events"), data.get("text")
+                items = data.get("events")
                 if (not isinstance(items, list) or len(items) > 500 or any(not isinstance(e, dict) for e in items)
-                        or not isinstance(request, str) or len(request) > MAX_ANSWER):
-                    raise ValueError("invalid events or text")
-                request = request.strip()
+                        or data.get("text", "") != ""):
+                    raise ValueError("expected structured feedback")
             except (ValueError, TimeoutError):
                 self.feedback_response(400, message="입력 길이와 피드백을 확인해 주세요.")
                 return
 
             try:
                 record = Record.load(out)
-                current = Graph.from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
+                current = final_graph_from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
                 existing = {edge.id for edge in current.edges}
                 events = validate_events(items, record, existing)
-                if request:
-                    if not cfg.llm:
-                        raise FeedbackInputError("자유 텍스트를 해석하려면 Claude가 필요해요. --no-llm 없이 실행해 주세요.")
-                    llm = pipeline.make_llm(cfg, out)
-                    assert llm is not None
-                    try:
-                        parsed = interpret(request, record, [g.name for g in current.groups], llm, cfg)
-                    finally:
-                        llm.save()
-                    events.extend(validate_events(parsed, record, existing, request=request))
+                if any(ev.type.startswith("group_") for ev in events):
+                    if data.get("revision") != current.revision():
+                        self.feedback_response(409, message="그룹 구성이 바뀌었어요. 새로고침 후 그룹 요청을 다시 확인해 주세요.")
+                        return
+                    names = {g.id: g.name for g in current.groups}
+                    for ev in events:
+                        if ev.type == "group_add":
+                            if ev.group in names or ev.note in names.values() or ev.note == "그룹 없음":
+                                raise FeedbackInputError("이미 사용 중인 그룹 이름이나 ID입니다.")
+                            names[ev.group] = ev.note
+                        elif ev.type == "group_delete":
+                            if ev.group not in names:
+                                raise FeedbackInputError("삭제할 그룹을 찾지 못했어요.")
+                            ev.note = names.pop(ev.group)
                 if not events:
                     raise FeedbackInputError("반영할 피드백을 추가해 주세요.")
                 updated = pipeline.correct(out, cfg, record=record, new_feedback=events)["graph"]

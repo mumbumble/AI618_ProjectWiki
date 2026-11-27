@@ -11,9 +11,10 @@ from pathlib import Path
 from . import pipeline
 from .config import Config
 from .models.visualization import export_obsidian
-from .schema import Graph, Preferences
+from .schema import Preferences
 from .srcs import doctor
 from .srcs.feedback import read_events
+from .srcs.levels import final_graph_from_dict
 from .srcs.record import Record
 
 
@@ -68,6 +69,7 @@ def main(argv=None) -> None:
     b.add_argument("--purpose", help="the user's purpose for this project")
     b.add_argument("--prefs", help="preferences JSON for the clustering stage (see examples/prefs.example.json)")
     b.add_argument("--setup", action="store_true", help="ask for initial preferences in a browser before building")
+    b.add_argument("--setup-codex", action="store_true", help="run browser setup with Codex CLI purpose questions and no Claude calls")
     b.add_argument("--config", help="JSON file with Config fields")
     b.add_argument("--encoder", choices=["bge-m3", "tfidf"])
     b.add_argument("--clusterer", help="registered name or package.module:Class")
@@ -102,6 +104,8 @@ def main(argv=None) -> None:
 
     load_dotenv()
     args = p.parse_args(argv)
+    if args.cmd == "build" and args.setup_codex:
+        args.setup = args.no_llm = True
     if args.cmd == "doctor":
         raise SystemExit(doctor.run())
     logging.basicConfig(level=logging.INFO, format="[%(name)s] %(message)s")
@@ -116,7 +120,7 @@ def main(argv=None) -> None:
             from .srcs.setup_server import run_setup
             if not root.is_dir():
                 p.error(f"project folder does not exist: {root}")
-            run_setup(root, out, cfg, prefs)
+            run_setup(root, out, cfg, prefs, use_codex=args.setup_codex)
         else:
             result = pipeline.build(root, out, cfg, prefs)
             show(result["view"], args.open)
@@ -133,7 +137,7 @@ def main(argv=None) -> None:
         show(pipeline.view(Path(args.out).resolve()), args.open)
     elif args.cmd == "obsidian":
         out = Path(args.out).resolve()
-        final = Graph.from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
+        final = final_graph_from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
         print(f"vault: {export_obsidian(final, Record.load(out), Path(args.vault))}")
     elif args.cmd == "report":
         from .srcs.report import report

@@ -14,7 +14,7 @@ import json
 import logging
 import os
 import time
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .config import Config
@@ -26,9 +26,11 @@ from .models.visualization import write_view
 from .schema import VISIBLE_STATUS, FeedbackEvent, Graph, Preferences
 from .srcs.enrich import describe_images, summarize
 from .srcs.feedback import merge, read_events, resolve
+from .srcs.feedback_changes import feedback_changes
 from .srcs.finalize import finalize
 from .srcs.ingest import ingest
 from .srcs.initial_preferences import priority_nodes
+from .srcs.levels import assign_levels, final_graph_from_dict
 from .srcs.llm import Claude
 from .srcs.naming import name_groups
 from .srcs.record import Record, build_record, diff_files
@@ -53,12 +55,19 @@ def make_llm(cfg: Config, out: Path, client=None) -> Claude | None:
     return Claude(cfg, out / "cache" / "llm.json", client=client)
 
 
-def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=None) -> dict:
-    """The whole pipeline."""
+@dataclass
+class PreparedProject:
+    record: Record
+    llm: Claude | None
+    changes: dict
+    seconds: dict
+
+
+def prepare_project(root: Path, out: Path, cfg: Config, llm_client=None) -> PreparedProject:
+    """Read and encode files once, before any preference-dependent stages."""
     root = Path(root).resolve()
     out.mkdir(parents=True, exist_ok=True)
     cfg.save(out / "config.json")
-    write_json(out / "prefs.json", asdict(prefs))
     llm = make_llm(cfg, out, llm_client)
     times, t = {}, time.time()
 
@@ -82,19 +91,40 @@ def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=Non
     lap("1 encoding")
     record = build_record(root, files, chunks, encoded)  # project record
     record.save(out)
+    return PreparedProject(record, llm, changes, times)
+
+
+def build(root: Path, out: Path, cfg: Config, prefs: Preferences, llm_client=None) -> dict:
+    return build_prepared(prepare_project(root, out, cfg, llm_client), out, cfg, prefs)
+
+
+def build_prepared(project: PreparedProject, out: Path, cfg: Config, prefs: Preferences,
+                   initial_feedback: list[FeedbackEvent] | None = None) -> dict:
+    record, llm, changes = project.record, project.llm, project.changes
+    times = dict(project.seconds)
+    write_json(out / "prefs.json", asdict(prefs))
+    t = time.time()
 
     groups = get_clusterer(cfg.clusterer, cfg).cluster(record, prefs)  # 2 clustering
     name_groups(groups, record, llm, cfg)
-    lap("2 clustering")
+    times["2 clustering"] = round(time.time() - t, 2)
+    t = time.time()
     purpose = prefs.purpose
     for label, key in (("Materials to prioritize", "priority_materials"), ("Requested grouping", "grouping_request")):
         if answer := prefs.guide.get(key):
             purpose = f"{purpose}\n{label}: {answer}".lstrip()
     graph = build_graph(record, groups, cfg, llm, purpose)  # 3 structure
     write_json(out / "graph.json", graph.to_dict())
-    lap("3 structure")
-    result = correct(out, cfg, record=record, graph=graph)  # 4 preference, final graph, 5 visualization
-    lap("4-5 preference, final graph, view")
+    times["3 structure"] = round(time.time() - t, 2)
+    t = time.time()
+    if initial_feedback:
+        previous = resolve(read_events(out / "feedback.jsonl"), record)
+        baseline = get_corrector(cfg.corrector, cfg).correct(graph, previous, record)
+        before = finalize(graph, baseline, previous, cfg)
+    result = correct(out, cfg, record=record, graph=graph, new_feedback=initial_feedback)
+    if initial_feedback:
+        result["initial_changes"] = feedback_changes(before, result["graph"], initial_feedback, cfg.corrector)
+    times["4-5 preference, final graph, view"] = round(time.time() - t, 2)
     result["changes"] = changes
     if llm is not None:
         llm.save()
@@ -117,6 +147,7 @@ def correct(out: Path, cfg: Config, record: Record | None = None, graph: Graph |
 
     correction = get_corrector(cfg.corrector, cfg).correct(graph, feedback, record)  # 4 preference
     final = finalize(graph, correction, feedback, cfg)  # final graph: explicit edits always win
+    assign_levels(final)
     write_json(out / "correction.json", asdict(correction))
     write_json(out / "final_graph.json", final.to_dict())
     view = render(out, cfg, final, record, len(feedback))  # 5 visualization
@@ -135,17 +166,14 @@ def render(out: Path, cfg: Config, final: Graph, record: Record, n_feedback: int
     prefs_path = out / "prefs.json"
     if prefs_path.is_file():
         prefs = Preferences(**json.loads(prefs_path.read_text(encoding="utf-8")))
-        if "priority_materials" in prefs.guide:
-            request = prefs.guide["priority_materials"]
+        if prefs.purpose or "priority_materials" in prefs.guide:
+            request = prefs.guide.get("priority_materials", "")
             meta["setup"] = {"purpose": prefs.purpose, "priority": request,
                              "files": priority_nodes(final.nodes, request)}
-    comparison = out / "correction.json"
-    if cfg.corrector == "best-of-n" and comparison.is_file():
-        meta["selection"] = json.loads(comparison.read_text(encoding="utf-8")).get("selection")
     return write_view(final, record, view_path or out / "view.html", meta)
 
 
 def view(out: Path) -> Path:
     cfg = Config.load(out / "config.json")
-    final = Graph.from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
+    final = final_graph_from_dict(json.loads((out / "final_graph.json").read_text(encoding="utf-8")))
     return render(out, cfg, final, Record.load(out), len(read_events(out / "feedback.jsonl")))

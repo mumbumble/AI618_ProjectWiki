@@ -18,6 +18,7 @@ from ..models.preference import CORRECTORS, get_corrector
 from ..models.visualization import RELATION_NAMES
 from ..schema import FEEDBACK_TYPES, STRUCTURAL, VISIBLE_STATUS, Graph, edge_key
 from .feedback import read_events, resolve
+from .levels import final_graph_from_dict
 from .record import Record
 
 PALETTE = ["#4e79a7", "#f28e2b", "#59a14f", "#e15759", "#76b7b2", "#edc948", "#b07aa1", "#ff9da7",
@@ -170,7 +171,10 @@ def feedback_check(final: Graph, feedback) -> list[list[str]]:
     gname = {g.id: g.name for g in final.groups}
     last = {}
     for ev in feedback:
-        last[edge_key(ev.source, ev.target) if ev.type.startswith("edge_") else ("node", ev.node)] = ev
+        key = ("group", ev.group) if ev.type.startswith("group_") else ("node", ev.node)
+        if ev.type == "node_level":
+            key = ("level", ev.node)
+        last[edge_key(ev.source, ev.target) if ev.type.startswith("edge_") else key] = ev
     rows = []
     for ev in last.values():
         if ev.type.startswith("edge_"):
@@ -181,6 +185,13 @@ def feedback_check(final: Graph, feedback) -> list[list[str]]:
             got = e.status if e else ("제안 안 됨" if ev.type in ("edge_wrong", "edge_irrelevant") else "(없음)")
             want = "제안 안 됨" if got == "제안 안 됨" else want
             what = f"{esc(base(nodes[ev.source].path))} – {esc(base(nodes[ev.target].path))}"
+        elif ev.type == "node_level":
+            want, got = ev.level, nodes[ev.node].level
+            what = esc(base(nodes[ev.node].path))
+        elif ev.type.startswith("group_"):
+            want = "존재" if ev.type == "group_add" else "삭제됨"
+            got = "존재" if ev.group in gname else "삭제됨"
+            what = esc(ev.note or ev.group)
         else:
             n = nodes[ev.node]
             want = ev.group if ev.type == "node_move" else "(그룹 없음)"
@@ -198,7 +209,7 @@ def report(out: Path) -> Path:
     cfg = Config.load(out / "config.json")
     rec = Record.load(out)
     g5 = Graph.from_dict(load(out / "graph.json"))
-    final = Graph.from_dict(load(out / "final_graph.json"))
+    final = final_graph_from_dict(load(out / "final_graph.json"))
     feedback = resolve(read_events(out / "feedback.jsonl"), rec)
     prefs = load(out / "prefs.json", {}) or {}
     info = load(out / "run_info.json", {}) or {}
@@ -347,8 +358,8 @@ def report(out: Path) -> Path:
 
     fbt = [[esc(FEEDBACK_TYPES[ev.type]),
             esc(base(rec.file_by_id[ev.source].path) + " – " + base(rec.file_by_id[ev.target].path))
-            if ev.type.startswith("edge_") else esc(base(rec.file_by_id[ev.node].path)),
-            esc(ev.relation or ev.group or ev.note or "")] for ev in feedback]
+            if ev.type.startswith("edge_") else esc(ev.note or ev.group) if ev.type.startswith("group_") else esc(base(rec.file_by_id[ev.node].path)),
+            esc(ev.level or ev.relation or ev.group or ev.note or "")] for ev in feedback]
     crow = [[("<b>" if n == cfg.corrector else "") + esc(n) + (" (사용 중)</b>" if n == cfg.corrector else ""),
              {"baseline": "대조군", "drift": "4안 커널 끌림/밀어냄", "align": "1안 선호 정렬 (Bradley–Terry)"}.get(n, ""),
              str(h), str(r), "<br>".join(esc(x) for x in notes), "<br>".join(exs) or '<span class="muted">—</span>']

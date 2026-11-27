@@ -10,7 +10,7 @@ import copy
 from typing import TYPE_CHECKING
 
 from ..config import Config
-from ..schema import STRUCTURAL, Edge, FeedbackEvent, Graph, Group, edge_key
+from ..schema import LEVELS, STRUCTURAL, Edge, FeedbackEvent, Graph, Group, edge_key
 if TYPE_CHECKING:
     from ..models.preference import Correction
 
@@ -51,16 +51,35 @@ def finalize(graph: Graph, correction: Correction, feedback: list[FeedbackEvent]
                     e = edges[key] = Edge(id=key, source=ev.source, target=ev.target, relation=ev.relation or "user",
                                           reason="user", direct=True, score=1.0, origin="user")
                 e.status = "confirmed"
+                if ev.set_direction:
+                    e.source, e.target = ev.source, ev.target
+                    e.user_directed = True
                 e.label = ev.note or e.label
                 if ev.relation and ev.type == "edge_add":
                     e.relation = ev.relation
             elif e is not None:
                 e.status = {"edge_confirm": "confirmed", "edge_wrong": "removed_wrong",
                             "edge_irrelevant": "removed_irrelevant"}[ev.type]
+        elif ev.type == "group_add" and ev.group and ev.note and ev.group not in groups:
+            groups[ev.group] = Group(id=ev.group, name=ev.note, origin="user")
+            user_group_by_name[ev.note] = ev.group
+        elif ev.type == "group_delete" and ev.group in groups:
+            removed = groups.pop(ev.group)
+            if user_group_by_name.get(removed.name) == ev.group:
+                del user_group_by_name[removed.name]
+            for n in nodes.values():
+                if n.group == ev.group:
+                    n.group = None
+        elif ev.type == "node_level" and ev.node in nodes and ev.level in LEVELS:
+            nodes[ev.node].level = ev.level
+            nodes[ev.node].manual_level = True
         elif ev.type == "node_move" and ev.node in nodes and ev.group:
             gid = ev.group if ev.group in groups else user_group_by_name.get(ev.group)
             if gid is None:  # a new group named by the user
-                gid = f"u{len(user_group_by_name) + 1}"
+                index = len(user_group_by_name) + 1
+                while f"u{index}" in groups:
+                    index += 1
+                gid = f"u{index}"
                 groups[gid] = Group(id=gid, name=ev.group, origin="user")
                 user_group_by_name[ev.group] = gid
             nodes[ev.node].group = gid
@@ -73,5 +92,5 @@ def finalize(graph: Graph, correction: Correction, feedback: list[FeedbackEvent]
     for gr in groups.values():
         gr.members = [n.id for n in nodes.values() if n.group == gr.id]
     g.edges = list(edges.values())
-    g.groups = [gr for gr in groups.values() if gr.members]
+    g.groups = list(groups.values())
     return g

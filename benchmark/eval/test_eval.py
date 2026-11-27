@@ -1,4 +1,5 @@
 """Tests of the evaluation code. Run: pytest benchmark/eval"""
+import json
 import sys
 from pathlib import Path
 
@@ -22,7 +23,8 @@ from test_pipeline import make_cfg, project  # noqa: E402,F401  (pytest fixture)
 def build(project, tmp_path):
     out = tmp_path / "out"
     pipeline.build(project, out, make_cfg(llm=False), Preferences())
-    return out, Record.load(out), Graph.from_dict(__import__("json").loads((out / "graph.json").read_text()))
+    graph_data = json.loads((out / "graph.json").read_text(encoding="utf-8"))
+    return out, Record.load(out), Graph.from_dict(graph_data)
 
 
 def test_category():
