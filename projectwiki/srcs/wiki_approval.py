@@ -9,8 +9,8 @@ from uuid import uuid4
 from .. import pipeline
 from ..config import Config
 from ..models.visualization import export_obsidian
-from ..schema import Graph
 from .feedback import read_events
+from .levels import final_graph_from_dict
 from .record import Record
 
 
@@ -28,7 +28,7 @@ def approve_wiki(out: Path, cfg: Config, revision: str, last_feedback: dict | No
 
     graph_file = out / "final_graph.json"
     data = graph_file.read_bytes()
-    graph = Graph.from_dict(json.loads(data))
+    graph = final_graph_from_dict(json.loads(data))
     if graph.revision() != revision:
         raise StaleGraphError("그래프가 바뀌었어요. 화면을 새로고침한 뒤 확인해 주세요.")
     record = Record.load(out)
@@ -36,7 +36,7 @@ def approve_wiki(out: Path, cfg: Config, revision: str, last_feedback: dict | No
     package = out / f".approval-{uuid4().hex}"
     package.mkdir()
     try:
-        (package / "graph.json").write_bytes(data)
+        (package / "graph.json").write_text(json.dumps(graph.to_dict(), ensure_ascii=False, indent=1), encoding="utf-8")
         export_obsidian(graph, record, package / "wiki")
         view = pipeline.render(out, cfg, graph, record, len(read_events(out / "feedback.jsonl")),
                                view_path=package / "view.html")

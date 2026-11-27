@@ -13,8 +13,9 @@ from collections import Counter
 from dataclasses import asdict
 from pathlib import Path
 
-from ..schema import FEEDBACK_TYPES, VISIBLE_STATUS, Graph
+from ..schema import DIRECTED_RELATIONS, FEEDBACK_TYPES, VISIBLE_STATUS, Graph
 from ..srcs.record import Record
+from ..srcs.naming import descriptive_name, folder_name
 
 
 # ---- HTML viewer ---------------------------------------------------------------------------------
@@ -34,8 +35,17 @@ def view_data(graph: Graph, record: Record, meta: dict) -> dict:
         text = next((c.text for c in record.file_chunks(n.id) if c.kind != "path"), "")
         nodes.append({**asdict(n), "preview": text[:PREVIEW_CHARS]})
     run_id = hashlib.sha1(json.dumps([meta.get("root"), meta.get("created")]).encode()).hexdigest()[:12]
-    return {"nodes": nodes, "groups": [asdict(g) for g in graph.groups], "edges": [asdict(e) for e in graph.edges],
-            "relations": RELATION_NAMES, "feedback_types": FEEDBACK_TYPES, "meta": {**meta, "run_id": run_id}}
+    groups = []
+    folders = {part for f in record.files for part in f.path.split("/")[:-1]} | {"(root)"}
+    for g in graph.groups:
+        data = asdict(g)
+        files = [record.file_by_id[m] for m in g.members]
+        if files and g.origin != "user" and (all(part in folders for part in g.name.split(" + "))
+                                             or g.name == folder_name([f.path for f in files])):
+            data["display_name"] = descriptive_name(g.name, [f.type for f in files])
+        groups.append(data)
+    return {"nodes": nodes, "groups": groups, "edges": [asdict(e) for e in graph.edges],
+            "directed_relations": DIRECTED_RELATIONS, "relations": RELATION_NAMES, "feedback_types": FEEDBACK_TYPES, "meta": {**meta, "run_id": run_id}}
 
 
 def write_view(graph: Graph, record: Record, path: Path, meta: dict) -> Path:
@@ -68,7 +78,7 @@ def export_obsidian(graph: Graph, record: Record, vault: Path) -> Path:
 
     for n in graph.nodes:
         tag = re.sub(r"\s+", "_", group_name.get(n.group, "ungrouped"))
-        lines = ["---", f"path: \"{n.path}\"", f"type: {n.type}", f"tags: [\"group/{tag}\"]", "---",
+        lines = ["---", f"path: \"{n.path}\"", f"type: {n.type}", f"level: {n.level}", f"tags: [\"group/{tag}\"]", "---",
                  f"# {posixpath.basename(n.path)}", "", f"원본: `{record.root}/{n.path}`", ""]
         if n.role or n.summary:
             lines += [f"**{n.role}**  " if n.role else "", n.summary, ""]

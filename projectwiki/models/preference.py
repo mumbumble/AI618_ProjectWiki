@@ -209,21 +209,19 @@ class BestOfNCorrector:
             raise ValueError("best_of_n_prior_weight must be positive and finite")
 
     def correct(self, graph: Graph, feedback: list[FeedbackEvent], record: Record) -> Correction:
-        latest = {edge_key(ev.source, ev.target): ev.type for ev in feedback if ev.type.startswith("edge_")}
-        if not any(kind in {"edge_add", "edge_confirm", "edge_irrelevant"} for kind in latest.values()):
+        latest = {edge_key(ev.source, ev.target): ev for ev in feedback if ev.type.startswith("edge_")}
+        if not any(ev.type in {"edge_add", "edge_confirm", "edge_irrelevant"} for ev in latest.values()):
             return Correction(notes=["No approval or purpose-based rejection to generalize."])
 
         # This reference has all manual edits and the normal display threshold, with no drift.
         reference = finalize(graph, Correction(), feedback, self.cfg)
         reference_edges = {e.id: e for e in reference.edges}
         approvals, rejections = Counter(), Counter()
-        for key, kind in latest.items():
-            if key not in reference_edges:
-                continue
-            relation = reference_edges[key].relation
-            if kind in {"edge_add", "edge_confirm"}:
+        for key, ev in latest.items():
+            relation = reference_edges[key].relation if key in reference_edges else ev.relation or "user"
+            if ev.type in {"edge_add", "edge_confirm"}:
                 approvals[relation] += 1
-            elif kind == "edge_irrelevant":
+            elif ev.type == "edge_irrelevant":
                 rejections[relation] += 1
 
         prior = self.cfg.best_of_n_prior_weight

@@ -3,9 +3,47 @@ from __future__ import annotations
 
 import re
 from dataclasses import replace
+from heapq import nlargest
 from pathlib import PurePosixPath
 
-from ..schema import Node, Preferences
+import numpy as np
+
+from ..schema import FeedbackEvent, Node, Preferences
+from .record import Record
+
+
+def similar_file_pairs(record: Record, limit: int = 3) -> list[tuple[str, str]]:
+    """Highest cosine similarities between distinct files with content; one row in memory at a time."""
+    indices = sorted((i for i, f in enumerate(record.files)
+                      if any(record.chunk_by_id[c].kind != "path" for c in f.chunk_ids)),
+                     key=lambda i: record.files[i].path)
+    vectors = record.file_emb[indices]
+
+    def candidates():
+        for i in range(len(indices) - 1):
+            scores = vectors[i + 1:] @ vectors[i]
+            for offset in np.argsort(-scores, kind="stable")[:limit]:
+                if scores[offset] > 0:
+                    yield float(scores[offset]), record.files[indices[i]].id, record.files[indices[i + 1 + offset]].id
+
+    return [(a, b) for _, a, b in nlargest(limit, candidates(), key=lambda pair: pair[0])]
+
+
+def pair_feedback(pairs: list[tuple[str, str]], answers: list[str], directions: list[str] | None = None) -> list[FeedbackEvent]:
+    events = []
+    for (a, b), choice, direction in zip(pairs, answers, directions if directions is not None else [""] * len(pairs), strict=True):
+        if direction not in ("", "forward", "reverse"):
+            raise ValueError("invalid initial pair direction")
+        if choice == "skip":
+            continue
+        if choice == "edge_confirm":
+            source, target = (b, a) if direction == "reverse" else (a, b)
+            events.append(FeedbackEvent(type=choice, source=source, target=target, set_direction=bool(direction)))
+        elif choice == "edge_irrelevant":
+            events.append(FeedbackEvent(type=choice, source=a, target=b))
+        else:
+            raise ValueError("invalid initial pair choice")
+    return events
 
 
 MATERIAL_HINTS = {

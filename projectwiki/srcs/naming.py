@@ -14,6 +14,20 @@ Write in {language}.
 - description: one sentence on what the group holds."""
 GROUP_SCHEMA = obj_schema(name={"type": "string"}, description={"type": "string"})
 MAX_MEMBERS = 40
+FOLDER_TOPICS = {
+    "src": "구현 코드", "lib": "라이브러리", "docs": "기술 문서", "paper": "논문",
+    "figures": "시각 자료", "experiments": "실험 결과", "notes": "작업 노트",
+    "configs": "실행 설정", "tests": "검증 코드", "data": "데이터", "examples": "예제",
+}
+
+
+def descriptive_name(folders: str, types: list[str]) -> str:
+    topics = [FOLDER_TOPICS.get(p.rsplit("/", 1)[-1].lower()) for p in folders.split(" + ")]
+    if all(topics):
+        return " · ".join(dict.fromkeys(topics))
+    labels = {"markdown": "문서", "pdf": "참고 문헌", "python": "구현 코드", "image": "시각 자료",
+              "notebook": "분석 노트북", "media": "미디어", "text": "텍스트 자료"}
+    return " · ".join(label for label, _ in Counter(labels.get(t, "프로젝트 자료") for t in types).most_common(2)) or "파일 그룹"
 
 
 def folder_name(paths: list[str]) -> str:
@@ -29,7 +43,8 @@ def folder_name(paths: list[str]) -> str:
 def name_groups(groups: list[Group], record: Record, llm: Claude | None, cfg: Config) -> None:
     todo = [g for g in groups if not g.name]
     for g in todo:
-        g.name = folder_name([record.file_by_id[m].path for m in g.members])
+        files = [record.file_by_id[m] for m in g.members]
+        g.name = descriptive_name(folder_name([f.path for f in files]), [f.type for f in files])
     if llm is None or not cfg.name_groups:
         return
     system = GROUP_SYSTEM.format(language=cfg.language)
